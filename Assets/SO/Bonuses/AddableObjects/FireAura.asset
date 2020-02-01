@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56781b5eb8bd6a340b4eb65a499815f6, type: 3}
+  m_Name: FireAura
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
+  circleLine:
+    numSegments: 64
+    width: 2
+    material: {fileID: 2100000, guid: c0587613938b1704daae528a6fcb16a8, type: 2}
+  controller: {fileID: 0}
+  colliderInfo: {fileID: 0}
+  cannonInfo: {fileID: 0}
+  isUnmovable: 1
+  isPassingThrough: 1
+  collisionDamage: 0
+  parts: []
+  angularVelocity: 5
+  outerRadius: 1
+  damage: 5

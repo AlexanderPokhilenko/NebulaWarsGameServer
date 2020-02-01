@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
+  m_Name: ConnectorWithContainer
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: adaa9b0c30a020b40aa4f7c1b5ba3ed3, type: 3}
+  controller: {fileID: 0}
+  colliderInfo: {fileID: 11400000, guid: f1a2e1cba6141b548b878316f3364c77, type: 2}
+  cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
+  parts:
+  - baseObject: {fileID: 11400000, guid: 50db2aed462b6a143b861f76e9ed1680, type: 2}
+    position: {x: 0.75, y: 0}
+    direction: 0
+    isParentDependent: 0
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  maxHealthPoints: 20
