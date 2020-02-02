@@ -22,7 +22,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
              return message;
          }
         
-         public static  Message GetMessage(PlayersPositionsMessage mes)
+         public static  Message GetMessage(PositionsMessage mes)
         {
             byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
             int mesType = GetMessageType(mes);
@@ -41,7 +41,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
             return 3;
         } 
      
-        private static int GetMessageType(PlayersPositionsMessage mes)
+        private static int GetMessageType(PositionsMessage mes)
         {
             return 5;
         }

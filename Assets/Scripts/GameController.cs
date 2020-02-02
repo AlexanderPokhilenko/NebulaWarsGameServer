@@ -20,10 +20,7 @@ public class GameController : MonoBehaviour
             .Add(new EffectsSystems(contexts))
             .Add(new TimeSystems(contexts))
             .Add(new DestroySystems(contexts))
-            .Add(new AISystems(contexts))
-            // Системы клиентской части:
-            .Add(new ViewSystems(contexts))
-            .Add(new AnimationSystems(contexts));
+            .Add(new AISystems(contexts));
 
         systems.Initialize();
     }

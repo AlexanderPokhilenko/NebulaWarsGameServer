@@ -9,58 +9,51 @@
 public static class GameComponentsLookup {
 
     public const int AngularVelocity = 0;
-    public const int Animator = 1;
-    public const int AnimatorController = 2;
-    public const int Aura = 3;
-    public const int BonusAdder = 4;
-    public const int BonusPickable = 5;
-    public const int BonusTarget = 6;
-    public const int Cannon = 7;
-    public const int CannonCooldown = 8;
-    public const int CircleCollider = 9;
-    public const int CircleLine = 10;
-    public const int CircleScaling = 11;
-    public const int Collapses = 12;
-    public const int Collidable = 13;
-    public const int Collided = 14;
-    public const int CollisionVector = 15;
-    public const int Concave = 16;
-    public const int Damage = 17;
-    public const int Destroyed = 18;
-    public const int Direction = 19;
-    public const int HealthPoints = 20;
-    public const int Id = 21;
-    public const int IgnoringParentCollision = 22;
-    public const int Invulnerable = 23;
-    public const int Lifetime = 24;
-    public const int MaxAngularVelocity = 25;
-    public const int MaxVelocity = 26;
-    public const int NeededToDelete = 27;
-    public const int NoncollinearAxises = 28;
-    public const int NotDecelerating = 29;
-    public const int Parent = 30;
-    public const int ParentDependent = 31;
-    public const int ParentFixed = 32;
-    public const int PassingThrough = 33;
-    public const int PathCollider = 34;
-    public const int Position = 35;
-    public const int RectangleCollider = 36;
-    public const int Round = 37;
-    public const int Sprite = 38;
-    public const int TargetChanging = 39;
-    public const int Target = 40;
-    public const int TargetingParameters = 41;
-    public const int TryingToShoot = 42;
-    public const int Unmovable = 43;
-    public const int Velocity = 44;
-    public const int View = 45;
+    public const int Aura = 1;
+    public const int BonusAdder = 2;
+    public const int BonusPickable = 3;
+    public const int BonusTarget = 4;
+    public const int Cannon = 5;
+    public const int CannonCooldown = 6;
+    public const int CircleCollider = 7;
+    public const int CircleScaling = 8;
+    public const int Collapses = 9;
+    public const int Collidable = 10;
+    public const int Collided = 11;
+    public const int CollisionVector = 12;
+    public const int Concave = 13;
+    public const int Damage = 14;
+    public const int Destroyed = 15;
+    public const int Direction = 16;
+    public const int HealthPoints = 17;
+    public const int Id = 18;
+    public const int IgnoringParentCollision = 19;
+    public const int Invulnerable = 20;
+    public const int Lifetime = 21;
+    public const int MaxAngularVelocity = 22;
+    public const int MaxVelocity = 23;
+    public const int NoncollinearAxises = 24;
+    public const int NotDecelerating = 25;
+    public const int Parent = 26;
+    public const int ParentDependent = 27;
+    public const int ParentFixed = 28;
+    public const int PassingThrough = 29;
+    public const int PathCollider = 30;
+    public const int Player = 31;
+    public const int Position = 32;
+    public const int RectangleCollider = 33;
+    public const int Round = 34;
+    public const int TargetChanging = 35;
+    public const int Target = 36;
+    public const int TargetingParameters = 37;
+    public const int TryingToShoot = 38;
+    public const int Unmovable = 39;
+    public const int Velocity = 40;
 
-    public const int TotalComponents = 46;
+    public const int TotalComponents = 41;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
-        "Animator",
-        "AnimatorController",
         "Aura",
         "BonusAdder",
         "BonusPickable",
@@ -68,7 +61,6 @@ public static class GameComponentsLookup {
         "Cannon",
         "CannonCooldown",
         "CircleCollider",
-        "CircleLine",
         "CircleScaling",
         "Collapses",
         "Collidable",
@@ -85,7 +77,6 @@ public static class GameComponentsLookup {
         "Lifetime",
         "MaxAngularVelocity",
         "MaxVelocity",
-        "NeededToDelete",
         "NoncollinearAxises",
         "NotDecelerating",
         "Parent",
@@ -93,23 +84,20 @@ public static class GameComponentsLookup {
         "ParentFixed",
         "PassingThrough",
         "PathCollider",
+        "Player",
         "Position",
         "RectangleCollider",
         "Round",
-        "Sprite",
         "TargetChanging",
         "Target",
         "TargetingParameters",
         "TryingToShoot",
         "Unmovable",
-        "Velocity",
-        "View"
+        "Velocity"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(AngularVelocityComponent),
-        typeof(AnimatorComponent),
-        typeof(AnimatorControllerComponent),
         typeof(AuraComponent),
         typeof(BonusAdderComponent),
         typeof(BonusPickableComponent),
@@ -117,7 +105,6 @@ public static class GameComponentsLookup {
         typeof(CannonComponent),
         typeof(CannonCooldownComponent),
         typeof(CircleColliderComponent),
-        typeof(CircleLineComponent),
         typeof(CircleScalingComponent),
         typeof(CollapsesComponent),
         typeof(CollidableComponent),
@@ -134,7 +121,6 @@ public static class GameComponentsLookup {
         typeof(LifetimeComponent),
         typeof(MaxAngularVelocityComponent),
         typeof(MaxVelocityComponent),
-        typeof(NeededToDeleteComponent),
         typeof(NoncollinearAxisesComponent),
         typeof(NotDeceleratingComponent),
         typeof(ParentComponent),
@@ -142,16 +128,15 @@ public static class GameComponentsLookup {
         typeof(ParentFixedComponent),
         typeof(PassingThroughComponent),
         typeof(PathColliderComponent),
+        typeof(PlayerComponent),
         typeof(PositionComponent),
         typeof(RectangleColliderComponent),
         typeof(RoundComponent),
-        typeof(SpriteComponent),
         typeof(TargetChangingComponent),
         typeof(TargetComponent),
         typeof(TargetingParametersComponent),
         typeof(TryingToShootComponent),
         typeof(UnmovableComponent),
-        typeof(VelocityComponent),
-        typeof(ViewComponent)
+        typeof(VelocityComponent)
     };
 }

@@ -21,7 +21,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
             var withPosition = gameContext.GetEntities(Matcher<GameEntity>.AllOf(GameMatcher.Position));
             foreach (var player in players)
             {
-                UdpSendUtils.SendPositions(player.player.PlayerGoogleId, withPosition);
+                UdpSendUtils.SendPositions(player.player.GoogleId, withPosition);
             }
         }
     }

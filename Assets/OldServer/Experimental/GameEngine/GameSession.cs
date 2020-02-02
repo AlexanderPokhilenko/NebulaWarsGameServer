@@ -29,23 +29,14 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
             
             Contexts = new Contexts();
 
-            CheckEmpty(Contexts);
-            systems = new Entitas.Systems();
-            systems.Add(new PlayersInitSystem(Contexts, roomData));
-            systems.Add(new PlayerJoystickInputHandlerSystem(Contexts));
-            systems.Add(new NetworkSenderSystem(Contexts));
+            systems = new Entitas.Systems()
+                .Add(new PlayersInitSystem(Contexts, roomData))
+                .Add(new PlayerMovementHandlerSystem(Contexts))
+                .Add(new PlayerAttackHandlerSystem(Contexts))
+                .Add(new NetworkSenderSystem(Contexts));
 
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
-        }
-
-        
-        private void CheckEmpty(Contexts contexts)
-        {
-            int countOfEntities = contexts.game.GetEntities().Length;
-            countOfEntities += contexts.input.GetEntities().Length;
-            if(countOfEntities!=0)
-                throw new Exception("Контекст не пустой");
         }
         
         public void Execute()

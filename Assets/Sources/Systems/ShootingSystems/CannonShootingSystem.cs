@@ -33,11 +33,6 @@ public class CannonShootingSystem : IExecuteSystem
             bulletEntity.ReplaceDirection(globalAngle);
             bulletEntity.ReplaceVelocity(globalVelocity);
             bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
-            //анимация, если есть
-            if (e.hasAnimator)
-            {
-                e.animator.value.SetTrigger("Attack");
-            }
         }
     }
 }

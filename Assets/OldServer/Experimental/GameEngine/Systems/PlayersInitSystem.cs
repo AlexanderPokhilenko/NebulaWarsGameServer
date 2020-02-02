@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEngine;
 
 namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
 {
@@ -30,19 +31,19 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
                 
                 var gameEntity = gameContext.CreateEntity();
                 gameEntity.AddPlayer(playerInfo.PlayerGoogleId);
-                (float x, float y) = GetRandomCoordinates();
-                gameEntity.AddPosition(x, y);
+                var rndPosition = GetRandomCoordinates();
+                gameEntity.AddPosition(rndPosition);
             }
         }
 
        
         //x in [-10;10]. y in [-5;5]
-        private Tuple<float, float> GetRandomCoordinates()
+        private Vector2 GetRandomCoordinates()
         {
-            Random random = new Random();
-            float x = 1f*random.Next(-1000, 1000)/100;
-            float y = 1f*random.Next(-500, 500)/100;
-            Tuple<float, float> coordinates = new Tuple<float, float>(x, y);
+            //var random = new System.Random();
+            float x = /*random.Next(-1000, 1000)/100f;*/ UnityEngine.Random.Range(-10f, 10f);
+            float y = /*random.Next(-500, 500)/100f;*/ UnityEngine.Random.Range(-5f, 5f);
+            var coordinates = new Vector2(x, y);
             return coordinates;
         }
     }

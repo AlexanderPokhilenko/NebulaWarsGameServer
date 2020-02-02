@@ -5,8 +5,6 @@ using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using ZeroFormatter;
 
-//TODO заменить vector2
-
 namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
 {
     public class PlayerJoystickInputHandler
@@ -16,12 +14,17 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
             PlayerJoystickInputMessage mes =
                 ZeroFormatterSerializer.Deserialize<PlayerJoystickInputMessage>(message.SerializedMessage);
             
-            AddPlayerInputComponent(mes.PlayerGoogleId, mes.X, mes.Y);
+            AddPlayerInputComponent(mes.PlayerGoogleId, mes.GetVector2());
         }
 
-        private void AddPlayerInputComponent(string playerGoogleId, float x, float y)
+        private void AddPlayerInputComponent(string playerGoogleId, Vector2 vector)
         {
-            StaticInputMessagesSorter.MessagesToBeSynchronized.TryAdd(playerGoogleId, new Vector2(x,y));
+            StaticInputMessagesSorter.MovementMessages.TryAdd(playerGoogleId, vector);
+        }
+
+        private void AddPlayerAttackComponent(string playerGoogleId, float angle)
+        {
+            StaticInputMessagesSorter.AttackMessages.TryAdd(playerGoogleId, angle);
         }
     }
 }

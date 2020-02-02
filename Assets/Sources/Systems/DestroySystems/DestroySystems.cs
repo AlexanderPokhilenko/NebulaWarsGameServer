@@ -13,7 +13,6 @@ internal class DestroySystems : Feature
         Add(new CollapsingSystem(contexts));
         Add(new ParentLinkDeletingSystem(contexts));
         Add(new TargetLinkDeletingSystem(contexts));
-        Add(new DeletingEntitiesWithoutAnimatorSystem(contexts));
         Add(new DeleteSystem(contexts));
     }
 }

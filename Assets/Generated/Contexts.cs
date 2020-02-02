@@ -59,6 +59,7 @@ public partial class Contexts : Entitas.IContexts {
 public partial class Contexts {
 
     public const string Id = "Id";
+    public const string Player = "Player";
 
     [Entitas.CodeGeneration.Attributes.PostConstructor]
     public void InitializeEntityIndices() {
@@ -70,6 +71,15 @@ public partial class Contexts {
             Id,
             input.GetGroup(InputMatcher.Id),
             (e, c) => ((IdComponent)c).value));
+
+        game.AddEntityIndex(new Entitas.PrimaryEntityIndex<GameEntity, string>(
+            Player,
+            game.GetGroup(GameMatcher.Player),
+            (e, c) => ((PlayerComponent)c).GoogleId));
+        input.AddEntityIndex(new Entitas.PrimaryEntityIndex<InputEntity, string>(
+            Player,
+            input.GetGroup(InputMatcher.Player),
+            (e, c) => ((PlayerComponent)c).GoogleId));
     }
 }
 
@@ -81,6 +91,14 @@ public static class ContextsExtensions {
 
     public static InputEntity GetEntityWithId(this InputContext context, int value) {
         return ((Entitas.PrimaryEntityIndex<InputEntity, int>)context.GetEntityIndex(Contexts.Id)).GetEntity(value);
+    }
+
+    public static GameEntity GetEntityWithPlayer(this GameContext context, string GoogleId) {
+        return ((Entitas.PrimaryEntityIndex<GameEntity, string>)context.GetEntityIndex(Contexts.Player)).GetEntity(GoogleId);
+    }
+
+    public static InputEntity GetEntityWithPlayer(this InputContext context, string GoogleId) {
+        return ((Entitas.PrimaryEntityIndex<InputEntity, string>)context.GetEntityIndex(Contexts.Player)).GetEntity(GoogleId);
     }
 }
 //------------------------------------------------------------------------------

@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBaseObject", menuName = "BaseObjects/BaseObject", order = 51)]
 public class BaseObject : ScriptableObject
 {
-    public Sprite sprite;
-    public CircleLineComponent circleLine = null;
-    public AnimatorController controller;
+    //TODO: хранить ссылку / ID визуального объекта (Sprite, AnimatorController и CircleLineComponent)
     public ColliderInfo colliderInfo;
     public CannonInfo cannonInfo;
     public bool isUnmovable;
@@ -20,10 +17,6 @@ public class BaseObject : ScriptableObject
     public virtual GameEntity CreateEntity(GameContext context)
     {
         var entity = context.CreateEntity();
-        if (sprite != null) entity.AddSprite(sprite);
-        if(circleLine != null && circleLine.numSegments >= 3 && circleLine.width > 0 && circleLine.material != null)
-            entity.AddCircleLine(circleLine.numSegments, circleLine.width, circleLine.material);
-        if (controller != null) entity.AddAnimatorController(controller);
         if (colliderInfo != null)
         {
             entity.isCollidable = true;

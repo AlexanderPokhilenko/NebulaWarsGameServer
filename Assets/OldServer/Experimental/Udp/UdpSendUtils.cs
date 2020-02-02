@@ -13,14 +13,13 @@ namespace AmoebaBattleServer01.Experimental.Udp
         {
             // Console.WriteLine("SendPositions ");
             
-            PlayersPositionsMessage mes = new PlayersPositionsMessage();
-            mes.PlayersInfo = new Dictionary<string, Vector2>();
+            PositionsMessage mes = new PositionsMessage();
 
             foreach (var gameEntity in withPosition)
             {
-                string playerGoogleId = gameEntity.player.PlayerGoogleId;
-                Vector2 position = new Vector2(gameEntity.position.X, gameEntity.position.Y); 
-                mes.PlayersInfo.Add(playerGoogleId, position);
+                //string playerGoogleId = gameEntity.player.GoogleId;
+                var transform = Transform.GetTransform(gameEntity);
+                mes.EntitiesInfo.Add(gameEntity.id.value, transform);
             }
             
             var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerGoogleId);

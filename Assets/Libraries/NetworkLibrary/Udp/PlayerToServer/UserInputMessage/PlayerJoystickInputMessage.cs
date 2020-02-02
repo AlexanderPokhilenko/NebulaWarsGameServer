@@ -1,4 +1,5 @@
-﻿﻿﻿﻿﻿﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿﻿﻿using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+      using ZeroFormatter;
 
       namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
 {
@@ -16,5 +17,7 @@
             X = x;
             Y = y;
         }
+
+        public Vector2 GetVector2() => new Vector2(X, Y);
     }
 }

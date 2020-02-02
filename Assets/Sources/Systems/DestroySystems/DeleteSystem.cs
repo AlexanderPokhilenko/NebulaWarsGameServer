@@ -10,7 +10,7 @@ public sealed class DeleteSystem : IExecuteSystem
 
     public DeleteSystem(Contexts contexts)
     {
-        deletingGroup = contexts.game.GetGroup(GameMatcher.NeededToDelete);
+        deletingGroup = contexts.game.GetGroup(GameMatcher.Destroyed);
     }
 
     public void Execute()
@@ -18,12 +18,6 @@ public sealed class DeleteSystem : IExecuteSystem
         //TODO: посмотреть, можно ли как-то удалять без использования массива
         foreach (var e in deletingGroup.GetEntities())
         {
-            if (e.hasView)
-            {
-                var gameObject = e.view.gameObject;
-                gameObject.Unlink();
-                Object.Destroy(gameObject);
-            }
             e.Destroy();
         }
     }
