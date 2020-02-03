@@ -11,17 +11,19 @@ public partial class GameEntity {
     public PlayerComponent player { get { return (PlayerComponent)GetComponent(GameComponentsLookup.Player); } }
     public bool hasPlayer { get { return HasComponent(GameComponentsLookup.Player); } }
 
-    public void AddPlayer(string newGoogleId) {
+    public void AddPlayer(string newGoogleId, int newPlayerId) {
         var index = GameComponentsLookup.Player;
         var component = (PlayerComponent)CreateComponent(index, typeof(PlayerComponent));
         component.GoogleId = newGoogleId;
+        component.PlayerId = newPlayerId;
         AddComponent(index, component);
     }
 
-    public void ReplacePlayer(string newGoogleId) {
+    public void ReplacePlayer(string newGoogleId, int newPlayerId) {
         var index = GameComponentsLookup.Player;
         var component = (PlayerComponent)CreateComponent(index, typeof(PlayerComponent));
         component.GoogleId = newGoogleId;
+        component.PlayerId = newPlayerId;
         ReplaceComponent(index, component);
     }
 

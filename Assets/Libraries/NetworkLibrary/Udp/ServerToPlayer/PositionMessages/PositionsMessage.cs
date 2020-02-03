@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿﻿using System.Collections.Generic;
 using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
@@ -60,9 +60,9 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
 
         public static Transform GetTransform(GameEntity entity)
         {
-            var position = entity.position.value;
+            var position = entity.position;
             var direction = entity.direction.angle;
-            return new Transform(position.x, position.y, direction);
+            return new Transform(position.value.x, position.value.y, direction);
         }
 
         public Vector2 GetPosition() => new Vector2(x, y);

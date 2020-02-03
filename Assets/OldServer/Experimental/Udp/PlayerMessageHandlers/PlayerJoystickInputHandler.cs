@@ -14,17 +14,17 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
             PlayerJoystickInputMessage mes =
                 ZeroFormatterSerializer.Deserialize<PlayerJoystickInputMessage>(message.SerializedMessage);
             
-            AddPlayerInputComponent(mes.PlayerGoogleId, mes.GetVector2());
+            AddPlayerInputComponent(mes.PlayerTemporaryIdentifierForTheMatch, mes.GetVector2());
         }
 
-        private void AddPlayerInputComponent(string playerGoogleId, Vector2 vector)
+        private void AddPlayerInputComponent(int playerId, Vector2 vector)
         {
-            StaticInputMessagesSorter.MovementMessages.TryAdd(playerGoogleId, vector);
+            StaticInputMessagesSorter.MovementMessages.TryAdd(playerId, vector);
         }
 
-        private void AddPlayerAttackComponent(string playerGoogleId, float angle)
+        private void AddPlayerAttackComponent(int playerId, float angle)
         {
-            StaticInputMessagesSorter.AttackMessages.TryAdd(playerGoogleId, angle);
+            StaticInputMessagesSorter.AttackMessages.TryAdd(playerId, angle);
         }
     }
 }

@@ -30,9 +30,10 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
             foreach (var inputEntity in entities)
             {
                 var playerAttackDirection = inputEntity.attack.direction;
-                var playerId = inputEntity.player.GoogleId;
+                var playerId = inputEntity.player.PlayerId;
 
-                var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
+                // var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
+                var gamePlayer = gameContext.GetEntityWithPlayerPlayerId(playerId);
                 
                 var newAngularVelocity = (playerAttackDirection - gamePlayer.direction.angle) / Time.deltaTime;
 

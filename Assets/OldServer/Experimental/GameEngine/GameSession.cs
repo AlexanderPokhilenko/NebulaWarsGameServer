@@ -5,7 +5,7 @@ using NetworkLibrary.NetworkLibrary.Http;
 namespace AmoebaBattleServer01.Experimental.GameEngine
 {
     /// <summary>
-    ///  Хранит системы и информацию о игроках игровой сессии.
+    ///  Хранит системы и информацию о игроках.
     /// </summary>
     public class GameSession
     {
@@ -26,7 +26,6 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
             Console.WriteLine("Создание новой комнаты номер = "+roomData.GameRoomNumber);
 
             RoomData = roomData;
-            
             Contexts = new Contexts();
 
             systems = new Entitas.Systems()
@@ -72,6 +71,6 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
 
     public static class GameSessionGlobals
     {
-        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,800);
+        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,300);
     } 
 }

@@ -41,7 +41,7 @@ namespace AmoebaBattleServer01.Experimental.Http
                 throw new Exception("Игра ещё не инициализирована.");
 
             bool thereIsNoRoomWithSuchPlayers = true;
-            foreach (var playerId in roomData.Players.Select(player => player.PlayerGoogleId))
+            foreach (var playerId in roomData.Players.Select(player => player.PlayerTemporaryIdentifierForTheMatch))
             {
                 if (GameEngineMediator.GameSessionsStorage.PlayersToSessions.ContainsKey(playerId))
                 {

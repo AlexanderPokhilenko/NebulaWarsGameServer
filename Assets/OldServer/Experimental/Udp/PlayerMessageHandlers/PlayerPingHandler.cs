@@ -14,17 +14,17 @@ namespace AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers
             PlayerPingMessage mes = ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(message.SerializedMessage);
 
             int gameRoomNumber = mes.GameRoomNumber;
-            string playerGoogleId = mes.PlayerGoogleId;
+            int playerId = mes.PlayerTemporaryIdentifierForTheMatch;
 
-            TrySetUpIpAddress(sender, playerGoogleId);
-            UpdateOrAddPingRecord(playerGoogleId);
+            TrySetUpIpAddress(sender, playerId);
+            UpdateOrAddPingRecord(playerId);
         }
 
-        private static void TrySetUpIpAddress(IPEndPoint sender, string playerGoogleId)
+        private static void TrySetUpIpAddress(IPEndPoint sender, int playerId)
         {
             if (!BentMediator.PlayersIpAddressesWrapper.IsIpAddressAlreadyExists(sender))
             {
-                BentMediator.PlayersIpAddressesWrapper.AddPlayer(playerGoogleId, sender);
+                BentMediator.PlayersIpAddressesWrapper.AddPlayer(playerId, sender);
                 Console.WriteLine($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
             }
             else
@@ -33,19 +33,16 @@ namespace AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers
             }
         }
         
-        private static void UpdateOrAddPingRecord(string playerGoogleId)
+        private static void UpdateOrAddPingRecord(int playerId)
         {
-            if (PingLogger.LastPingTime.ContainsKey(playerGoogleId))
+            if (PingLogger.LastPingTime.ContainsKey(playerId))
             {
-                PingLogger.LastPingTime[playerGoogleId] = DateTime.UtcNow;
+                PingLogger.LastPingTime[playerId] = DateTime.UtcNow;
                 // Console.WriteLine($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
             }
             else
             {
-                while (!PingLogger.LastPingTime.TryAdd(playerGoogleId, DateTime.UtcNow))
-                {
-                    
-                }
+                PingLogger.LastPingTime.TryAdd(playerId, DateTime.UtcNow);
             }
         }
     }

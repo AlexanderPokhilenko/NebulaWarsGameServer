@@ -13,6 +13,7 @@
           <e p="Components" t="Include">
             <e p="Interfaces" t="Include">
               <e p="IIdEntity.cs" t="Include" />
+              <e p="IPlayerEntity.cs" t="Include" />
             </e>
           </e>
           <e p="Contexts.cs" t="Include" />
@@ -20,8 +21,6 @@
           <e p="Game" t="Include">
             <e p="Components" t="Include">
               <e p="GameAngularVelocityComponent.cs" t="Include" />
-              <e p="GameAnimatorComponent.cs" t="Include" />
-              <e p="GameAnimatorControllerComponent.cs" t="Include" />
               <e p="GameAuraComponent.cs" t="Include" />
               <e p="GameBonusAdderComponent.cs" t="Include" />
               <e p="GameBonusPickableComponent.cs" t="Include" />
@@ -29,7 +28,6 @@
               <e p="GameCannonComponent.cs" t="Include" />
               <e p="GameCannonCooldownComponent.cs" t="Include" />
               <e p="GameCircleColliderComponent.cs" t="Include" />
-              <e p="GameCircleLineComponent.cs" t="Include" />
               <e p="GameCircleScalingComponent.cs" t="Include" />
               <e p="GameCollapsesComponent.cs" t="Include" />
               <e p="GameCollidableComponent.cs" t="Include" />
@@ -46,7 +44,6 @@
               <e p="GameLifetimeComponent.cs" t="Include" />
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
-              <e p="GameNeededToDeleteComponent.cs" t="Include" />
               <e p="GameNoncollinearAxisesComponent.cs" t="Include" />
               <e p="GameNotDeceleratingComponent.cs" t="Include" />
               <e p="GameParentComponent.cs" t="Include" />
@@ -54,17 +51,16 @@
               <e p="GameParentFixedComponent.cs" t="Include" />
               <e p="GamePassingThroughComponent.cs" t="Include" />
               <e p="GamePathColliderComponent.cs" t="Include" />
+              <e p="GamePlayerComponent.cs" t="Include" />
               <e p="GamePositionComponent.cs" t="Include" />
               <e p="GameRectangleColliderComponent.cs" t="Include" />
               <e p="GameRoundComponent.cs" t="Include" />
-              <e p="GameSpriteComponent.cs" t="Include" />
               <e p="GameTargetChangingComponent.cs" t="Include" />
               <e p="GameTargetComponent.cs" t="Include" />
               <e p="GameTargetingParametersComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
-              <e p="GameViewComponent.cs" t="Include" />
             </e>
             <e p="GameAttribute.cs" t="Include" />
             <e p="GameComponentsLookup.cs" t="Include" />
@@ -74,7 +70,10 @@
           </e>
           <e p="Input" t="Include">
             <e p="Components" t="Include">
+              <e p="InputAttackComponent.cs" t="Include" />
               <e p="InputIdComponent.cs" t="Include" />
+              <e p="InputMovementComponent.cs" t="Include" />
+              <e p="InputPlayerComponent.cs" t="Include" />
             </e>
             <e p="InputAttribute.cs" t="Include" />
             <e p="InputComponentsLookup.cs" t="Include" />
@@ -99,8 +98,6 @@
               <e p="PlayerInfoForGameRoom.cs" t="Include" />
             </e>
             <e p="Udp" t="Include">
-              <e p="Message.cs" t="Include" />
-              <e p="MessageFactory.cs" t="Include" />
               <e p="PlayerToServer" t="Include">
                 <e p="Ping" t="Include">
                   <e p="PlayerPingMessage.cs" t="Include" />
@@ -111,8 +108,13 @@
               </e>
               <e p="ServerToPlayer" t="Include">
                 <e p="PositionMessages" t="Include">
-                  <e p="PlayersPositionsMessage.cs" t="Include" />
+                  <e p="PositionsMessage.cs" t="Include" />
                 </e>
+              </e>
+              <e p="Utils" t="Include">
+                <e p="Message.cs" t="Include" />
+                <e p="MessageContainer.cs" t="Include" />
+                <e p="MessageFactory.cs" t="Include" />
               </e>
             </e>
           </e>
@@ -132,7 +134,8 @@
               <e p="StaticInputMessagesSorter.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="NetworkSenderSystem.cs" t="Include" />
-                <e p="PlayerJoystickInputHandlerSystem.cs" t="Include" />
+                <e p="PlayerAttackHandlerSystem.cs" t="Include" />
+                <e p="PlayerMovementHandlerSystem.cs" t="Include" />
                 <e p="PlayersInitSystem.cs" t="Include" />
               </e>
             </e>
@@ -158,7 +161,6 @@
           <e p="Program.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
-          <e p="BackgroundMover.cs" t="Include" />
           <e p="CollidersDrawer.cs" t="Include" />
           <e p="ContextsIdExtensions.cs" t="Include" />
           <e p="CoordinatesExtensions.cs" t="Include" />
@@ -166,13 +168,13 @@
           <e p="ParentsExtensions.cs" t="Include" />
           <e p="PartObject.cs" t="Include" />
           <e p="ScriptableObjects" t="Include">
+            <e p="CannonInfo.cs" t="Include" />
             <e p="CollidableObjects" t="Include">
               <e p="AuraObject.cs" t="Include" />
               <e p="BaseObject.cs" t="Include" />
               <e p="BaseWithHealthObject.cs" t="Include" />
               <e p="BonusAdderObject.cs" t="Include" />
               <e p="BulletObject.cs" t="Include" />
-              <e p="CannonInfo.cs" t="Include" />
               <e p="FlameCircleObject.cs" t="Include" />
               <e p="MovableObject.cs" t="Include" />
               <e p="MovableWithHealthObject.cs" t="Include" />
@@ -188,12 +190,9 @@
           </e>
           <e p="StubSpawner.cs" t="Include" />
         </e>
+        <e p="ServerController.cs" t="Include" />
         <e p="Sources" t="Include">
           <e p="Components" t="Include">
-            <e p="AnimationComponents" t="Include">
-              <e p="AnimatorComponent.cs" t="Include" />
-              <e p="AnimatorControllerComponent.cs" t="Include" />
-            </e>
             <e p="BonusesComponents" t="Include">
               <e p="BonusAdderComponent.cs" t="Include" />
               <e p="BonusPickableComponent.cs" t="Include" />
@@ -225,7 +224,6 @@
               <e p="DestroyedComponent.cs" t="Include" />
               <e p="HealthPointsComponent.cs" t="Include" />
               <e p="InvulnerableComponent.cs" t="Include" />
-              <e p="NeededToDeleteComponent.cs" t="Include" />
             </e>
             <e p="IdComponent.cs" t="Include" />
             <e p="MovementComponents" t="Include">
@@ -237,6 +235,11 @@
               <e p="PositionComponent.cs" t="Include" />
               <e p="UnmovableComponent.cs" t="Include" />
               <e p="VelocityComponent.cs" t="Include" />
+            </e>
+            <e p="PlayerComponents" t="Include">
+              <e p="AttackComponent.cs" t="Include" />
+              <e p="MovementComponent.cs" t="Include" />
+              <e p="PlayerComponent.cs" t="Include" />
             </e>
             <e p="ShellsComponents" t="Include">
               <e p="CollapsesComponent.cs" t="Include" />
@@ -254,11 +257,6 @@
             </e>
             <e p="TimeComponents" t="Include">
               <e p="LifetimeComponent.cs" t="Include" />
-            </e>
-            <e p="ViewComponents" t="Include">
-              <e p="CircleLineComponent.cs" t="Include" />
-              <e p="SpriteComponent.cs" t="Include" />
-              <e p="ViewComponent.cs" t="Include" />
             </e>
           </e>
           <e p="Systems" t="Include">
@@ -283,7 +281,6 @@
             <e p="DestroySystems" t="Include">
               <e p="CollapsingSystem.cs" t="Include" />
               <e p="DeleteSystem.cs" t="Include" />
-              <e p="DeletingEntitiesWithoutAnimatorSystem.cs" t="Include" />
               <e p="DestroySystems.cs" t="Include" />
               <e p="LowHealthSystem.cs" t="Include" />
               <e p="LowLifetimeSystem.cs" t="Include" />
@@ -322,21 +319,6 @@
               <e p="CannonCooldownSubtractionSystem.cs" t="Include" />
               <e p="LifetimeSubtractionSystem.cs" t="Include" />
               <e p="TimeSystems.cs" t="Include" />
-            </e>
-            <e p="ViewSystems" t="Include">
-              <e p="AddViewSystem.cs" t="Include" />
-              <e p="AnimationSystems" t="Include">
-                <e p="AnimationSystems.cs" t="Include" />
-                <e p="DeathAnimationSystem.cs" t="Include" />
-                <e p="DyingAnimationEndingSystem.cs" t="Include" />
-                <e p="MovingAnimationSystem.cs" t="Include" />
-                <e p="SetAnimatorSystem.cs" t="Include" />
-              </e>
-              <e p="RenderCircleSystem.cs" t="Include" />
-              <e p="RenderDirectionSystem.cs" t="Include" />
-              <e p="RenderPositionSystem.cs" t="Include" />
-              <e p="RenderSpriteSystem.cs" t="Include" />
-              <e p="ViewSystems.cs" t="Include" />
             </e>
           </e>
         </e>

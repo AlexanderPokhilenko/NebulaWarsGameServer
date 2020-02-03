@@ -9,18 +9,18 @@ namespace AmoebaBattleServer01.Experimental.Udp
         /// <summary>
         /// key playerGoogleId 
         /// </summary>
-        private readonly ConcurrentDictionary<string, IPEndPoint> playersIpAddresses;
+        private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
 
         public PlayersIpAddressesWrapper()
         {
-            playersIpAddresses = new ConcurrentDictionary<string, IPEndPoint>();
+            playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
         }
 
-        public IPEndPoint GetPlayerIpAddress(string playerGoogleId)
+        public IPEndPoint GetPlayerIpAddress(int playerId)
         {
-            if(playersIpAddresses.Keys.Contains(playerGoogleId))
+            if(playersIpAddresses.Keys.Contains(playerId))
             {
-                return playersIpAddresses[playerGoogleId];
+                return playersIpAddresses[playerId];
             }
             return null;
         }
@@ -30,7 +30,7 @@ namespace AmoebaBattleServer01.Experimental.Udp
             return playersIpAddresses.Values.Contains(point);
         }
 
-        public void AddPlayer(string playerGoogleId, IPEndPoint sender)
+        public void AddPlayer(int playerGoogleId, IPEndPoint sender)
         {
             while (!playersIpAddresses.TryAdd(playerGoogleId, sender))
             {

@@ -6,8 +6,8 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
     public static class PingLogger
     {
         //в эту коллекцию кладутся/обновляются элемента при получении новых пинг сообщений
-        public static readonly ConcurrentDictionary<string, DateTime> LastPingTime =
-            new ConcurrentDictionary<string, DateTime>();
+        public static readonly ConcurrentDictionary<int, DateTime> LastPingTime =
+            new ConcurrentDictionary<int, DateTime>();
         
         public static void Log()
         {

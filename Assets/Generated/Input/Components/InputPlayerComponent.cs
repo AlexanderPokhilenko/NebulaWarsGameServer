@@ -11,17 +11,19 @@ public partial class InputEntity {
     public PlayerComponent player { get { return (PlayerComponent)GetComponent(InputComponentsLookup.Player); } }
     public bool hasPlayer { get { return HasComponent(InputComponentsLookup.Player); } }
 
-    public void AddPlayer(string newGoogleId) {
+    public void AddPlayer(string newGoogleId, int newPlayerId) {
         var index = InputComponentsLookup.Player;
         var component = (PlayerComponent)CreateComponent(index, typeof(PlayerComponent));
         component.GoogleId = newGoogleId;
+        component.PlayerId = newPlayerId;
         AddComponent(index, component);
     }
 
-    public void ReplacePlayer(string newGoogleId) {
+    public void ReplacePlayer(string newGoogleId, int newPlayerId) {
         var index = InputComponentsLookup.Player;
         var component = (PlayerComponent)CreateComponent(index, typeof(PlayerComponent));
         component.GoogleId = newGoogleId;
+        component.PlayerId = newPlayerId;
         ReplaceComponent(index, component);
     }
 

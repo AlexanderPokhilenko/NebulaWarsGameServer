@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NetworkLibrary.NetworkLibrary.Udp;
+﻿using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using ZeroFormatter;
 
@@ -9,7 +6,7 @@ namespace AmoebaBattleServer01.Experimental.Udp
 {
     public static class UdpSendUtils
     {
-        public static void SendPositions(string targetPlayerGoogleId, GameEntity[] withPosition)
+        public static void SendPositions(int targetPlayerId, GameEntity[] withPosition)
         {
             // Console.WriteLine("SendPositions ");
             
@@ -22,7 +19,7 @@ namespace AmoebaBattleServer01.Experimental.Udp
                 mes.EntitiesInfo.Add(gameEntity.id.value, transform);
             }
             
-            var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerGoogleId);
+            var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerId);
             if (address != null)
             {
                 Message message = MessageFactory.GetMessage(mes);

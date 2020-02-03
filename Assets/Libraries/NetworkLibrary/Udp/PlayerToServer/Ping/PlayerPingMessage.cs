@@ -1,15 +1,16 @@
-﻿﻿﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿﻿using ZeroFormatter;
 
    namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
 {
     [ZeroFormattable]
     public struct PlayerPingMessage
     {
-        [Index(0)] public string PlayerGoogleId;
+        [Index(0)] public int PlayerTemporaryIdentifierForTheMatch;
         [Index(1)] public int GameRoomNumber;
-        public PlayerPingMessage(string playerGoogleId, int gameRoomNumber)
+
+        public PlayerPingMessage(int playerTemporaryIdentifierForTheMatch, int gameRoomNumber)
         {
-            PlayerGoogleId = playerGoogleId;
+            PlayerTemporaryIdentifierForTheMatch = playerTemporaryIdentifierForTheMatch;
             GameRoomNumber = gameRoomNumber;
         }
     }

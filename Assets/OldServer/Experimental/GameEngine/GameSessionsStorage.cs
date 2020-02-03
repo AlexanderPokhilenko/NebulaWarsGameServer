@@ -17,8 +17,8 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
         //текущие игровые сессии
         public readonly Dictionary<int, GameSession> GameSessions = new Dictionary<int, GameSession>();
         //текущие игровые сессии (ключ - id игрока)
-        public readonly Dictionary<string, GameSession> PlayersToSessions = 
-            new Dictionary<string, GameSession>();
+        public readonly Dictionary<int, GameSession> PlayersToSessions = 
+            new Dictionary<int, GameSession>();
 
         public void UpdateGameSessions()
         {
@@ -30,13 +30,15 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
         {
             while (!RoomsToCreate.IsEmpty)
             {
-                RoomsToCreate.TryDequeue(out var gameRoomData);
-                GameSession gameSession = new GameSession(this);
-                gameSession.ConfigureSystems(gameRoomData);
-                GameSessions.Add(gameRoomData.GameRoomNumber, gameSession);
-                foreach (var player in gameRoomData.Players)
+                if (RoomsToCreate.TryDequeue(out var gameRoomData))
                 {
-                    PlayersToSessions.Add(player.PlayerGoogleId, gameSession);
+                    GameSession gameSession = new GameSession(this);
+                    gameSession.ConfigureSystems(gameRoomData);
+                    GameSessions.Add(gameRoomData.GameRoomNumber, gameSession);
+                    foreach (var player in gameRoomData.Players)
+                    {
+                        PlayersToSessions.Add(player.PlayerTemporaryIdentifierForTheMatch, gameSession);
+                    }
                 }
             }
         }
@@ -48,7 +50,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 Console.WriteLine("Удаление игровой сессии");
                 int gameSessionNumber = finishedGameSessions.Dequeue();
                 var gameSession = GameSessions[gameSessionNumber];
-                var playersIds = gameSession.RoomData.Players.Select(player => player.PlayerGoogleId);
+                var playersIds = gameSession.RoomData.Players.Select(player => player.PlayerTemporaryIdentifierForTheMatch);
                 foreach (var playerLogin in playersIds)
                 {
                     PlayersToSessions.Remove(playerLogin);

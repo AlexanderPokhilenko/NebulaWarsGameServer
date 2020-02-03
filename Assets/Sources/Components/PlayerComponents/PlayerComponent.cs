@@ -7,4 +7,6 @@ public class PlayerComponent : IComponent
 {
     [PrimaryEntityIndex]
     public string GoogleId;
+    [PrimaryEntityIndex]
+    public int PlayerId;
 }
