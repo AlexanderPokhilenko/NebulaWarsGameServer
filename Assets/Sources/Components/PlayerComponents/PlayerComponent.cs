@@ -6,7 +6,5 @@ using Entitas.CodeGeneration.Attributes;
 public class PlayerComponent : IComponent
 {
     [PrimaryEntityIndex]
-    public string GoogleId;
-    [PrimaryEntityIndex]
-    public int PlayerId;
+    public int id;
 }

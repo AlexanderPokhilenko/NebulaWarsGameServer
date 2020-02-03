@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entitas;
+using UnityEngine;
 
 namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
 {
@@ -28,10 +29,9 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
             foreach (var inputEntity in entities)
             {
                 var playerJoystickInput = inputEntity.movement.value;
-                var playerId = inputEntity.player.PlayerId;
+                var playerId = inputEntity.player.id;
 
-                // var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
-                var gamePlayer = gameContext.GetEntityWithPlayerPlayerId(playerId);
+                var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
                 
                 var newVelocity = playerJoystickInput * gamePlayer.maxVelocity.value;
 

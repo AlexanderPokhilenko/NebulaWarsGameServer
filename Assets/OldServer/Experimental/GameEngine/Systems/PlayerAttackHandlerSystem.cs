@@ -30,12 +30,42 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
             foreach (var inputEntity in entities)
             {
                 var playerAttackDirection = inputEntity.attack.direction;
-                var playerId = inputEntity.player.PlayerId;
 
-                // var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
-                var gamePlayer = gameContext.GetEntityWithPlayerPlayerId(playerId);
-                
-                var newAngularVelocity = (playerAttackDirection - gamePlayer.direction.angle) / Time.deltaTime;
+                var playerId = inputEntity.player.id;
+
+                var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
+
+                if (float.IsNaN(playerAttackDirection))
+                {
+                    if(gamePlayer.hasAngularVelocity) gamePlayer.RemoveAngularVelocity();
+                    continue;
+                }
+
+                if (playerAttackDirection < 0f)
+                {
+                    if (playerAttackDirection <= -360f)
+                    {
+                        playerAttackDirection %= 360;
+                    }
+                    playerAttackDirection += 360;
+                }
+                else if(playerAttackDirection >= 360f)
+                {
+                    playerAttackDirection %= 360;
+                }
+
+                var rotatingDelta = playerAttackDirection - gamePlayer.direction.angle;
+
+                if (rotatingDelta > 180f)
+                {
+                    rotatingDelta -= 360f;
+                }
+                else if(rotatingDelta < -180f)
+                {
+                    rotatingDelta += 360f;
+                }
+
+                var newAngularVelocity = rotatingDelta / Clock.deltaTime;
 
                 if (gamePlayer.hasAngularVelocity)
                 {

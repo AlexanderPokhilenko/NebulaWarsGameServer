@@ -7,7 +7,6 @@ using AmoebaBattleServer01.Experimental.Udp;
 //TODO добавить удаление комнат
 //TODO добавить защиту от чужих пингов
 //TODO создание новых потоков выглядит не одинаково
-//TODO заменить id игроков на числа
 //TODO добавить возможность отсылать гейм матчеру состояние комнат
 
 namespace AmoebaBattleServer01

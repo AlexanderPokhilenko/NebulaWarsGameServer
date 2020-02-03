@@ -15,8 +15,11 @@ namespace AmoebaBattleServer01.Experimental.Udp
             foreach (var gameEntity in withPosition)
             {
                 //string playerGoogleId = gameEntity.player.GoogleId;
-                var transform = Transform.GetTransform(gameEntity);
-                mes.EntitiesInfo.Add(gameEntity.id.value, transform);
+
+                var position = gameEntity.position;
+                var direction = gameEntity.direction.angle;
+                var transform = new Transform(position.value.x, position.value.y, direction);
+                mes.EntitiesInfo.Add(gameEntity.id.value, transform); //TODO: нужно отправлять глобальные позиции!!!
             }
             
             var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerId);

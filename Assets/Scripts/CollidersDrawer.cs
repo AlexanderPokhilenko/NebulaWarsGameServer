@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
 
+#if UNITY_EDITOR
 //Внимание: сомнительное качество кода!
 public sealed class CollidersDrawer : MonoBehaviour
 {
@@ -17,21 +18,34 @@ public sealed class CollidersDrawer : MonoBehaviour
     private bool drawTargetLines = true;
     [SerializeField]
     private bool drawAuras = true;
+    [SerializeField]
+    private bool changeContext = true;
+    [SerializeField]
+    private int contextIndex = 0;
 #pragma warning restore 649
+    public static List<Contexts> contextsList = new List<Contexts>();
     private GameContext gameContext;
     private IGroup<GameEntity> collidableGroup;
     private IMatcher<GameEntity> matcher;
 
     public void Start()
     {
-        gameContext = Contexts.sharedInstance.game;
+        //gameContext = Contexts.sharedInstance.game;
         matcher = GameMatcher.AllOf(GameMatcher.Position).AnyOf(GameMatcher.CircleCollider, GameMatcher.PathCollider, GameMatcher.NoncollinearAxises, GameMatcher.Cannon, GameMatcher.TargetingParameters, GameMatcher.Target);
-        collidableGroup = gameContext.GetGroup(matcher);
+        //collidableGroup = gameContext.GetGroup(matcher);
     }
 
     public void OnDrawGizmos()
     {
-        if(collidableGroup == null) return;
+        if (changeContext && contextIndex >= 0 && contextIndex < contextsList.Count)
+        {
+            gameContext = contextsList[contextIndex].game;
+            if (gameContext == null) return;
+            collidableGroup = gameContext.GetGroup(matcher);
+            changeContext = false;
+        }
+
+        if(gameContext == null || collidableGroup == null) return;
 
         foreach (var e in collidableGroup)
         {
@@ -139,3 +153,4 @@ public sealed class CollidersDrawer : MonoBehaviour
         }
     }
 }
+#endif

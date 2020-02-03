@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEditor;
 using UnityEngine;
 
 namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
@@ -12,6 +13,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
     /// </summary>
     public class PlayersInitSystem:IInitializeSystem
     {
+        private readonly PlayerObject playerPrototype;
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
 
@@ -19,6 +21,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
         {
             gameContext = contexts.game;
             this.roomData = roomData;
+            playerPrototype = AssetDatabase.LoadAssetAtPath<PlayerObject>("Assets/SO/BaseObjects/UFOPlayer.asset");
         }
         
         public void Initialize()
@@ -27,12 +30,13 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
 
             foreach (var playerInfo in roomData.Players)
             {
-                Console.WriteLine($"Создание игрока с id = {playerInfo.PlayerGoogleId} для комнаты {roomData.GameRoomNumber}");
+                Console.WriteLine($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
                 
-                var gameEntity = gameContext.CreateEntity();
-                gameEntity.AddPlayer(playerInfo.PlayerGoogleId, playerInfo.PlayerTemporaryIdentifierForTheMatch);
+                var gameEntity = playerPrototype.CreateEntity(gameContext);
+                gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryIdentifier);
                 var rndPosition = GetRandomCoordinates();
                 gameEntity.AddPosition(rndPosition);
+                gameEntity.AddDirection(0);
             }
         }
 

@@ -26,45 +26,14 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
             Y = y;
         }
 
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
+
+#if UNITY_5_3_OR_NEWER
         public static implicit operator UnityEngine.Vector2(Vector2 vector) => new UnityEngine.Vector2(vector.X, vector.Y);
         public static implicit operator Vector2(UnityEngine.Vector2 vector) => new Vector2(vector.x, vector.y);
-    }
-
-    [ZeroFormattable]
-    public struct Transform
-    {
-        [Index(0)] public float x;
-        [Index(1)] public float y;
-        [Index(2)] public float angle;
-
-        public Transform(float x, float y, float angle)
-        {
-            this.x = x;
-            this.y = y;
-            this.angle = angle;
-        }
-
-        public Transform(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
-            this.angle = 0f;
-        }
-
-        public Transform(Vector2 position)
-        {
-            this.x = position.X;
-            this.y = position.Y;
-            this.angle = 0f;
-        }
-
-        public static Transform GetTransform(GameEntity entity)
-        {
-            var position = entity.position;
-            var direction = entity.direction.angle;
-            return new Transform(position.value.x, position.value.y, direction);
-        }
-
-        public Vector2 GetPosition() => new Vector2(x, y);
+#endif
     }
 }

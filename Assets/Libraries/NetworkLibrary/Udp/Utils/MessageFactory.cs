@@ -5,9 +5,10 @@ using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
+    //TODO: рефакторинг
     public static class MessageFactory
     {
-        public static  Message GetMessage(PlayerJoystickInputMessage mes)
+        public static  Message GetMessage(PlayerInputMessage mes)
         {
             byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
             int messageType = GetMessageType(mes);
@@ -34,7 +35,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         }
          
 
-         private static int GetMessageType(PlayerJoystickInputMessage message)
+         private static int GetMessageType(PlayerInputMessage message)
         {
             return 3;
         } 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using UnityEngine;
+using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace AmoebaBattleServer01.Experimental.GameEngine
 {
@@ -30,26 +31,27 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 var playerId = pair.Key;
                 var value = pair.Value;
 
-                // if (GameEngineMediator.GameSessionsStorage.PlayersToSessions.TryGetValue(playerId, out var gameSession))
-                // {
-                //     Contexts contexts = gameSession.Contexts;
-                //
-                //     if (contexts != null)
-                //     {
-                //         var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
-                //         if (inputEntity == null)
-                //         {
-                //             inputEntity = contexts.input.CreateEntity();
-                //             inputEntity.AddPlayer(playerId);
-                //         }
-                //
-                //         action(inputEntity, value);
-                //     }
-                //     else
-                //     {
-                //         throw new Exception("Пришло сообщение с вводом от игрока, который не зарегистрирован");
-                //     }
-                // }
+                if (GameEngineMediator.GameSessionsStorage.PlayersToSessions.TryGetValue(playerId, out var gameSession))
+                {
+                    Contexts contexts = gameSession.Contexts;
+
+                    if (contexts != null)
+                    {
+                        var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+                        if (inputEntity == null)
+                        {
+                            inputEntity = contexts.input.CreateEntity();
+                            inputEntity.AddPlayer(playerId);
+                        }
+
+                        action(inputEntity, value);
+                        //Debug.Log("Идентификатор: " + playerId + ", значение: " + value);
+                    }
+                    else
+                    {
+                        throw new Exception("Пришло сообщение с вводом от игрока, который не зарегистрирован");
+                    }
+                }
             }
         }
     }

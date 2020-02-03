@@ -7,14 +7,15 @@ using ZeroFormatter;
 
 namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
 {
-    public class PlayerJoystickInputHandler
+    public class PlayerInputHandler
     {
         public void Handle(Message message, IPEndPoint sender)
         {
-            PlayerJoystickInputMessage mes =
-                ZeroFormatterSerializer.Deserialize<PlayerJoystickInputMessage>(message.SerializedMessage);
+            PlayerInputMessage mes =
+                ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(message.SerializedMessage);
             
-            AddPlayerInputComponent(mes.PlayerTemporaryIdentifierForTheMatch, mes.GetVector2());
+            AddPlayerInputComponent(mes.TemporaryIdentifier, mes.GetVector2());
+            AddPlayerAttackComponent(mes.TemporaryIdentifier, mes.Angle);
         }
 
         private void AddPlayerInputComponent(int playerId, Vector2 vector)

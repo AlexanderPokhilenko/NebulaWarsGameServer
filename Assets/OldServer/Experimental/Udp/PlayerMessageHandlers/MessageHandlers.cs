@@ -8,7 +8,7 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
 {
     internal class MessageHandlers
     {
-        private readonly PlayerJoystickInputHandler playerJoystickInputHandler = new PlayerJoystickInputHandler();
+        private readonly PlayerInputHandler playerInputHandler = new PlayerInputHandler();
         private readonly PlayerPingHandler pingHandler = new PlayerPingHandler();
         
         public void Handle(Message message, IPEndPoint sender)
@@ -16,7 +16,7 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
             switch (message.MessageType)
             {
                 case 3:
-                    playerJoystickInputHandler.Handle(message, sender);
+                    playerInputHandler.Handle(message, sender);
                     break;
                 case 6:
                     pingHandler.Handle(message, sender);

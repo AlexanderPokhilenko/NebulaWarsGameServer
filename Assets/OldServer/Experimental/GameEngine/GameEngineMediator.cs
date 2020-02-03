@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace AmoebaBattleServer01.Experimental.GameEngine
 {
     public class GameEngineMediator
@@ -8,9 +10,15 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
 
         public GameEngineMediator()
         {
+#if UNITY_5_3_OR_NEWER
+            var go = new GameObject("Clock");
+            clock = go.AddComponent<Clock>();
+            clock.gameEngineMediator = this;
+#else
             clock = new Clock(this);
+#endif
         }
-        
+
         public void Tick()
         {
             StaticInputMessagesSorter.Spread();
