@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public sealed class DecelerateSystem : IExecuteSystem
         foreach (var e in movableGroup)
         {
             //TODO: заменить на нормальную формулу
-            var newVelocity = e.velocity.value / (1 + deceleratingConstant * Time.deltaTime);
+            var newVelocity = e.velocity.value / (1 + deceleratingConstant * Clock.deltaTime);
             e.ReplaceVelocity(newVelocity);
         }
     }

@@ -25,32 +25,34 @@ public static class GameComponentsLookup {
     public const int Damage = 14;
     public const int Destroyed = 15;
     public const int Direction = 16;
-    public const int HealthPoints = 17;
-    public const int Id = 18;
-    public const int IgnoringParentCollision = 19;
-    public const int Invulnerable = 20;
-    public const int Lifetime = 21;
-    public const int MaxAngularVelocity = 22;
-    public const int MaxVelocity = 23;
-    public const int NoncollinearAxises = 24;
-    public const int NotDecelerating = 25;
-    public const int Parent = 26;
-    public const int ParentDependent = 27;
-    public const int ParentFixed = 28;
-    public const int PassingThrough = 29;
-    public const int PathCollider = 30;
-    public const int Player = 31;
-    public const int Position = 32;
-    public const int RectangleCollider = 33;
-    public const int Round = 34;
-    public const int TargetChanging = 35;
-    public const int Target = 36;
-    public const int TargetingParameters = 37;
-    public const int TryingToShoot = 38;
-    public const int Unmovable = 39;
-    public const int Velocity = 40;
+    public const int GlobalCalculated = 17;
+    public const int GlobalTransform = 18;
+    public const int HealthPoints = 19;
+    public const int Id = 20;
+    public const int IgnoringParentCollision = 21;
+    public const int Invulnerable = 22;
+    public const int Lifetime = 23;
+    public const int MaxAngularVelocity = 24;
+    public const int MaxVelocity = 25;
+    public const int NoncollinearAxises = 26;
+    public const int NotDecelerating = 27;
+    public const int Parent = 28;
+    public const int ParentDependent = 29;
+    public const int ParentFixed = 30;
+    public const int PassingThrough = 31;
+    public const int PathCollider = 32;
+    public const int Player = 33;
+    public const int Position = 34;
+    public const int RectangleCollider = 35;
+    public const int Round = 36;
+    public const int TargetChanging = 37;
+    public const int Target = 38;
+    public const int TargetingParameters = 39;
+    public const int TryingToShoot = 40;
+    public const int Unmovable = 41;
+    public const int Velocity = 42;
 
-    public const int TotalComponents = 41;
+    public const int TotalComponents = 43;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -70,6 +72,8 @@ public static class GameComponentsLookup {
         "Damage",
         "Destroyed",
         "Direction",
+        "GlobalCalculated",
+        "GlobalTransform",
         "HealthPoints",
         "Id",
         "IgnoringParentCollision",
@@ -114,6 +118,8 @@ public static class GameComponentsLookup {
         typeof(DamageComponent),
         typeof(DestroyedComponent),
         typeof(DirectionComponent),
+        typeof(GlobalCalculatedComponent),
+        typeof(GlobalTransformComponent),
         typeof(HealthPointsComponent),
         typeof(IdComponent),
         typeof(IgnoringParentCollisionComponent),

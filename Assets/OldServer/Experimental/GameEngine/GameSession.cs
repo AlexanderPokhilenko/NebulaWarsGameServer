@@ -38,9 +38,6 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 .Add(new PlayersInitSystem(Contexts, roomData))
                 .Add(new PlayerMovementHandlerSystem(Contexts))
                 .Add(new PlayerAttackHandlerSystem(Contexts))
-                .Add(new NetworkSenderSystem(Contexts))
-                .Add(new InputDeletingSystem(Contexts))
-                //Системы из старого GameController'а
                 .Add(new ParentsSystems(Contexts))
                 .Add(new MovementSystems(Contexts))
                 .Add(new ShootingSystems(Contexts))
@@ -48,7 +45,9 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 .Add(new EffectsSystems(Contexts))
                 .Add(new TimeSystems(Contexts))
                 .Add(new DestroySystems(Contexts))
-                .Add(new AISystems(Contexts));
+                .Add(new AISystems(Contexts))
+                .Add(new NetworkSenderSystem(Contexts))
+                .Add(new InputDeletingSystem(Contexts));
 
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;

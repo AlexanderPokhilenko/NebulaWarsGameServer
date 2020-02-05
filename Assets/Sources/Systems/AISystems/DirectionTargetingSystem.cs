@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ public sealed class DirectionTargetingSystem : IExecuteSystem
 
             var targetAngle = Vector2.SignedAngle(currentDirection, direction);
 
-            var angularVelocity = targetAngle / Time.deltaTime;
+            var angularVelocity = targetAngle / Clock.deltaTime;
             //TODO: возможно, стоит учитывать глобальную угловую скорость
             if (e.hasAngularVelocity)
             {

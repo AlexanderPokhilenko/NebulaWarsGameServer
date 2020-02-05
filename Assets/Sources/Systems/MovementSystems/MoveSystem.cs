@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public sealed class MoveSystem : IExecuteSystem
     {
         foreach (var e in movableGroup)
         {
-            e.ReplacePosition(e.position.value + e.velocity.value * Time.deltaTime);
+            e.ReplacePosition(e.position.value + e.velocity.value * Clock.deltaTime);
         }
     }
 }

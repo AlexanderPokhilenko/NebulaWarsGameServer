@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public sealed class LifetimeSubtractionSystem : IExecuteSystem
     {
         foreach (var e in lifetimeGroup)
         {
-            e.ReplaceLifetime(e.lifetime.value - Time.deltaTime);
+            e.ReplaceLifetime(e.lifetime.value - Clock.deltaTime);
         }
     }
 }

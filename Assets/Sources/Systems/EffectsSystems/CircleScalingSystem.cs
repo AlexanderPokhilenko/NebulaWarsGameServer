@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public sealed class CircleScalingSystem : IExecuteSystem
     {
         foreach (var e in scalingGroup)
         {
-            var delta = e.circleScaling.speed * Time.deltaTime;
+            var delta = e.circleScaling.speed * Clock.deltaTime;
             e.ReplaceCircleCollider(e.circleCollider.radius + delta);
         }
     }

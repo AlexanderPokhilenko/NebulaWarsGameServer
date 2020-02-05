@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public sealed class AuraDamageSystem : IExecuteSystem
             var fullRadius = e.circleCollider.radius + e.aura.outerRadius;
             var colliderSqrRadius = e.circleCollider.radius * e.circleCollider.radius;
             var fullSqrRadius = fullRadius * fullRadius;
-            var currentDamage = e.aura.damage * Time.deltaTime;
+            var currentDamage = e.aura.damage * Clock.deltaTime;
             foreach (var damagable in damagableGroup)
             {
                 var damagableGlobalPosition = damagable.GetGlobalPositionVector2(gameContext);
