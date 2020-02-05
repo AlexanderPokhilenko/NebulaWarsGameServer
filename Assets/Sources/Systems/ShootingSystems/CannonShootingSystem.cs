@@ -22,7 +22,7 @@ public class CannonShootingSystem : IExecuteSystem
             var bulletEntity = bullet.CreateEntity(gameContext);
             // для быстрого перевода из локальной в глобальную системы координат
             bulletEntity.AddParent(e.id.value);
-            bulletEntity.AddPosition(e.cannon.position);
+            bulletEntity.AddPosition(e.cannon.position + Vector2.right * bulletEntity.circleCollider.radius);
             bulletEntity.AddDirection(0);
             bulletEntity.AddVelocity(Vector2.right * bullet.maxVelocity);
             bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity);
