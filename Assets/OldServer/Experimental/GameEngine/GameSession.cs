@@ -40,6 +40,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 .Add(new PlayerAttackHandlerSystem(Contexts))
                 .Add(new ParentsSystems(Contexts))
                 .Add(new MovementSystems(Contexts))
+                .Add(new GlobalTransformSystem(Contexts)) // Обернуть в Feature?
                 .Add(new ShootingSystems(Contexts))
                 .Add(new CollisionSystems(Contexts))
                 .Add(new EffectsSystems(Contexts))

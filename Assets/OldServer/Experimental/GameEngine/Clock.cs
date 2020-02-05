@@ -22,7 +22,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
 #if UNITY_5_3_OR_NEWER
         private const float tickDeltaSeconds = 1f / 20;
         public GameEngineMediator gameEngineMediator;
-        IEnumerator MakeTick()
+        private IEnumerator MakeTick()
         {
             while (true)
             {
@@ -32,12 +32,13 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 prevTickTime = currentTime;
                 yield return new WaitForSeconds(tickDeltaSeconds);
             }
+            // ReSharper disable once IteratorNeverReturns
         }
 
         public void StartEndlessLoop()
         {
-            prevTickTime = Time.time;
-            StartCoroutine("MakeTick");
+            prevTickTime = Time.time - tickDeltaSeconds;
+            StartCoroutine(nameof(MakeTick));
         }
 #else
         private static TimeSpan tickDeltaTime = new TimeSpan(0, 0, 0, 0, 30);

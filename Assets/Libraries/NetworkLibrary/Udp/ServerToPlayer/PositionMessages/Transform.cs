@@ -30,6 +30,13 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
             this.angle = 0f;
         }
 
+        public Transform(Vector2 position, float angle)
+        {
+            this.x = position.X;
+            this.y = position.Y;
+            this.angle = angle;
+        }
+
         public Vector2 GetPosition() => new Vector2(x, y);
     }
 }

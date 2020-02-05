@@ -10,16 +10,13 @@ namespace AmoebaBattleServer01.Experimental.Udp
         {
             // Console.WriteLine("SendPositions ");
             
-            PositionsMessage mes = new PositionsMessage();
+            var mes = new PositionsMessage();
 
             foreach (var gameEntity in withPosition)
             {
                 //string playerGoogleId = gameEntity.player.GoogleId;
-
-                var position = gameEntity.position;
-                var direction = gameEntity.direction.angle;
-                var transform = new Transform(position.value.x, position.value.y, direction);
-                mes.EntitiesInfo.Add(gameEntity.id.value, transform); //TODO: нужно отправлять глобальные позиции!!!
+                var transform = gameEntity.globalTransform.GetTransform();
+                mes.EntitiesInfo.Add(gameEntity.id.value, transform);
             }
             
             var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerId);

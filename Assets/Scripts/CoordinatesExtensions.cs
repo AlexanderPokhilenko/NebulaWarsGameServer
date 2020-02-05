@@ -68,6 +68,8 @@ public static class CoordinatesExtensions
 
     public static float GetGlobalAngle(this GameEntity entity, GameContext context)
     {
+        if (entity.hasGlobalTransform) return entity.globalTransform.angle;
+
         var angle = entity.hasDirection ? entity.direction.angle : 0f;
 
         var firstParent = entity;
@@ -85,6 +87,8 @@ public static class CoordinatesExtensions
 
     public static Vector2 GetGlobalPositionVector2(this GameEntity entity, GameContext context)
     {
+        if (entity.hasGlobalTransform) return entity.globalTransform.position;
+
         var position = entity.position.value;
 
         var firstParent = entity;
@@ -100,27 +104,6 @@ public static class CoordinatesExtensions
             position += firstParent.position.value;
         }
         return position;
-    }
-
-    public static Vector3 GetGlobalPositionVector3(this GameEntity entity, GameContext context)
-    {
-        var position = entity.position.value;
-        var layer = 0;
-
-        var firstParent = entity;
-        while (firstParent.hasParent)
-        {
-            firstParent = context.GetEntityWithId(firstParent.parent.id);
-            if (firstParent.hasDirection)
-            {
-                var parentAngle = firstParent.direction.angle;
-                GetSinCosFromDegrees(parentAngle, out var parentSin, out var parentCos);
-                position.Rotate(parentSin, parentCos);
-            }
-            position += firstParent.position.value;
-            layer--;
-        }
-        return new Vector3(position.x, position.y, layer);
     }
 
     public static void GetSinCosFromDegrees(float angle, out float sin, out float cos)
