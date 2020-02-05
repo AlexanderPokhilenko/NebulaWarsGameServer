@@ -33,6 +33,7 @@ public class CannonShootingSystem : IExecuteSystem
             bulletEntity.ReplaceDirection(globalAngle);
             bulletEntity.ReplaceVelocity(globalVelocity);
             bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
+            bulletEntity.AddGlobalTransform(globalPosition, globalAngle);
         }
     }
 }
