@@ -12,6 +12,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
     : MonoBehaviour
 #endif
     {
+        private static float prevTickTime;
         public static float deltaTime;
         private void Tick()
         {
@@ -25,14 +26,17 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
         {
             while (true)
             {
-                deltaTime = Time.deltaTime;
+                var currentTime = Time.time;
+                deltaTime = currentTime - prevTickTime;
                 Tick();
+                prevTickTime = currentTime;
                 yield return new WaitForSeconds(tickDeltaSeconds);
             }
         }
 
         public void StartEndlessLoop()
         {
+            prevTickTime = Time.time;
             StartCoroutine("MakeTick");
         }
 #else
