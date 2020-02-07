@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
   m_Name: SpaceshipPlayer
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: e2573481de4f2264dbcc59593620a784, type: 3}
-  controller: {fileID: 0}
+  typeId: 3
   colliderInfo: {fileID: 11400000, guid: 3264409847f82684bb331ac3e88017a6, type: 2}
   cannonInfo: {fileID: 11400000, guid: 4b6ab24467d1a1745a6ad34220fae0cd, type: 2}
   isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
   parts: []
   maxVelocity: 3
   maxAngularVelocity: 135

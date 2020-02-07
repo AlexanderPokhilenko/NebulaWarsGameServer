@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
   m_Name: SquarePlayer
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: d8abaeb736303ec4a8d15633bec95fa9, type: 3}
-  controller: {fileID: 0}
+  typeId: 2
   colliderInfo: {fileID: 11400000, guid: 434df82ff39add4438920c76637c111e, type: 2}
   cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
   parts: []
   maxVelocity: 1
   maxAngularVelocity: 45
+  isNotDecelerating: 0
   maxHealthPoints: 200

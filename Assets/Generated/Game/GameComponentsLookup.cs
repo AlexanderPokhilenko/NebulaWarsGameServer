@@ -50,8 +50,9 @@ public static class GameComponentsLookup {
     public const int TryingToShoot = 39;
     public const int Unmovable = 40;
     public const int Velocity = 41;
+    public const int ViewType = 42;
 
-    public const int TotalComponents = 42;
+    public const int TotalComponents = 43;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -95,7 +96,8 @@ public static class GameComponentsLookup {
         "TargetingParameters",
         "TryingToShoot",
         "Unmovable",
-        "Velocity"
+        "Velocity",
+        "ViewType"
     };
 
     public static readonly System.Type[] componentTypes = {
@@ -140,6 +142,7 @@ public static class GameComponentsLookup {
         typeof(TargetingParametersComponent),
         typeof(TryingToShootComponent),
         typeof(UnmovableComponent),
-        typeof(VelocityComponent)
+        typeof(VelocityComponent),
+        typeof(ViewTypeComponent)
     };
 }

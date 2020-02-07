@@ -6,11 +6,11 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
     [ZeroFormattable]
     public class PositionsMessage
     {
-        [Index(0)] public virtual Dictionary<int, Transform> EntitiesInfo { get; set; }
+        [Index(0)] public virtual Dictionary<int, ViewTransform> EntitiesInfo { get; set; }
 
         public PositionsMessage()
         {
-            EntitiesInfo = new Dictionary<int, Transform>();
+            //EntitiesInfo = new Dictionary<int, ViewTransform>();
         }
     }
 

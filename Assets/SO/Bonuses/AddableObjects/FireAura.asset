@@ -12,12 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56781b5eb8bd6a340b4eb65a499815f6, type: 3}
   m_Name: FireAura
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  circleLine:
-    numSegments: 64
-    width: 2
-    material: {fileID: 2100000, guid: c0587613938b1704daae528a6fcb16a8, type: 2}
-  controller: {fileID: 0}
+  typeId: 8
   colliderInfo: {fileID: 0}
   cannonInfo: {fileID: 0}
   isUnmovable: 1

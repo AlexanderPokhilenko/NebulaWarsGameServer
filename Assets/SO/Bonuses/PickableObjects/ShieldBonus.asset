@@ -12,12 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7129b16dc397ffa46a0b9f5a51320f35, type: 3}
   m_Name: ShieldBonus
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 241f7c7b6fbc1bd4cab9687df2dab1fd, type: 3}
-  circleLine:
-    numSegments: 0
-    width: 0
-    material: {fileID: 0}
-  controller: {fileID: 0}
+  typeId: 12
   colliderInfo: {fileID: 11400000, guid: 8531e2a5ed2a9db4b9796b97021cd0b8, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1

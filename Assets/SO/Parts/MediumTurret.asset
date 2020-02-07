@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170ecff3e96d6fd40947f68587ff24ba, type: 3}
   m_Name: MediumTurret
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 48cbab4c117849442b357ca24b87be26, type: 3}
-  controller: {fileID: 0}
+  typeId: 16
   colliderInfo: {fileID: 11400000, guid: 51fbcc3f8d704224486c9a522a5a91ce, type: 2}
   cannonInfo: {fileID: 11400000, guid: 207e0fbb3ebd71c44a65d215ee6a5fda, type: 2}
   isUnmovable: 0

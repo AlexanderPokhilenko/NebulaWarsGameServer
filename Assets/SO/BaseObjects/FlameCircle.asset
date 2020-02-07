@@ -12,12 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca9374a1f5385d479c7e5b168429360, type: 3}
   m_Name: FlameCircle
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  circleLine:
-    numSegments: 256
-    width: 1
-    material: {fileID: 2100000, guid: 54cc8d1d734420544a78868f79f6193e, type: 2}
-  controller: {fileID: 0}
+  typeId: 7
   colliderInfo: {fileID: 11400000, guid: ade5a77bb6ad3e9488a478bfc7347ea3, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0

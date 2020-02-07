@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
   m_Name: CircleContainer
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 4a72cf3487090a04d8d41851d72883c5, type: 3}
-  controller: {fileID: 0}
+  typeId: 4
   colliderInfo: {fileID: 11400000, guid: d69acf0b9f3dc2c4bbeeebf1f7a597a4, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0

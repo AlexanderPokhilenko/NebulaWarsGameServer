@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a22b9b81d6064a47b3109da4af89466, type: 3}
   m_Name: OldCargo
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: aeb01e550ec873e479f0751269baeda4, type: 3}
-  controller: {fileID: 0}
+  typeId: 6
   colliderInfo: {fileID: 11400000, guid: bd6ace101df06ad4fb33f25106b146b0, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
@@ -25,31 +24,37 @@ MonoBehaviour:
     direction: 90
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   - baseObject: {fileID: 11400000, guid: 7c334cc204292e144a95eb451678cbdb, type: 2}
     position: {x: 0, y: 0.75}
     direction: 90
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   - baseObject: {fileID: 11400000, guid: 7c334cc204292e144a95eb451678cbdb, type: 2}
     position: {x: -1.25, y: 0.75}
     direction: 90
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   - baseObject: {fileID: 11400000, guid: 7c334cc204292e144a95eb451678cbdb, type: 2}
     position: {x: 1.25, y: -0.75}
     direction: 270
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   - baseObject: {fileID: 11400000, guid: 7c334cc204292e144a95eb451678cbdb, type: 2}
     position: {x: 0, y: -0.75}
     direction: 270
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   - baseObject: {fileID: 11400000, guid: 7c334cc204292e144a95eb451678cbdb, type: 2}
     position: {x: -1.25, y: -0.75}
     direction: 270
     isParentDependent: 0
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   maxVelocity: 0.5
   maxAngularVelocity: 0
   isNotDecelerating: 1

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBaseObject", menuName = "BaseObjects/BaseObject", order = 51)]
 public class BaseObject : ScriptableObject
 {
-    //TODO: хранить ссылку / ID визуального объекта (Sprite, AnimatorController и CircleLineComponent)
+    public ViewTypeId typeId;
     public ColliderInfo colliderInfo;
     public CannonInfo cannonInfo;
     public bool isUnmovable;
@@ -17,6 +17,7 @@ public class BaseObject : ScriptableObject
     public virtual GameEntity CreateEntity(GameContext context)
     {
         var entity = context.CreateEntity();
+        entity.AddViewType(typeId);
         if (colliderInfo != null)
         {
             entity.isCollidable = true;

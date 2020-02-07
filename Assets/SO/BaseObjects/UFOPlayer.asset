@@ -12,16 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
   m_Name: UFOPlayer
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 818f267c4266d804e92bbd30f34eab2c, type: 3}
-  controller: {fileID: 9100000, guid: beb9b68a7409db647ae6d15cca4080aa, type: 2}
+  typeId: 1
   colliderInfo: {fileID: 11400000, guid: d69acf0b9f3dc2c4bbeeebf1f7a597a4, type: 2}
   cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
   parts:
   - baseObject: {fileID: 11400000, guid: ec610c140152da8478a6ebbce4fa9d55, type: 2}
     position: {x: 0, y: 0}
     direction: 0
     isParentDependent: 1
     isIgnoringParentCollision: 1
+    isParentFixed: 1
   maxVelocity: 2
   maxAngularVelocity: 90
+  isNotDecelerating: 0
   maxHealthPoints: 100

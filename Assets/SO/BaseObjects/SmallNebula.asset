@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd54a05b891909b4cb529af3843f701f, type: 3}
   m_Name: SmallNebula
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 96c0637770c41804ca8d9c78142995e4, type: 3}
-  controller: {fileID: 0}
+  typeId: 10
   colliderInfo: {fileID: 11400000, guid: d69acf0b9f3dc2c4bbeeebf1f7a597a4, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1

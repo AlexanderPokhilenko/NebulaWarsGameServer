@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
   m_Name: ConnectorWithContainer
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: adaa9b0c30a020b40aa4f7c1b5ba3ed3, type: 3}
-  controller: {fileID: 0}
+  typeId: 5
   colliderInfo: {fileID: 11400000, guid: f1a2e1cba6141b548b878316f3364c77, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
