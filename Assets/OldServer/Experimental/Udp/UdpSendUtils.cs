@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using ZeroFormatter;
@@ -13,7 +14,9 @@ namespace AmoebaBattleServer01.Experimental.Udp
             
             var mes = new PositionsMessage()
             {
-                EntitiesInfo = new Dictionary<int, ViewTransform>(withPosition.Length)
+                EntitiesInfo = new Dictionary<int, ViewTransform>(withPosition.Length),
+                //TODO: перенести в UDP с подтверждением
+                PlayerEntityId = withPosition.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId).id.value
             };
 
             foreach (var gameEntity in withPosition)
@@ -28,8 +31,7 @@ namespace AmoebaBattleServer01.Experimental.Udp
             var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerId);
             if (address != null)
             {
-                Message message = MessageFactory.GetMessage(mes);
-                byte[] data = ZeroFormatterSerializer.Serialize(message);
+                var data = MessageFactory.GetSerializedMessage(mes);
                 BentMediator.UdpBattleConnection.Send(data, address);
             }
         }

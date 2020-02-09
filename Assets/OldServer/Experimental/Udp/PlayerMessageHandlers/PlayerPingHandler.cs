@@ -14,7 +14,7 @@ namespace AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers
             PlayerPingMessage mes = ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(message.SerializedMessage);
 
             int gameRoomNumber = mes.GameRoomNumber;
-            int playerId = mes.PlayerTemporaryIdentifierForTheMatch;
+            int playerId = mes.TemporaryId;
 
             TrySetUpIpAddress(sender, playerId);
             UpdateOrAddPingRecord(playerId);

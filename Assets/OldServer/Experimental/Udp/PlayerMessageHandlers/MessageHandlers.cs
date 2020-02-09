@@ -1,8 +1,7 @@
-﻿using System;
-using System.Net;
-using AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers;
-using NetworkLibrary;
+﻿using AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers;
 using NetworkLibrary.NetworkLibrary.Udp;
+using System;
+using System.Net;
 
 namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
 {
@@ -15,10 +14,10 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
         {
             switch (message.MessageType)
             {
-                case 3:
+                case MessageType.PlayerInput:
                     playerInputHandler.Handle(message, sender);
                     break;
-                case 6:
+                case MessageType.PlayerPing:
                     pingHandler.Handle(message, sender);
                     break;
                 default:

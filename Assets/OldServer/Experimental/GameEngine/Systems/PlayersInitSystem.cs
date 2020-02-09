@@ -33,7 +33,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
                 Console.WriteLine($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
                 
                 var gameEntity = playerPrototype.CreateEntity(gameContext);
-                gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryIdentifier);
+                gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);
                 var rndPosition = GetRandomCoordinates();
                 gameEntity.AddPosition(rndPosition);
                 gameEntity.AddDirection(0);

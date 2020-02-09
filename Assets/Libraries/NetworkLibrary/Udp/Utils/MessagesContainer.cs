@@ -3,10 +3,10 @@
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
     [ZeroFormattable]
-    public struct MessageContainer
+    public struct MessagesContainer
     {
         [Index(0)] public Message[] Messages;
-        public MessageContainer(Message[] messages)
+        public MessagesContainer(Message[] messages)
         {
             Messages = messages;
         }

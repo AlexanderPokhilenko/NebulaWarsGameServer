@@ -3,15 +3,17 @@
    namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
 {
     [ZeroFormattable]
-    public struct PlayerPingMessage
+    public struct PlayerPingMessage : ITypedMessage
     {
-        [Index(0)] public int PlayerTemporaryIdentifierForTheMatch;
+        [Index(0)] public int TemporaryId;
         [Index(1)] public int GameRoomNumber;
 
-        public PlayerPingMessage(int playerTemporaryIdentifierForTheMatch, int gameRoomNumber)
+        public PlayerPingMessage(int temporaryId, int gameRoomNumber)
         {
-            PlayerTemporaryIdentifierForTheMatch = playerTemporaryIdentifierForTheMatch;
+            TemporaryId = temporaryId;
             GameRoomNumber = gameRoomNumber;
         }
+
+        public MessageType GetMessageType() => MessageType.PlayerPing;
     }
 }

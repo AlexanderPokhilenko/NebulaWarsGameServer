@@ -27,7 +27,14 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
     {
         foreach (var e in positionedGroup)
         {
-            e.RemoveGlobalTransform();
+            if (e.hasGlobalTransform)
+            {
+                e.RemoveGlobalTransform();
+            }
+            else
+            {
+                Debug.LogError("Объект с id " + e.id.value + " не имел GlobalTransform!");
+            }
         }
     }
 

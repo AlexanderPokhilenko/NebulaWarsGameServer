@@ -37,7 +37,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                     GameSessions.Add(gameRoomData.GameRoomNumber, gameSession);
                     foreach (var player in gameRoomData.Players)
                     {
-                        PlayersToSessions.Add(player.TemporaryIdentifier, gameSession);
+                        PlayersToSessions.Add(player.TemporaryId, gameSession);
                     }
                 }
             }
@@ -50,7 +50,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
                 Console.WriteLine("Удаление игровой сессии");
                 int gameSessionNumber = finishedGameSessions.Dequeue();
                 var gameSession = GameSessions[gameSessionNumber];
-                var playersIds = gameSession.RoomData.Players.Select(player => player.TemporaryIdentifier);
+                var playersIds = gameSession.RoomData.Players.Select(player => player.TemporaryId);
                 foreach (var playerLogin in playersIds)
                 {
                     PlayersToSessions.Remove(playerLogin);

@@ -4,7 +4,7 @@ using ZeroFormatter;
 namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
 {
     [ZeroFormattable]
-    public struct PlayerInputMessage
+    public struct PlayerInputMessage : ITypedMessage
     {
         [Index(0)] public int TemporaryIdentifier;
         [Index(1)] public int GameRoomNumber;
@@ -19,6 +19,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
             Y = y;
             Angle = angle;
         }
+
+        public MessageType GetMessageType() => MessageType.PlayerInput;
 
         public Vector2 GetVector2() => new Vector2(X, Y);
     }

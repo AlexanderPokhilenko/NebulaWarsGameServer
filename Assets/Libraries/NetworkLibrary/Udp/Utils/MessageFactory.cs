@@ -1,53 +1,23 @@
-﻿﻿﻿using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
-using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
-using ZeroFormatter;
+﻿using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
-    //TODO: рефакторинг
     public static class MessageFactory
     {
-        public static  Message GetMessage(PlayerInputMessage mes)
+        public static Message GetMessage<T>(T mes, bool needResponse = false) where T : ITypedMessage
         {
-            byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
-            int messageType = GetMessageType(mes);
-            int messageId = MessageIdGenerator.GetMessageId();
-            Message message = new Message(messageType, serializedMessage, messageId, false);
+            var serializedMessage = ZeroFormatterSerializer.Serialize(mes);
+            var messageType = mes.GetMessageType();
+            var messageId = MessageIdGenerator.GetMessageId();
+            var message = new Message(messageType, serializedMessage, messageId, needResponse);
             return message;
         }
-         public static  Message GetMessage(PlayerPingMessage mes)
-         {
-             byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
-             int messageType = GetMessageType(mes);
-             int messageId = MessageIdGenerator.GetMessageId();
-             Message message = new Message(messageType, serializedMessage, messageId, false);
-             return message;
-         }
-        
-         public static  Message GetMessage(PositionsMessage mes)
-        {
-            byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
-            int messageType = GetMessageType(mes);
-            int messageId = MessageIdGenerator.GetMessageId();
-            Message message = new Message(messageType, serializedMessage, messageId, false);
-            return message;
-        }
-         
 
-         private static int GetMessageType(PlayerInputMessage message)
+        public static byte[] GetSerializedMessage<T>(T message, bool needResponse = false) where T : ITypedMessage
         {
-            return 3;
-        } 
-     
-        private static int GetMessageType(PositionsMessage message)
-        {
-            return 5;
+            return ZeroFormatterSerializer.Serialize(GetMessage(message, needResponse));
         }
-        private static int GetMessageType(PlayerPingMessage message)
-        {
-            return 6;
-        }
+
         public static byte[] GetSerializedMessage(Message message)
         {
             return ZeroFormatterSerializer.Serialize(message);
@@ -56,8 +26,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp
 
     public static class MessageIdGenerator
     {
-        private static int lastMessageId=1_000_000;
-        public static int GetMessageId()
+        private static uint lastMessageId = 0;
+        public static uint GetMessageId()
         {
             return lastMessageId++;
         }

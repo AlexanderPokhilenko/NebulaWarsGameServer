@@ -4,14 +4,18 @@ using ZeroFormatter;
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
 {
     [ZeroFormattable]
-    public class PositionsMessage
+    public class PositionsMessage : ITypedMessage
     {
         [Index(0)] public virtual Dictionary<int, ViewTransform> EntitiesInfo { get; set; }
+        //TODO: перенести в UDP с подтверждением
+        [Index(1)] public virtual int PlayerEntityId { get; set; }
 
         public PositionsMessage()
         {
             //EntitiesInfo = new Dictionary<int, ViewTransform>();
         }
+
+        public MessageType GetMessageType() => MessageType.Positions;
     }
 
     [ZeroFormattable]
