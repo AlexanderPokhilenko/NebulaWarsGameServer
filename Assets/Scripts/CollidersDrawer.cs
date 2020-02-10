@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#if UNITY_EDITOR
 using Entitas;
+using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
 //Внимание: сомнительное качество кода!
 public sealed class CollidersDrawer : MonoBehaviour
 {

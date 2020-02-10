@@ -30,4 +30,14 @@ public static class ParentsExtensions
 
         return predicate(result);
     }
+
+    public static IEnumerable<GameEntity> GetAllChildrenGameEntities(this GameEntity entity, GameContext context, Predicate<GameEntity> predicate)
+    {
+        if (predicate(entity)) yield return entity;
+        var children = context.GetEntitiesWithParent(entity.id.value);
+        foreach (var childGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context, predicate)))
+        {
+            yield return childGameEntity;
+        }
+    }
 }

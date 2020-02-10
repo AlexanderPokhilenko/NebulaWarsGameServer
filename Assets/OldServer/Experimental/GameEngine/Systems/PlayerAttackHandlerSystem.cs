@@ -76,7 +76,14 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
                     gamePlayer.AddAngularVelocity(newAngularVelocity);
                 }
                 // сначала мы пытаемся "довернуться", потом выстрелить (если мы почти навелись)
-                if (Mathf.Abs(newAngularVelocity) <= attackDelta) gamePlayer.isTryingToShoot = true;
+                if (Mathf.Abs(newAngularVelocity) <= attackDelta)
+                {
+                    var childrenWithCannon = gamePlayer.GetAllChildrenGameEntities(gameContext, e => e.hasCannon);
+                    foreach (var childWithCannon in childrenWithCannon)
+                    {
+                        childWithCannon.isTryingToShoot = true;
+                    }
+                }
             }
         }
     }

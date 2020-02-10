@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entitas;
+using Entitas.CodeGeneration.Attributes;
 using UnityEngine;
 
 
 [Game]
 public sealed class ParentComponent : IComponent
 {
+    [EntityIndex]
     public int id;
 }
