@@ -30,15 +30,13 @@ public sealed class DirectionTargetingSystem : IExecuteSystem
 
             var targetAngle = Vector2.SignedAngle(currentDirection, direction);
 
-            var angularVelocity = targetAngle / Clock.deltaTime;
-            //TODO: возможно, стоит учитывать глобальную угловую скорость
-            if (e.hasAngularVelocity)
+            if (e.hasDirectionTargeting)
             {
-                e.ReplaceAngularVelocity(angularVelocity);
+                e.ReplaceDirectionTargeting(targetAngle);
             }
             else
             {
-                e.AddAngularVelocity(angularVelocity);
+                e.AddDirectionTargeting(targetAngle);
             }
         }
     }

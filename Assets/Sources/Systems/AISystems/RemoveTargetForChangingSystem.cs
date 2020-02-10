@@ -17,6 +17,8 @@ public sealed class RemoveTargetForChangingSystem : ICleanupSystem
         foreach (var e in changingGroup)
         {
             if(e.hasTarget) e.RemoveTarget();
+            if (e.hasDirectionTargeting) e.RemoveDirectionTargeting();
+            if (e.hasAngularVelocity) e.RemoveAngularVelocity();
         }
     }
 }

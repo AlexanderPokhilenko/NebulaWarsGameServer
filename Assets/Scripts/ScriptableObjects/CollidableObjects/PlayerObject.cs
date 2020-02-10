@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewPlayer", menuName = "BaseObjects/Player", order = 55)]
 public class PlayerObject : MovableWithHealthObject
@@ -11,6 +8,7 @@ public class PlayerObject : MovableWithHealthObject
     {
         var entity = base.CreateEntity(context);
         entity.isBonusPickable = true;
+        entity.isSingleTargeting = true;
 
         return entity;
     }

@@ -6,8 +6,11 @@ public class AISystems : Feature
     {
         Add(new TargetDetectionSystem(contexts));
         Add(new TargetShootingSystem(contexts));
+        Add(new DirectionShootingSystem(contexts));
         Add(new DirectionTargetingSystem(contexts));
+        Add(new AngularVelocityTargetingSystem(contexts));
         Add(new RemoveTargetForChangingSystem(contexts));
+        Add(new RemoveTargetForSingleTargetingSystem(contexts));
         Add(new RemoveDistantTargetSystem(contexts));
     }
 }
