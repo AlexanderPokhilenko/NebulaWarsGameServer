@@ -27,7 +27,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var currentGlobalPosition = current.GetGlobalPositionVector2(gameContext);
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             var currentPartCanPickBonuses = current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var currentBonusPickerPart);
-            var currentDamage = current.hasDamage ? (current.isPassingThrough ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
+            var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
@@ -105,7 +105,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         }
                         if (e.hasDamage && currentPartHasHealthPoints)
                         {
-                            var eDamage = e.isPassingThrough ? e.damage.value * Clock.deltaTime : e.damage.value;
+                            var eDamage = e.isPassingThrough && !e.isCollapses ? e.damage.value * Clock.deltaTime : e.damage.value;
                             currentHealthPart.ReplaceHealthPoints(currentHealthPart.healthPoints.value - eDamage);
                         }
 

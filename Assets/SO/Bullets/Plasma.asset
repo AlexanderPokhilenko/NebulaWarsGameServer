@@ -16,7 +16,7 @@ MonoBehaviour:
   colliderInfo: {fileID: 11400000, guid: 554609605a85edf46ae628d7d1f86eab, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
-  isPassingThrough: 0
+  isPassingThrough: 1
   collisionDamage: 0
   parts: []
   maxVelocity: 5
