@@ -32,16 +32,45 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
                 var playerId = inputEntity.player.id;
 
                 var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
-                
-                var newVelocity = playerJoystickInput * gamePlayer.maxVelocity.value;
 
-                if (gamePlayer.hasVelocity)
+                if (playerJoystickInput != Vector2.zero)
                 {
-                    gamePlayer.ReplaceVelocity(newVelocity);
+                    var newVelocity = playerJoystickInput * gamePlayer.maxVelocity.value;
+                    if (gamePlayer.hasVelocity)
+                    {
+                        gamePlayer.ReplaceVelocity(newVelocity);
+                    }
+                    else
+                    {
+                        gamePlayer.AddVelocity(newVelocity);
+                    }
+
+                    var directionAngle = Mathf.Atan2(newVelocity.y, newVelocity.x) * Mathf.Rad2Deg;
+                    if (directionAngle < 0) directionAngle += 360f;
+                    var deltaAngle = directionAngle - gamePlayer.direction.angle;
+                    if (deltaAngle > 180f)
+                    {
+                        deltaAngle -= 360f;
+                    }
+                    else if (deltaAngle < -180f)
+                    {
+                        deltaAngle += 360f;
+                    }
+
+                    var deltaAngularVelocity = deltaAngle / Clock.deltaTime;
+                    if (gamePlayer.hasAngularVelocity)
+                    {
+                        gamePlayer.ReplaceAngularVelocity(deltaAngularVelocity);
+                    }
+                    else
+                    {
+                        gamePlayer.AddAngularVelocity(deltaAngularVelocity);
+                    }
                 }
                 else
                 {
-                    gamePlayer.AddVelocity(newVelocity);
+                    if (gamePlayer.hasVelocity) gamePlayer.RemoveVelocity();
+                    if (gamePlayer.hasAngularVelocity && !gamePlayer.hasDirectionTargeting) gamePlayer.RemoveAngularVelocity();
                 }
             }
         }

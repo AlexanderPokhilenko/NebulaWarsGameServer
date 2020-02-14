@@ -7,7 +7,7 @@ public sealed class DirectionShootingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
     private IGroup<GameEntity> shootingGroup;
-    private const float attackDelta = 1f;
+    private const float attackDelta = 2.5f;
 
     public DirectionShootingSystem(Contexts contexts)
     {
@@ -20,7 +20,7 @@ public sealed class DirectionShootingSystem : IExecuteSystem
     {
         foreach (var e in shootingGroup)
         {
-            if (Mathf.Abs(e.direction.angle - e.directionTargeting.angle) > attackDelta) continue;
+            if (Mathf.Abs(e.GetGlobalAngle(gameContext) - e.directionTargeting.angle) > attackDelta) continue;
             e.isTryingToShoot = true;
             var childrenWithCannon = e.GetAllChildrenGameEntities(gameContext, entity => entity.hasCannon);
             foreach (var childWithCannon in childrenWithCannon)

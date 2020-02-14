@@ -7,7 +7,6 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
 {
     public class PlayerAttackHandlerSystem : ReactiveSystem<InputEntity>
     {
-        private const float attackDelta = 5f;
         private readonly GameContext gameContext;
 
         public PlayerAttackHandlerSystem(Contexts contexts) : base(contexts.input)
@@ -37,7 +36,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
 
                 if (float.IsNaN(playerAttackDirection))
                 {
-                    if(gamePlayer.hasAngularVelocity) gamePlayer.RemoveAngularVelocity();
+                    if(gamePlayer.hasDirectionTargeting) gamePlayer.RemoveDirectionTargeting();
                     continue;
                 }
 
@@ -54,35 +53,13 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
                     playerAttackDirection %= 360;
                 }
 
-                var rotatingDelta = playerAttackDirection - gamePlayer.direction.angle;
-
-                if (rotatingDelta > 180f)
+                if (gamePlayer.hasDirectionTargeting)
                 {
-                    rotatingDelta -= 360f;
-                }
-                else if(rotatingDelta < -180f)
-                {
-                    rotatingDelta += 360f;
-                }
-
-                var newAngularVelocity = rotatingDelta / Clock.deltaTime;
-
-                if (gamePlayer.hasAngularVelocity)
-                {
-                    gamePlayer.ReplaceAngularVelocity(newAngularVelocity);
+                    gamePlayer.ReplaceDirectionTargeting(playerAttackDirection);
                 }
                 else
                 {
-                    gamePlayer.AddAngularVelocity(newAngularVelocity);
-                }
-                // сначала мы пытаемся "довернуться", потом выстрелить (если мы почти навелись)
-                if (Mathf.Abs(newAngularVelocity) <= attackDelta)
-                {
-                    var childrenWithCannon = gamePlayer.GetAllChildrenGameEntities(gameContext, e => e.hasCannon);
-                    foreach (var childWithCannon in childrenWithCannon)
-                    {
-                        childWithCannon.isTryingToShoot = true;
-                    }
+                    gamePlayer.AddDirectionTargeting(playerAttackDirection);
                 }
             }
         }
