@@ -1,14 +1,15 @@
-﻿using AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers;
-using NetworkLibrary.NetworkLibrary.Udp;
-using System;
+﻿using System;
 using System.Net;
+using AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers;
+using NetworkLibrary.NetworkLibrary.Udp;
 
-namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
+namespace OldServer.Experimental.Udp.PlayerMessageHandlers
 {
     internal class MessageHandlers
     {
         private readonly PlayerInputHandler playerInputHandler = new PlayerInputHandler();
         private readonly PlayerPingHandler pingHandler = new PlayerPingHandler();
+        private readonly DeliveryConfirmationMessageHandler confirmationMessageHandler = new DeliveryConfirmationMessageHandler();
         
         public void Handle(Message message, IPEndPoint sender)
         {
@@ -19,6 +20,9 @@ namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
                     break;
                 case MessageType.PlayerPing:
                     pingHandler.Handle(message, sender);
+                    break;
+                case MessageType.DeliveryConfirmation:
+                    confirmationMessageHandler.Handle(message, sender);
                     break;
                 default:
                     throw new Exception("Неожиданный тип сообщения "+message.MessageType);

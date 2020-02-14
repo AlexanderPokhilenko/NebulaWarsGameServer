@@ -37,6 +37,8 @@
               <e p="GameDamageComponent.cs" t="Include" />
               <e p="GameDestroyedComponent.cs" t="Include" />
               <e p="GameDirectionComponent.cs" t="Include" />
+              <e p="GameDirectionTargetingComponent.cs" t="Include" />
+              <e p="GameGlobalTransformComponent.cs" t="Include" />
               <e p="GameHealthPointsComponent.cs" t="Include" />
               <e p="GameIdComponent.cs" t="Include" />
               <e p="GameIgnoringParentCollisionComponent.cs" t="Include" />
@@ -55,12 +57,14 @@
               <e p="GamePositionComponent.cs" t="Include" />
               <e p="GameRectangleColliderComponent.cs" t="Include" />
               <e p="GameRoundComponent.cs" t="Include" />
+              <e p="GameSingleTargetingComponent.cs" t="Include" />
               <e p="GameTargetChangingComponent.cs" t="Include" />
               <e p="GameTargetComponent.cs" t="Include" />
               <e p="GameTargetingParametersComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
+              <e p="GameViewTypeComponent.cs" t="Include" />
             </e>
             <e p="GameAttribute.cs" t="Include" />
             <e p="GameComponentsLookup.cs" t="Include" />
@@ -92,8 +96,8 @@
           </e>
           <e p="NetworkLibrary" t="Include">
             <e p="Http" t="Include">
-              <e p="GameMatherResponse.cs" t="Include" />
-              <e p="GameRoom.cs" t="Include" />
+              <e p="GameMatcherResponse.cs" t="Include" />
+              <e p="GameRoomData.cs" t="Include" />
               <e p="GameRoomValidationResult.cs" t="Include" />
               <e p="PlayerInfoForGameRoom.cs" t="Include" />
             </e>
@@ -102,19 +106,23 @@
                 <e p="Ping" t="Include">
                   <e p="PlayerPingMessage.cs" t="Include" />
                 </e>
+                <e p="ReliableUdp" t="Include">
+                  <e p="DeliveryConfirmationMessage.cs" t="Include" />
+                </e>
                 <e p="UserInputMessage" t="Include">
-                  <e p="PlayerJoystickInputMessage.cs" t="Include" />
+                  <e p="PlayerInputMessage.cs" t="Include" />
                 </e>
               </e>
               <e p="ServerToPlayer" t="Include">
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
+                  <e p="ViewTransform.cs" t="Include" />
                 </e>
               </e>
               <e p="Utils" t="Include">
                 <e p="Message.cs" t="Include" />
-                <e p="MessageContainer.cs" t="Include" />
                 <e p="MessageFactory.cs" t="Include" />
+                <e p="MessagesContainer.cs" t="Include" />
               </e>
             </e>
           </e>
@@ -133,6 +141,7 @@
               <e p="PingLogger.cs" t="Include" />
               <e p="StaticInputMessagesSorter.cs" t="Include" />
               <e p="Systems" t="Include">
+                <e p="InputDeletingSystem.cs" t="Include" />
                 <e p="NetworkSenderSystem.cs" t="Include" />
                 <e p="PlayerAttackHandlerSystem.cs" t="Include" />
                 <e p="PlayerMovementHandlerSystem.cs" t="Include" />
@@ -148,11 +157,16 @@
             </e>
             <e p="Udp" t="Include">
               <e p="PlayerMessageHandlers" t="Include">
+                <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
+                <e p="IMessageHandler.cs" t="Include" />
                 <e p="MessageHandlers.cs" t="Include" />
-                <e p="PlayerJoystickInputHandler.cs" t="Include" />
+                <e p="PlayerInputHandler.cs" t="Include" />
                 <e p="PlayerPingHandler.cs" t="Include" />
               </e>
               <e p="PlayersIpAddressesWrapper.cs" t="Include" />
+              <e p="ReliableUdp" t="Include">
+                <e p="ReliableUdp.cs" t="Include" />
+              </e>
               <e p="UdpBattleConnection.cs" t="Include" />
               <e p="UdpConnection.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
@@ -164,7 +178,6 @@
           <e p="CollidersDrawer.cs" t="Include" />
           <e p="ContextsIdExtensions.cs" t="Include" />
           <e p="CoordinatesExtensions.cs" t="Include" />
-          <e p="GameController.cs" t="Include" />
           <e p="ParentsExtensions.cs" t="Include" />
           <e p="PartObject.cs" t="Include" />
           <e p="ScriptableObjects" t="Include">
@@ -189,6 +202,7 @@
             </e>
           </e>
           <e p="StubSpawner.cs" t="Include" />
+          <e p="ViewTypeId.cs" t="Include" />
         </e>
         <e p="ServerController.cs" t="Include" />
         <e p="Sources" t="Include">
@@ -229,6 +243,7 @@
             <e p="MovementComponents" t="Include">
               <e p="AngularVelocityComponent.cs" t="Include" />
               <e p="DirectionComponent.cs" t="Include" />
+              <e p="GlobalTransformComponent.cs" t="Include" />
               <e p="MaxAngularVelocityComponent.cs" t="Include" />
               <e p="MaxVelocityComponent.cs" t="Include" />
               <e p="NotDeceleratingComponent.cs" t="Include" />
@@ -251,6 +266,8 @@
               <e p="TryingToShootComponent.cs" t="Include" />
             </e>
             <e p="TargetingComponents" t="Include">
+              <e p="DirectionTargetingComponent.cs" t="Include" />
+              <e p="SingleTargetingComponent.cs" t="Include" />
               <e p="TargetChangingComponent.cs" t="Include" />
               <e p="TargetComponent.cs" t="Include" />
               <e p="TargetingParametersComponent.cs" t="Include" />
@@ -258,13 +275,17 @@
             <e p="TimeComponents" t="Include">
               <e p="LifetimeComponent.cs" t="Include" />
             </e>
+            <e p="ViewTypeComponent.cs" t="Include" />
           </e>
           <e p="Systems" t="Include">
             <e p="AISystems" t="Include">
               <e p="AISystems.cs" t="Include" />
+              <e p="AngularVelocityTargetingSystem.cs" t="Include" />
+              <e p="DirectionShootingSystem.cs" t="Include" />
               <e p="DirectionTargetingSystem.cs" t="Include" />
               <e p="RemoveDistantTargetSystem.cs" t="Include" />
               <e p="RemoveTargetForChangingSystem.cs" t="Include" />
+              <e p="RemoveTargetForSingleTargetingSystem.cs" t="Include" />
               <e p="TargetDetectionSystem.cs" t="Include" />
               <e p="TargetShootingSystem.cs" t="Include" />
             </e>
@@ -292,6 +313,9 @@
               <e p="BonusApplyingSystem.cs" t="Include" />
               <e p="CircleScalingSystem.cs" t="Include" />
               <e p="EffectsSystems.cs" t="Include" />
+            </e>
+            <e p="GlobalSystems" t="Include">
+              <e p="GlobalTransformSystem.cs" t="Include" />
             </e>
             <e p="MovementSystems" t="Include">
               <e p="AngularVelocityCheckerSystem.cs" t="Include" />

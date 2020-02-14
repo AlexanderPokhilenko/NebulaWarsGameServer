@@ -5,7 +5,7 @@ using System.Threading;
 
 //TODO возможно стоит убрать метод Close, так как прослушка udp никогда не должна прекращаться при работе сервера 
 
-namespace AmoebaBattleServer01.Experimental.Udp
+namespace OldServer.Experimental.Udp
 {
   public class UdpConnection
     {
@@ -37,7 +37,6 @@ namespace AmoebaBattleServer01.Experimental.Udp
      
         private void StartEndlessLoop(UdpClient client)
         {
-     
             while (isThreadRunning)
             {
                 IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);

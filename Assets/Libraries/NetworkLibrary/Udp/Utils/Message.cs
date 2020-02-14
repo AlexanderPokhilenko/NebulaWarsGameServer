@@ -28,6 +28,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
     {
         PlayerInput = 3,
         PlayerPing = 5,
-        Positions = 6
+        Positions = 6,
+        DeliveryConfirmation = 7
     }
 }

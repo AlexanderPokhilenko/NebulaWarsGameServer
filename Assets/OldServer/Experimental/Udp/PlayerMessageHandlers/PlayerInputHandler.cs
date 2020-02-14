@@ -5,9 +5,9 @@ using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using ZeroFormatter;
 
-namespace AmoebaBattleServer01.Experimental.PlayerMessageHandlers
+namespace OldServer.Experimental.Udp.PlayerMessageHandlers
 {
-    public class PlayerInputHandler
+    public class PlayerInputHandler:IMessageHandler
     {
         public void Handle(Message message, IPEndPoint sender)
         {

@@ -15,8 +15,9 @@ namespace AmoebaBattleServer01.Experimental.Udp
             var mes = new PositionsMessage()
             {
                 EntitiesInfo = new Dictionary<int, ViewTransform>(withPosition.Length),
-                //TODO: перенести в UDP с подтверждением
-                PlayerEntityId = withPosition.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId).id.value
+                //TODO: перенести установление в UDP с подтверждением
+                PlayerEntityId = withPosition.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId)
+                    .id.value
             };
 
             foreach (var gameEntity in withPosition)

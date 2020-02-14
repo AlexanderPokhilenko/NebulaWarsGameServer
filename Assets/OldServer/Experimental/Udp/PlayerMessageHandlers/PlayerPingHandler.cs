@@ -3,11 +3,12 @@ using System.Net;
 using AmoebaBattleServer01.Experimental.GameEngine;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
+using OldServer.Experimental.Udp.PlayerMessageHandlers;
 using ZeroFormatter;
 
 namespace AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers
 {
-    public class PlayerPingHandler
+    public class PlayerPingHandler:IMessageHandler
     {
         public void Handle(Message message, IPEndPoint sender)
         {

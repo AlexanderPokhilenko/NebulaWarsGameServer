@@ -2,12 +2,12 @@
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace AmoebaBattleServer01.Experimental.Udp
+namespace OldServer.Experimental.Udp
 {
     public class PlayersIpAddressesWrapper
     {
         /// <summary>
-        /// key playerGoogleId 
+        /// key playerId 
         /// </summary>
         private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
 
@@ -30,13 +30,16 @@ namespace AmoebaBattleServer01.Experimental.Udp
             return playersIpAddresses.Values.Contains(point);
         }
 
-        public void AddPlayer(int playerGoogleId, IPEndPoint sender)
+        public void AddPlayer(int playerId, IPEndPoint sender)
         {
-            while (!playersIpAddresses.TryAdd(playerGoogleId, sender))
+            if (playersIpAddresses.TryAdd(playerId, sender))
             {
-                
+                Console.WriteLine($"Добавлен клиент с id={playerId}");
             }
-            Console.WriteLine($"Добавлен клиент с id={playerGoogleId}");
+            else
+            {
+                throw new Exception("Не удалось добавить игрока с playerId = "+playerId);
+            }
         }
     }
 }

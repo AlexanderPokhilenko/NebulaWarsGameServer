@@ -1,6 +1,7 @@
 ﻿using System.Net;
+using AmoebaBattleServer01.Experimental;
 
-namespace AmoebaBattleServer01.Experimental.Udp
+namespace OldServer.Experimental.Udp
 {
     public class UdpBattleConnection:UdpConnection
     {
