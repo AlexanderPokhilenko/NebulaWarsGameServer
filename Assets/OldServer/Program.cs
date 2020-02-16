@@ -1,14 +1,12 @@
 ﻿using System.Threading;
 using AmoebaBattleServer01.Experimental.Http;
-using OldServer.Experimental;
 using OldServer.Experimental.GameEngine;
 using OldServer.Experimental.Udp;
 using OldServer.Experimental.Udp.Connection;
 
 //TODO добавить удаление комнат
-//TODO добавить защиту от чужих пингов
-//TODO создание новых потоков выглядит не одинаково
 //TODO добавить возможность отсылать гейм матчеру состояние комнат
+//TODO добавить созможность останавливать поток, который слушает udp
 
 namespace OldServer
 {
@@ -36,8 +34,9 @@ namespace OldServer
         {
             NetworkMediator mediator = new NetworkMediator();
             var udpBattleConnection = new UdpBattleConnection(mediator);
-            udpBattleConnection.SetConnection(port);
-            udpBattleConnection.StartReceiveThread();
+            udpBattleConnection
+                .SetConnection(port)
+                .StartReceiveThread();
             mediator.SetUdpConnection(udpBattleConnection);
         }
 

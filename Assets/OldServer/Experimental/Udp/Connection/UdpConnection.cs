@@ -4,8 +4,6 @@ using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
 
-//TODO возможно стоит убрать метод Close, так как прослушка udp никогда не должна прекращаться при работе сервера 
-
 namespace OldServer.Experimental.Udp.Connection
 {
     public class UdpConnection
@@ -14,7 +12,7 @@ namespace OldServer.Experimental.Udp.Connection
         private UdpClient udpClient;
         private bool isThreadRunning;
 
-        public void SetConnection(int listenPort)
+        public UdpConnection SetConnection(int listenPort)
         {
             try
             {
@@ -23,10 +21,10 @@ namespace OldServer.Experimental.Udp.Connection
             catch (Exception e)
             {
                 Debug.Log("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
-                return;
             }
             
             Debug.Log("Создан udp клиент на порте " + listenPort);
+            return this;
         }
      
         public void StartReceiveThread()
