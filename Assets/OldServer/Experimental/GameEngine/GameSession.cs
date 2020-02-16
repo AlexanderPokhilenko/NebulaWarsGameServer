@@ -56,7 +56,7 @@ namespace OldServer.Experimental.GameEngine
         
         public void Execute()
         {
-            if (SessionTimedOut())
+            if (IsSessionTimedOut())
             {
                 MarkGameAsFinished();
                 return;
@@ -64,7 +64,7 @@ namespace OldServer.Experimental.GameEngine
             systems.Execute();
         }
 
-        private bool SessionTimedOut()
+        private bool IsSessionTimedOut()
         {
             if (gameStartTime != null)
             {

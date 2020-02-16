@@ -102,19 +102,18 @@
               <e p="PlayerInfoForGameRoom.cs" t="Include" />
             </e>
             <e p="Udp" t="Include">
+              <e p="Common" t="Include">
+                <e p="DeliveryConfirmationMessage.cs" t="Include" />
+              </e>
               <e p="PlayerToServer" t="Include">
                 <e p="Ping" t="Include">
                   <e p="PlayerPingMessage.cs" t="Include" />
-                </e>
-                <e p="ReliableUdp" t="Include">
-                  <e p="DeliveryConfirmationMessage.cs" t="Include" />
                 </e>
                 <e p="UserInputMessage" t="Include">
                   <e p="PlayerInputMessage.cs" t="Include" />
                 </e>
               </e>
               <e p="ServerToPlayer" t="Include">
-                <e p="DeliveryConfirmationFromServerMessage.cs" t="Include" />
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
                   <e p="ViewTransform.cs" t="Include" />

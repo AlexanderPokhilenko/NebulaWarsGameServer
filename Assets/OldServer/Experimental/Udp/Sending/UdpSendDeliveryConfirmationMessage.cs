@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Net;
-using Libraries.NetworkLibrary.Udp.ServerToPlayer;
+using Libraries.NetworkLibrary.Udp.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 
 namespace OldServer.Experimental.Udp.Sending
 {
     public static partial class UdpSendUtils
     {
-        public static void SendDeliveryConfirmationMessage(DeliveryConfirmationFromServerMessage mes,
-            IPEndPoint address)
+        public static void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage mes, IPEndPoint address)
         {
             if (address != null)
             {

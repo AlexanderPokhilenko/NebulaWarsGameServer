@@ -24,7 +24,7 @@ namespace OldServer.Experimental.Udp.MessageProcessing
                 case MessageType.PlayerPing:
                     pingMessageHandler.Handle(message, sender);
                     break;
-                case MessageType.DeliveryConfirmationFromClient:
+                case MessageType.DeliveryConfirmation:
                     confirmationMessageHandler.Handle(message, sender);
                     break;
                 default:

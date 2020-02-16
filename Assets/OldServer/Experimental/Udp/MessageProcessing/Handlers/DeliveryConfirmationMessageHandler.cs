@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Libraries.NetworkLibrary.Udp.PlayerToServer.ReliableUdp;
+using Libraries.NetworkLibrary.Udp.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 using OldServer.Experimental.Udp.Storage;
 using ZeroFormatter;
@@ -7,7 +7,7 @@ using ZeroFormatter;
 namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
 {
     /// <summary>
-    /// Обрабатывает сообщение о подтверждении доставки
+    /// Обрабатывает подтверждение доставки
     /// </summary>
     public class DeliveryConfirmationMessageHandler:IMessageHandler
     {
@@ -15,10 +15,10 @@ namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
         {
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(message.SerializedMessage);
-            int playerId = mes.PlayerId;
+            
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
 
-            ReliableUdpStorage.RemoveMessage(playerId, messageIdToConfirm);
+            ReliableUdpStorage.RemoveMessage(messageIdToConfirm);
         }
     }
 }

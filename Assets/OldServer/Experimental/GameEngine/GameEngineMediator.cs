@@ -28,7 +28,7 @@ namespace OldServer.Experimental.GameEngine
                 gameSession.Cleanup();
             }
             PingLogger.Log();
-            GameSessionsStorage.UpdateGameSessions();
+            GameSessionsStorage.UpdateGameSessionsState();
         }
 
         public void StartEndlessLoop()

@@ -21,7 +21,7 @@ namespace OldServer.Experimental.GameEngine
         public readonly Dictionary<int, GameSession> PlayersToSessions = 
             new Dictionary<int, GameSession>();
 
-        public void UpdateGameSessions()
+        public void UpdateGameSessionsState()
         {
             TryAddNewGameSessions();
             RemoveFinishedGames();

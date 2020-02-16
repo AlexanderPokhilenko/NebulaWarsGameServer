@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using NetworkLibrary.NetworkLibrary.Udp;
 
 //TODO перейти на MessageContainer
@@ -9,6 +10,8 @@ namespace OldServer.Experimental.Udp.Storage
 {
     public static class ReliableUdpStorage
     {
+        // ReSharper disable once InconsistentNaming
+        private static readonly ConcurrentDictionary<uint, int> MessageId_PlayerId = new ConcurrentDictionary<uint, int>();
         //<playerId, <messageId, Message>>
         private static readonly ConcurrentDictionary<int, Dictionary<uint, Message>> UnconfirmedMessages
             =new ConcurrentDictionary<int, Dictionary<uint, Message>>();
@@ -28,6 +31,7 @@ namespace OldServer.Experimental.Udp.Storage
             }
             
             UnconfirmedMessages[playerId].Add(message.MessageId, message);
+            MessageId_PlayerId.TryAdd(message.MessageId, playerId);
         }
 
         public static Dictionary<uint, Message>.ValueCollection GetReliableMessages(int playerId)
@@ -35,15 +39,17 @@ namespace OldServer.Experimental.Udp.Storage
             return UnconfirmedMessages[playerId].Values;
         }
 
-        public static void RemoveMessage(int playerId, uint messageId)
+        public static void RemoveMessage(uint confirmedMessageNumber)
         {
-            if (UnconfirmedMessages.ContainsKey(playerId))
+            if (MessageId_PlayerId.ContainsKey(confirmedMessageNumber))
             {
-                UnconfirmedMessages[playerId].Remove(messageId);
+                MessageId_PlayerId.TryRemove(confirmedMessageNumber, out int playerId);
+                UnconfirmedMessages.TryRemove(playerId, out var dict);    
             }
             else
             {
-                throw new Exception("Пришёл запрос на удаление rudp для игрока, которого нет в очереди");
+                throw new Exception($"Не удалось удалить сообщение из коллекции " +
+                                    $"{nameof(confirmedMessageNumber)}={confirmedMessageNumber}");
             }
         }
     }

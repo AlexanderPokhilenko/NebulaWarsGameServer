@@ -1,4 +1,4 @@
-﻿using ZeroFormatter;
+﻿﻿﻿using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
@@ -29,7 +29,6 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         PlayerInput = 3,
         PlayerPing = 5,
         Positions = 6,
-        DeliveryConfirmationFromClient = 7,
-        DeliveryConfirmationFromServer = 8
+        DeliveryConfirmation = 7
     }
 }
