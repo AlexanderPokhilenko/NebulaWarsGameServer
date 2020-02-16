@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AmoebaBattleServer01.Experimental.Http;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine
 {
     public class GameSessionsStorage
     {
@@ -32,6 +33,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
             {
                 if (RoomsToCreate.TryDequeue(out var gameRoomData))
                 {
+                    Debug.Log("Создана новая комната");
                     GameSession gameSession = new GameSession(this);
                     gameSession.ConfigureSystems(gameRoomData);
                     GameSessions.Add(gameRoomData.GameRoomNumber, gameSession);
@@ -47,7 +49,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
         {
             while (finishedGameSessions.Count!=0)
             {
-                Console.WriteLine("Удаление игровой сессии");
+                Debug.Log("Удаление игровой сессии");
                 int gameSessionNumber = finishedGameSessions.Dequeue();
                 var gameSession = GameSessions[gameSessionNumber];
                 var playersIds = gameSession.RoomData.Players.Select(player => player.TemporaryId);

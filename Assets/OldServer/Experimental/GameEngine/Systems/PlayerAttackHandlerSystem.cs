@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
+namespace OldServer.Experimental.GameEngine.Systems
 {
     public class PlayerAttackHandlerSystem : ReactiveSystem<InputEntity>
     {

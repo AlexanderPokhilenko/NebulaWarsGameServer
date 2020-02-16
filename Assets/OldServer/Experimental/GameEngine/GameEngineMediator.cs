@@ -1,7 +1,7 @@
-﻿
+﻿using OldServer.Experimental.GameEngine.StaticMessageSorters;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine
 {
     public class GameEngineMediator
     {

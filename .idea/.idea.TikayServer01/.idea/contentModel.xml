@@ -138,8 +138,10 @@
               <e p="GameEngineMediator.cs" t="Include" />
               <e p="GameSession.cs" t="Include" />
               <e p="GameSessionsStorage.cs" t="Include" />
-              <e p="PingLogger.cs" t="Include" />
-              <e p="StaticInputMessagesSorter.cs" t="Include" />
+              <e p="StaticMessageSorters" t="Include">
+                <e p="PingLogger.cs" t="Include" />
+                <e p="StaticInputMessagesSorter.cs" t="Include" />
+              </e>
               <e p="Systems" t="Include">
                 <e p="InputDeletingSystem.cs" t="Include" />
                 <e p="NetworkSenderSystem.cs" t="Include" />

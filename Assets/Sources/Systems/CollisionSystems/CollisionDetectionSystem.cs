@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmoebaBattleServer01.Experimental.GameEngine;
 using Entitas;
+using OldServer.Experimental.GameEngine;
 using UnityEngine;
 
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem

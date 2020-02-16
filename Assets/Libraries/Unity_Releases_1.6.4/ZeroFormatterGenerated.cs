@@ -1431,18 +1431,18 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
     {
         public override int? GetLength()
         {
-            return 4;
+            return 1;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.MessageType value)
         {
-            return BinaryUtil.WriteInt32(ref bytes, offset, (Int32)value);
+            return BinaryUtil.WriteSByte(ref bytes, offset, (SByte)value);
         }
 
         public override global::NetworkLibrary.NetworkLibrary.Udp.MessageType Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
         {
-            byteSize = 4;
-            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadInt32(ref bytes, offset);
+            byteSize = 1;
+            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadSByte(ref bytes, offset);
         }
     }
 
@@ -1452,7 +1452,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
     {
         public override int? GetLength()
         {
-            return 5;
+            return 2;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.MessageType? value)
@@ -1460,23 +1460,23 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
             BinaryUtil.WriteBoolean(ref bytes, offset, value.HasValue);
             if (value.HasValue)
             {
-                BinaryUtil.WriteInt32(ref bytes, offset + 1, (Int32)value.Value);
+                BinaryUtil.WriteSByte(ref bytes, offset + 1, (SByte)value.Value);
             }
             else
             {
-                BinaryUtil.EnsureCapacity(ref bytes, offset, offset + 5);
+                BinaryUtil.EnsureCapacity(ref bytes, offset, offset + 2);
             }
 
-            return 5;
+            return 2;
         }
 
         public override global::NetworkLibrary.NetworkLibrary.Udp.MessageType? Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
         {
-            byteSize = 5;
+            byteSize = 2;
             var hasValue = BinaryUtil.ReadBoolean(ref bytes, offset);
             if (!hasValue) return null;
 
-            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadInt32(ref bytes, offset + 1);
+            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadSByte(ref bytes, offset + 1);
         }
     }
 
@@ -1486,12 +1486,12 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
     {
         public bool Equals(global::NetworkLibrary.NetworkLibrary.Udp.MessageType x, global::NetworkLibrary.NetworkLibrary.Udp.MessageType y)
         {
-            return (Int32)x == (Int32)y;
+            return (SByte)x == (SByte)y;
         }
 
         public int GetHashCode(global::NetworkLibrary.NetworkLibrary.Udp.MessageType x)
         {
-            return (int)x;
+             return (int)(SByte)x ^ (int)(SByte)x << 8; 
         }
     }
 

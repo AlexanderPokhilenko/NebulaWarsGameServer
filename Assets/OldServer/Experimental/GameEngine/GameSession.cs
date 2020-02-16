@@ -1,9 +1,9 @@
 ﻿using System;
-using AmoebaBattleServer01.Experimental.GameEngine.Systems;
 using NetworkLibrary.NetworkLibrary.Http;
+using OldServer.Experimental.GameEngine.Systems;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine
 {
     /// <summary>
     ///  Хранит системы и информацию о игроках.
@@ -24,7 +24,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
 
         public void ConfigureSystems(GameRoomData roomData)
         {
-            Console.WriteLine("Создание новой комнаты номер = "+roomData.GameRoomNumber);
+            Debug.Log("Создание новой комнаты номер = "+roomData.GameRoomNumber);
 
             RoomData = roomData;
             Contexts = new Contexts();

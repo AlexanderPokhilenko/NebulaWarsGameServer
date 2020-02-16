@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine.StaticMessageSorters
 {
     public static class PingLogger
     {
@@ -17,7 +17,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine
             // {
             //     if ((now - pair.Value).TotalSeconds > maxDelaySeconds)
             //     {
-            //         Console.WriteLine($"Игрок с id = {pair.Key} не присылват пинг уже больше {maxDelaySeconds} секунд");
+            //         Debug.Log($"Игрок с id = {pair.Key} не присылват пинг уже больше {maxDelaySeconds} секунд");
             //     }
             // }
         }

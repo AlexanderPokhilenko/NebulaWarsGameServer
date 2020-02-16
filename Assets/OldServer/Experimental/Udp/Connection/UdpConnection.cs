@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using UnityEngine;
 
 //TODO возможно стоит убрать метод Close, так как прослушка udp никогда не должна прекращаться при работе сервера 
 
@@ -21,18 +22,25 @@ namespace OldServer.Experimental.Udp.Connection
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
+                Debug.Log("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
                 return;
             }
             
-            Console.WriteLine("Создан udp клиент на порте " + listenPort);
+            Debug.Log("Создан udp клиент на порте " + listenPort);
         }
      
         public void StartReceiveThread()
         {
-            receiveThread = new Thread(() => StartEndlessLoop(udpClient));
-            isThreadRunning = true;
-            receiveThread.Start();
+            if (udpClient != null)
+            {
+                receiveThread = new Thread(() => StartEndlessLoop(udpClient));
+                isThreadRunning = true;
+                receiveThread.Start();    
+            }
+            else
+            {
+                throw new Exception("А ну соединение мне запили");
+            }
         }
      
         private void StartEndlessLoop(UdpClient client)
@@ -49,24 +57,24 @@ namespace OldServer.Experimental.Udp.Connection
                 catch (SocketException e)
                 {
                     // 10004 thrown when socket is closed
-                    // if (e.ErrorCode != 10004) Console.WriteLine("Socket exception while receiving data from udp client: " + e.Message);
+                    // if (e.ErrorCode != 10004) Debug.Log("Socket exception while receiving data from udp client: " + e.Message);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error receiving data from udp client: " + e.Message);
+                    Debug.Log("Error receiving data from udp client: " + e.Message);
                 }
             }
         }
 
         public void Send(byte[] data, IPEndPoint endPoint)
         {
-            // Console.WriteLine($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
+            // Debug.Log($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
             udpClient.Send(data, data.Length, endPoint);
         }
      
         public void Stop()
         {
-            Console.WriteLine("Остановка udp клиента");
+            Debug.Log("Остановка udp клиента");
             isThreadRunning = false;
             receiveThread.Interrupt();
             udpClient.Close();
@@ -79,7 +87,7 @@ namespace OldServer.Experimental.Udp.Connection
         /// <param name="endPoint"></param>
         protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
-            // Console.WriteLine($"Пришло сообщение размером в {data.Length} байт");
+            // Debug.Log($"Пришло сообщение размером в {data.Length} байт");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
+using UnityEngine;
 
 namespace OldServer.Experimental.Udp.Storage
 {
@@ -34,7 +35,7 @@ namespace OldServer.Experimental.Udp.Storage
         {
             if (playersIpAddresses.TryAdd(playerId, sender))
             {
-                Console.WriteLine($"Добавлен клиент с id={playerId}");
+                Debug.Log($"Добавлен клиент с id={playerId}");
             }
             else
             {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
-using AmoebaBattleServer01.Experimental.GameEngine;
 using NetworkLibrary.NetworkLibrary.Http;
+using OldServer.Experimental.GameEngine;
+using UnityEngine;
 
 namespace AmoebaBattleServer01.Experimental.Http
 {
@@ -91,14 +92,14 @@ namespace AmoebaBattleServer01.Experimental.Http
 
         private static void DebugLogGameRoom(GameRoomData roomData)
         {
-            Console.WriteLine("Информация об игрой комнате");
-            Console.WriteLine($"{nameof(roomData.GameRoomNumber)}  {roomData.GameRoomNumber}");
-            Console.WriteLine($"{nameof(roomData.GameServerIp)}  {roomData.GameServerIp}");
-            Console.WriteLine($"{nameof(roomData.GameServerPort)}  {roomData.GameServerPort}");
-            Console.WriteLine("Игроки");
+            Debug.Log("Информация об игрой комнате");
+            Debug.Log($"{nameof(roomData.GameRoomNumber)}  {roomData.GameRoomNumber}");
+            Debug.Log($"{nameof(roomData.GameServerIp)}  {roomData.GameServerIp}");
+            Debug.Log($"{nameof(roomData.GameServerPort)}  {roomData.GameServerPort}");
+            Debug.Log("Игроки");
             foreach (var player in roomData.Players)
             {
-                Console.WriteLine($"PlayerGoogleId = {player.GoogleId}");
+                Debug.Log($"PlayerGoogleId = {player.GoogleId}");
             }
         }
     }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using UnityEngine;
 using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine.StaticMessageSorters
 {
     public static class StaticInputMessagesSorter
     {

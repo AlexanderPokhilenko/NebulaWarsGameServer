@@ -1,7 +1,7 @@
 ﻿using Entitas;
 using OldServer.Experimental.Udp.Sending;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
+namespace OldServer.Experimental.GameEngine.Systems
 {
     /// <summary>
     /// Каждый кадр (или реже) отправляет всем игрокам дельту (или нет) состояния мира

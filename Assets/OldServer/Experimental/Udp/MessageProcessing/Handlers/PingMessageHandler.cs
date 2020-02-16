@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
-using AmoebaBattleServer01.Experimental.GameEngine;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
+using OldServer.Experimental.GameEngine.StaticMessageSorters;
+using UnityEngine;
 using ZeroFormatter;
 
 namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
@@ -25,11 +26,11 @@ namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
             if (!NetworkMediator.PlayersIpAddressesStorage.IsIpAddressAlreadyExists(sender))
             {
                 NetworkMediator.PlayersIpAddressesStorage.AddPlayer(playerId, sender);
-                Console.WriteLine($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
+                Debug.Log($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
             }
             else
             {
-                Console.WriteLine($"Такой Ip уже был {sender.Address} {sender.Port} {sender.AddressFamily}");
+                Debug.Log($"Такой Ip уже был {sender.Address} {sender.Port} {sender.AddressFamily}");
             }
         }
         
@@ -38,7 +39,7 @@ namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
             if (PingLogger.LastPingTime.ContainsKey(playerId))
             {
                 PingLogger.LastPingTime[playerId] = DateTime.UtcNow;
-                // Console.WriteLine($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
+                // Debug.Log($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
             }
             else
             {

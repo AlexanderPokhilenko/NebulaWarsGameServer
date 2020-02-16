@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using AmoebaBattleServer01.Experimental.GameEngine.Systems;
+﻿using System.Collections;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine
+namespace OldServer.Experimental.GameEngine
 {
     public class Clock
 #if UNITY_5_3_OR_NEWER

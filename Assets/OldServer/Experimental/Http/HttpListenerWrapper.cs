@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEngine;
 using ZeroFormatter;
 
 //TODO нужно ли оборачивать stream в using?
@@ -30,7 +31,7 @@ namespace AmoebaBattleServer01.Experimental.Http
              while(true)
              {
                  await HandleNextRequest();
-                 Console.WriteLine("Отправлен ответ по http");
+                 Debug.Log("Отправлен ответ по http");
              }
              // ReSharper disable once FunctionNeverReturns
         }
@@ -42,7 +43,7 @@ namespace AmoebaBattleServer01.Experimental.Http
                 HttpListenerContext context = await listener.GetContextAsync();
                 HttpListenerRequest request = context.Request;
                 
-                Console.WriteLine("Client data content length {0}", request.ContentLength64);
+                Debug.Log($"Client data content length {request.ContentLength64}");
                 
                 Stream inputStream = request.InputStream;
                 byte[] data;
@@ -73,7 +74,7 @@ namespace AmoebaBattleServer01.Experimental.Http
             }
             catch (Exception e)
             {
-                Console.WriteLine("Брошено исключение при обработке http запроса "+e.Message);
+                Debug.Log("Брошено исключение при обработке http запроса "+e.Message);
             }
         }
 

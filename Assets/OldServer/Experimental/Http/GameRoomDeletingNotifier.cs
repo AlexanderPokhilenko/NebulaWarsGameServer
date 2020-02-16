@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using UnityEngine;
 
 //TODO http клиент создаётся на каждый запрос
 
@@ -58,14 +59,14 @@ namespace AmoebaBattleServer01.Experimental.Http
                 {
                     var response = await client.DeleteAsync(url);
                     if (response.IsSuccessStatusCode)
-                        Console.WriteLine("Успешная я о удалении комнаты");
+                        Debug.Log("Успешная я о удалении комнаты");
                     else
                         throw new Exception("Не удалось отправить сообщение о удалении комнаты");
                     
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Брошено исключение при отправке уведомления о удалении комнаты. "+e.Message);
+                    Debug.Log("Брошено исключение при отправке уведомления о удалении комнаты. "+e.Message);
                 }
             }
         }

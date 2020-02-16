@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Threading;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using UnityEditor;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
+namespace OldServer.Experimental.GameEngine.Systems
 {
     /// <summary>
     /// Спавнит игроков на карте.
@@ -26,11 +24,11 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
         
         public void Initialize()
         {
-            Console.WriteLine($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
+            Debug.Log($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
 
             foreach (var playerInfo in roomData.Players)
             {
-                Console.WriteLine($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
+                Debug.Log($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
                 
                 var gameEntity = playerPrototype.CreateEntity(gameContext);
                 gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);

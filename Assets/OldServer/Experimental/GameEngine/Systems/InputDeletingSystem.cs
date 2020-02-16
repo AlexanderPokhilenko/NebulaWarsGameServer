@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Threading;
-using Entitas;
-using NetworkLibrary.NetworkLibrary.Http;
-using UnityEditor;
-using UnityEngine;
+﻿using Entitas;
 
-namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
+namespace OldServer.Experimental.GameEngine.Systems
 {
     public class InputDeletingSystem : ICleanupSystem
     {
