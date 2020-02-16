@@ -18,7 +18,7 @@ namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
             
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
 
-            ReliableUdpStorage.RemoveMessage(messageIdToConfirm);
+            RudpStorage.RemoveMessage(messageIdToConfirm);
         }
     }
 }

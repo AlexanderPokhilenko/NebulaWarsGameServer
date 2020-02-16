@@ -5,10 +5,11 @@ using System.Runtime.InteropServices;
 using NetworkLibrary.NetworkLibrary.Udp;
 
 //TODO перейти на MessageContainer
+//TODO хранить массивы байт, а не сообщения
 
 namespace OldServer.Experimental.Udp.Storage
 {
-    public static class ReliableUdpStorage
+    public static class RudpStorage
     {
         // ReSharper disable once InconsistentNaming
         private static readonly ConcurrentDictionary<uint, int> MessageId_PlayerId = new ConcurrentDictionary<uint, int>();
@@ -36,7 +37,11 @@ namespace OldServer.Experimental.Udp.Storage
 
         public static Dictionary<uint, Message>.ValueCollection GetReliableMessages(int playerId)
         {
-            return UnconfirmedMessages[playerId].Values;
+            if (UnconfirmedMessages.ContainsKey(playerId))
+            {
+                return UnconfirmedMessages[playerId].Values;
+            }
+            return null;
         }
 
         public static void RemoveMessage(uint confirmedMessageNumber)

@@ -12,7 +12,7 @@ namespace OldServer.Experimental.GameEngine
     {
         //В эту очередь элементы кладутся послу получения http от гейм матчера
         public readonly ConcurrentQueue<GameRoomData> RoomsToCreate = new ConcurrentQueue<GameRoomData>();
-        //Очередь номеров игровых сессийЮ про которые нужно сообщинь гейм матчеру
+        //Очередь номеров игровых сессий, про которые нужно сообщинь гейм матчеру
         private readonly Queue<int> finishedGameSessions = new Queue<int>();
 
         //текущие игровые сессии

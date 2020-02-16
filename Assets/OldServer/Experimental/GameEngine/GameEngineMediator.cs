@@ -1,4 +1,6 @@
 ﻿using OldServer.Experimental.GameEngine.StaticMessageSorters;
+using OldServer.Experimental.Udp.Sending;
+using OldServer.Experimental.Udp.Storage;
 using UnityEngine;
 
 namespace OldServer.Experimental.GameEngine
@@ -28,7 +30,25 @@ namespace OldServer.Experimental.GameEngine
                 gameSession.Cleanup();
             }
             PingLogger.Log();
+            SendUnconfirmedMessages();
             GameSessionsStorage.UpdateGameSessionsState();
+        }
+
+        //TODO вынести
+        private void SendUnconfirmedMessages()
+        {
+            foreach (var playerId in GameSessionsStorage.PlayersToSessions.Keys)
+            {
+                var messages = RudpStorage.GetReliableMessages(playerId);
+                if (messages != null && messages.Count!=0)
+                {
+                    Debug.LogError("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);
+                    foreach (var message in messages)
+                    {
+                        UdpSendUtils.SendMessage(message, playerId);
+                    }
+                }
+            }
         }
 
         public void StartEndlessLoop()

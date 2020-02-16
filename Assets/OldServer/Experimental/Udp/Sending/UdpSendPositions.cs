@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
@@ -30,6 +31,20 @@ namespace OldServer.Experimental.Udp.Sending
             {
                 var data = MessageFactory.GetSerializedMessage(mes);
                 NetworkMediator.udpBattleConnection.Send(data, address);
+            }
+        }
+
+        public static void SendMessage(Message message, int playerId)
+        {
+            var address = NetworkMediator.PlayersIpAddressesStorage.GetPlayerIpAddress(playerId);
+            if (address != null)
+            {
+                var data = MessageFactory.GetSerializedMessage(message);
+                NetworkMediator.udpBattleConnection.Send(data, address);
+            }
+            else
+            {
+                throw new Exception("Не удаётся отправить udp сообщение так как не известен ip этого игрока "+playerId);
             }
         }
     }
