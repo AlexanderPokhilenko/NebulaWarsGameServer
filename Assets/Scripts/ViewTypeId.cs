@@ -16,5 +16,6 @@
     DefaultPlasma,
     MediumPlasma,
     DefaultTurret,
-    MediumTurret
+    MediumTurret,
+    DefaultLaserBeam
 }
