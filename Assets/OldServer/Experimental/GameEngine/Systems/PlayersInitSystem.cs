@@ -21,7 +21,7 @@ namespace AmoebaBattleServer01.Experimental.GameEngine.Systems
         {
             gameContext = contexts.game;
             this.roomData = roomData;
-            playerPrototype = AssetDatabase.LoadAssetAtPath<PlayerObject>("Assets/SO/BaseObjects/UFOPlayer.asset");
+            playerPrototype = AssetDatabase.LoadAssetAtPath<PlayerObject>("Assets/SO/BaseObjects/HarePlayer.asset");
         }
         
         public void Initialize()

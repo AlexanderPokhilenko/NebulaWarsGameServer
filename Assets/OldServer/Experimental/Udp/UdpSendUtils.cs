@@ -8,25 +8,17 @@ namespace AmoebaBattleServer01.Experimental.Udp
 {
     public static class UdpSendUtils
     {
-        public static void SendPositions(int targetPlayerId, GameEntity[] withPosition)
+        public static void SendPositions(int targetPlayerId, IEnumerable<GameEntity> viewObjects)
         {
             // Console.WriteLine("SendPositions ");
             
             var mes = new PositionsMessage()
             {
-                EntitiesInfo = new Dictionary<int, ViewTransform>(withPosition.Length),
+                EntitiesInfo = viewObjects.ToDictionary(e => e.id.value,
+                    e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
                 //TODO: перенести в UDP с подтверждением
-                PlayerEntityId = withPosition.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId).id.value
+                PlayerEntityId = viewObjects.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId).id.value
             };
-
-            foreach (var gameEntity in withPosition)
-            {
-                //string playerGoogleId = gameEntity.player.GoogleId;
-                var gt = gameEntity.globalTransform;
-                var typeId = gameEntity.viewType.id;
-                var transform = new ViewTransform(gt.position, gt.angle, typeId);
-                mes.EntitiesInfo.Add(gameEntity.id.value, transform);
-            }
             
             var address = BentMediator.PlayersIpAddressesWrapper.GetPlayerIpAddress(targetPlayerId);
             if (address != null)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
   m_Name: MediumSpaceTurret
   m_EditorClassIdentifier: 
-  typeId: 2
+  typeId: 16
   colliderInfo: {fileID: 11400000, guid: 434df82ff39add4438920c76637c111e, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1
