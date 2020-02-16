@@ -1,8 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.Http
+namespace OldServer.Experimental.Http
 {
     public static class HttpListenerFactory
     {

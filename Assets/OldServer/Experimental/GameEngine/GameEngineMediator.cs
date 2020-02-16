@@ -7,7 +7,7 @@ namespace OldServer.Experimental.GameEngine
 {
     public class GameEngineMediator
     {
-        public static readonly GameSessionsStorage GameSessionsStorage = new GameSessionsStorage();
+        public static readonly BattlesStorage BattlesStorage = new BattlesStorage();
         private readonly Clock clock;
 
         public GameEngineMediator()
@@ -24,20 +24,20 @@ namespace OldServer.Experimental.GameEngine
         public void Tick()
         {
             StaticInputMessagesSorter.Spread();
-            foreach (var gameSession in GameSessionsStorage.GetAllGameSessions())
+            foreach (var gameSession in BattlesStorage.GetAllGameSessions())
             {
                 gameSession.Execute();
                 gameSession.Cleanup();
             }
             PingLogger.Log();
             SendUnconfirmedMessages();
-            GameSessionsStorage.UpdateGameSessionsState();
+            BattlesStorage.UpdateGameSessionsState();
         }
 
         //TODO вынести
         private void SendUnconfirmedMessages()
         {
-            foreach (var playerId in GameSessionsStorage.PlayersToSessions.Keys)
+            foreach (var playerId in BattlesStorage.PlayersToSessions.Keys)
             {
                 var messages = RudpStorage.GetReliableMessages(playerId);
                 if (messages != null && messages.Count!=0)

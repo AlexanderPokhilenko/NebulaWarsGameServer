@@ -4,12 +4,12 @@ using NetworkLibrary.NetworkLibrary.Http;
 using OldServer.Experimental.GameEngine;
 using UnityEngine;
 
-namespace AmoebaBattleServer01.Experimental.Http
+namespace OldServer.Experimental.Http
 {
     /// <summary>
     /// Добавляет комнаты в очередь на создание.
     /// </summary>
-    internal class GameSessionCreatorHandler
+    internal class BattleCreatorHandler
     {
         public GameRoomValidationResult Handle(GameRoomData roomData)
         {
@@ -38,13 +38,13 @@ namespace AmoebaBattleServer01.Experimental.Http
 
         private bool CheckPlayers(GameRoomData roomData)
         {
-            if (GameEngineMediator.GameSessionsStorage == null)
+            if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
 
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in roomData.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineMediator.GameSessionsStorage.PlayersToSessions.ContainsKey(playerId))
+                if (GameEngineMediator.BattlesStorage.PlayersToSessions.ContainsKey(playerId))
                 {
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
@@ -55,10 +55,10 @@ namespace AmoebaBattleServer01.Experimental.Http
 
         private bool CheckRoomNumber(GameRoomData roomData)
         {
-            if (GameEngineMediator.GameSessionsStorage == null)
+            if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
-            return !GameEngineMediator.GameSessionsStorage.GameSessions.ContainsKey(roomData.GameRoomNumber);
+            return !GameEngineMediator.BattlesStorage.GameSessions.ContainsKey(roomData.GameRoomNumber);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -83,11 +83,11 @@ namespace AmoebaBattleServer01.Experimental.Http
 
         private static void AddRoomToQueue(GameRoomData roomData)
         {
-            if (GameEngineMediator.GameSessionsStorage == null)
+            if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
             
-            GameEngineMediator.GameSessionsStorage.RoomsToCreate.Enqueue(roomData);
+            GameEngineMediator.BattlesStorage.RoomsToCreate.Enqueue(roomData);
         }
 
         private static void DebugLogGameRoom(GameRoomData roomData)

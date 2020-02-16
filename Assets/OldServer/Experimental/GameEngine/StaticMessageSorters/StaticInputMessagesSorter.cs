@@ -30,7 +30,7 @@ namespace OldServer.Experimental.GameEngine.StaticMessageSorters
                 var playerId = pair.Key;
                 var value = pair.Value;
 
-                if (GameEngineMediator.GameSessionsStorage.PlayersToSessions.TryGetValue(playerId, out var gameSession))
+                if (GameEngineMediator.BattlesStorage.PlayersToSessions.TryGetValue(playerId, out var gameSession))
                 {
                     Contexts contexts = gameSession.Contexts;
 

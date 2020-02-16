@@ -2,15 +2,15 @@
 
 //TODO заменить GameRoomData на обёртку
 
-namespace AmoebaBattleServer01.Experimental.Http
+namespace OldServer.Experimental.Http
 {
     public class HttpMessageHandlers
     {
-        private GameSessionCreatorHandler gameSessionCreator=new GameSessionCreatorHandler();
+        private readonly BattleCreatorHandler battleCreator=new BattleCreatorHandler();
 
         public GameRoomValidationResult Handle(GameRoomData roomData)
         {
-            return gameSessionCreator.Handle(roomData);
+            return battleCreator.Handle(roomData);
         }
     }
 }

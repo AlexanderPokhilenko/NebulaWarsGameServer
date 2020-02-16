@@ -1,5 +1,4 @@
-﻿using AmoebaBattleServer01;
-using OldServer;
+﻿using OldServer;
 using UnityEngine;
 
 public class ServerController : MonoBehaviour

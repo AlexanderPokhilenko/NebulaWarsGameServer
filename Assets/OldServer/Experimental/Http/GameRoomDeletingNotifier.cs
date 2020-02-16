@@ -7,7 +7,7 @@ using UnityEngine;
 
 //TODO http клиент создаётся на каждый запрос
 
-namespace AmoebaBattleServer01.Experimental.Http
+namespace OldServer.Experimental.Http
 {
     /// <summary>
     /// Отправляет гейм матчеру уведомления при окончании боя.

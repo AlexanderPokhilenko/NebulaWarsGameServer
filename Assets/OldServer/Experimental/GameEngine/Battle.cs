@@ -5,19 +5,16 @@ using UnityEngine;
 
 namespace OldServer.Experimental.GameEngine
 {
-    /// <summary>
-    ///  Хранит системы и информацию о игроках.
-    /// </summary>
-    public class GameSession
+    public class Battle
     {
         private Entitas.Systems systems;
         public Contexts Contexts;
         public GameRoomData RoomData;
         private DateTime? gameStartTime;
 
-        private readonly GameSessionsStorage gameSessionsStorage;
+        private readonly BattlesStorage gameSessionsStorage;
 
-        public GameSession(GameSessionsStorage gameSessionsStorage)
+        public Battle(BattlesStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
         }
@@ -87,6 +84,6 @@ namespace OldServer.Experimental.GameEngine
 
     public static class GameSessionGlobals
     {
-        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,300);
+        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,900);
     } 
 }

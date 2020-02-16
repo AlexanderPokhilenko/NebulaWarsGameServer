@@ -133,10 +133,10 @@
         <e p="OldServer" t="Include">
           <e p="Experimental" t="Include">
             <e p="GameEngine" t="Include">
+              <e p="Battle.cs" t="Include" />
+              <e p="BattlesStorage.cs" t="Include" />
               <e p="Clock.cs" t="Include" />
               <e p="GameEngineMediator.cs" t="Include" />
-              <e p="GameSession.cs" t="Include" />
-              <e p="GameSessionsStorage.cs" t="Include" />
               <e p="StaticMessageSorters" t="Include">
                 <e p="PingLogger.cs" t="Include" />
                 <e p="StaticInputMessagesSorter.cs" t="Include" />
@@ -150,8 +150,8 @@
               </e>
             </e>
             <e p="Http" t="Include">
+              <e p="BattleCreatorHandler.cs" t="Include" />
               <e p="GameRoomDeletingNotifier.cs" t="Include" />
-              <e p="GameSessionCreatorHandler.cs" t="Include" />
               <e p="HttpListenerFactory.cs" t="Include" />
               <e p="HttpListenerWrapper.cs" t="Include" />
               <e p="HttpMessageHandlers.cs" t="Include" />

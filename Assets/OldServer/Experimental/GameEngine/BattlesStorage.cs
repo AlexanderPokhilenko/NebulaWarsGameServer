@@ -2,13 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using AmoebaBattleServer01.Experimental.Http;
 using NetworkLibrary.NetworkLibrary.Http;
+using OldServer.Experimental.Http;
 using UnityEngine;
 
 namespace OldServer.Experimental.GameEngine
 {
-    public class GameSessionsStorage
+    public class BattlesStorage
     {
         //В эту очередь элементы кладутся послу получения http от гейм матчера
         public readonly ConcurrentQueue<GameRoomData> RoomsToCreate = new ConcurrentQueue<GameRoomData>();
@@ -16,10 +16,10 @@ namespace OldServer.Experimental.GameEngine
         private readonly Queue<int> finishedGameSessions = new Queue<int>();
 
         //текущие игровые сессии
-        public readonly Dictionary<int, GameSession> GameSessions = new Dictionary<int, GameSession>();
+        public readonly Dictionary<int, Battle> GameSessions = new Dictionary<int, Battle>();
         //текущие игровые сессии (ключ - id игрока)
-        public readonly Dictionary<int, GameSession> PlayersToSessions = 
-            new Dictionary<int, GameSession>();
+        public readonly Dictionary<int, Battle> PlayersToSessions = 
+            new Dictionary<int, Battle>();
 
         public void UpdateGameSessionsState()
         {
@@ -33,14 +33,14 @@ namespace OldServer.Experimental.GameEngine
             {
                 if (RoomsToCreate.TryDequeue(out var gameRoomData))
                 {
-                    Debug.Log("Создана новая комната");
-                    GameSession gameSession = new GameSession(this);
-                    gameSession.ConfigureSystems(gameRoomData);
-                    GameSessions.Add(gameRoomData.GameRoomNumber, gameSession);
+                    Battle battle = new Battle(this);
+                    battle.ConfigureSystems(gameRoomData);
+                    GameSessions.Add(gameRoomData.GameRoomNumber, battle);
                     foreach (var player in gameRoomData.Players)
                     {
-                        PlayersToSessions.Add(player.TemporaryId, gameSession);
+                        PlayersToSessions.Add(player.TemporaryId, battle);
                     }
+                    Debug.Log("Создана новая комната");
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace OldServer.Experimental.GameEngine
             finishedGameSessions.Enqueue(roomDataGameRoomNumber);
         }
 
-        public Dictionary<int,GameSession>.ValueCollection GetAllGameSessions()
+        public Dictionary<int,Battle>.ValueCollection GetAllGameSessions()
         {
             return GameSessions.Values;
         }
