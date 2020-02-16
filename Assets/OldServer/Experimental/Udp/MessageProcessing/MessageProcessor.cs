@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Net;
-using AmoebaBattleServer01.Experimental.Udp.PlayerMessageHandlers;
 using NetworkLibrary.NetworkLibrary.Udp;
+using OldServer.Experimental.Udp.MessageProcessing.Handlers;
 
-namespace OldServer.Experimental.Udp.PlayerMessageHandlers
+namespace OldServer.Experimental.Udp.MessageProcessing
 {
-    internal class MessageHandlers
+    internal class MessageProcessor
     {
-        private readonly PlayerInputHandler playerInputHandler = new PlayerInputHandler();
-        private readonly PlayerPingHandler pingHandler = new PlayerPingHandler();
+        private readonly InputMessageHandler inputMessageHandler = new InputMessageHandler();
+        private readonly PingMessageHandler pingMessageHandler = new PingMessageHandler();
         private readonly DeliveryConfirmationMessageHandler confirmationMessageHandler = new DeliveryConfirmationMessageHandler();
+        private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
         
         public void Handle(Message message, IPEndPoint sender)
         {
+            if (message.NeedResponse) confirmationSender.Handle(message, sender);
+            
             switch (message.MessageType)
             {
                 case MessageType.PlayerInput:
-                    playerInputHandler.Handle(message, sender);
+                    inputMessageHandler.Handle(message, sender);
                     break;
                 case MessageType.PlayerPing:
-                    pingHandler.Handle(message, sender);
+                    pingMessageHandler.Handle(message, sender);
                     break;
-                case MessageType.DeliveryConfirmation:
+                case MessageType.DeliveryConfirmationFromClient:
                     confirmationMessageHandler.Handle(message, sender);
                     break;
                 default:

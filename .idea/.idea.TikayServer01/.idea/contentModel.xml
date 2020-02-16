@@ -114,6 +114,7 @@
                 </e>
               </e>
               <e p="ServerToPlayer" t="Include">
+                <e p="DeliveryConfirmationFromServerMessage.cs" t="Include" />
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
                   <e p="ViewTransform.cs" t="Include" />
@@ -132,7 +133,6 @@
         </e>
         <e p="OldServer" t="Include">
           <e p="Experimental" t="Include">
-            <e p="BentMediator.cs" t="Include" />
             <e p="GameEngine" t="Include">
               <e p="Clock.cs" t="Include" />
               <e p="GameEngineMediator.cs" t="Include" />
@@ -156,20 +156,29 @@
               <e p="HttpMessageHandlers.cs" t="Include" />
             </e>
             <e p="Udp" t="Include">
-              <e p="PlayerMessageHandlers" t="Include">
-                <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
-                <e p="IMessageHandler.cs" t="Include" />
-                <e p="MessageHandlers.cs" t="Include" />
-                <e p="PlayerInputHandler.cs" t="Include" />
-                <e p="PlayerPingHandler.cs" t="Include" />
+              <e p="Connection" t="Include">
+                <e p="UdpBattleConnection.cs" t="Include" />
+                <e p="UdpConnection.cs" t="Include" />
               </e>
-              <e p="PlayersIpAddressesWrapper.cs" t="Include" />
-              <e p="ReliableUdp" t="Include">
-                <e p="ReliableUdp.cs" t="Include" />
+              <e p="MessageProcessing" t="Include">
+                <e p="Handlers" t="Include">
+                  <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
+                  <e p="IMessageHandler.cs" t="Include" />
+                  <e p="InputMessageHandler.cs" t="Include" />
+                  <e p="PingMessageHandler.cs" t="Include" />
+                  <e p="RudpConfirmationSender.cs" t="Include" />
+                </e>
+                <e p="MessageProcessor.cs" t="Include" />
               </e>
-              <e p="UdpBattleConnection.cs" t="Include" />
-              <e p="UdpConnection.cs" t="Include" />
-              <e p="UdpSendUtils.cs" t="Include" />
+              <e p="NetworkMediator.cs" t="Include" />
+              <e p="Sending" t="Include">
+                <e p="UdpSendDeliveryConfirmationMessage.cs" t="Include" />
+                <e p="UdpSendPositions.cs" t="Include" />
+              </e>
+              <e p="Storage" t="Include">
+                <e p="PlayersIpAddressesStorage.cs" t="Include" />
+                <e p="ReliableUdpStorage.cs" t="Include" />
+              </e>
             </e>
           </e>
           <e p="Program.cs" t="Include" />

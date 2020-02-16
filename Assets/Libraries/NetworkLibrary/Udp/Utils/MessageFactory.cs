@@ -26,7 +26,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
 
     public static class MessageIdGenerator
     {
-        private static uint lastMessageId = 0;
+        private static uint lastMessageId;
         public static uint GetMessageId()
         {
             return lastMessageId++;

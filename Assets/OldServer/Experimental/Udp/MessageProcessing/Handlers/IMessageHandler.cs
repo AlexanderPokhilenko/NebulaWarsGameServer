@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
 
-namespace OldServer.Experimental.Udp.PlayerMessageHandlers
+namespace OldServer.Experimental.Udp.MessageProcessing.Handlers
 {
     public interface IMessageHandler
     {

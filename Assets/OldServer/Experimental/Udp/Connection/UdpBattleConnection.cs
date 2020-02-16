@@ -1,13 +1,12 @@
 ﻿using System.Net;
-using AmoebaBattleServer01.Experimental;
 
-namespace OldServer.Experimental.Udp
+namespace OldServer.Experimental.Udp.Connection
 {
     public class UdpBattleConnection:UdpConnection
     {
-        private readonly BentMediator mediator;
+        private readonly NetworkMediator mediator;
         
-        public UdpBattleConnection(BentMediator mediator)
+        public UdpBattleConnection(NetworkMediator mediator)
         {
             this.mediator = mediator;
         }

@@ -5,9 +5,9 @@ using NetworkLibrary.NetworkLibrary.Udp;
 
 //TODO перейти на MessageContainer
 
-namespace OldServer.Experimental.Udp.ReliableUdp
+namespace OldServer.Experimental.Udp.Storage
 {
-    public static class ReliableUdpMessagesStorage
+    public static class ReliableUdpStorage
     {
         //<playerId, <messageId, Message>>
         private static readonly ConcurrentDictionary<int, Dictionary<uint, Message>> UnconfirmedMessages
@@ -19,7 +19,7 @@ namespace OldServer.Experimental.Udp.ReliableUdp
             {
                 if (UnconfirmedMessages.TryAdd(playerId, new Dictionary<uint, Message>()))
                 {
-                    //Создана структура данных для хранения сообщений для конкретного игрока
+                    //структура данных для хранения сообщений для конкретного игрока создана
                 }
                 else
                 {
@@ -37,7 +37,14 @@ namespace OldServer.Experimental.Udp.ReliableUdp
 
         public static void RemoveMessage(int playerId, uint messageId)
         {
-            UnconfirmedMessages[playerId].Remove(messageId);
+            if (UnconfirmedMessages.ContainsKey(playerId))
+            {
+                UnconfirmedMessages[playerId].Remove(messageId);
+            }
+            else
+            {
+                throw new Exception("Пришёл запрос на удаление rudp для игрока, которого нет в очереди");
+            }
         }
     }
 }

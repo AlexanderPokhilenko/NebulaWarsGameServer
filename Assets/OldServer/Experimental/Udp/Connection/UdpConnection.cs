@@ -5,9 +5,9 @@ using System.Threading;
 
 //TODO возможно стоит убрать метод Close, так как прослушка udp никогда не должна прекращаться при работе сервера 
 
-namespace OldServer.Experimental.Udp
+namespace OldServer.Experimental.Udp.Connection
 {
-  public class UdpConnection
+    public class UdpConnection
     {
         Thread receiveThread;
         private UdpClient udpClient;

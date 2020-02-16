@@ -2,16 +2,16 @@
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace OldServer.Experimental.Udp
+namespace OldServer.Experimental.Udp.Storage
 {
-    public class PlayersIpAddressesWrapper
+    public class PlayersIpAddressesStorage
     {
         /// <summary>
         /// key playerId 
         /// </summary>
         private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
 
-        public PlayersIpAddressesWrapper()
+        public PlayersIpAddressesStorage()
         {
             playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
         }

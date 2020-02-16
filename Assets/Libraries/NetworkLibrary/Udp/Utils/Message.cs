@@ -24,11 +24,12 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         MessageType GetMessageType();
     }
 
-    public enum MessageType
+    public enum MessageType:sbyte
     {
         PlayerInput = 3,
         PlayerPing = 5,
         Positions = 6,
-        DeliveryConfirmation = 7
+        DeliveryConfirmationFromClient = 7,
+        DeliveryConfirmationFromServer = 8
     }
 }

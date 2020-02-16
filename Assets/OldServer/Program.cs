@@ -1,16 +1,16 @@
 ﻿using System.Threading;
-using AmoebaBattleServer01.Experimental;
 using AmoebaBattleServer01.Experimental.GameEngine;
 using AmoebaBattleServer01.Experimental.Http;
-using AmoebaBattleServer01.Experimental.Udp;
+using OldServer.Experimental;
 using OldServer.Experimental.Udp;
+using OldServer.Experimental.Udp.Connection;
 
 //TODO добавить удаление комнат
 //TODO добавить защиту от чужих пингов
 //TODO создание новых потоков выглядит не одинаково
 //TODO добавить возможность отсылать гейм матчеру состояние комнат
 
-namespace AmoebaBattleServer01
+namespace OldServer
 {
     static class Program
     {
@@ -34,7 +34,7 @@ namespace AmoebaBattleServer01
 
         private static void StartListenPlayersInAnotherThread(int port)
         {
-            BentMediator mediator = new BentMediator();
+            NetworkMediator mediator = new NetworkMediator();
             var udpBattleConnection = new UdpBattleConnection(mediator);
             udpBattleConnection.SetConnection(port);
             udpBattleConnection.StartReceiveThread();
