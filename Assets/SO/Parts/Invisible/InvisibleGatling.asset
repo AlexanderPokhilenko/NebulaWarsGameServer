@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd54a05b891909b4cb529af3843f701f, type: 3}
-  m_Name: InvisibleDefaultPlasma
+  m_Name: InvisibleGatling
   m_EditorClassIdentifier: 
   typeId: 0
   colliderInfo: {fileID: 0}
-  cannonInfo: {fileID: 0}
+  cannonInfo: {fileID: 11400000, guid: a8f82b76e9f0154499381bf03cd291bd, type: 2}
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0

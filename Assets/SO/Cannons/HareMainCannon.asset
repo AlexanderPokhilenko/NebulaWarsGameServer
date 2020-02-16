@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57b6283d30af1b469ce378688514b6e, type: 3}
   m_Name: HareMainCannon
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
-  cooldown: 0
-  bulletObject: {fileID: 0}
+  position: {x: 0.9, y: 0}
+  cooldown: 1.5
+  bulletObject: {fileID: 11400000, guid: ff212731dbb044549894a73732b727be, type: 2}

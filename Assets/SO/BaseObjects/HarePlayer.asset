@@ -12,14 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
   m_Name: HarePlayer
   m_EditorClassIdentifier: 
-  typeId: 0
-  colliderInfo: {fileID: 0}
-  cannonInfo: {fileID: 0}
+  typeId: 19
+  colliderInfo: {fileID: 11400000, guid: 1023ab3cf1dab8a45842200785948b7b, type: 2}
+  cannonInfo: {fileID: 11400000, guid: 423f8673002a4fc4783dcedbdfdda12b, type: 2}
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
-  parts: []
-  maxVelocity: 0
-  maxAngularVelocity: 0
+  parts:
+  - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
+    position: {x: -0.1, y: -0.84}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
+    position: {x: -0.1, y: -0.63}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
+    position: {x: -0.1, y: 0.63}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
+    position: {x: -0.1, y: 0.84}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  maxVelocity: 3
+  maxAngularVelocity: 135
   isNotDecelerating: 0
-  maxHealthPoints: 0
+  maxHealthPoints: 150
