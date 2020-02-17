@@ -60,14 +60,19 @@ namespace ZeroFormatter
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.Common.DeliveryConfirmationMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.Common.DeliveryConfirmationMessage>(structFormatter));
             }
             {
-                var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
-                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>.Register(structFormatter);
-                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>(structFormatter));
+                var structFormatter = new ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage>.Register(structFormatter);
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage>(structFormatter));
             }
             {
                 var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage>.Register(structFormatter);
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage>(structFormatter));
+            }
+            {
+                var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>.Register(structFormatter);
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>(structFormatter));
             }
             {
                 var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.MessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
@@ -1049,62 +1054,55 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Commo
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 168
-namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
+namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.PlayerToServer
 {
     using global::System;
     using global::ZeroFormatter.Formatters;
     using global::ZeroFormatter.Internal;
     using global::ZeroFormatter.Segments;
 
-    public class PlayerPingMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>
+    public class BattleExitMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage>
         where TTypeResolver : ITypeResolver, new()
     {
         readonly Formatter<TTypeResolver, int> formatter0;
-        readonly Formatter<TTypeResolver, int> formatter1;
         
         public override bool NoUseDirtyTracker
         {
             get
             {
                 return formatter0.NoUseDirtyTracker
-                    && formatter1.NoUseDirtyTracker
                 ;
             }
         }
 
-        public PlayerPingMessageFormatter()
+        public BattleExitMessageFormatter()
         {
             formatter0 = Formatter<TTypeResolver, int>.Default;
-            formatter1 = Formatter<TTypeResolver, int>.Default;
             
         }
 
         public override int? GetLength()
         {
-            return 8;
+            return 4;
         }
 
-        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage value)
+        public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 4);
             var startOffset = offset;
-            offset += formatter0.Serialize(ref bytes, offset, value.TemporaryId);
-            offset += formatter1.Serialize(ref bytes, offset, value.GameRoomNumber);
+            offset += formatter0.Serialize(ref bytes, offset, value.PlayerId);
             return offset - startOffset;
         }
 
-        public override global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        public override global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
         {
             byteSize = 0;
             int size;
             var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
             offset += size;
             byteSize += size;
-            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
-            offset += size;
-            byteSize += size;
             
-            return new global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage(item0, item1);
+            return new global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage(item0);
         }
     }
 
@@ -1196,6 +1194,76 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
             byteSize += size;
             
             return new global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage(item0, item1, item2, item3, item4);
+        }
+    }
+
+
+}
+
+#pragma warning restore 168
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
+#pragma warning disable 168
+namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
+{
+    using global::System;
+    using global::ZeroFormatter.Formatters;
+    using global::ZeroFormatter.Internal;
+    using global::ZeroFormatter.Segments;
+
+    public class PlayerPingMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, int> formatter1;
+        
+        public override bool NoUseDirtyTracker
+        {
+            get
+            {
+                return formatter0.NoUseDirtyTracker
+                    && formatter1.NoUseDirtyTracker
+                ;
+            }
+        }
+
+        public PlayerPingMessageFormatter()
+        {
+            formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter1 = Formatter<TTypeResolver, int>.Default;
+            
+        }
+
+        public override int? GetLength()
+        {
+            return 8;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage value)
+        {
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
+            var startOffset = offset;
+            offset += formatter0.Serialize(ref bytes, offset, value.TemporaryId);
+            offset += formatter1.Serialize(ref bytes, offset, value.GameRoomNumber);
+            return offset - startOffset;
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 0;
+            int size;
+            var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            
+            return new global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping.PlayerPingMessage(item0, item1);
         }
     }
 
