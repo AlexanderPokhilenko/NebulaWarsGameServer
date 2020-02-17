@@ -106,12 +106,9 @@
                 <e p="DeliveryConfirmationMessage.cs" t="Include" />
               </e>
               <e p="PlayerToServer" t="Include">
-                <e p="Ping" t="Include">
-                  <e p="PlayerPingMessage.cs" t="Include" />
-                </e>
-                <e p="UserInputMessage" t="Include">
-                  <e p="PlayerInputMessage.cs" t="Include" />
-                </e>
+                <e p="BattleExitMessage.cs" t="Include" />
+                <e p="PlayerInputMessage.cs" t="Include" />
+                <e p="PlayerPingMessage.cs" t="Include" />
               </e>
               <e p="ServerToPlayer" t="Include">
                 <e p="PositionMessages" t="Include">
@@ -129,60 +126,6 @@
           <e p="Unity_Releases_1.6.4" t="Include">
             <e p="ZeroFormatterGenerated.cs" t="Include" />
           </e>
-        </e>
-        <e p="OldServer" t="Include">
-          <e p="Experimental" t="Include">
-            <e p="GameEngine" t="Include">
-              <e p="Battle.cs" t="Include" />
-              <e p="BattlesStorage.cs" t="Include" />
-              <e p="Clock.cs" t="Include" />
-              <e p="GameEngineMediator.cs" t="Include" />
-              <e p="StaticMessageSorters" t="Include">
-                <e p="PingLogger.cs" t="Include" />
-                <e p="StaticInputMessagesSorter.cs" t="Include" />
-              </e>
-              <e p="Systems" t="Include">
-                <e p="InputDeletingSystem.cs" t="Include" />
-                <e p="NetworkSenderSystem.cs" t="Include" />
-                <e p="PlayerAttackHandlerSystem.cs" t="Include" />
-                <e p="PlayerMovementHandlerSystem.cs" t="Include" />
-                <e p="PlayersInitSystem.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Http" t="Include">
-              <e p="BattleCreatorHandler.cs" t="Include" />
-              <e p="GameRoomDeletingNotifier.cs" t="Include" />
-              <e p="HttpListenerFactory.cs" t="Include" />
-              <e p="HttpListenerWrapper.cs" t="Include" />
-              <e p="HttpMessageHandlers.cs" t="Include" />
-            </e>
-            <e p="Udp" t="Include">
-              <e p="Connection" t="Include">
-                <e p="UdpBattleConnection.cs" t="Include" />
-                <e p="UdpConnection.cs" t="Include" />
-              </e>
-              <e p="MessageProcessing" t="Include">
-                <e p="Handlers" t="Include">
-                  <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
-                  <e p="IMessageHandler.cs" t="Include" />
-                  <e p="InputMessageHandler.cs" t="Include" />
-                  <e p="PingMessageHandler.cs" t="Include" />
-                  <e p="RudpConfirmationSender.cs" t="Include" />
-                </e>
-                <e p="MessageProcessor.cs" t="Include" />
-              </e>
-              <e p="NetworkMediator.cs" t="Include" />
-              <e p="Sending" t="Include">
-                <e p="UdpSendDeliveryConfirmationMessage.cs" t="Include" />
-                <e p="UdpSendPositions.cs" t="Include" />
-              </e>
-              <e p="Storage" t="Include">
-                <e p="PlayersIpAddressesStorage.cs" t="Include" />
-                <e p="RudpStorage.cs" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="Program.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
           <e p="CollidersDrawer.cs" t="Include" />
@@ -213,6 +156,58 @@
           </e>
           <e p="StubSpawner.cs" t="Include" />
           <e p="ViewTypeId.cs" t="Include" />
+        </e>
+        <e p="Server" t="Include">
+          <e p="GameEngine" t="Include">
+            <e p="Battle.cs" t="Include" />
+            <e p="BattlesStorage.cs" t="Include" />
+            <e p="Clock.cs" t="Include" />
+            <e p="GameEngineMediator.cs" t="Include" />
+            <e p="StaticMessageSorters" t="Include">
+              <e p="PingLogger.cs" t="Include" />
+              <e p="StaticInputMessagesSorter.cs" t="Include" />
+            </e>
+            <e p="Systems" t="Include">
+              <e p="InputDeletingSystem.cs" t="Include" />
+              <e p="NetworkSenderSystem.cs" t="Include" />
+              <e p="PlayerAttackHandlerSystem.cs" t="Include" />
+              <e p="PlayerMovementHandlerSystem.cs" t="Include" />
+              <e p="PlayersInitSystem.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Http" t="Include">
+            <e p="BattleCreatorHandler.cs" t="Include" />
+            <e p="GameRoomDeletingNotifier.cs" t="Include" />
+            <e p="HttpListenerFactory.cs" t="Include" />
+            <e p="HttpListenerWrapper.cs" t="Include" />
+            <e p="HttpMessageHandlers.cs" t="Include" />
+          </e>
+          <e p="Program.cs" t="Include" />
+          <e p="Udp" t="Include">
+            <e p="Connection" t="Include">
+              <e p="UdpBattleConnection.cs" t="Include" />
+              <e p="UdpConnection.cs" t="Include" />
+            </e>
+            <e p="MessageProcessing" t="Include">
+              <e p="Handlers" t="Include">
+                <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
+                <e p="IMessageHandler.cs" t="Include" />
+                <e p="InputMessageHandler.cs" t="Include" />
+                <e p="PingMessageHandler.cs" t="Include" />
+                <e p="PlayerExitMessageHandler.cs" t="Include" />
+                <e p="RudpConfirmationSender.cs" t="Include" />
+              </e>
+              <e p="MessageProcessor.cs" t="Include" />
+            </e>
+            <e p="NetworkMediator.cs" t="Include" />
+            <e p="Sending" t="Include">
+              <e p="UdpSendUtils.cs" t="Include" />
+            </e>
+            <e p="Storage" t="Include">
+              <e p="IpAddressesStorage.cs" t="Include" />
+              <e p="RudpStorage.cs" t="Include" />
+            </e>
+          </e>
         </e>
         <e p="ServerController.cs" t="Include" />
         <e p="Sources" t="Include">

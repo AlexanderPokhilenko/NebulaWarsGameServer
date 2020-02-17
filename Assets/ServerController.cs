@@ -1,4 +1,4 @@
-﻿using OldServer;
+﻿using Server;
 using UnityEngine;
 
 public class ServerController : MonoBehaviour
