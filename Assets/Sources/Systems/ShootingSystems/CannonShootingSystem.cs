@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
 
@@ -20,19 +21,26 @@ public class CannonShootingSystem : IExecuteSystem
         {
             var bullet = e.cannon.bullet;
             var bulletEntity = bullet.CreateEntity(gameContext);
+            var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
+                bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width / 2 :
+                throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался PathCollider.");
             // для быстрого перевода из локальной в глобальную системы координат
             bulletEntity.AddParent(e.id.value);
-            bulletEntity.AddPosition(e.cannon.position + Vector2.right * bulletEntity.circleCollider.radius);
+            bulletEntity.AddPosition(e.cannon.position + Vector2.right * bulletDeltaSize);
             bulletEntity.AddDirection(0);
             bulletEntity.AddVelocity(Vector2.right * bullet.maxVelocity);
             bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity);
+
             bulletEntity.ToGlobal(gameContext, out var globalPosition, out var globalAngle, out var layer, out var globalVelocity, out var globalAngularVelocity);
-            bulletEntity.RemoveParent();
-            // замена локальных координат на глобальные
-            bulletEntity.ReplacePosition(globalPosition);
-            bulletEntity.ReplaceDirection(globalAngle);
-            bulletEntity.ReplaceVelocity(globalVelocity);
-            bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
+            if (bullet.detachable)
+            {
+                bulletEntity.RemoveParent();
+                // замена локальных координат на глобальные
+                bulletEntity.ReplacePosition(globalPosition);
+                bulletEntity.ReplaceDirection(globalAngle);
+                bulletEntity.ReplaceVelocity(globalVelocity);
+                bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
+            }
             bulletEntity.AddGlobalTransform(globalPosition, globalAngle);
         }
     }

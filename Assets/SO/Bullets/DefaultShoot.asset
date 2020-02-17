@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a7b70f268384f145b23befb2a68a0b7, type: 3}
-  m_Name: MediumPlasma
+  m_Name: DefaultShoot
   m_EditorClassIdentifier: 
-  typeId: 14
-  colliderInfo: {fileID: 11400000, guid: acf7fff9946de2c4bba5b331335b8f49, type: 2}
+  typeId: 18
+  colliderInfo: {fileID: 11400000, guid: 0dfb688b16443e542b992befb48006a8, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 1
-  collisionDamage: 15
+  collisionDamage: 5
   parts: []
-  maxVelocity: 4.5
+  maxVelocity: 7
   maxAngularVelocity: 0
   isNotDecelerating: 1
   isCollapses: 1
-  lifetime: 5
+  lifetime: 4
   detachable: 1
   parentDependent: 0

@@ -16,5 +16,8 @@
     DefaultPlasma,
     MediumPlasma,
     DefaultTurret,
-    MediumTurret
+    MediumTurret,
+    DefaultLaserBeam,
+    DefaultShoot,
+    HareShip
 }

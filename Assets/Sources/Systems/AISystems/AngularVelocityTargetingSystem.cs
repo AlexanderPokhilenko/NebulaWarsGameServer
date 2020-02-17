@@ -20,9 +20,22 @@ public sealed class AngularVelocityTargetingSystem : IExecuteSystem
     {
         foreach (var e in targetingGroup)
         {
+            var currentAngle = e.GetGlobalAngle(gameContext);
+
             var targetAngle = e.directionTargeting.angle;
 
-            var angularVelocity = targetAngle / Clock.deltaTime;
+            var rotatingDelta = targetAngle - currentAngle;
+
+            if (rotatingDelta > 180f)
+            {
+                rotatingDelta -= 360f;
+            }
+            else if (rotatingDelta < -180f)
+            {
+                rotatingDelta += 360f;
+            }
+
+            var angularVelocity = rotatingDelta / Clock.deltaTime;
             //TODO: возможно, стоит учитывать глобальную угловую скорость
             if (e.hasAngularVelocity)
             {
