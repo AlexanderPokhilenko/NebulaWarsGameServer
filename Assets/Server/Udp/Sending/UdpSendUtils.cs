@@ -10,17 +10,18 @@ namespace Server.Udp.Sending
 {
     public static class UdpSendUtils
     {
-        public static void SendPositions(int targetPlayerId, GameEntity[] withPosition)
+        public static void SendPositions(int targetPlayerId, IEnumerable<GameEntity> withPosition)
         {
+            var gameEntities = withPosition.ToList();
             var mes = new PositionsMessage
             {
-                EntitiesInfo = new Dictionary<int, ViewTransform>(withPosition.Length),
+                EntitiesInfo = new Dictionary<int, ViewTransform>(gameEntities.Count),
                 //TODO: перенести установление в UDP с подтверждением
-                PlayerEntityId = withPosition.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId)
+                PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId)
                     .id.value
             };
 
-            foreach (var gameEntity in withPosition)
+            foreach (var gameEntity in gameEntities)
             {
                 var gt = gameEntity.globalTransform;
                 var typeId = gameEntity.viewType.id;
