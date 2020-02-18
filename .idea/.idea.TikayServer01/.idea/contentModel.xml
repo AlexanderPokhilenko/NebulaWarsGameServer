@@ -162,11 +162,14 @@
             <e p="Battle.cs" t="Include" />
             <e p="BattlesStorage.cs" t="Include" />
             <e p="Clock.cs" t="Include" />
-            <e p="GameEngineMediator.cs" t="Include" />
-            <e p="StaticMessageSorters" t="Include">
+            <e p="Experimental" t="Include">
+              <e p="ContainerRudpSender.cs" t="Include" />
+              <e p="IRudpSender.cs" t="Include" />
               <e p="PingLogger.cs" t="Include" />
+              <e p="SimpleRudpSender.cs" t="Include" />
               <e p="StaticInputMessagesSorter.cs" t="Include" />
             </e>
+            <e p="GameEngineMediator.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="InputDeletingSystem.cs" t="Include" />
               <e p="NetworkSenderSystem.cs" t="Include" />
@@ -176,7 +179,7 @@
             </e>
           </e>
           <e p="Http" t="Include">
-            <e p="BattleCreatorHandler.cs" t="Include" />
+            <e p="BattleCreator.cs" t="Include" />
             <e p="GameRoomDeletingNotifier.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="HttpListenerWrapper.cs" t="Include" />
@@ -204,9 +207,13 @@
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">
+              <e p="ByteArrayRudpStorage.cs" t="Include" />
               <e p="IpAddressesStorage.cs" t="Include" />
-              <e p="RudpStorage.cs" t="Include" />
+              <e p="SimpleRudpStorage.cs" t="Include" />
             </e>
+          </e>
+          <e p="Utils" t="Include">
+            <e p="Log.cs" t="Include" />
           </e>
         </e>
         <e p="ServerController.cs" t="Include" />

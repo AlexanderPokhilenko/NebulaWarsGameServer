@@ -2,6 +2,7 @@
 using System.Net;
 using Libraries.NetworkLibrary.Udp.PlayerToServer;
 using NetworkLibrary.NetworkLibrary.Udp;
+using Server.Utils;
 using UnityEngine;
 using ZeroFormatter;
 
@@ -18,7 +19,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 
             if (NetworkMediator.IpAddressesStorage.TryRemovePlayerIp(exitMessage.PlayerId))
             {
-                Debug.LogWarning($"Игрок с id {exitMessage.PlayerId} удалён из списка");
+                Log.Warning($"Игрок с id {exitMessage.PlayerId} удалён из списка");
             }
         }
     }

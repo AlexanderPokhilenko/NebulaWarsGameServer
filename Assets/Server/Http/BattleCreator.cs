@@ -2,6 +2,7 @@
 using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.Http
@@ -9,7 +10,7 @@ namespace Server.Http
     /// <summary>
     /// Добавляет комнаты в очередь на создание.
     /// </summary>
-    internal class BattleCreatorHandler
+    internal class BattleCreator
     {
         public GameRoomValidationResult Handle(GameRoomData roomData)
         {
@@ -92,14 +93,14 @@ namespace Server.Http
 
         private static void DebugLogGameRoom(GameRoomData roomData)
         {
-            Debug.Log("Информация об игрой комнате");
-            Debug.Log($"{nameof(roomData.GameRoomNumber)}  {roomData.GameRoomNumber}");
-            Debug.Log($"{nameof(roomData.GameServerIp)}  {roomData.GameServerIp}");
-            Debug.Log($"{nameof(roomData.GameServerPort)}  {roomData.GameServerPort}");
-            Debug.Log("Игроки");
+            Log.Info("Информация об игрой комнате");
+            Log.Info($"{nameof(roomData.GameRoomNumber)}  {roomData.GameRoomNumber}");
+            Log.Info($"{nameof(roomData.GameServerIp)}  {roomData.GameServerIp}");
+            Log.Info($"{nameof(roomData.GameServerPort)}  {roomData.GameServerPort}");
+            Log.Info("Игроки");
             foreach (var player in roomData.Players)
             {
-                Debug.Log($"PlayerGoogleId = {player.GoogleId}");
+                Log.Info($"PlayerGoogleId = {player.GoogleId}");
             }
         }
     }

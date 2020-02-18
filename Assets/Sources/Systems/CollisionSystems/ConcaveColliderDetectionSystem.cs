@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entitas;
+using Server.Utils;
 using UnityEngine;
 
 public class ConcaveColliderDetectionSystem : ReactiveSystem<GameEntity>
@@ -25,7 +26,7 @@ public class ConcaveColliderDetectionSystem : ReactiveSystem<GameEntity>
         foreach (var e in entities)
         {
             //TODO: как-то обрабатывать вогнутые фигуры
-            Debug.LogError($"Concave entity detected! {string.Join("; ", e.pathCollider.dots)}");
+            Log.Error($"Concave entity detected! {string.Join("; ", e.pathCollider.dots)}");
             e.isCollidable = false;
         }
     }

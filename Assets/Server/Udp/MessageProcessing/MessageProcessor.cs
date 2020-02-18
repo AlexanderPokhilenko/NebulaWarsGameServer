@@ -13,6 +13,7 @@ namespace Server.Udp.MessageProcessing
         private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
         private readonly PlayerExitMessageHandler exitMessageHandler = new PlayerExitMessageHandler();
         
+        
         public void Handle(Message message, IPEndPoint sender)
         {
             if (message.NeedResponse) confirmationSender.Handle(message, sender);

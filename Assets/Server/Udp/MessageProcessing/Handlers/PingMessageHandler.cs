@@ -2,7 +2,8 @@
 using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
-using Server.GameEngine.StaticMessageSorters;
+using Server.GameEngine.Experimental;
+using Server.Utils;
 using UnityEngine;
 using ZeroFormatter;
 
@@ -26,11 +27,11 @@ namespace Server.Udp.MessageProcessing.Handlers
             if (!NetworkMediator.IpAddressesStorage.IsIpAddressAlreadyExists(sender))
             {
                 NetworkMediator.IpAddressesStorage.AddPlayer(playerId, sender);
-                Debug.Log($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
+                Log.Info($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
             }
             else
             {
-                // Debug.Log($"Такой Ip уже был {sender.Address} {sender.Port} {sender.AddressFamily}");
+                // Log.Info($"Такой Ip уже был {sender.Address} {sender.Port} {sender.AddressFamily}");
             }
         }
         
@@ -39,7 +40,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             if (PingLogger.LastPingTime.ContainsKey(playerId))
             {
                 PingLogger.LastPingTime[playerId] = DateTime.UtcNow;
-                // Debug.Log($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
+                // Log.Info($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
             }
             else
             {

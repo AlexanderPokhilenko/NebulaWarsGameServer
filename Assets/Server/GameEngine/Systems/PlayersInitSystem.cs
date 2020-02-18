@@ -1,5 +1,6 @@
 ﻿using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
+using Server.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,11 +24,11 @@ namespace Server.GameEngine.Systems
         
         public void Initialize()
         {
-            Debug.Log($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
+            Log.Info($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
 
             foreach (var playerInfo in roomData.Players)
             {
-                Debug.Log($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
+                Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
                 
                 var gameEntity = playerPrototype.CreateEntity(gameContext);
                 gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);

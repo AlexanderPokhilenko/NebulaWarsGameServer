@@ -3,9 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Server.Utils;
 using UnityEngine;
-
-//TODO http клиент создаётся на каждый запрос
 
 namespace Server.Http
 {
@@ -59,14 +58,14 @@ namespace Server.Http
                 {
                     var response = await client.DeleteAsync(url);
                     if (response.IsSuccessStatusCode)
-                        Debug.Log("Успешная я о удалении комнаты");
+                        Log.Info("Успешная я о удалении комнаты");
                     else
                         throw new Exception("Не удалось отправить сообщение о удалении комнаты");
                     
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Брошено исключение при отправке уведомления о удалении комнаты. "+e.Message);
+                    Log.Info("Брошено исключение при отправке уведомления о удалении комнаты. "+e.Message);
                 }
             }
         }

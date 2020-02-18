@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using NetworkLibrary.NetworkLibrary.Http;
-using UnityEngine;
+using Server.Utils;
 using ZeroFormatter;
 
 namespace Server.Http
@@ -58,7 +58,7 @@ namespace Server.Http
 
                 if (result != null)
                 {
-                    Log(result);
+                    Log.Info(result);
                     byte[] responseData = ZeroFormatterSerializer.Serialize(result);
                     context.Response.StatusCode = 200;
                     context.Response.ContentLength64 = responseData.Length;
@@ -76,10 +76,10 @@ namespace Server.Http
             }
         }
 
-        private void Log(GameRoomValidationResult result)
+        private void LogGameRoomValidationResult(GameRoomValidationResult result)
         {
-            Log.InfoWarning(result.ResultEnum.ToString());
-            Log.InfoWarning(result.ProblemPlayersIds?.Length);
+            Log.Warning(result.ResultEnum.ToString());
+            Log.Warning(result.ProblemPlayersIds?.Length);
         }
 
         private GameRoomValidationResult HandleBytes(byte[] data)

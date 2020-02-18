@@ -18,7 +18,7 @@ namespace Server.GameEngine.Experimental
         {
             foreach (var playerId in battlesStorage.PlayersToSessions.Keys)
             {
-                var messages = RudpStorage.GetReliableMessages(playerId);
+                var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count!=0)
                 {
                     Log.Error("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);

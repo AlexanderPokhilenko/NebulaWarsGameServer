@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entitas;
+using Server.Utils;
 using UnityEngine;
 
 public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
@@ -34,7 +35,7 @@ public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
                 firstParent = gameContext.GetEntityWithId(firstParent.parent.id);
                 if (firstParent.id.value == entityId)
                 {
-                    Log.InfoWarning("Parent recursion detected for entity with id " + entityId);
+                    Log.Warning("Parent recursion detected for entity with id " + entityId);
                     e.RemoveParent();
                     break;
                 }

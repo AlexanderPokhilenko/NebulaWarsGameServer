@@ -2,6 +2,7 @@
 using Libraries.NetworkLibrary.Udp.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Sending;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.Udp.MessageProcessing.Handlers
@@ -13,7 +14,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     {
         public void Handle(Message message, IPEndPoint sender)
         {
-            Debug.LogError("пришло rudp");
+            Log.Error("пришло rudp");
             DeliveryConfirmationMessage mes = new DeliveryConfirmationMessage
             {
                 MessageNumberThatConfirms = message.MessageId

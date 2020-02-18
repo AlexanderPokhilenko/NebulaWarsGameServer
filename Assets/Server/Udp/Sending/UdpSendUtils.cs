@@ -51,6 +51,19 @@ namespace Server.Udp.Sending
             }
         }
         
+        public static void SendMessage(byte[] serializedMessage, int playerId)
+        {
+            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
+            if (address != null)
+            {
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            }
+            else
+            {
+                throw new Exception("Не удаётся отправить udp сообщение так как не известен ip этого игрока "+playerId);
+            }
+        }
+        
         public static void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage mes, IPEndPoint address)
         {
             if (address != null)

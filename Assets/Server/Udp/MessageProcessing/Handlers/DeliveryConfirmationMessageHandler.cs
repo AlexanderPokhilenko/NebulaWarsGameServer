@@ -7,18 +7,23 @@ using ZeroFormatter;
 namespace Server.Udp.MessageProcessing.Handlers
 {
     /// <summary>
-    /// Обрабатывает подтверждение доставки
+    /// Обрабатывает подтверждение доставки.
     /// </summary>
     public class DeliveryConfirmationMessageHandler:IMessageHandler
     {
+        private readonly ByteArrayRudpStorage rudpStorage;
+
+        public DeliveryConfirmationMessageHandler()
+        {
+            rudpStorage = ByteArrayRudpStorage.Instance;
+        }
+        
         public void Handle(Message message, IPEndPoint sender)
         {
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(message.SerializedMessage);
-            
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-
-            RudpStorage.RemoveMessage(messageIdToConfirm);
+            rudpStorage.RemoveMessage(messageIdToConfirm);
         }
     }
 }

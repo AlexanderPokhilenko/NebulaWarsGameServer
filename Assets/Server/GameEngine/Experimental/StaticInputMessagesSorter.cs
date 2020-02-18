@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
-namespace Server.GameEngine.StaticMessageSorters
+namespace Server.GameEngine.Experimental
 {
     public static class StaticInputMessagesSorter
     {

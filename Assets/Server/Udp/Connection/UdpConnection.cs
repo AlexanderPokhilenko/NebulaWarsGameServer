@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.Udp.Connection
@@ -20,10 +21,10 @@ namespace Server.Udp.Connection
             }
             catch (Exception e)
             {
-                Debug.Log("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
+                Log.Info("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
             }
             
-            Debug.Log("Создан udp клиент на порте " + listenPort);
+            Log.Info("Создан udp клиент на порте " + listenPort);
             return this;
         }
      
@@ -55,24 +56,24 @@ namespace Server.Udp.Connection
                 catch (SocketException e)
                 {
                     // 10004 thrown when socket is closed
-                    // if (e.ErrorCode != 10004) Debug.Log("Socket exception while receiving data from udp client: " + e.Message);
+                    // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving data from udp client: " + e.Message);
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Error receiving data from udp client: " + e.Message);
+                    Log.Info("Error receiving data from udp client: " + e.Message);
                 }
             }
         }
 
         public void Send(byte[] data, IPEndPoint endPoint)
         {
-            // Debug.Log($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
+            // Log.Info($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
             udpClient.Send(data, data.Length, endPoint);
         }
      
         public void Stop()
         {
-            Debug.Log("Остановка udp клиента");
+            Log.Info("Остановка udp клиента");
             isThreadRunning = false;
             receiveThread.Interrupt();
             udpClient.Close();
@@ -85,7 +86,7 @@ namespace Server.Udp.Connection
         /// <param name="endPoint"></param>
         protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
-            // Debug.Log($"Пришло сообщение размером в {data.Length} байт");
+            // Log.Info($"Пришло сообщение размером в {data.Length} байт");
         }
     }
 }

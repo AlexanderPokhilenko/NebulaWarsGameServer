@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.Http
@@ -7,13 +8,13 @@ namespace Server.Http
     {
         public static HttpListener CreateAndRunHttpListener(int port)
         {
-            Debug.Log("Настройка http слушателя на порту "+port);
+            Log.Info("Настройка http слушателя на порту "+port);
 
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add($"http://127.0.0.1:{port}/");
             listener.Start();
             
-            Debug.Log("Ожидание http подключений на порту "+port);
+            Log.Info("Ожидание http подключений на порту "+port);
 
             return listener;
         }
