@@ -34,7 +34,7 @@ public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
                 firstParent = gameContext.GetEntityWithId(firstParent.parent.id);
                 if (firstParent.id.value == entityId)
                 {
-                    Debug.LogWarning("Parent recursion detected for entity with id " + entityId);
+                    Log.InfoWarning("Parent recursion detected for entity with id " + entityId);
                     e.RemoveParent();
                     break;
                 }

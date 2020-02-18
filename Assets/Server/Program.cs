@@ -4,11 +4,6 @@ using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
 
-//TODO хранить массивы байт в rudp
-//TODO добавить удаление комнат
-//TODO добавить возможность отсылать гейм матчеру состояние комнат
-//TODO добавить созможность останавливать поток, который слушает udp
-
 namespace Server
 {
     static class Program

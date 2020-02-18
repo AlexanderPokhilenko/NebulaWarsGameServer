@@ -33,7 +33,7 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
             }
             else
             {
-                Debug.LogError("Объект с id " + e.id.value + " не имел GlobalTransform!");
+                Log.Error("Объект с id " + e.id.value + " не имел GlobalTransform!");
             }
         }
     }

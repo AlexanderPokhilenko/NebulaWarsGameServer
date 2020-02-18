@@ -26,7 +26,7 @@ namespace Server.Udp.Storage
         {
             if (playersIpAddresses.TryAdd(playerId, sender))
             {
-                Debug.Log($"Добавлен клиент с id={playerId}");
+                Log.Info($"Добавлен клиент с id={playerId}");
             }
             else
             {

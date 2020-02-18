@@ -17,7 +17,7 @@ namespace Server.GameEngine.StaticMessageSorters
             // {
             //     if ((now - pair.Value).TotalSeconds > maxDelaySeconds)
             //     {
-            //         Debug.Log($"Игрок с id = {pair.Key} не присылват пинг уже больше {maxDelaySeconds} секунд");
+            //         Log.Info($"Игрок с id = {pair.Key} не присылват пинг уже больше {maxDelaySeconds} секунд");
             //     }
             // }
         }

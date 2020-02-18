@@ -29,7 +29,7 @@ namespace Server.Http
              while(true)
              {
                  await HandleNextRequest();
-                 Debug.Log("Отправлен ответ по http");
+                 Log.Info("Отправлен ответ по http");
              }
              // ReSharper disable once FunctionNeverReturns
         }
@@ -41,7 +41,7 @@ namespace Server.Http
                 HttpListenerContext context = await listener.GetContextAsync();
                 HttpListenerRequest request = context.Request;
                 
-                // Debug.Log($"Client data content length {request.ContentLength64}");
+                // Log.Info($"Client data content length {request.ContentLength64}");
                 
                 Stream inputStream = request.InputStream;
                 byte[] data;
@@ -72,14 +72,14 @@ namespace Server.Http
             }
             catch (Exception e)
             {
-                Debug.LogError("Брошено исключение при обработке http запроса "+e.Message);
+                Log.Error("Брошено исключение при обработке http запроса "+e.Message);
             }
         }
 
         private void Log(GameRoomValidationResult result)
         {
-            Debug.LogWarning(result.ResultEnum.ToString());
-            Debug.LogWarning(result.ProblemPlayersIds?.Length);
+            Log.InfoWarning(result.ResultEnum.ToString());
+            Log.InfoWarning(result.ProblemPlayersIds?.Length);
         }
 
         private GameRoomValidationResult HandleBytes(byte[] data)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
-using UnityEngine;
+using Server.Utils;
 
 namespace Server.GameEngine
 {
@@ -39,7 +39,7 @@ namespace Server.GameEngine
                     {
                         PlayersToSessions.Add(player.TemporaryId, battle);
                     }
-                    Debug.Log("Создана новая комната");
+                    Log.Info("Создана новая комната");
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Server.GameEngine
         {
             while (finishedGameSessions.Count!=0)
             {
-                Debug.Log("Удаление игровой сессии");
+                Log.Info("Удаление игровой сессии");
                 int gameSessionNumber = finishedGameSessions.Dequeue();
                 var gameSession = GameSessions[gameSessionNumber];
                 var playersIds = gameSession.RoomData.Players.Select(player => player.TemporaryId);

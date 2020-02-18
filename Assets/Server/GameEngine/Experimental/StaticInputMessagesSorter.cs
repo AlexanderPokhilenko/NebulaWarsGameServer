@@ -44,7 +44,7 @@ namespace Server.GameEngine.StaticMessageSorters
                         }
 
                         action(inputEntity, value);
-                        //Debug.Log("Идентификатор: " + playerId + ", значение: " + value);
+                        //Log.Info("Идентификатор: " + playerId + ", значение: " + value);
                     }
                     else
                     {

@@ -16,7 +16,7 @@ namespace Server.GameEngine
         }
 
 #if UNITY_5_3_OR_NEWER
-        private const float tickDeltaSeconds = 1f / 20;
+        private const float TickDeltaSeconds = 1f / 20;
         public GameEngineMediator gameEngineMediator;
         private IEnumerator MakeTick()
         {
@@ -26,14 +26,14 @@ namespace Server.GameEngine
                 deltaTime = currentTime - prevTickTime;
                 Tick();
                 prevTickTime = currentTime;
-                yield return new WaitForSeconds(tickDeltaSeconds);
+                yield return new WaitForSeconds(TickDeltaSeconds);
             }
             // ReSharper disable once IteratorNeverReturns
         }
 
         public void StartEndlessLoop()
         {
-            prevTickTime = Time.time - tickDeltaSeconds;
+            prevTickTime = Time.time - TickDeltaSeconds;
             StartCoroutine(nameof(MakeTick));
         }
 #else

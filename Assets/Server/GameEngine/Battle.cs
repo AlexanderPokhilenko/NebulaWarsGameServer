@@ -1,6 +1,7 @@
 ﻿using System;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -21,14 +22,14 @@ namespace Server.GameEngine
 
         public void ConfigureSystems(GameRoomData roomData)
         {
-            Debug.Log("Создание новой комнаты номер = "+roomData.GameRoomNumber);
+            Log.Info("Создание новой комнаты номер = "+roomData.GameRoomNumber);
 
             RoomData = roomData;
             Contexts = new Contexts();
             Contexts.SubscribeId();
 #if UNITY_EDITOR
             CollidersDrawer.contextsList.Add(Contexts);
-            Debug.Log("Количество контекстов: " + CollidersDrawer.contextsList.Count);
+            Log.Info("Количество контекстов: " + CollidersDrawer.contextsList.Count);
 #endif
 
             systems = new Entitas.Systems()

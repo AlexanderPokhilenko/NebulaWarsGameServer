@@ -3,9 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Udp;
 
-//TODO перейти на MessageContainer
-//TODO хранить массивы байт, а не сообщения
-
 namespace Server.Udp.Storage
 {
     public static class RudpStorage

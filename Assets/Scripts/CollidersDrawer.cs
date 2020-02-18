@@ -62,7 +62,7 @@ public sealed class CollidersDrawer : MonoBehaviour
                  firstParent = gameContext.GetEntityWithId(firstParent.parent.id);
                  if (firstParent.id.value == e.id.value)
                  {
-                     Debug.LogError(nameof(CollidersDrawer) + " detected recursion!");
+                     Log.Error(nameof(CollidersDrawer) + " detected recursion!");
                      recursion = true;
                      break;
                  }

@@ -1,26 +1,38 @@
-﻿using Server.GameEngine.StaticMessageSorters;
-using Server.Udp.Sending;
-using Server.Udp.Storage;
+﻿using Server.GameEngine.Experimental;
+using Server.GameEngine.StaticMessageSorters;
 using UnityEngine;
 
 namespace Server.GameEngine
 {
     public class GameEngineMediator
     {
-        public static readonly BattlesStorage BattlesStorage = new BattlesStorage();
-        private readonly Clock clock;
+        private Clock clock;
+        private readonly IRudpSender rudpSender;
+        public static BattlesStorage BattlesStorage;
 
         public GameEngineMediator()
         {
-#if UNITY_5_3_OR_NEWER
-            var go = new GameObject("Clock");
-            clock = go.AddComponent<Clock>();
-            clock.gameEngineMediator = this;
-#else
-            clock = new Clock(this);
-#endif
+            BattlesStorage = new BattlesStorage();
+            rudpSender = new SimpleRudpSender(BattlesStorage);
+            InitClock();
         }
 
+        private void InitClock()
+        {
+            #if UNITY_5_3_OR_NEWER
+                var go = new GameObject("Clock");
+                clock = go.AddComponent<Clock>();
+                clock.gameEngineMediator = this;
+            #else
+                clock = new Clock(this);
+            #endif
+        }
+        
+        public void StartEndlessLoop()
+        {
+            clock.StartEndlessLoop();
+        }
+        
         public void Tick()
         {
             StaticInputMessagesSorter.Spread();
@@ -30,30 +42,8 @@ namespace Server.GameEngine
                 gameSession.Cleanup();
             }
             PingLogger.Log();
-            SendUnconfirmedMessages();
+            rudpSender.SendUnconfirmedMessages();
             BattlesStorage.UpdateGameSessionsState();
-        }
-
-        //TODO вынести
-        private void SendUnconfirmedMessages()
-        {
-            foreach (var playerId in BattlesStorage.PlayersToSessions.Keys)
-            {
-                var messages = RudpStorage.GetReliableMessages(playerId);
-                if (messages != null && messages.Count!=0)
-                {
-                    Debug.LogError("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);
-                    foreach (var message in messages)
-                    {
-                        UdpSendUtils.SendMessage(message, playerId);
-                    }
-                }
-            }
-        }
-
-        public void StartEndlessLoop()
-        {
-            clock.StartEndlessLoop();
         }
     }
 }
