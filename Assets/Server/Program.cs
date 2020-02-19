@@ -38,7 +38,7 @@ namespace Server
 
         private static void StartGameRoomDeletingNotifierThread()
         {
-            new Thread(() => new GameRoomDeletingNotifier().StartEndlessLoop().Wait()).Start();
+            new Thread(() => new MetaServerBattleDeletingNotifier().StartEndlessLoop().Wait()).Start();
         }
     }
 }

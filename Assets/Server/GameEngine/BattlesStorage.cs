@@ -28,6 +28,7 @@ namespace Server.GameEngine
             battles= new Dictionary<int, Battle>();
             playerToBattle = new Dictionary<int, Battle>();
         }
+        
         public void UpdateBattlesList()
         {
             CreateBattles();
@@ -63,7 +64,7 @@ namespace Server.GameEngine
                 ClearPlayers(playersIds);
                 NotifyPlayers(playersIds);
                 battles.Remove(battleNumber);
-                GameRoomDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
+                MetaServerBattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
             }
         }
 

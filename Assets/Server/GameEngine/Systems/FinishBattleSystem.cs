@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entitas;
+using Server.Utils;
+
 
 namespace Server.GameEngine.Systems
 {
@@ -27,16 +29,20 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            int playersNumber = playersGroup.AsEnumerable().Count();
-            switch (playersNumber)
+            int numberOfPlayers = playersGroup.AsEnumerable().Count();
+            switch (numberOfPlayers)
             {
                 case 0:
                     //все сдохли
+                    //такого быть не должно
                     battle.StopTicks();
                     break;
                 case 1 :
                     //есть победитель
                     battle.StopTicks();
+                    break;
+                default:
+                    Log.Warning("Минус игрок. Текущее кол-во: "+numberOfPlayers);
                     break;
             }
         }

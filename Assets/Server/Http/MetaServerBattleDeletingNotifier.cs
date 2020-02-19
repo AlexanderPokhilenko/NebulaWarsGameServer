@@ -11,7 +11,7 @@ namespace Server.Http
     /// <summary>
     /// Отправляет гейм матчеру уведомления при окончании боя.
     /// </summary>
-    public class GameRoomDeletingNotifier
+    public class MetaServerBattleDeletingNotifier
     {
         public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
 

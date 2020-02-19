@@ -47,7 +47,9 @@ namespace Server.GameEngine
                 .Add(new DestroySystems(Contexts))
                 .Add(new AISystems(Contexts))
                 .Add(new NetworkSenderSystem(Contexts))
-                .Add(new InputDeletingSystem(Contexts));
+                .Add(new InputDeletingSystem(Contexts))
+                .Add(new FinishBattleSystem(Contexts, this))
+                ;
 
             systems.Initialize();
 
@@ -59,7 +61,6 @@ namespace Server.GameEngine
             FinishBattleAfterDelayAsync(GameSessionGlobals.GameDuration, token);
 #pragma warning restore 4014
         }
-        
         
         private async Task FinishBattleAfterDelayAsync(TimeSpan delay, CancellationToken token)
         {
@@ -79,6 +80,7 @@ namespace Server.GameEngine
 
         public void StopTicks()
         {
+            Log.Error("Остановка боя.");
             delayedStopTokenSource.Cancel();
             battlesStorage.MarkBattleAsFinished(RoomData.GameRoomNumber);
         }
