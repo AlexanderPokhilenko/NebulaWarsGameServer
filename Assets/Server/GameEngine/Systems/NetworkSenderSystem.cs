@@ -27,10 +27,10 @@ namespace Server.GameEngine.Systems
                 UdpSendUtils.SendPositions(player.player.id, viewObjects.AsEnumerable());
             }
 
-            foreach (var playerWithHp in playersWithHp.AsEnumerable())
-            {
-                UdpSendUtils.SendHp(playerWithHp.player.id, playerWithHp.healthPoints.value);
-            }
+            // foreach (var playerWithHp in playersWithHp.AsEnumerable())
+            // {
+            //     UdpSendUtils.SendHp(playerWithHp.player.id, playerWithHp.healthPoints.value);
+            // }
         }
     }
 }

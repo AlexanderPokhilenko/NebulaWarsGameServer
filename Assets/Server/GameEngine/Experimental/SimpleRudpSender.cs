@@ -16,7 +16,7 @@ namespace Server.GameEngine.Experimental
 
         public void SendUnconfirmedMessages()
         {
-            foreach (var playerId in battlesStorage.PlayersToSessions.Keys)
+            foreach (var playerId in battlesStorage.playerToBattle.Keys)
             {
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count!=0)

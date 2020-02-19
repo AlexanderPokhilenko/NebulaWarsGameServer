@@ -8,7 +8,6 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Storage;
 using Server.Utils;
-using ZeroFormatter;
 
 //TODO некрасиво
 
@@ -93,6 +92,20 @@ namespace Server.Udp.Sending
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
                 ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            }
+        }
+
+        public static void SendBattleFinishMessage(int playerId)
+        {
+            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
+            BattleFinishMessage battleFinishMessage = new BattleFinishMessage();
+            if (address != null)
+            {
+                Log.Warning($"Отправка сообщения о завершении боя игроку с id {playerId}.");
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(battleFinishMessage, true, out uint messageId);
+                ByteArrayRudpStorage.Instance.AddMessage(playerId,  messageId, serializedMessage);
                 NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
             }
         }

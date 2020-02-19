@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Udp;
+using Server.Utils;
+using UnityEngine;
 using ZeroFormatter;
 
 //TODO я не смог в ioc поэтому впихнул синглтон. не делайте так.
@@ -78,6 +80,8 @@ namespace Server.Udp.Storage
                 
                 if(!unconfirmedMessages.TryRemove(playerId, out var dict))
                     throw new Exception("Ошибка удаления сообщения");
+                
+                Log.Info("Успешное удаление сообщения из коллекции");
             }
             else
             {

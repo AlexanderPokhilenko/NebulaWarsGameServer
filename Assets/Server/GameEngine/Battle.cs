@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.Utils;
@@ -7,29 +9,29 @@ namespace Server.GameEngine
 {
     public class Battle
     {
-        private Entitas.Systems systems;
         public Contexts Contexts;
         public GameRoomData RoomData;
-        private DateTime? gameStartTime;
-
-        private readonly BattlesStorage gameSessionsStorage;
-
-        public Battle(BattlesStorage gameSessionsStorage)
+        
+        private Entitas.Systems systems;
+        private readonly BattlesStorage battlesStorage;
+        private CancellationTokenSource delayedStopTokenSource;
+        public Battle(BattlesStorage battlesStorage)
         {
-            this.gameSessionsStorage = gameSessionsStorage;
+            this.battlesStorage = battlesStorage;
         }
 
-        public void ConfigureSystems(GameRoomData roomData)
+        public void Start(GameRoomData roomData)
         {
             Log.Info("Создание новой комнаты номер = "+roomData.GameRoomNumber);
 
             RoomData = roomData;
             Contexts = new Contexts();
             Contexts.SubscribeId();
-#if UNITY_EDITOR
-            CollidersDrawer.contextsList.Add(Contexts);
-            Log.Info("Количество контекстов: " + CollidersDrawer.contextsList.Count);
-#endif
+            
+            #if UNITY_EDITOR
+                CollidersDrawer.contextsList.Add(Contexts);
+                Log.Info("Количество контекстов: " + CollidersDrawer.contextsList.Count);
+            #endif
 
             systems = new Entitas.Systems()
                 .Add(new PlayersInitSystem(Contexts, roomData))
@@ -48,42 +50,37 @@ namespace Server.GameEngine
                 .Add(new InputDeletingSystem(Contexts));
 
             systems.Initialize();
-            gameStartTime = DateTime.UtcNow;
+
+            
+            delayedStopTokenSource = new CancellationTokenSource();
+            var token = delayedStopTokenSource.Token;
+            
+#pragma warning disable 4014
+            FinishBattleAfterDelayAsync(GameSessionGlobals.GameDuration, token);
+#pragma warning restore 4014
+        }
+        
+        
+        private async Task FinishBattleAfterDelayAsync(TimeSpan delay, CancellationToken token)
+        {
+            await Task.Delay(delay, token);
+            StopTicks();
         }
         
         public void Execute()
         {
-            if (IsSessionTimedOut())
-            {
-                MarkGameAsFinished();
-                return;
-            }
             systems.Execute();
-        }
-
-        private bool IsSessionTimedOut()
-        {
-            if (gameStartTime != null)
-            {
-                TimeSpan gameDuration = DateTime.UtcNow - gameStartTime.Value;
-                return gameDuration > GameSessionGlobals.GameDuration;
-            }
-            return false;
-        }
-
-        private void MarkGameAsFinished()
-        {
-            gameSessionsStorage.MarkGameAsFinished(RoomData.GameRoomNumber);
         }
 
         public void Cleanup()
         {
             systems.Cleanup();
         }
-    }
 
-    public static class GameSessionGlobals
-    {
-        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,900);
-    } 
+        public void StopTicks()
+        {
+            delayedStopTokenSource.Cancel();
+            battlesStorage.MarkBattleAsFinished(RoomData.GameRoomNumber);
+        }
+    }
 }

@@ -45,7 +45,7 @@ namespace Server.Http
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in roomData.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineMediator.BattlesStorage.PlayersToSessions.ContainsKey(playerId))
+                if (GameEngineMediator.BattlesStorage.playerToBattle.ContainsKey(playerId))
                 {
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
@@ -59,7 +59,7 @@ namespace Server.Http
             if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
-            return !GameEngineMediator.BattlesStorage.GameSessions.ContainsKey(roomData.GameRoomNumber);
+            return !GameEngineMediator.BattlesStorage.battles.ContainsKey(roomData.GameRoomNumber);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -88,7 +88,7 @@ namespace Server.Http
                 throw new Exception("Игра ещё не инициализирована.");
             
             
-            GameEngineMediator.BattlesStorage.RoomsToCreate.Enqueue(roomData);
+            GameEngineMediator.BattlesStorage.battlesToCreate.Enqueue(roomData);
         }
 
         private static void DebugLogGameRoom(GameRoomData roomData)

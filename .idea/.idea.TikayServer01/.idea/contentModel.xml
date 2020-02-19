@@ -111,6 +111,7 @@
                 <e p="PlayerPingMessage.cs" t="Include" />
               </e>
               <e p="ServerToPlayer" t="Include">
+                <e p="BattleFinishMessage.cs" t="Include" />
                 <e p="HealthPoints.cs" t="Include" />
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
@@ -171,7 +172,9 @@
               <e p="StaticInputMessagesSorter.cs" t="Include" />
             </e>
             <e p="GameEngineMediator.cs" t="Include" />
+            <e p="GameSessionGlobals.cs" t="Include" />
             <e p="Systems" t="Include">
+              <e p="FinishBattleSystem.cs" t="Include" />
               <e p="InputDeletingSystem.cs" t="Include" />
               <e p="NetworkSenderSystem.cs" t="Include" />
               <e p="PlayerAttackHandlerSystem.cs" t="Include" />
@@ -194,11 +197,11 @@
             </e>
             <e p="MessageProcessing" t="Include">
               <e p="Handlers" t="Include">
-                <e p="DeliveryConfirmationMessageHandler.cs" t="Include" />
                 <e p="IMessageHandler.cs" t="Include" />
                 <e p="InputMessageHandler.cs" t="Include" />
                 <e p="PingMessageHandler.cs" t="Include" />
                 <e p="PlayerExitMessageHandler.cs" t="Include" />
+                <e p="RudpConfirmationReceiver.cs" t="Include" />
                 <e p="RudpConfirmationSender.cs" t="Include" />
               </e>
               <e p="MessageProcessor.cs" t="Include" />

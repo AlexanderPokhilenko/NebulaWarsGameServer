@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Server.Udp.MessageProcessing.Handlers
 {
     /// <summary>
-    /// Отправляет сообщение с подтверждением доставки
+    /// Отправляет подтверждение доставки.
     /// </summary>
     public class RudpConfirmationSender:IMessageHandler
     {
