@@ -23,7 +23,7 @@ namespace Server.Udp.Storage
             unconfirmedMessages = new ConcurrentDictionary<int, Dictionary<uint, byte[]>>();
         }
         
-        public void AddMessage(int playerId, Message message)
+        public void AddMessage(int playerId, MessageWrapper messageWrapper)
         {
             if (!unconfirmedMessages.ContainsKey(playerId))
             {
@@ -37,9 +37,27 @@ namespace Server.Udp.Storage
                 }
             }
 
-            byte[] serializedMessage = ZeroFormatterSerializer.Serialize(message);
-            unconfirmedMessages[playerId].Add(message.MessageId, serializedMessage);
-            messageIdPlayerId.TryAdd(message.MessageId, playerId);
+            byte[] serializedMessage = ZeroFormatterSerializer.Serialize(messageWrapper);
+            unconfirmedMessages[playerId].Add(messageWrapper.MessageId, serializedMessage);
+            messageIdPlayerId.TryAdd(messageWrapper.MessageId, playerId);
+        }
+        
+        public void AddMessage(int playerId, uint messageId, byte[] serializedMessage) 
+        {
+            if (!unconfirmedMessages.ContainsKey(playerId))
+            {
+                if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
+                {
+                    //структура данных для хранения сообщений для конкретного игрока создана
+                }
+                else
+                {
+                    throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId="+playerId);
+                }
+            }
+            
+            unconfirmedMessages[playerId].Add(messageId, serializedMessage);
+            messageIdPlayerId.TryAdd(messageId, playerId);
         }
 
         public Dictionary<uint, byte[]>.ValueCollection GetReliableMessages(int playerId)

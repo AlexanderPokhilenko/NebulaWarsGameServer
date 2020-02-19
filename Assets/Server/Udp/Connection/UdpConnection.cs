@@ -56,7 +56,7 @@ namespace Server.Udp.Connection
                 catch (SocketException e)
                 {
                     // 10004 thrown when socket is closed
-                    // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving data from udp client: " + e.Message);
+                    // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving data from udp client: " + e.MessageWrapper);
                 }
                 catch (Exception e)
                 {

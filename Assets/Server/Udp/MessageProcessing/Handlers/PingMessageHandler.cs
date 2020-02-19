@@ -11,9 +11,9 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            PlayerPingMessage mes = ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(message.SerializedMessage);
+            PlayerPingMessage mes = ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
 
             // int gameRoomNumber = mes.GameRoomNumber;
             int playerId = mes.TemporaryId;

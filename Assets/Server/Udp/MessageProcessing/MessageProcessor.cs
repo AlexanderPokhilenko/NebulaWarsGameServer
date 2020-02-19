@@ -14,26 +14,26 @@ namespace Server.Udp.MessageProcessing
         private readonly PlayerExitMessageHandler exitMessageHandler = new PlayerExitMessageHandler();
         
         
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            if (message.NeedResponse) confirmationSender.Handle(message, sender);
+            if (messageWrapper.NeedResponse) confirmationSender.Handle(messageWrapper, sender);
             
-            switch (message.MessageType)
+            switch (messageWrapper.MessageType)
             {
                 case MessageType.PlayerInput:
-                    inputMessageHandler.Handle(message, sender);
+                    inputMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.PlayerPing:
-                    pingMessageHandler.Handle(message, sender);
+                    pingMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.DeliveryConfirmation:
-                    confirmationMessageHandler.Handle(message, sender);
+                    confirmationMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.PlayerExit:
-                    exitMessageHandler.Handle(message, sender);
+                    exitMessageHandler.Handle(messageWrapper, sender);
                     break;
                 default:
-                    throw new Exception("Неожиданный тип сообщения "+message.MessageType);
+                    throw new Exception("Неожиданный тип сообщения "+messageWrapper.MessageType);
             }
         }
     }

@@ -12,12 +12,12 @@ namespace Server.Udp.MessageProcessing.Handlers
     /// </summary>
     public class RudpConfirmationSender:IMessageHandler
     {
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             Log.Error("пришло rudp");
             DeliveryConfirmationMessage mes = new DeliveryConfirmationMessage
             {
-                MessageNumberThatConfirms = message.MessageId
+                MessageNumberThatConfirms = messageWrapper.MessageId
             };
             UdpSendUtils.SendDeliveryConfirmationMessage(mes, sender);
         }

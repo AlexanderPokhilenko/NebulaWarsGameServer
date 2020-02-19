@@ -9,10 +9,10 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class InputMessageHandler:IMessageHandler
     {
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             PlayerInputMessage mes =
-                ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(message.SerializedMessage);
+                ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(messageWrapper.SerializedMessage);
             
             AddPlayerInputComponent(mes.TemporaryIdentifier, mes.GetVector2());
             AddPlayerAttackComponent(mes.TemporaryIdentifier, mes.Angle);

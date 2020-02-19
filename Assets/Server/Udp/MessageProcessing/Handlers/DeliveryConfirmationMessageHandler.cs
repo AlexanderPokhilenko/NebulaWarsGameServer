@@ -18,10 +18,10 @@ namespace Server.Udp.MessageProcessing.Handlers
             rudpStorage = ByteArrayRudpStorage.Instance;
         }
         
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             DeliveryConfirmationMessage mes =
-                ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(message.SerializedMessage);
+                ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
             rudpStorage.RemoveMessage(messageIdToConfirm);
         }

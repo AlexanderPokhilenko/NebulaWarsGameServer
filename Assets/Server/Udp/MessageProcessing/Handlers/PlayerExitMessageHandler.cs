@@ -10,10 +10,10 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PlayerExitMessageHandler:IMessageHandler
     {
-        public void Handle(Message message, IPEndPoint sender)
+        public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             BattleExitMessage exitMessage =
-                ZeroFormatterSerializer.Deserialize<BattleExitMessage>(message.SerializedMessage);
+                ZeroFormatterSerializer.Deserialize<BattleExitMessage>(messageWrapper.SerializedMessage);
             
             if(exitMessage.PlayerId==0) throw new ArgumentOutOfRangeException("exitMessage.PlayerId = "+exitMessage.PlayerId);
 

@@ -16,8 +16,8 @@ namespace Server.Udp
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
-            Message message = ZeroFormatterSerializer.Deserialize<Message>(data);
-            MessageProcessor.Handle(message, endPoint);
+            MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(data);
+            MessageProcessor.Handle(messageWrapper, endPoint);
         }
 
         public void SetUdpConnection(UdpBattleConnection udpBattleConn)

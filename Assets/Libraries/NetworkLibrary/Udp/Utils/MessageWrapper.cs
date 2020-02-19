@@ -3,14 +3,14 @@
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
     [ZeroFormattable]
-    public struct Message
+    public struct MessageWrapper
     {
         [Index(0)] public MessageType MessageType;
         [Index(1)] public byte[] SerializedMessage;
         [Index(2)] public uint MessageId;
         [Index(3)] public bool NeedResponse;
         
-        public Message(MessageType messageType, byte[] serializedMessage, uint messageId, bool needResponse)
+        public MessageWrapper(MessageType messageType, byte[] serializedMessage, uint messageId, bool needResponse)
         {
             MessageType = messageType;
             SerializedMessage = serializedMessage;
@@ -30,6 +30,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         PlayerPing = 5,
         Positions = 6,
         DeliveryConfirmation = 7,
-        PlayerExit = 8
+        PlayerExit = 8,
+        HealthPoints = 9
     }
 }

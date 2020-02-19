@@ -5,6 +5,6 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public interface IMessageHandler
     {
-        void Handle(Message message, IPEndPoint sender);
+        void Handle(MessageWrapper messageWrapper, IPEndPoint sender);
     }
 }
