@@ -65,7 +65,7 @@ namespace Server.Http
                 }
                 catch (Exception e)
                 {
-                    Log.Info("Брошено исключение при отправке http уведомления о удалении комнаты. "+e.Message);
+                    Log.Error("Брошено исключение при отправке http уведомления о удалении комнаты. "+e.Message);
                 }
             }
         }
