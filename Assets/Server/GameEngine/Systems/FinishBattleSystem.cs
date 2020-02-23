@@ -35,11 +35,11 @@ namespace Server.GameEngine.Systems
                 case 0:
                     //все сдохли
                     //такого быть не должно
-                    battle.StopTicks();
+                    battle.FinishGame();
                     break;
                 case 1 :
                     //есть победитель
-                    battle.StopTicks();
+                    battle.FinishGame();
                     break;
                 default:
                     Log.Warning("Минус игрок. Текущее кол-во: "+numberOfPlayers);

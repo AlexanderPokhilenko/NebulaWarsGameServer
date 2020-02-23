@@ -125,7 +125,11 @@
               </e>
             </e>
           </e>
+          <e p="Unity_Releases_1.6.4" t="Include">
+            <e p="ZeroFormatterGenerated.cs" t="Include" />
+          </e>
         </e>
+        <e p="readme.txt" t="Include" />
         <e p="Scripts" t="Include">
           <e p="CollidersDrawer.cs" t="Include" />
           <e p="ContextsIdExtensions.cs" t="Include" />

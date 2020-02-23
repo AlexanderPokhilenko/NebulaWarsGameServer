@@ -42,7 +42,7 @@ namespace Server.GameEngine
                 if (battlesToCreate.TryDequeue(out var gameRoomData))
                 {
                     Battle battle = new Battle(this);
-                    battle.Start(gameRoomData);
+                    battle.ConfigureSystems(gameRoomData);
                     battles.Add(gameRoomData.GameRoomNumber, battle);
                     foreach (var player in gameRoomData.Players)
                     {
