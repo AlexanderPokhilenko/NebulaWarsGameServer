@@ -15,7 +15,8 @@ namespace Server.Udp.MessageProcessing.Handlers
             BattleExitMessage exitMessage =
                 ZeroFormatterSerializer.Deserialize<BattleExitMessage>(messageWrapper.SerializedMessage);
             
-            if(exitMessage.PlayerId==0) throw new ArgumentOutOfRangeException("exitMessage.PlayerId = "+exitMessage.PlayerId);
+            if(exitMessage.PlayerId==0) 
+                throw new ArgumentOutOfRangeException("exitMessage.PlayerId = "+exitMessage.PlayerId);
 
             if (NetworkMediator.IpAddressesStorage.TryRemovePlayerIp(exitMessage.PlayerId))
             {

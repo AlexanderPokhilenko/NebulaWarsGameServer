@@ -29,7 +29,7 @@ namespace Server.GameEngine.Systems
 
             // foreach (var playerWithHp in playersWithHp.AsEnumerable())
             // {
-            //     UdpSendUtils.SendHp(playerWithHp.player.id, playerWithHp.healthPoints.value);
+            //     UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
             // }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Concurrent;
+using System.Threading;
 using Server.GameEngine;
 using Server.Http;
 using Server.Udp;
@@ -8,32 +9,33 @@ namespace Server
 {
     static class Program
     {
+        private const int HttpPort = 14065;
+        private const int UdpPort = 48956;
+        
         public static void Main()
         {
-            GameEngineMediator gameEngineMediator = new GameEngineMediator();
-            
-            StartListenGameMatcherInAnotherThread(14065);
-            StartListenPlayersInAnotherThread(48956);
+            StartGameMatcherListenerThread(HttpPort);
+            StartPlayersListenerThread(UdpPort);
             StartGameRoomDeletingNotifierThread();
             
+            GameEngineMediator gameEngineMediator = new GameEngineMediator();
             gameEngineMediator.StartEndlessLoop();
         }
         
 
-        private static void StartListenGameMatcherInAnotherThread(int port)
+        private static void StartGameMatcherListenerThread(int port)
         {
-            HttpListenerWrapper httpListenerWrapper = new HttpListenerWrapper();
-            new Thread(() => { httpListenerWrapper.StartListenHttp(port).Wait(); }).Start();
+            new Thread(() => { new HttpListenerWrapper().StartListenHttp(port).Wait(); })
+                .Start();
         }
 
-        private static void StartListenPlayersInAnotherThread(int port)
+        private static void StartPlayersListenerThread(int port)
         {
             NetworkMediator mediator = new NetworkMediator();
             var udpBattleConnection = new UdpBattleConnection(mediator);
             udpBattleConnection
-                .SetConnection(port)
+                .SetUpConnection(port)
                 .StartReceiveThread();
-            mediator.SetUdpConnection(udpBattleConnection);
         }
 
         private static void StartGameRoomDeletingNotifierThread()

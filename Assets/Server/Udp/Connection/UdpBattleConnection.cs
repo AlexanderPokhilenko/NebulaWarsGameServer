@@ -9,6 +9,7 @@ namespace Server.Udp.Connection
         public UdpBattleConnection(NetworkMediator mediator)
         {
             this.mediator = mediator;
+            mediator.SetUdpConnection(this);
         }
         
         protected override void HandleBytes(byte[] data, IPEndPoint endPoint)

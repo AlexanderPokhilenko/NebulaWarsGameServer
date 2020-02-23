@@ -14,7 +14,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     {
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            Log.Error("пришло rudp");
+            Log.Info("пришло rudp");
             DeliveryConfirmationMessage mes = new DeliveryConfirmationMessage
             {
                 MessageNumberThatConfirms = messageWrapper.MessageId

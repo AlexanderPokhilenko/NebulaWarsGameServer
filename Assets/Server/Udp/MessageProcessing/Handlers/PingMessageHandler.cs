@@ -13,7 +13,8 @@ namespace Server.Udp.MessageProcessing.Handlers
     {
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            PlayerPingMessage mes = ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
+            PlayerPingMessage mes = 
+                ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
 
             // int gameRoomNumber = mes.GameRoomNumber;
             int playerId = mes.TemporaryId;
