@@ -10,6 +10,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
         //TODO: перенести в UDP с подтверждением
         [Index(1)] public virtual int PlayerEntityId { get; set; }
 
+        [Index(2)] public virtual Dictionary<int, float> RadiusInfo { get; set; }
+
         public PositionsMessage()
         {
             //EntitiesInfo = new Dictionary<int, ViewTransform>();

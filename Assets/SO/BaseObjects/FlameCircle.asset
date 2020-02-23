@@ -19,7 +19,7 @@ MonoBehaviour:
   isPassingThrough: 1
   collisionDamage: 0
   parts: []
-  angularVelocity: 5
+  angularVelocity: 0
   outerRadius: Infinity
   damage: 100
-  scalingSpeed: -0.1
+  scalingSpeed: -0.16666667

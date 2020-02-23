@@ -35,26 +35,28 @@ public static class GameComponentsLookup {
     public const int MaxAngularVelocity = 24;
     public const int MaxVelocity = 25;
     public const int NoncollinearAxises = 26;
-    public const int NotDecelerating = 27;
-    public const int Parent = 28;
-    public const int ParentDependent = 29;
-    public const int ParentFixed = 30;
-    public const int PassingThrough = 31;
-    public const int PathCollider = 32;
-    public const int Player = 33;
-    public const int Position = 34;
-    public const int RectangleCollider = 35;
-    public const int Round = 36;
-    public const int SingleTargeting = 37;
-    public const int TargetChanging = 38;
-    public const int Target = 39;
-    public const int TargetingParameters = 40;
-    public const int TryingToShoot = 41;
-    public const int Unmovable = 42;
-    public const int Velocity = 43;
-    public const int ViewType = 44;
+    public const int NonstandardRadius = 27;
+    public const int NotDecelerating = 28;
+    public const int Parent = 29;
+    public const int ParentDependent = 30;
+    public const int ParentFixed = 31;
+    public const int PassingThrough = 32;
+    public const int PathCollider = 33;
+    public const int Player = 34;
+    public const int Position = 35;
+    public const int RectangleCollider = 36;
+    public const int Round = 37;
+    public const int SingleTargeting = 38;
+    public const int TargetChanging = 39;
+    public const int Target = 40;
+    public const int TargetingParameters = 41;
+    public const int TryingToShoot = 42;
+    public const int Unmovable = 43;
+    public const int Velocity = 44;
+    public const int ViewType = 45;
+    public const int Zone = 46;
 
-    public const int TotalComponents = 45;
+    public const int TotalComponents = 47;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -84,6 +86,7 @@ public static class GameComponentsLookup {
         "MaxAngularVelocity",
         "MaxVelocity",
         "NoncollinearAxises",
+        "NonstandardRadius",
         "NotDecelerating",
         "Parent",
         "ParentDependent",
@@ -101,7 +104,8 @@ public static class GameComponentsLookup {
         "TryingToShoot",
         "Unmovable",
         "Velocity",
-        "ViewType"
+        "ViewType",
+        "Zone"
     };
 
     public static readonly System.Type[] componentTypes = {
@@ -132,6 +136,7 @@ public static class GameComponentsLookup {
         typeof(MaxAngularVelocityComponent),
         typeof(MaxVelocityComponent),
         typeof(NoncollinearAxisesComponent),
+        typeof(NonstandardRadiusComponent),
         typeof(NotDeceleratingComponent),
         typeof(ParentComponent),
         typeof(ParentDependentComponent),
@@ -149,6 +154,7 @@ public static class GameComponentsLookup {
         typeof(TryingToShootComponent),
         typeof(UnmovableComponent),
         typeof(VelocityComponent),
-        typeof(ViewTypeComponent)
+        typeof(ViewTypeComponent),
+        typeof(ZoneComponent)
     };
 }

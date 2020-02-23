@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335dc33f18982e34488d61dce8efa30d, type: 3}
   m_Name: FlameCircle
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 50
