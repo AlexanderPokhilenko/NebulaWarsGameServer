@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entitas;
+using Server.Utils;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -31,6 +32,12 @@ namespace Server.GameEngine.Systems
                 var playerId = inputEntity.player.id;
 
                 var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
+
+                if (gamePlayer == null)
+                {
+                    Log.Warning("Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются.");
+                    return;
+                }
 
                 if (playerJoystickInput != Vector2.zero)
                 {
