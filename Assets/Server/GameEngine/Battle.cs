@@ -8,8 +8,8 @@ namespace Server.GameEngine
     public class Battle
     {
         private Entitas.Systems systems;
-        public Contexts Contexts;
-        public GameRoomData RoomData;
+        public Contexts Contexts { get; private set; }
+        public GameRoomData RoomData { get; private set; }
         private DateTime? gameStartTime;
 
         private readonly BattlesStorage gameSessionsStorage;
@@ -47,6 +47,7 @@ namespace Server.GameEngine
                 .Add(new NetworkSenderSystem(Contexts))
                 .Add(new InputDeletingSystem(Contexts));
 
+            systems.ActivateReactiveSystems();
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
@@ -55,30 +56,30 @@ namespace Server.GameEngine
         {
             if (IsSessionTimedOut())
             {
-                MarkGameAsFinished();
+                FinishGame();
                 return;
             }
             systems.Execute();
         }
 
-        private bool IsSessionTimedOut()
-        {
-            if (gameStartTime != null)
-            {
-                TimeSpan gameDuration = DateTime.UtcNow - gameStartTime.Value;
-                return gameDuration > GameSessionGlobals.GameDuration;
-            }
-            return false;
-        }
-
-        private void MarkGameAsFinished()
-        {
-            gameSessionsStorage.MarkGameAsFinished(RoomData.GameRoomNumber);
-        }
-
         public void Cleanup()
         {
             systems.Cleanup();
+        }
+
+        private bool IsSessionTimedOut()
+        {
+            if (gameStartTime == null) return false;
+            var gameDuration = DateTime.UtcNow - gameStartTime.Value;
+            return gameDuration > GameSessionGlobals.GameDuration;
+        }
+
+        private void FinishGame()
+        {
+            gameSessionsStorage.MarkGameAsFinished(RoomData.GameRoomNumber);
+            systems.DeactivateReactiveSystems();
+            systems.TearDown();
+            systems.ClearReactiveSystems();
         }
     }
 
