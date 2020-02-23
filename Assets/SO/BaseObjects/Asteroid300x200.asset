@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd54a05b891909b4cb529af3843f701f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
   m_Name: Asteroid300x200
   m_EditorClassIdentifier: 
   typeId: 22
@@ -17,5 +17,6 @@ MonoBehaviour:
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
-  collisionDamage: 300
+  collisionDamage: 0
   parts: []
+  maxHealthPoints: 300

@@ -40,6 +40,7 @@ namespace Server.GameEngine
             systems = new Entitas.Systems()
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, roomData))
+                    .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
