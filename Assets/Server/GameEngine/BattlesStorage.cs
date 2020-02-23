@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
+using Server.Udp.Sending;
 using Server.Utils;
 
 namespace Server.GameEngine
@@ -10,65 +11,87 @@ namespace Server.GameEngine
     public class BattlesStorage
     {
         //В эту очередь элементы кладутся послу получения http от гейм матчера
-        public readonly ConcurrentQueue<GameRoomData> RoomsToCreate = new ConcurrentQueue<GameRoomData>();
-        //Очередь номеров игровых сессий, про которые нужно сообщинь гейм матчеру
-        private readonly Queue<int> finishedGameSessions = new Queue<int>();
+        public readonly ConcurrentQueue<GameRoomData> battlesToCreate;
+        
+        //текущие бои
+        public readonly Dictionary<int, Battle> battles;
+        //текущие бои (ключ - id игрока)
+        public readonly Dictionary<int, Battle> playerToBattle;
+        
+        //номера боёв, про окончание которых нужно сообщинь гейм матчеру
+        private readonly Queue<int> finishedBattles;
 
-        //текущие игровые сессии
-        public readonly Dictionary<int, Battle> GameSessions = new Dictionary<int, Battle>();
-        //текущие игровые сессии (ключ - id игрока)
-        public readonly Dictionary<int, Battle> PlayersToSessions = 
-            new Dictionary<int, Battle>();
-
-        public void UpdateGameSessionsState()
+        public BattlesStorage()
         {
-            TryAddNewGameSessions();
-            RemoveFinishedGames();
+            battlesToCreate = new ConcurrentQueue<GameRoomData>();
+            finishedBattles = new Queue<int>();
+            battles= new Dictionary<int, Battle>();
+            playerToBattle = new Dictionary<int, Battle>();
         }
         
-        private void TryAddNewGameSessions()
+        public void UpdateBattlesList()
         {
-            while (!RoomsToCreate.IsEmpty)
+            CreateBattles();
+            DeleteFinishedBattles();
+        }
+        
+        private void CreateBattles()
+        {
+            while (!battlesToCreate.IsEmpty)
             {
-                if (RoomsToCreate.TryDequeue(out var gameRoomData))
+                if (battlesToCreate.TryDequeue(out var gameRoomData))
                 {
                     Battle battle = new Battle(this);
                     battle.ConfigureSystems(gameRoomData);
-                    GameSessions.Add(gameRoomData.GameRoomNumber, battle);
+                    battles.Add(gameRoomData.GameRoomNumber, battle);
                     foreach (var player in gameRoomData.Players)
                     {
-                        PlayersToSessions.Add(player.TemporaryId, battle);
+                        playerToBattle.Add(player.TemporaryId, battle);
                     }
                     Log.Info("Создана новая комната");
                 }
             }
         }
         
-        private void RemoveFinishedGames()
+        private void DeleteFinishedBattles()
         {
-            while (finishedGameSessions.Count!=0)
+            while (finishedBattles.Count!=0)
             {
-                Log.Info("Удаление игровой сессии");
-                int gameSessionNumber = finishedGameSessions.Dequeue();
-                var gameSession = GameSessions[gameSessionNumber];
-                var playersIds = gameSession.RoomData.Players.Select(player => player.TemporaryId);
-                foreach (var playerLogin in playersIds)
-                {
-                    PlayersToSessions.Remove(playerLogin);
-                }
-                GameSessions.Remove(gameSessionNumber);
-                GameRoomDeletingNotifier.GameRoomIdsToDelete.Enqueue(gameSessionNumber);
+                Log.Warning("Удаление боя");
+                int battleNumber = finishedBattles.Dequeue();
+                Battle battle = battles[battleNumber];
+                int[] playersIds = battle.RoomData.Players.Select(player => player.TemporaryId).ToArray();
+                ClearPlayers(playersIds);
+                NotifyPlayers(playersIds);
+                battles.Remove(battleNumber);
+                MetaServerBattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
+            }
+        }
+
+        private void NotifyPlayers(IEnumerable<int> playersIds)
+        {
+            foreach (var playerId in playersIds)
+            {
+                UdpSendUtils.SendBattleFinishMessage(playerId);
             }
         }
         
-        public void MarkGameAsFinished(int roomDataGameRoomNumber)
+        private void ClearPlayers(IEnumerable<int> playersIds)
         {
-            finishedGameSessions.Enqueue(roomDataGameRoomNumber);
+            foreach (var playerLogin in playersIds)
+            {
+                playerToBattle.Remove(playerLogin);
+            }
+        } 
+        
+        public void MarkBattleAsFinished(int battleNumber)
+        {
+            finishedBattles.Enqueue(battleNumber);
         }
 
         public Dictionary<int,Battle>.ValueCollection GetAllGameSessions()
         {
-            return GameSessions.Values;
+            return battles.Values;
         }
     }
 }

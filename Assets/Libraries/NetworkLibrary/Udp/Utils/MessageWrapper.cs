@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿﻿﻿using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
@@ -31,6 +31,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         Positions = 6,
         DeliveryConfirmation = 7,
         PlayerExit = 8,
-        HealthPoints = 9
+        HealthPoints = 9,
+        BattleFinish = 10
     }
 }

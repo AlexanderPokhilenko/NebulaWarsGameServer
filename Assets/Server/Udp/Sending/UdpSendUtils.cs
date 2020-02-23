@@ -8,9 +8,6 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Storage;
 using Server.Utils;
-using ZeroFormatter;
-
-//TODO некрасиво
 
 namespace Server.Udp.Sending
 {
@@ -43,31 +40,10 @@ namespace Server.Udp.Sending
             }
         }
 
-        public static void SendMessage(MessageWrapper messageWrapper, int playerId)
-        {
-            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
-            if (address != null)
-            {
-                var data = MessageFactory.GetSerializedMessage(messageWrapper);
-                NetworkMediator.udpBattleConnection.Send(data, address);
-            }
-            else
-            {
-                throw new Exception("Не удаётся отправить udp сообщение так как не известен ip этого игрока "+playerId);
-            }
-        }
-        
         public static void SendMessage(byte[] serializedMessage, int playerId)
         {
-            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
-            if (address != null)
-            {
-                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
-            }
-            else
-            {
-                throw new Exception("Не удаётся отправить udp сообщение так как не известен ip этого игрока "+playerId);
-            }
+            var address = GetPlayerIpAddress(playerId);
+            NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
         }
         
         public static void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint address)
@@ -83,18 +59,38 @@ namespace Server.Udp.Sending
             }
         }
 
-        public static void SendHp(int targetPlayerId, float healthPoints)
+        public static void SendHealthPoints(int targetPlayerId, float healthPoints)
         {
-            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(targetPlayerId);
+            var address = GetPlayerIpAddress(targetPlayerId);
+            
             HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
-            if (address != null)
-            {
-                Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-                ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
-                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
-            }
+            
+            Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
+            var serializedMessage =
+                MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+            ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
+            NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+        
         }
+
+        public static void SendBattleFinishMessage(int playerId)
+        {
+            var address = GetPlayerIpAddress(playerId);
+            BattleFinishMessage battleFinishMessage = new BattleFinishMessage();
+            
+            Log.Warning($"Отправка сообщения о завершении боя игроку с id {playerId}.");
+            var serializedMessage =
+                MessageFactory.GetSerializedMessage(battleFinishMessage, true, out uint messageId);
+            ByteArrayRudpStorage.Instance.AddMessage(playerId,  messageId, serializedMessage);
+            NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+        }
+
+        private static IPEndPoint GetPlayerIpAddress(int playerId)
+        {
+            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId) 
+                          ?? throw new Exception("the address of this player is not known "+playerId);
+            return address;
+        }
+        
     }
 }

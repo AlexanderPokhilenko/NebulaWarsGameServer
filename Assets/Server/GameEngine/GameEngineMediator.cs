@@ -42,7 +42,7 @@ namespace Server.GameEngine
             }
             PingLogger.Log();
             rudpSender.SendUnconfirmedMessages();
-            BattlesStorage.UpdateGameSessionsState();
+            BattlesStorage.UpdateBattlesList();
         }
     }
 }

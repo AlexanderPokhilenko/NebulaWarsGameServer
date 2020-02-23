@@ -8,13 +8,13 @@ using UnityEngine;
 namespace Server.Udp.MessageProcessing.Handlers
 {
     /// <summary>
-    /// Отправляет сообщение с подтверждением доставки
+    /// Отправляет подтверждение доставки.
     /// </summary>
     public class RudpConfirmationSender:IMessageHandler
     {
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            Log.Error("пришло rudp");
+            Log.Info("пришло rudp");
             DeliveryConfirmationMessage mes = new DeliveryConfirmationMessage
             {
                 MessageNumberThatConfirms = messageWrapper.MessageId

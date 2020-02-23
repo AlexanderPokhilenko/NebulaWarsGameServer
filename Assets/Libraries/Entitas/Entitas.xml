@@ -57,7 +57,7 @@
         <member name="P:Entitas.Entity.contextInfo">
             The contextInfo is set by the context which created the entity and
             contains information about the context.
-            It's used to provide better error messages.
+            It's used to provide better error messageWrappers.
         </member>
         <member name="P:Entitas.Entity.aerc">
             Automatic Entity Reference Counting (AERC)
@@ -237,7 +237,7 @@
         </member>
         <member name="P:Entitas.Context`1.contextInfo">
             The contextInfo contains information about the context.
-            It's used to provide better error messages.
+            It's used to provide better error messageWrappers.
         </member>
         <member name="P:Entitas.Context`1.count">
             Returns the number of entities in the context.

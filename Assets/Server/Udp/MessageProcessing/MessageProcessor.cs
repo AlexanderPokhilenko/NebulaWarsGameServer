@@ -9,7 +9,7 @@ namespace Server.Udp.MessageProcessing
     {
         private readonly InputMessageHandler inputMessageHandler = new InputMessageHandler();
         private readonly PingMessageHandler pingMessageHandler = new PingMessageHandler();
-        private readonly DeliveryConfirmationMessageHandler confirmationMessageHandler = new DeliveryConfirmationMessageHandler();
+        private readonly RudpConfirmationReceiver confirmationReceiver = new RudpConfirmationReceiver();
         private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
         private readonly PlayerExitMessageHandler exitMessageHandler = new PlayerExitMessageHandler();
         
@@ -27,7 +27,7 @@ namespace Server.Udp.MessageProcessing
                     pingMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.DeliveryConfirmation:
-                    confirmationMessageHandler.Handle(messageWrapper, sender);
+                    confirmationReceiver.Handle(messageWrapper, sender);
                     break;
                 case MessageType.PlayerExit:
                     exitMessageHandler.Handle(messageWrapper, sender);

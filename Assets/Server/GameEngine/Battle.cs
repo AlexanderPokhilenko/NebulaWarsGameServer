@@ -14,6 +14,7 @@ namespace Server.GameEngine
 
         private readonly BattlesStorage gameSessionsStorage;
 
+        private bool GameOver;
         public Battle(BattlesStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
@@ -45,7 +46,9 @@ namespace Server.GameEngine
                 .Add(new DestroySystems(Contexts))
                 .Add(new AISystems(Contexts))
                 .Add(new NetworkSenderSystem(Contexts))
-                .Add(new InputDeletingSystem(Contexts));
+                .Add(new InputDeletingSystem(Contexts))
+                .Add(new FinishBattleSystem(Contexts, this))
+                ;
 
             systems.ActivateReactiveSystems();
             systems.Initialize();
@@ -54,6 +57,7 @@ namespace Server.GameEngine
         
         public void Execute()
         {
+            if(GameOver) return;
             if (IsSessionTimedOut())
             {
                 FinishGame();
@@ -74,17 +78,13 @@ namespace Server.GameEngine
             return gameDuration > GameSessionGlobals.GameDuration;
         }
 
-        private void FinishGame()
+        public void FinishGame()
         {
-            gameSessionsStorage.MarkGameAsFinished(RoomData.GameRoomNumber);
+            GameOver = true;
+            gameSessionsStorage.MarkBattleAsFinished(RoomData.GameRoomNumber);
             systems.DeactivateReactiveSystems();
             systems.TearDown();
             systems.ClearReactiveSystems();
         }
     }
-
-    public static class GameSessionGlobals
-    {
-        public static readonly TimeSpan GameDuration = new TimeSpan(0,0,900);
-    } 
 }

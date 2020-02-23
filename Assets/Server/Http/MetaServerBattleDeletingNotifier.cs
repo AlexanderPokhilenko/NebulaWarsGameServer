@@ -11,7 +11,7 @@ namespace Server.Http
     /// <summary>
     /// Отправляет гейм матчеру уведомления при окончании боя.
     /// </summary>
-    public class GameRoomDeletingNotifier
+    public class MetaServerBattleDeletingNotifier
     {
         public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
 
@@ -65,7 +65,7 @@ namespace Server.Http
                 }
                 catch (Exception e)
                 {
-                    Log.Info("Брошено исключение при отправке уведомления о удалении комнаты. "+e.Message);
+                    Log.Error("Брошено исключение при отправке http уведомления о удалении комнаты. "+e.Message);
                 }
             }
         }

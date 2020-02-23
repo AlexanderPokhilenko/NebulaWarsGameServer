@@ -10,9 +10,11 @@ namespace Server.Udp
 {
     public class NetworkMediator
     {
-        public static UdpBattleConnection udpBattleConnection;
         private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
+        //TODO Почему эта херня публичная?
         public static readonly IpAddressesStorage IpAddressesStorage = new IpAddressesStorage();
+        public static UdpBattleConnection udpBattleConnection { get; private set; }
+        
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {

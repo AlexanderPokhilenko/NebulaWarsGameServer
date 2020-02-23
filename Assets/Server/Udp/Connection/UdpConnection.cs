@@ -9,11 +9,11 @@ namespace Server.Udp.Connection
 {
     public class UdpConnection
     {
-        Thread receiveThread;
+        private Thread receiveThread;
         private UdpClient udpClient;
         private bool isThreadRunning;
 
-        public UdpConnection SetConnection(int listenPort)
+        public UdpConnection SetUpConnection(int listenPort)
         {
             try
             {
@@ -78,12 +78,7 @@ namespace Server.Udp.Connection
             receiveThread.Interrupt();
             udpClient.Close();
         }
-
-        /// <summary>
-        /// Обработка нового сообщения
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="endPoint"></param>
+        
         protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             // Log.Info($"Пришло сообщение размером в {data.Length} байт");

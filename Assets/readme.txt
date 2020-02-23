@@ -1,0 +1,1 @@
+﻿zfc.exe -i "..\..\..\Assembly-CSharp.csproj" -o "ZeroFormatterGenerated.cs"
