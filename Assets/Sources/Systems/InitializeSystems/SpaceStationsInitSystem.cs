@@ -6,6 +6,7 @@ public class SpaceStationsInitSystem : IInitializeSystem
 {
     private readonly BaseWithHealthObject spaceStation;
     private readonly GameContext gameContext;
+    private const float radius = 25f;
     private const int count = 20;
     private const float step = 360f / count;
 
@@ -22,7 +23,7 @@ public class SpaceStationsInitSystem : IInitializeSystem
         {
             var entity = spaceStation.CreateEntity(gameContext);
 
-            var position = Vector2.right.GetRotated(angle) * 25;
+            var position = Vector2.right.GetRotated(angle) * radius;
 
             entity.AddPosition(position);
             entity.AddDirection(angle);

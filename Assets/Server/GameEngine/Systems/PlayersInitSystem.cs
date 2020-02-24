@@ -14,6 +14,7 @@ namespace Server.GameEngine.Systems
         private readonly PlayerObject playerPrototype;
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
+        private const float radius = 40f;
 
         public PlayersInitSystem(Contexts contexts, GameRoomData roomData)
         {
@@ -26,27 +27,23 @@ namespace Server.GameEngine.Systems
         {
             Log.Info($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
 
-            foreach (var playerInfo in roomData.Players)
-            {
-                Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
-                
-                var gameEntity = playerPrototype.CreateEntity(gameContext);
-                gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);
-                var rndPosition = GetRandomCoordinates();
-                gameEntity.AddPosition(rndPosition);
-                gameEntity.AddDirection(0);
-            }
-        }
+            var step = 360f / roomData.Players.Length;
+            var offset = step / 2f;
 
-       
-        //x in [-10;10]. y in [-5;5]
-        private Vector2 GetRandomCoordinates()
-        {
-            //var random = new System.Random();
-            float x = /*random.Next(-1000, 1000)/100f;*/ UnityEngine.Random.Range(-10f, 10f);
-            float y = /*random.Next(-500, 500)/100f;*/ UnityEngine.Random.Range(-5f, 5f);
-            var coordinates = new Vector2(x, y);
-            return coordinates;
+            for (var i = 0; i < roomData.Players.Length; i++)
+            {
+                var playerInfo = roomData.Players[i];
+                Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
+
+                var gameEntity = playerPrototype.CreateEntity(gameContext);
+                gameEntity.AddPlayer(playerInfo.TemporaryId);
+
+                var angle = i * step + offset;
+                var position = Vector2.right.GetRotated(angle) * radius;
+
+                gameEntity.AddPosition(position);
+                gameEntity.AddDirection(180f + angle);
+            }
         }
     }
 }
