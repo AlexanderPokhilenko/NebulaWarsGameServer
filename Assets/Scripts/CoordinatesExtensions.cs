@@ -51,6 +51,8 @@ public static class CoordinatesExtensions
             if (firstParent.hasVelocity) velocity += firstParent.velocity.value;
             layer++;
         }
+
+        while (angle >= 360f) angle -= 360f;
     }
 
     public static Vector2 GetLocalVector(this GameEntity entity, GameContext context, Vector2 globalVector)
@@ -81,6 +83,8 @@ public static class CoordinatesExtensions
                 angle += firstParent.direction.angle;
             }
         }
+
+        while (angle >= 360f) angle -= 360f;
 
         return angle;
     }
