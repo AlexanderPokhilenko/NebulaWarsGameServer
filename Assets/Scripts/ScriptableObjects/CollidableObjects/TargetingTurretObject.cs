@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewTargetingTurretObject", menuName = "BaseObjects/TargetingTurretObject", order = 56)]
 public class TargetingTurretObject : BaseObject

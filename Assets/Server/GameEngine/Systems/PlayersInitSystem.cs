@@ -1,7 +1,7 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Utils;
-using UnityEditor;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -19,26 +19,40 @@ namespace Server.GameEngine.Systems
         {
             gameContext = contexts.game;
             this.roomData = roomData;
-            playerPrototype = AssetDatabase.LoadAssetAtPath<PlayerObject>("Assets/SO/BaseObjects/HarePlayer.asset");
-        }
+            playerPrototype = Resources.Load<PlayerObject>("SO/BaseObjects/HarePlayer");
+            
+            if (playerPrototype == null)
+                throw new Exception("Не удалось загрузить asset PlayerObject");
+        }    
         
         public void Initialize()
         {
             Log.Info($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
 
-            foreach (var playerInfo in roomData.Players)
+            try
             {
-                Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
                 
-                var gameEntity = playerPrototype.CreateEntity(gameContext);
-                gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);
-                var rndPosition = GetRandomCoordinates();
-                gameEntity.AddPosition(rndPosition);
-                gameEntity.AddDirection(0);
+                foreach (var playerInfo in roomData.Players)
+                {
+                    Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
+
+                    if (playerPrototype == null)
+                        throw new NullReferenceException(nameof(playerPrototype));
+
+                    var gameEntity = playerPrototype.CreateEntity(gameContext);
+                    gameEntity.AddPlayer(/*playerInfo.GoogleId, */playerInfo.TemporaryId);
+                    var rndPosition = GetRandomCoordinates();
+                    gameEntity.AddPosition(rndPosition);
+                    gameEntity.AddDirection(0);
+                
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Брошено исключение PlayersInitSystem Initialize "+e.Message);
             }
         }
-
-       
+        
         //x in [-10;10]. y in [-5;5]
         private Vector2 GetRandomCoordinates()
         {

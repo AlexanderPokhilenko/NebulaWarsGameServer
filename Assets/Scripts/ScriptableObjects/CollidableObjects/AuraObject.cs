@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAuraObject", menuName = "BaseObjects/AuraObject", order = 57)]
 public class AuraObject : BaseObject
