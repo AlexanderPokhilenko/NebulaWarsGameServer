@@ -36,10 +36,13 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             {
                 if (addableBonus.hasCircleCollider)
                 {
+                    if (pickablePart.circleCollider.radius != addableBonus.circleCollider.radius)
+                        addableBonus.isNonstandardRadius = true;
                     addableBonus.ReplaceCircleCollider(pickablePart.circleCollider.radius);
                 }
                 else
                 {
+                    addableBonus.isNonstandardRadius = true;
                     addableBonus.AddCircleCollider(pickablePart.circleCollider.radius);
                 }
             }

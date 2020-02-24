@@ -18,19 +18,14 @@ namespace Server.Udp.Sending
             var gameEntities = withPosition.ToList();
             var message = new PositionsMessage
             {
-                EntitiesInfo = new Dictionary<int, ViewTransform>(gameEntities.Count),
+                EntitiesInfo = gameEntities.ToDictionary(e => e.id.value,
+                    e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
                 //TODO: перенести установление в UDP с подтверждением
                 PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == targetPlayerId)
-                    .id.value
+                    .id.value,
+                RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius).ToDictionary(e => e.id.value,
+                    e => e.circleCollider.radius)
             };
-
-            foreach (var gameEntity in gameEntities)
-            {
-                var gt = gameEntity.globalTransform;
-                var typeId = gameEntity.viewType.id;
-                var transform = new ViewTransform(gt.position, gt.angle, typeId);
-                message.EntitiesInfo.Add(gameEntity.id.value, transform);
-            }
             
             var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(targetPlayerId);
             if (address != null)

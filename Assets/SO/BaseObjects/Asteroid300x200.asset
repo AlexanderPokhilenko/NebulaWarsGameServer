@@ -9,17 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca9374a1f5385d479c7e5b168429360, type: 3}
-  m_Name: FlameCircle
+  m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
+  m_Name: Asteroid300x200
   m_EditorClassIdentifier: 
-  typeId: 7
-  colliderInfo: {fileID: 11400000, guid: ade5a77bb6ad3e9488a478bfc7347ea3, type: 2}
+  typeId: 22
+  colliderInfo: {fileID: 11400000, guid: 423cc71d10cca0a40b64fc4f3e87db4b, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
-  isPassingThrough: 1
+  isPassingThrough: 0
   collisionDamage: 0
   parts: []
-  angularVelocity: 0
-  outerRadius: Infinity
-  damage: 100
-  scalingSpeed: -0.16666667
+  maxHealthPoints: 300

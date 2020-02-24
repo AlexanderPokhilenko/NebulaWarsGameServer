@@ -2,6 +2,7 @@
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.Utils;
+using UnityEditor;
 
 namespace Server.GameEngine
 {
@@ -14,10 +15,14 @@ namespace Server.GameEngine
 
         private readonly BattlesStorage gameSessionsStorage;
 
+        private readonly FlameCircleObject zoneObject;
+
         private bool GameOver;
         public Battle(BattlesStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
+            //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
+            zoneObject = AssetDatabase.LoadAssetAtPath<FlameCircleObject>("Assets/SO/BaseObjects/FlameCircle.asset");
         }
 
         public void ConfigureSystems(GameRoomData roomData)
@@ -33,21 +38,23 @@ namespace Server.GameEngine
 #endif
 
             systems = new Entitas.Systems()
-                .Add(new PlayersInitSystem(Contexts, roomData))
-                .Add(new PlayerMovementHandlerSystem(Contexts))
-                .Add(new PlayerAttackHandlerSystem(Contexts))
-                .Add(new ParentsSystems(Contexts))
-                .Add(new MovementSystems(Contexts))
-                .Add(new GlobalTransformSystem(Contexts)) // Обернуть в Feature?
-                .Add(new ShootingSystems(Contexts))
-                .Add(new CollisionSystems(Contexts))
-                .Add(new EffectsSystems(Contexts))
-                .Add(new TimeSystems(Contexts))
-                .Add(new DestroySystems(Contexts))
-                .Add(new AISystems(Contexts))
-                .Add(new NetworkSenderSystem(Contexts))
-                .Add(new InputDeletingSystem(Contexts))
-                .Add(new FinishBattleSystem(Contexts, this))
+                    .Add(new ZoneInitSystem(Contexts, zoneObject))
+                    .Add(new PlayersInitSystem(Contexts, roomData))
+                    .Add(new AsteroidsInitSystem(Contexts))
+                    .Add(new PlayerMovementHandlerSystem(Contexts))
+                    .Add(new PlayerAttackHandlerSystem(Contexts))
+                    .Add(new ParentsSystems(Contexts))
+                    .Add(new MovementSystems(Contexts))
+                    .Add(new GlobalTransformSystem(Contexts)) // Обернуть в Feature?
+                    .Add(new ShootingSystems(Contexts))
+                    .Add(new CollisionSystems(Contexts))
+                    .Add(new EffectsSystems(Contexts))
+                    .Add(new TimeSystems(Contexts))
+                    .Add(new DestroySystems(Contexts))
+                    .Add(new AISystems(Contexts))
+                    .Add(new NetworkSenderSystem(Contexts))
+                    .Add(new InputDeletingSystem(Contexts))
+                    .Add(new FinishBattleSystem(Contexts, this))
                 ;
 
             systems.ActivateReactiveSystems();
