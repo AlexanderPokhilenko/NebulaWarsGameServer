@@ -11,6 +11,7 @@ internal class DestroySystems : Feature
         Add(new LowHealthSystem(contexts));
         Add(new LowLifetimeSystem(contexts));
         Add(new CollapsingSystem(contexts));
+        Add(new ParentDependentDeletingSystem(contexts));
         Add(new ParentLinkDeletingSystem(contexts));
         Add(new TargetLinkDeletingSystem(contexts));
         Add(new DeleteSystem(contexts));

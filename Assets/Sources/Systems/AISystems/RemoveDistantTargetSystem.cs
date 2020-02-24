@@ -25,7 +25,12 @@ public sealed class RemoveDistantTargetSystem : ICleanupSystem
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
             var targetingRadius = e.targetingParameters.radius;
             var direction = targetPosition - currentPosition;
-            if (direction.sqrMagnitude > targetingRadius * targetingRadius) e.RemoveTarget();
+            if (direction.sqrMagnitude > targetingRadius * targetingRadius)
+            {
+                e.RemoveTarget();
+                e.RemoveDirectionTargeting();
+                e.RemoveAngularVelocity();
+            }
         }
     }
 }

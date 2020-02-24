@@ -22,5 +22,7 @@
     HareShip,
     Asteroid100,
     Asteroid300,
-    Asteroid300X200
+    Asteroid300X200,
+    SpaceStation,
+    StationTurret
 }

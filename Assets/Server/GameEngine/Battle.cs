@@ -3,6 +3,7 @@ using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.Utils;
 using UnityEditor;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -44,14 +45,14 @@ namespace Server.GameEngine
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
+                    .Add(new AISystems(Contexts))
                     .Add(new MovementSystems(Contexts))
-                    .Add(new GlobalTransformSystem(Contexts)) // Обернуть в Feature?
+                    .Add(new GlobalTransformSystem(Contexts))
                     .Add(new ShootingSystems(Contexts))
                     .Add(new CollisionSystems(Contexts))
                     .Add(new EffectsSystems(Contexts))
                     .Add(new TimeSystems(Contexts))
                     .Add(new DestroySystems(Contexts))
-                    .Add(new AISystems(Contexts))
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new FinishBattleSystem(Contexts, this))
@@ -59,6 +60,11 @@ namespace Server.GameEngine
 
             systems.ActivateReactiveSystems();
             systems.Initialize();
+            //Contexts.game
+            var entity = AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/SpaceStation.asset")
+                .CreateEntity(Contexts.game);
+            entity.AddPosition(Vector2.zero);
+            entity.AddDirection(0);
             gameStartTime = DateTime.UtcNow;
         }
         

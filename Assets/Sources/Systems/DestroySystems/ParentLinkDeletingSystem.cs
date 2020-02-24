@@ -23,7 +23,6 @@ public sealed class ParentLinkDeletingSystem : IExecuteSystem
             var parent = gameContext.GetEntityWithId(e.parent.id);
             if (parent.isDestroyed)
             {
-                if(e.isParentDependent) e.isDestroyed = true;
                 e.ToGlobal(gameContext, out var globalPosition, out var globalAngle, out var globalLayer, out var globalVelocity, out var globalAngularVelocity);
                 e.RemoveParent();
                 e.ReplacePosition(globalPosition);

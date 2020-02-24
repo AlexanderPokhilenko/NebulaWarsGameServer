@@ -11,4 +11,5 @@ public sealed class TargetingParametersComponent : IComponent
 {
     public bool angularTargeting;
     public float radius;
+    public bool onlyPlayerTargeting;
 }
