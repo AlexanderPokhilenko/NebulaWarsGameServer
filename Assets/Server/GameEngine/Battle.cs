@@ -42,6 +42,7 @@ namespace Server.GameEngine
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, roomData))
                     .Add(new AsteroidsInitSystem(Contexts))
+                    .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
@@ -60,11 +61,6 @@ namespace Server.GameEngine
 
             systems.ActivateReactiveSystems();
             systems.Initialize();
-            //Contexts.game
-            var entity = AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/SpaceStation.asset")
-                .CreateEntity(Contexts.game);
-            entity.AddPosition(Vector2.zero);
-            entity.AddDirection(0);
             gameStartTime = DateTime.UtcNow;
         }
         
