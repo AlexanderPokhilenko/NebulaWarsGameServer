@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: SpaceStation
   m_EditorClassIdentifier: 
   typeId: 23
-  colliderInfo: {fileID: 11400000, guid: 6801b28417fe2b04da158bce04a0f310, type: 2}
+  colliderInfo: {fileID: 11400000, guid: a1f2f0e2933ae474ebfdf9f2835771e0, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 0
   collisionDamage: 0
   parts:
-  - baseObject: {fileID: 11400000, guid: d0881c8d49a60274f88d7b67f665a0bf, type: 2}
+  - baseObject: {fileID: 11400000, guid: 2dd4d877d101c3c4ab8b4aa1aa7da0ce, type: 2}
     position: {x: 0, y: 0}
     direction: 0
     isParentDependent: 1
