@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBonusAdder", menuName = "BaseObjects/BonusAdder", order = 59)]
 public class BonusAdderObject : BaseObject

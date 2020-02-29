@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMovableHealthObject", menuName = "BaseObjects/MovableHealthObject", order = 54)]
 public class MovableWithHealthObject : MovableObject

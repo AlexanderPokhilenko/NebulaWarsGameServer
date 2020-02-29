@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMovableObject", menuName = "BaseObjects/MovableObject", order = 53)]
 public class MovableObject : BaseObject

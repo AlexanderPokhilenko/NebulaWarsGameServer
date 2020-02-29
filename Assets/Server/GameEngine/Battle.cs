@@ -23,7 +23,7 @@ namespace Server.GameEngine
         {
             this.gameSessionsStorage = gameSessionsStorage;
             //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
-            zoneObject = AssetDatabase.LoadAssetAtPath<FlameCircleObject>("Assets/SO/BaseObjects/FlameCircle.asset");
+            zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
         public void ConfigureSystems(GameRoomData roomData)

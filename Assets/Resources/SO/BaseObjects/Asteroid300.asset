@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a79ff7d8d5d1284591afc486a5d5d3c, type: 3}
-  m_Name: Asteroid300x200
+  m_Name: Asteroid300
   m_EditorClassIdentifier: 
-  typeId: 22
-  colliderInfo: {fileID: 11400000, guid: 423cc71d10cca0a40b64fc4f3e87db4b, type: 2}
+  typeId: 21
+  colliderInfo: {fileID: 11400000, guid: a1f2f0e2933ae474ebfdf9f2835771e0, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
