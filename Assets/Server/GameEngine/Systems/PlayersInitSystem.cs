@@ -1,4 +1,5 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Utils;
 using UnityEditor;
@@ -14,13 +15,15 @@ namespace Server.GameEngine.Systems
         private readonly PlayerObject playerPrototype;
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
-        private const float radius = 40f;
+        private const float Radius = 40f;
 
         public PlayersInitSystem(Contexts contexts, GameRoomData roomData)
         {
             gameContext = contexts.game;
             this.roomData = roomData;
-            playerPrototype = AssetDatabase.LoadAssetAtPath<PlayerObject>("Assets/SO/BaseObjects/HarePlayer.asset");
+            playerPrototype = Resources.Load<PlayerObject>("SO/BaseObjects/HarePlayer");
+            if (playerPrototype == null)
+                throw new Exception("Не удалось загрузить asset PlayerObject");
         }
         
         public void Initialize()
@@ -39,7 +42,7 @@ namespace Server.GameEngine.Systems
                 gameEntity.AddPlayer(playerInfo.TemporaryId);
 
                 var angle = i * step + offset;
-                var position = Vector2.right.GetRotated(angle) * radius;
+                var position = Vector2.right.GetRotated(angle) * Radius;
 
                 gameEntity.AddPosition(position);
                 gameEntity.AddDirection(180f + angle);

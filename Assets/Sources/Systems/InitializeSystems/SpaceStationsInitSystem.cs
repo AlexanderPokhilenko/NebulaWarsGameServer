@@ -1,29 +1,30 @@
-﻿using Entitas;
-using UnityEditor;
+﻿using System;
+using Entitas;
 using UnityEngine;
 
 public class SpaceStationsInitSystem : IInitializeSystem
 {
     private readonly BaseWithHealthObject spaceStation;
     private readonly GameContext gameContext;
-    private const float radius = 25f;
-    private const int count = 20;
-    private const float step = 360f / count;
+    private const float Radius = 25f;
+    private const int Count = 20;
+    private const float Step = 360f / Count;
 
     public SpaceStationsInitSystem(Contexts contexts)
     {
         gameContext = contexts.game;
-        //TODO: возможно, попробовать обойтись без AssetDatabase
-        spaceStation = AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/SpaceStation.asset");
+        spaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
+        if (spaceStation == null)
+            throw new Exception($"Не удалось загрузить ассет {nameof(spaceStation)}");
     }
 
     public void Initialize()
     {
-        for (float angle = 0f; angle < 360f; angle += step)
+        for (float angle = 0f; angle < 360f; angle += Step)
         {
             var entity = spaceStation.CreateEntity(gameContext);
 
-            var position = Vector2.right.GetRotated(angle) * radius;
+            var position = Vector2.right.GetRotated(angle) * Radius;
 
             entity.AddPosition(position);
             entity.AddDirection(angle);

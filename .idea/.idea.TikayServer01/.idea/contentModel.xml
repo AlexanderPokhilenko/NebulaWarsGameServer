@@ -47,6 +47,7 @@
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
               <e p="GameNoncollinearAxisesComponent.cs" t="Include" />
+              <e p="GameNonstandardRadiusComponent.cs" t="Include" />
               <e p="GameNotDeceleratingComponent.cs" t="Include" />
               <e p="GameParentComponent.cs" t="Include" />
               <e p="GameParentDependentComponent.cs" t="Include" />
@@ -65,6 +66,7 @@
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
               <e p="GameViewTypeComponent.cs" t="Include" />
+              <e p="GameZoneComponent.cs" t="Include" />
             </e>
             <e p="GameAttribute.cs" t="Include" />
             <e p="GameComponentsLookup.cs" t="Include" />
@@ -291,7 +293,11 @@
             <e p="TimeComponents" t="Include">
               <e p="LifetimeComponent.cs" t="Include" />
             </e>
-            <e p="ViewTypeComponent.cs" t="Include" />
+            <e p="ViewComponents" t="Include">
+              <e p="NonstandardRadiusComponent.cs" t="Include" />
+              <e p="ViewTypeComponent.cs" t="Include" />
+            </e>
+            <e p="ZoneComponent.cs" t="Include" />
           </e>
           <e p="Systems" t="Include">
             <e p="AISystems" t="Include">
@@ -321,6 +327,7 @@
               <e p="DestroySystems.cs" t="Include" />
               <e p="LowHealthSystem.cs" t="Include" />
               <e p="LowLifetimeSystem.cs" t="Include" />
+              <e p="ParentDependentDeletingSystem.cs" t="Include" />
               <e p="ParentLinkDeletingSystem.cs" t="Include" />
               <e p="TargetLinkDeletingSystem.cs" t="Include" />
             </e>
@@ -332,6 +339,11 @@
             </e>
             <e p="GlobalSystems" t="Include">
               <e p="GlobalTransformSystem.cs" t="Include" />
+            </e>
+            <e p="InitializeSystems" t="Include">
+              <e p="AsteroidsInitSystem.cs" t="Include" />
+              <e p="SpaceStationsInitSystem.cs" t="Include" />
+              <e p="ZoneInitSystem.cs" t="Include" />
             </e>
             <e p="MovementSystems" t="Include">
               <e p="AngularVelocityCheckerSystem.cs" t="Include" />
