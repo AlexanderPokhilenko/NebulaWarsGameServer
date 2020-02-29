@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Server.Utils;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace Server.Udp.Connection
         {
             if (udpClient != null)
             {
-                receiveThread = new Thread(() => StartEndlessLoop(udpClient));
+                receiveThread = new Thread(async () => await StartEndlessLoop(udpClient));
                 isThreadRunning = true;
                 receiveThread.Start();    
             }
@@ -42,7 +43,7 @@ namespace Server.Udp.Connection
             }
         }
      
-        private void StartEndlessLoop(UdpClient client)
+        private async Task StartEndlessLoop(UdpClient client)
         {
             while (isThreadRunning)
             {
@@ -50,7 +51,8 @@ namespace Server.Udp.Connection
                 try
                 {
                     //Ждёт udp сообщения
-                    byte[] data = client.Receive(ref remoteIpEndPoint);
+                    var result = await client.ReceiveAsync();
+                    byte[] data = result.Buffer; 
                     HandleBytes(data, remoteIpEndPoint);
                 }
                 catch (SocketException e)
