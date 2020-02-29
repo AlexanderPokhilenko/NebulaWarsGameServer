@@ -3,6 +3,7 @@ using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.Utils;
 using UnityEditor;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -41,17 +42,18 @@ namespace Server.GameEngine
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, roomData))
                     .Add(new AsteroidsInitSystem(Contexts))
+                    .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
+                    .Add(new AISystems(Contexts))
                     .Add(new MovementSystems(Contexts))
-                    .Add(new GlobalTransformSystem(Contexts)) // Обернуть в Feature?
+                    .Add(new GlobalTransformSystem(Contexts))
                     .Add(new ShootingSystems(Contexts))
                     .Add(new CollisionSystems(Contexts))
                     .Add(new EffectsSystems(Contexts))
                     .Add(new TimeSystems(Contexts))
                     .Add(new DestroySystems(Contexts))
-                    .Add(new AISystems(Contexts))
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new FinishBattleSystem(Contexts, this))

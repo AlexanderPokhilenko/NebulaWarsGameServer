@@ -11,7 +11,7 @@ public sealed class TargetShootingSystem : IExecuteSystem
     public TargetShootingSystem(Contexts contexts)
     {
         gameContext = contexts.game;
-        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Target, GameMatcher.Cannon).NoneOf(GameMatcher.CannonCooldown);
+        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Target).NoneOf(GameMatcher.CannonCooldown);
         shootingGroup = gameContext.GetGroup(matcher);
     }
 
@@ -26,11 +26,21 @@ public sealed class TargetShootingSystem : IExecuteSystem
 
             var direction = targetPosition - currentPosition;
 
-            var localCannonTargetPosition = e.GetLocalRotatedVector(gameContext, direction) - e.cannon.position;
+            var localTargetPosition = e.GetLocalRotatedVector(gameContext, direction);
 
-            var absProjectionY = Mathf.Abs(localCannonTargetPosition.y);
+            if(e.hasCannon) localTargetPosition -= e.cannon.position;
 
-            if (absProjectionY <= target.circleCollider.radius) e.isTryingToShoot = true;
+            var absProjectionY = Mathf.Abs(localTargetPosition.y);
+
+            if (absProjectionY <= target.circleCollider.radius)
+            {
+                e.isTryingToShoot = true;
+                var childrenWithCannon = e.GetAllChildrenGameEntities(gameContext, entity => entity.hasCannon);
+                foreach (var childWithCannon in childrenWithCannon)
+                {
+                    childWithCannon.isTryingToShoot = true;
+                }
+            }
         }
     }
 }

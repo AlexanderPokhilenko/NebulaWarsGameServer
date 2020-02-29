@@ -11,19 +11,21 @@ public partial class GameEntity {
     public TargetingParametersComponent targetingParameters { get { return (TargetingParametersComponent)GetComponent(GameComponentsLookup.TargetingParameters); } }
     public bool hasTargetingParameters { get { return HasComponent(GameComponentsLookup.TargetingParameters); } }
 
-    public void AddTargetingParameters(bool newAngularTargeting, float newRadius) {
+    public void AddTargetingParameters(bool newAngularTargeting, float newRadius, bool newOnlyPlayerTargeting) {
         var index = GameComponentsLookup.TargetingParameters;
         var component = (TargetingParametersComponent)CreateComponent(index, typeof(TargetingParametersComponent));
         component.angularTargeting = newAngularTargeting;
         component.radius = newRadius;
+        component.onlyPlayerTargeting = newOnlyPlayerTargeting;
         AddComponent(index, component);
     }
 
-    public void ReplaceTargetingParameters(bool newAngularTargeting, float newRadius) {
+    public void ReplaceTargetingParameters(bool newAngularTargeting, float newRadius, bool newOnlyPlayerTargeting) {
         var index = GameComponentsLookup.TargetingParameters;
         var component = (TargetingParametersComponent)CreateComponent(index, typeof(TargetingParametersComponent));
         component.angularTargeting = newAngularTargeting;
         component.radius = newRadius;
+        component.onlyPlayerTargeting = newOnlyPlayerTargeting;
         ReplaceComponent(index, component);
     }
 

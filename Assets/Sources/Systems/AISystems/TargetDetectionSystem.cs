@@ -14,7 +14,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.TargetingParameters).NoneOf(GameMatcher.Target);
         targetingGroup = gameContext.GetGroup(matcher);
-        var targetMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.HealthPoints, GameMatcher.Collidable).NoneOf(GameMatcher.PassingThrough);
+        var targetMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.HealthPoints, GameMatcher.Collidable, GameMatcher.CircleCollider).NoneOf(GameMatcher.PassingThrough);
         targetGroup = gameContext.GetGroup(targetMatcher);
     }
 
@@ -25,6 +25,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         {
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
             var currentDirection = Vector2.right.GetRotated(e.GetGlobalAngle(gameContext));
+            var onlyPlayerTargeting = e.targetingParameters.onlyPlayerTargeting;
             var targetingRadius = e.targetingParameters.radius;
             var sqrTargetingRadius = targetingRadius * targetingRadius;
             var minVal = float.PositiveInfinity;
@@ -33,6 +34,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             foreach (var target in targetGroup)
             {
                 if(e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext)) continue;
+                if(onlyPlayerTargeting && !target.hasPlayer) continue;
                 var targetPosition = target.GetGlobalPositionVector2(gameContext);
                 var direction = targetPosition - currentPosition;
                 var sqrDirection = direction.sqrMagnitude;
