@@ -50,9 +50,9 @@ namespace Server.Udp.Connection
                 IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 try
                 {
-                    //Ждёт udp сообщения
                     var result = await client.ReceiveAsync();
-                    byte[] data = result.Buffer; 
+                    byte[] data = result.Buffer;
+                    remoteIpEndPoint = result.RemoteEndPoint;
                     HandleBytes(data, remoteIpEndPoint);
                 }
                 catch (SocketException e)
