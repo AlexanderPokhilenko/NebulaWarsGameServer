@@ -43,6 +43,7 @@ namespace Server.GameEngine
                     .Add(new PlayersInitSystem(Contexts, roomData))
                     .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new SpaceStationsInitSystem(Contexts))
+                    .Add(new BonusesInitSystem(Contexts))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
