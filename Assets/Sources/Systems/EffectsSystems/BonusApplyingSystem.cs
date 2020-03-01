@@ -50,6 +50,8 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             addableBonus.isParentFixed = true;
             addableBonus.isParentDependent = true;
             addableBonus.isIgnoringParentCollision = true;
+            addableBonus.ToGlobal(gameContext, out var position, out var angle, out _, out _, out _);
+            addableBonus.AddGlobalTransform(position, angle);
             e.isDestroyed = true;
         }
     }

@@ -21,7 +21,7 @@ namespace Server.GameEngine.Experimental
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count!=0)
                 {
-                    Log.Error("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);
+                    // Log.Error("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);
                     foreach (var message in messages)
                     {
                         UdpSendUtils.SendMessage(message, playerId);

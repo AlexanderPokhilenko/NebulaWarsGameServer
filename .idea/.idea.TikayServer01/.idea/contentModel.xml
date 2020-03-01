@@ -88,6 +88,7 @@
             <e p="InputMatcher.cs" t="Include" />
           </e>
         </e>
+        <e p="Globals.cs" t="Include" />
         <e p="Libraries" t="Include">
           <e p="DesperateDevs" t="Include">
             <e p="Compile.cs" t="Include" />
@@ -342,6 +343,7 @@
             </e>
             <e p="InitializeSystems" t="Include">
               <e p="AsteroidsInitSystem.cs" t="Include" />
+              <e p="BonusesInitSystem.cs" t="Include" />
               <e p="SpaceStationsInitSystem.cs" t="Include" />
               <e p="ZoneInitSystem.cs" t="Include" />
             </e>

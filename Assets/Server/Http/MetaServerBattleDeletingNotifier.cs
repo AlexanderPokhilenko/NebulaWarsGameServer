@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DefaultNamespace;
 using Server.Utils;
 using UnityEngine;
 
@@ -50,7 +51,7 @@ namespace Server.Http
         
         private static async Task SendDelete(string pathname, string query)
         {
-            string url = "https://localhost:53847"+pathname+query;
+            string url = Globals.GameMatcheUrl+pathname+query;
             
             using (var client = new HttpClient())
             {

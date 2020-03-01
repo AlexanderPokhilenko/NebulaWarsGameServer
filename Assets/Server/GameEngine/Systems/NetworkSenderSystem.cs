@@ -39,10 +39,10 @@ namespace Server.GameEngine.Systems
                 UdpSendUtils.SendPositions(player.player.id, visibleObjects);
             }
 
-            // foreach (var playerWithHp in playersWithHp.AsEnumerable())
-            // {
-            //     UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
-            // }
+            foreach (var playerWithHp in playersWithHp.AsEnumerable())
+            {
+                UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
+            }
         }
         
         private HashSet<GameEntity> GetVisibleObjects(GameEntity currentPlayer)

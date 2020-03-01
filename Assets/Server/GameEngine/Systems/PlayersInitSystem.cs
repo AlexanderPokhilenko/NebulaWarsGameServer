@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Utils;
-using UnityEditor;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -29,24 +29,40 @@ namespace Server.GameEngine.Systems
         public void Initialize()
         {
             Log.Info($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
+            SpawnPlayersInACircle(roomData.Players, 0, roomData.Players.Length - 1);
+            SpawnPlayer(roomData.Players.Last(), 0, 0);
+        }
 
-            var step = 360f / roomData.Players.Length;
+        /// <summary>
+        /// Стартовый индекс включается в промежуток. Последний индекс не входит в промежуток.
+        /// </summary>
+        private void SpawnPlayersInACircle(PlayerInfoForGameRoom[] players, int startIndex, int finishIndex)
+        {
+            int numberOfPlayersInACircle = finishIndex;
+            var step = 360f / numberOfPlayersInACircle;
             var offset = step / 2f;
 
-            for (var i = 0; i < roomData.Players.Length; i++)
+            for (var i = startIndex; i < numberOfPlayersInACircle; i++)
             {
-                var playerInfo = roomData.Players[i];
-                Log.Info($"Создание игрока с id = {playerInfo.GoogleId} для комнаты {roomData.GameRoomNumber}");
+                PlayerInfoForGameRoom playerInfo = players[i];
 
                 var gameEntity = playerPrototype.CreateEntity(gameContext);
-                gameEntity.AddPlayer(playerInfo.TemporaryId);
-
                 var angle = i * step + offset;
                 var position = Vector2.right.GetRotated(angle) * Radius;
-
+                
+                gameEntity.AddPlayer(playerInfo.TemporaryId);
                 gameEntity.AddPosition(position);
                 gameEntity.AddDirection(180f + angle);
             }
+        }
+        
+        private void SpawnPlayer(PlayerInfoForGameRoom playerInfo, int x, int y)
+        {
+            var gameEntity = playerPrototype.CreateEntity(gameContext);
+            var position = new Vector2(x,y);
+            gameEntity.AddPlayer(playerInfo.TemporaryId);
+            gameEntity.AddPosition(position);
+            gameEntity.AddDirection(180f);
         }
     }
 }

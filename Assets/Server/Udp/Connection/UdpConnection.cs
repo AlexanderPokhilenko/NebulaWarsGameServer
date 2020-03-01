@@ -18,7 +18,14 @@ namespace Server.Udp.Connection
         {
             try
             {
-                udpClient = new UdpClient(listenPort);
+                udpClient = new UdpClient(listenPort)
+                {
+                    Client =
+                    {
+                        Blocking = false,
+                        ReceiveTimeout = 1000
+                    }
+                };
             }
             catch (Exception e)
             {
@@ -47,13 +54,11 @@ namespace Server.Udp.Connection
         {
             while (isThreadRunning)
             {
-                IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 try
                 {
                     var result = await client.ReceiveAsync();
                     byte[] data = result.Buffer;
-                    remoteIpEndPoint = result.RemoteEndPoint;
-                    HandleBytes(data, remoteIpEndPoint);
+                    HandleBytes(data, result.RemoteEndPoint);
                 }
                 catch (SocketException e)
                 {
@@ -70,7 +75,14 @@ namespace Server.Udp.Connection
         public void Send(byte[] data, IPEndPoint endPoint)
         {
             // Log.Info($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
-            udpClient.Send(data, data.Length, endPoint);
+            try
+            {
+                udpClient.Send(data, data.Length, endPoint);
+            }
+            catch (SocketException e)
+            {
+                //ignore   
+            }
         }
      
         public void Stop()

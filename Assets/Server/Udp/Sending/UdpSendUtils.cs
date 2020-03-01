@@ -8,6 +8,7 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Storage;
 using Server.Utils;
+using UnityEngine;
 
 namespace Server.Udp.Sending
 {
@@ -57,15 +58,15 @@ namespace Server.Udp.Sending
         public static void SendHealthPoints(int targetPlayerId, float healthPoints)
         {
             var address = GetPlayerIpAddress(targetPlayerId);
-            
-            HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
-            
-            Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
-            var serializedMessage =
-                MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-            ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
-            NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
-        
+            if (address != null)
+            {
+                HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
+                Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+                ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);   
+            }
         }
 
         public static void SendBattleFinishMessage(int playerId)
@@ -82,8 +83,11 @@ namespace Server.Udp.Sending
 
         private static IPEndPoint GetPlayerIpAddress(int playerId)
         {
-            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId) 
-                          ?? throw new Exception("the address of this player is not known "+playerId);
+            var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
+            if (address == null)
+            {
+                Debug.LogWarning($"Не найден ip для игрока {playerId}");
+            }
             return address;
         }
         
