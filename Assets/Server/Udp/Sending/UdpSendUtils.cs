@@ -63,7 +63,7 @@ namespace Server.Udp.Sending
                 HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
                 Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
                 var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+                    MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
                 ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
                 NetworkMediator.udpBattleConnection.Send(serializedMessage, address);   
             }
