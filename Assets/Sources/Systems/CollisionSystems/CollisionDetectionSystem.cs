@@ -32,6 +32,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
+                //TODO: возможно, стоит убрать эту проверку
+                if(e.GetGrandOwner(gameContext).id.value == currentGrandOwner.id.value) continue;
                 if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
                    (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
                 var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
