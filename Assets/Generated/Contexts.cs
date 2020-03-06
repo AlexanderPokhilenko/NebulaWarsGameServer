@@ -59,6 +59,8 @@ public partial class Contexts : Entitas.IContexts {
 public partial class Contexts {
 
     public const string Id = "Id";
+    public const string KilledBy = "KilledBy";
+    public const string Owner = "Owner";
     public const string Parent = "Parent";
     public const string Player = "Player";
 
@@ -72,6 +74,16 @@ public partial class Contexts {
             Id,
             input.GetGroup(InputMatcher.Id),
             (e, c) => ((IdComponent)c).value));
+
+        game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, int>(
+            KilledBy,
+            game.GetGroup(GameMatcher.KilledBy),
+            (e, c) => ((KilledByComponent)c).id));
+
+        game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, int>(
+            Owner,
+            game.GetGroup(GameMatcher.Owner),
+            (e, c) => ((OwnerComponent)c).id));
 
         game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, int>(
             Parent,
@@ -97,6 +109,14 @@ public static class ContextsExtensions {
 
     public static InputEntity GetEntityWithId(this InputContext context, int value) {
         return ((Entitas.PrimaryEntityIndex<InputEntity, int>)context.GetEntityIndex(Contexts.Id)).GetEntity(value);
+    }
+
+    public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithKilledBy(this GameContext context, int id) {
+        return ((Entitas.EntityIndex<GameEntity, int>)context.GetEntityIndex(Contexts.KilledBy)).GetEntities(id);
+    }
+
+    public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithOwner(this GameContext context, int id) {
+        return ((Entitas.EntityIndex<GameEntity, int>)context.GetEntityIndex(Contexts.Owner)).GetEntities(id);
     }
 
     public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithParent(this GameContext context, int id) {

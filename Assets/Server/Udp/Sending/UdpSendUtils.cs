@@ -65,7 +65,7 @@ namespace Server.Udp.Sending
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
                 ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
-                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);   
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
             }
         }
 

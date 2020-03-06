@@ -21,6 +21,7 @@ public class CannonShootingSystem : IExecuteSystem
         {
             var bullet = e.cannon.bullet;
             var bulletEntity = bullet.CreateEntity(gameContext);
+            bulletEntity.AddOwner(e.GetGrandParent(gameContext).id.value);
             var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
                 bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width / 2 :
                 throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался PathCollider.");
@@ -42,6 +43,7 @@ public class CannonShootingSystem : IExecuteSystem
                 bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
             }
             bulletEntity.AddGlobalTransform(globalPosition, globalAngle);
+            
         }
     }
 }
