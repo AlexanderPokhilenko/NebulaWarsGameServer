@@ -23,9 +23,7 @@ public class StubSpawner : MonoBehaviour
     {
         if (spawnOne && prototype != null)
         {
-            var entity = prototype.CreateEntity(gameContext);
-            entity.AddPosition(position);
-            entity.AddDirection(direction);
+            var entity = prototype.CreateEntity(gameContext, position, direction);
             if(entity.isNotDecelerating && entity.hasMaxVelocity && !entity.isUnmovable) entity.AddVelocity(Vector2.right.GetRotated(direction));
             spawnOne = false;
         }

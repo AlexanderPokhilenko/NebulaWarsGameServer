@@ -40,12 +40,9 @@ public class AsteroidsInitSystem : IInitializeSystem
             var rndType = Random.Range(0, max);
             var asteroid = asteroids.SkipWhile(a => a.probability < rndType).First().asset;
 
-            var entity = asteroid.CreateEntity(gameContext);
-
             var position = CoordinatesExtensions.GetRandomUnitVector2() * (25 + 5 * GetPositiveRandom(0.4f));
 
-            entity.AddPosition(position);
-            entity.AddDirection(Random.Range(0f, 360f));
+            var entity = asteroid.CreateEntity(gameContext, position, Random.Range(0f, 360f));
         }
     }
 

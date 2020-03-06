@@ -22,12 +22,9 @@ public class SpaceStationsInitSystem : IInitializeSystem
     {
         for (float angle = 0f; angle < 360f; angle += Step)
         {
-            var entity = spaceStation.CreateEntity(gameContext);
-
             var position = Vector2.right.GetRotated(angle) * Radius;
 
-            entity.AddPosition(position);
-            entity.AddDirection(angle);
+            var entity = spaceStation.CreateEntity(gameContext, position, angle);
         }
     }
 }

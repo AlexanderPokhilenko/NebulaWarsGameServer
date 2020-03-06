@@ -14,9 +14,7 @@ public class ZoneInitSystem : IInitializeSystem
 
     public void Initialize()
     {
-        var entity = flameCircle.CreateEntity(gameContext);
-        entity.AddPosition(Vector2.zero);
-        entity.AddDirection(0);
+        var entity = flameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
         gameContext.SetZone(entity.id.value);
     }
 }

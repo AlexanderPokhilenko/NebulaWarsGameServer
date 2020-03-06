@@ -28,9 +28,7 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
         {
             var pickablePart = gameContext.GetEntityWithId(e.bonusTarget.id);
 
-            var addableBonus = e.bonusAdder.bonusObject.CreateEntity(gameContext);
-            addableBonus.AddPosition(Vector2.zero);
-            addableBonus.AddDirection(0f);
+            var addableBonus = e.bonusAdder.bonusObject.CreateEntity(gameContext, Vector2.zero, 0f);
             addableBonus.AddLifetime(e.bonusAdder.duration);
             if (e.bonusAdder.colliderInheritance)
             {

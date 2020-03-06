@@ -40,4 +40,12 @@ public class BaseObject : ScriptableObject
 
         return entity;
     }
+
+    public GameEntity CreateEntity(GameContext context, Vector2 position, float angle)
+    {
+        var entity = CreateEntity(context);
+        entity.AddPosition(position);
+        entity.AddDirection(angle);
+        return entity;
+    }
 }
