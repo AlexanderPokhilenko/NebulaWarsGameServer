@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using Libraries.NetworkLibrary.Udp.Common;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Storage;
-using Server.Utils;
-using UnityEngine;
 using ZeroFormatter;
 
 namespace Server.Udp.MessageProcessing.Handlers
@@ -14,6 +13,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     public class RudpConfirmationReceiver:IMessageHandler
     {
         private readonly ByteArrayRudpStorage rudpStorage;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitMessageHandler));
 
         public RudpConfirmationReceiver()
         {
@@ -25,7 +25,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-            Log.Warning("Пришло уведомление о плучении сообщения с номером = "+messageIdToConfirm);
+            Log.Warn("Пришло уведомление о плучении сообщения с номером = "+messageIdToConfirm);
             rudpStorage.RemoveMessage(messageIdToConfirm);
         }
     }

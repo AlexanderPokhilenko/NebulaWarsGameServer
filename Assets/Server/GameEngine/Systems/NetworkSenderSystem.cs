@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Entitas;
 using Server.Udp.Sending;
-using Server.Utils;
+
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -21,7 +21,8 @@ namespace Server.GameEngine.Systems
         {
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.Player);
-            playersWithHp = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints));
+            playersWithHp = 
+                gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints));
             var viewMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.GlobalTransform, GameMatcher.ViewType);
             viewObjects = gameContext.GetGroup(viewMatcher);
         }
@@ -41,7 +42,11 @@ namespace Server.GameEngine.Systems
 
             foreach (var playerWithHp in playersWithHp.AsEnumerable())
             {
-                UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
+                if (playerWithHp.player.id == 888777)
+                {
+                    UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
+                    break;
+                }
             }
         }
         

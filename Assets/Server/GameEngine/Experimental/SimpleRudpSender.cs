@@ -1,7 +1,5 @@
 ﻿using Server.Udp.Sending;
 using Server.Udp.Storage;
-using Server.Utils;
-using UnityEngine;
 
 namespace Server.GameEngine.Experimental
 {
@@ -19,9 +17,8 @@ namespace Server.GameEngine.Experimental
             foreach (var playerId in battlesStorage.playerToBattle.Keys)
             {
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
-                if (messages != null && messages.Count!=0)
+                if (messages != null && messages.Count != 0)
                 {
-                    // Log.Error("Повторная отправка rudp. Кол-во сообщений = "+messages.Count);
                     foreach (var message in messages)
                     {
                         UdpSendUtils.SendMessage(message, playerId);

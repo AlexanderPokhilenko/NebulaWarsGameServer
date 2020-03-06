@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Entitas;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
-using Server.Utils;
+
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -16,6 +17,8 @@ namespace Server.GameEngine.Systems
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
         private const float Radius = 40f;
+        
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayersInitSystem));
 
         public PlayersInitSystem(Contexts contexts, GameRoomData roomData)
         {

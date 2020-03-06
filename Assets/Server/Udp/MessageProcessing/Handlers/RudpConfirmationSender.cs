@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using Libraries.NetworkLibrary.Udp.Common;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Sending;
-using Server.Utils;
-using UnityEngine;
+
 
 namespace Server.Udp.MessageProcessing.Handlers
 {
@@ -12,6 +12,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     /// </summary>
     public class RudpConfirmationSender:IMessageHandler
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationSender));
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             Log.Info("пришло rudp");

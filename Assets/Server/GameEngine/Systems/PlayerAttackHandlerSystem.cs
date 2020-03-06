@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Entitas;
-using Server.Utils;
-using UnityEngine;
+using log4net;
 
 namespace Server.GameEngine.Systems
 {
     public class PlayerAttackHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
-
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerAttackHandlerSystem));
+        
         public PlayerAttackHandlerSystem(Contexts contexts) : base(contexts.input)
         {
             gameContext = contexts.game;
@@ -36,7 +36,7 @@ namespace Server.GameEngine.Systems
 
                 if (gamePlayer == null)
                 {
-                    Log.Warning("Пришло сообщение об атаке от игрока, которого (уже) нет в комнате. Данные игнорируются.");
+                    Log.Warn("Пришло сообщение об атаке от игрока, которого (уже) нет в комнате. Данные игнорируются.");
                     return;
                 }
 

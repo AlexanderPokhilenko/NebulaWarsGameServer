@@ -1,10 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
 using Server.Udp.Sending;
-using Server.Utils;
+
 
 namespace Server.GameEngine
 {
@@ -21,6 +22,8 @@ namespace Server.GameEngine
         //номера боёв, про окончание которых нужно сообщинь гейм матчеру
         private readonly Queue<int> finishedBattles;
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BattlesStorage));
+        
         public BattlesStorage()
         {
             battlesToCreate = new ConcurrentQueue<GameRoomData>();
@@ -57,7 +60,7 @@ namespace Server.GameEngine
         {
             while (finishedBattles.Count!=0)
             {
-                Log.Warning("Удаление боя");
+                Log.Warn("Удаление боя");
                 int battleNumber = finishedBattles.Dequeue();
                 Battle battle = battles[battleNumber];
                 int[] playersIds = battle.RoomData.Players.Select(player => player.TemporaryId).ToArray();

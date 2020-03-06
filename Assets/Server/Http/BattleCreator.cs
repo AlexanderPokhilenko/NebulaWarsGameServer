@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine;
-using Server.Utils;
-using UnityEngine;
+
 
 namespace Server.Http
 {
@@ -12,6 +12,8 @@ namespace Server.Http
     /// </summary>
     internal class BattleCreator
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BattleCreator));
+        
         public GameRoomValidationResult Handle(GameRoomData roomData)
         {
             GameRoomValidationResult result = CheckRoom(roomData);

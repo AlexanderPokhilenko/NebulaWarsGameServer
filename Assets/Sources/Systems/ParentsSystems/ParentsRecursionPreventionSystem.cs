@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entitas;
-using Server.Utils;
+using log4net;
 using UnityEngine;
 
 public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
 {
     private readonly GameContext gameContext;
+    private static readonly ILog Log = LogManager.GetLogger(typeof(ParentsRecursionPreventionSystem));
+    
 
     public ParentsRecursionPreventionSystem(Contexts contexts) : base(contexts.game)
     {
@@ -35,7 +37,7 @@ public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
                 firstParent = gameContext.GetEntityWithId(firstParent.parent.id);
                 if (firstParent.id.value == entityId)
                 {
-                    Log.Warning("Parent recursion detected for entity with id " + entityId);
+                    Log.Warn("Parent recursion detected for entity with id " + entityId);
                     e.RemoveParent();
                     break;
                 }

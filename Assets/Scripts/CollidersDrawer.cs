@@ -2,7 +2,7 @@
 using System;
 using Entitas;
 using System.Collections.Generic;
-using Server.Utils;
+using log4net;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +22,8 @@ public sealed class CollidersDrawer : MonoBehaviour
     private GameContext gameContext;
     private IGroup<GameEntity> collidableGroup;
     private IMatcher<GameEntity> matcher;
+    
+    private static readonly ILog Log = LogManager.GetLogger(typeof(CollidersDrawer));
 
     public void Start()
     {

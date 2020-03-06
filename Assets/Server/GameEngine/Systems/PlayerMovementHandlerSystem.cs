@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entitas;
-using Server.Utils;
+using log4net;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -8,6 +8,7 @@ namespace Server.GameEngine.Systems
     public class PlayerMovementHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerMovementHandlerSystem));
 
         public PlayerMovementHandlerSystem(Contexts contexts) : base(contexts.input)
         {
@@ -35,7 +36,7 @@ namespace Server.GameEngine.Systems
 
                 if (gamePlayer == null)
                 {
-                    Log.Warning("Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются.");
+                    Log.Warn("Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются.");
                     return;
                 }
 

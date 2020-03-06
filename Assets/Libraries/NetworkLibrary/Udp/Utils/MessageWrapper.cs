@@ -32,6 +32,9 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         DeliveryConfirmation = 7,
         PlayerExit = 8,
         HealthPoints = 9,
-        BattleFinish = 10
+        MaxHealthPoints = 11,
+        PlayerTracking = 13,
+        PointTracking = 14,
+        ShowPlayerAchievements=15
     }
 }

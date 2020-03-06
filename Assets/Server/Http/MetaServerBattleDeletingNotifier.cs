@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DefaultNamespace;
-using Server.Utils;
+using log4net;
 using UnityEngine;
 
 namespace Server.Http
@@ -15,7 +15,7 @@ namespace Server.Http
     public class MetaServerBattleDeletingNotifier
     {
         public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
-
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MetaServerBattleDeletingNotifier));
         public async Task StartEndlessLoop()
         {
             while (true)

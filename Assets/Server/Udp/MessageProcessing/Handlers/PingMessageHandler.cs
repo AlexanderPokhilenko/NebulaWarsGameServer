@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Net;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
 using Server.GameEngine.Experimental;
-using Server.Utils;
-using UnityEngine;
+using Server.Udp.Connection;
 using ZeroFormatter;
 
 namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpConnection));
+        
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             PlayerPingMessage mes = 

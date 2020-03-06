@@ -1,7 +1,8 @@
 ﻿using System;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
-using Server.Utils;
+
 using UnityEditor;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ namespace Server.GameEngine
         private readonly FlameCircleObject zoneObject;
 
         private bool GameOver;
+        
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Battle));
+        
         public Battle(BattlesStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
@@ -58,6 +62,7 @@ namespace Server.GameEngine
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new FinishBattleSystem(Contexts, this))
+                    .Add(new MaxHpUpdaterSystem(Contexts))
                 ;
 
             systems.ActivateReactiveSystems();

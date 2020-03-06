@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Entitas;
-using Server.Utils;
-using UnityEngine;
+﻿using Entitas;
+using log4net;
 
 public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
 {
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> positionedGroup;
+    private static readonly ILog Log = LogManager.GetLogger(typeof(GlobalTransformSystem));
 
     public GlobalTransformSystem(Contexts contexts)
     {

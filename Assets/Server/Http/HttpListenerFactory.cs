@@ -1,11 +1,14 @@
 ﻿using System.Net;
-using Server.Utils;
-using UnityEngine;
+using log4net;
+using Server.GameEngine.Systems;
+using Unity.UNetWeaver;
 
 namespace Server.Http
 {
     public static class HttpListenerFactory
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpListenerFactory));
+        
         public static HttpListener CreateAndRunHttpListener(int port)
         {
             Log.Info("Настройка http слушателя на порту "+port);

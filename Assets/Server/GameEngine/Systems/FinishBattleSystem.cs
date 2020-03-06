@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entitas;
-using Server.Utils;
+using log4net;
 
 
 namespace Server.GameEngine.Systems
@@ -10,6 +10,7 @@ namespace Server.GameEngine.Systems
     {
         private readonly IGroup<GameEntity> playersGroup;
         private readonly Battle battle;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BattlesStorage));
 
         public FinishBattleSystem(Contexts contexts, Battle battle) : base(contexts.game)
         {
@@ -42,7 +43,7 @@ namespace Server.GameEngine.Systems
                     battle.FinishGame();
                     break;
                 default:
-                    Log.Warning("Минус игрок. Текущее кол-во: "+numberOfPlayers);
+                    Log.Warn("Минус игрок. Текущее кол-во: "+numberOfPlayers);
                     break;
             }
         }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
-using Server.Utils;
+using log4net;
 
 namespace Server.Udp.Storage
 {
     public class IpAddressesStorage
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(IpAddressesStorage));
+        
         /// <summary>
         /// playerId , ip 
         /// </summary>

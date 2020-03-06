@@ -2,8 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
-using Server.Utils;
 using ZeroFormatter;
 
 namespace Server.Http
@@ -12,6 +12,7 @@ namespace Server.Http
     {
         private HttpListener listener;
         private readonly HttpMessageHandlers messageHandlers;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpListenerWrapper));
 
         public HttpListenerWrapper()
         {
@@ -58,7 +59,7 @@ namespace Server.Http
 
                 if (result != null)
                 {
-                    Log.Info(result);
+                    Log.Info(result.ResultEnum);
                     byte[] responseData = ZeroFormatterSerializer.Serialize(result);
                     context.Response.StatusCode = 200;
                     context.Response.ContentLength64 = responseData.Length;
@@ -78,8 +79,8 @@ namespace Server.Http
 
         private void LogGameRoomValidationResult(GameRoomValidationResult result)
         {
-            Log.Warning(result.ResultEnum.ToString());
-            Log.Warning(result.ProblemPlayersIds?.Length);
+            Log.Warn(result.ResultEnum.ToString());
+            Log.Warn(result.ProblemPlayersIds?.Length);
         }
 
         private GameRoomValidationResult HandleBytes(byte[] data)

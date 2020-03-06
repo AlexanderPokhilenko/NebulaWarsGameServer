@@ -3,8 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Server.Utils;
-using UnityEngine;
+using log4net;
 
 namespace Server.Udp.Connection
 {
@@ -14,6 +13,8 @@ namespace Server.Udp.Connection
         private UdpClient udpClient;
         private bool isThreadRunning;
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpConnection));
+        
         public UdpConnection SetUpConnection(int listenPort)
         {
             try
