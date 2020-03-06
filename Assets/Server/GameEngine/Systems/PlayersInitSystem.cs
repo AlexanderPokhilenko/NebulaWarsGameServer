@@ -47,7 +47,7 @@ namespace Server.GameEngine.Systems
                 PlayerInfoForGameRoom playerInfo = players[i];
 
                 var angle = i * step + offset;
-                var position = Vector2.right.GetRotated(angle) * Radius;
+                var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
                 var gameEntity = playerPrototype.CreateEntity(gameContext, position, 180f + angle);
 
                 gameEntity.AddPlayer(playerInfo.TemporaryId);

@@ -24,7 +24,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         foreach (var e in targetingGroup.GetEntities())
         {
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
-            var currentDirection = Vector2.right.GetRotated(e.GetGlobalAngle(gameContext));
+            var currentDirection = CoordinatesExtensions.GetRotatedUnitVector2(e.GetGlobalAngle(gameContext));
             var onlyPlayerTargeting = e.targetingParameters.onlyPlayerTargeting;
             var targetingRadius = e.targetingParameters.radius;
             var sqrTargetingRadius = targetingRadius * targetingRadius;

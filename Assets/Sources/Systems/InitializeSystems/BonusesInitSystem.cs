@@ -30,7 +30,7 @@ public class BonusesInitSystem : IInitializeSystem
             {
                 var currentAngle = angle + i * deltaStep;
 
-                var position = Vector2.right.GetRotated(currentAngle) * Radius;
+                var position = CoordinatesExtensions.GetRotatedUnitVector2(currentAngle) * Radius;
 
                 bonuses[i].CreateEntity(gameContext, position, 0f);
             }
