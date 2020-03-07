@@ -33,7 +33,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             var targetFound = false;
             foreach (var target in targetGroup)
             {
-                if(e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext)) continue;
+                if(e.id.value == target.id.value || /*e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext) ||*/ e.GetGrandOwnerId(gameContext) == target.GetGrandOwnerId(gameContext)) continue;
                 if(onlyPlayerTargeting && !target.hasPlayer) continue;
                 var targetPosition = target.GetGlobalPositionVector2(gameContext);
                 var direction = targetPosition - currentPosition;

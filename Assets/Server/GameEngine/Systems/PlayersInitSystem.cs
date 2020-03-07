@@ -51,6 +51,13 @@ namespace Server.GameEngine.Systems
                 var gameEntity = playerPrototype.CreateEntity(gameContext, position, 180f + angle);
 
                 gameEntity.AddPlayer(playerInfo.TemporaryId);
+#warning Нужно убрать костыльную проверку на бота
+                if (playerInfo.GoogleId.StartsWith("Bot_"))
+                {
+                    gameEntity.AddTargetingParameters(false, 7.5f, false);
+                    gameEntity.isTargetChanging = true;
+                    gameEntity.isBot = true;
+                }
             }
         }
         

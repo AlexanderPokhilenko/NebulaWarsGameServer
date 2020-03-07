@@ -13,54 +13,55 @@ public static class GameComponentsLookup {
     public const int BonusAdder = 2;
     public const int BonusPickable = 3;
     public const int BonusTarget = 4;
-    public const int Cannon = 5;
-    public const int CannonCooldown = 6;
-    public const int CircleCollider = 7;
-    public const int CircleScaling = 8;
-    public const int Collapses = 9;
-    public const int Collidable = 10;
-    public const int Collided = 11;
-    public const int CollisionVector = 12;
-    public const int Concave = 13;
-    public const int Damage = 14;
-    public const int Destroyed = 15;
-    public const int Direction = 16;
-    public const int DirectionTargeting = 17;
-    public const int DirectionTargetingShooting = 18;
-    public const int GlobalTransform = 19;
-    public const int HealthPoints = 20;
-    public const int Id = 21;
-    public const int IgnoringParentCollision = 22;
-    public const int Invulnerable = 23;
-    public const int KilledBy = 24;
-    public const int Lifetime = 25;
-    public const int MaxAngularVelocity = 26;
-    public const int MaxVelocity = 27;
-    public const int NoncollinearAxises = 28;
-    public const int NonstandardRadius = 29;
-    public const int NotDecelerating = 30;
-    public const int Owner = 31;
-    public const int Parent = 32;
-    public const int ParentDependent = 33;
-    public const int ParentFixed = 34;
-    public const int PassingThrough = 35;
-    public const int PathCollider = 36;
-    public const int Player = 37;
-    public const int Position = 38;
-    public const int RectangleCollider = 39;
-    public const int Round = 40;
-    public const int SingleTargeting = 41;
-    public const int TargetChanging = 42;
-    public const int Target = 43;
-    public const int TargetingParameters = 44;
-    public const int TargetMovingPoint = 45;
-    public const int TryingToShoot = 46;
-    public const int Unmovable = 47;
-    public const int Velocity = 48;
-    public const int ViewType = 49;
-    public const int Zone = 50;
+    public const int Bot = 5;
+    public const int Cannon = 6;
+    public const int CannonCooldown = 7;
+    public const int CircleCollider = 8;
+    public const int CircleScaling = 9;
+    public const int Collapses = 10;
+    public const int Collidable = 11;
+    public const int Collided = 12;
+    public const int CollisionVector = 13;
+    public const int Concave = 14;
+    public const int Damage = 15;
+    public const int Destroyed = 16;
+    public const int Direction = 17;
+    public const int DirectionTargeting = 18;
+    public const int DirectionTargetingShooting = 19;
+    public const int GlobalTransform = 20;
+    public const int HealthPoints = 21;
+    public const int Id = 22;
+    public const int IgnoringParentCollision = 23;
+    public const int Invulnerable = 24;
+    public const int KilledBy = 25;
+    public const int Lifetime = 26;
+    public const int MaxAngularVelocity = 27;
+    public const int MaxVelocity = 28;
+    public const int NoncollinearAxises = 29;
+    public const int NonstandardRadius = 30;
+    public const int NotDecelerating = 31;
+    public const int Owner = 32;
+    public const int Parent = 33;
+    public const int ParentDependent = 34;
+    public const int ParentFixed = 35;
+    public const int PassingThrough = 36;
+    public const int PathCollider = 37;
+    public const int Player = 38;
+    public const int Position = 39;
+    public const int RectangleCollider = 40;
+    public const int Round = 41;
+    public const int SingleTargeting = 42;
+    public const int TargetChanging = 43;
+    public const int Target = 44;
+    public const int TargetingParameters = 45;
+    public const int TargetMovingPoint = 46;
+    public const int TryingToShoot = 47;
+    public const int Unmovable = 48;
+    public const int Velocity = 49;
+    public const int ViewType = 50;
+    public const int Zone = 51;
 
-    public const int TotalComponents = 51;
+    public const int TotalComponents = 52;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -68,6 +69,7 @@ public static class GameComponentsLookup {
         "BonusAdder",
         "BonusPickable",
         "BonusTarget",
+        "Bot",
         "Cannon",
         "CannonCooldown",
         "CircleCollider",
@@ -122,6 +124,7 @@ public static class GameComponentsLookup {
         typeof(BonusAdderComponent),
         typeof(BonusPickableComponent),
         typeof(BonusTargetComponent),
+        typeof(BotComponent),
         typeof(CannonComponent),
         typeof(CannonCooldownComponent),
         typeof(CircleColliderComponent),
