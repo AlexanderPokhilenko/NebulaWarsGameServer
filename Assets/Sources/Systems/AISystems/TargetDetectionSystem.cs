@@ -28,6 +28,8 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             var onlyPlayerTargeting = e.targetingParameters.onlyPlayerTargeting;
             var targetingRadius = e.targetingParameters.radius;
             var sqrTargetingRadius = targetingRadius * targetingRadius;
+            var grandParent = e.GetGrandParent(gameContext);
+            var currentGrandOwnerId = e.GetGrandOwnerId(gameContext);
             var minVal = float.PositiveInfinity;
             var targetId = 0;
             var targetFound = false;
@@ -41,22 +43,50 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                 if (sqrDirection <= sqrTargetingRadius)
                 {
                     targetFound = true;
+                    float currentVal;
                     if (e.targetingParameters.angularTargeting)
                     {
-                        var targetAngle = Vector2.Angle(currentDirection, direction);
-                        if (targetAngle < minVal)
-                        {
-                            minVal = targetAngle;
-                            targetId = target.id.value;
-                        }
+                        currentVal = Vector2.Angle(currentDirection, direction);
                     }
                     else
                     {
-                        if (sqrDirection < minVal)
+                        currentVal = sqrDirection;
+                    }
+
+                    // Установка приоритетности цели:
+                    // стреляем по игрокам с большей вероятностью
+                    if (target.hasPlayer) currentVal *= 0.5f;
+                    // обращаем внимание на целящиеся объекты
+                    if (target.hasTargetingParameters)
+                    {
+                        var targetTargetingRadius = target.targetingParameters.radius;
+                        if (sqrDirection <= targetTargetingRadius * targetTargetingRadius) currentVal *= 0.5f;
+                    }
+                    // нужно проверить, стреляют ли в нас
+                    if (target.hasTarget)
+                    {
+                        var targetsTarget = gameContext.GetEntityWithId(target.target.id);
+                        if (targetsTarget.GetGrandOwnerId(gameContext) == currentGrandOwnerId) currentVal *= 0.05f;
+                    }
+                    // летят ли в нас выстрелы
+                    if (target.hasDirectionTargeting)
+                    {
+                        var grandParentDirection = targetPosition - grandParent.GetGlobalPositionVector2(gameContext);
+                        var localTargetPosition = target.GetLocalRotatedVector(gameContext, grandParentDirection);
+                        var absProjectionY = Mathf.Abs(localTargetPosition.y);
+                        var overlapLine = target.circleCollider.radius;
+                        if (grandParent.hasCircleCollider)
                         {
-                            minVal = sqrDirection;
-                            targetId = target.id.value;
+                            overlapLine += grandParent.circleCollider.radius;
                         }
+                        var antiOverlap = absProjectionY / overlapLine;
+                        if (antiOverlap < 1f) currentVal *= antiOverlap;
+                    }
+
+                    if (currentVal < minVal)
+                    {
+                        minVal = currentVal;
+                        targetId = target.id.value;
                     }
                 }
             }
