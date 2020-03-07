@@ -19,6 +19,7 @@ public sealed class RemoveTargetForChangingSystem : ICleanupSystem
             if(e.hasTarget) e.RemoveTarget();
             if (e.hasDirectionTargeting) e.RemoveDirectionTargeting();
             if (e.hasAngularVelocity) e.RemoveAngularVelocity();
+            e.isDirectionTargetingShooting = false;
         }
     }
 }

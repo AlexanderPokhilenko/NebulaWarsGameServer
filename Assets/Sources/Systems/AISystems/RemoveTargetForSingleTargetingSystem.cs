@@ -20,6 +20,7 @@ public sealed class RemoveTargetForSingleTargetingSystem : IExecuteSystem
             if(e.hasTarget) e.RemoveTarget();
             if (e.hasDirectionTargeting) e.RemoveDirectionTargeting();
             if (e.hasAngularVelocity) e.RemoveAngularVelocity();
+            e.isDirectionTargetingShooting = false;
         }
     }
 }

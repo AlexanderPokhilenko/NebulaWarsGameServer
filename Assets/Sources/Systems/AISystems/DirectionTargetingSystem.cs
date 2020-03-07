@@ -36,6 +36,8 @@ public sealed class DirectionTargetingSystem : IExecuteSystem
             {
                 e.AddDirectionTargeting(targetAngle);
             }
+
+            e.isDirectionTargetingShooting = true;
         }
     }
 }

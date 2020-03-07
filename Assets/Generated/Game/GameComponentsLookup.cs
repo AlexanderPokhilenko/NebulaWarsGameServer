@@ -26,39 +26,41 @@ public static class GameComponentsLookup {
     public const int Destroyed = 15;
     public const int Direction = 16;
     public const int DirectionTargeting = 17;
-    public const int GlobalTransform = 18;
-    public const int HealthPoints = 19;
-    public const int Id = 20;
-    public const int IgnoringParentCollision = 21;
-    public const int Invulnerable = 22;
-    public const int KilledBy = 23;
-    public const int Lifetime = 24;
-    public const int MaxAngularVelocity = 25;
-    public const int MaxVelocity = 26;
-    public const int NoncollinearAxises = 27;
-    public const int NonstandardRadius = 28;
-    public const int NotDecelerating = 29;
-    public const int Owner = 30;
-    public const int Parent = 31;
-    public const int ParentDependent = 32;
-    public const int ParentFixed = 33;
-    public const int PassingThrough = 34;
-    public const int PathCollider = 35;
-    public const int Player = 36;
-    public const int Position = 37;
-    public const int RectangleCollider = 38;
-    public const int Round = 39;
-    public const int SingleTargeting = 40;
-    public const int TargetChanging = 41;
-    public const int Target = 42;
-    public const int TargetingParameters = 43;
-    public const int TryingToShoot = 44;
-    public const int Unmovable = 45;
-    public const int Velocity = 46;
-    public const int ViewType = 47;
-    public const int Zone = 48;
+    public const int DirectionTargetingShooting = 18;
+    public const int GlobalTransform = 19;
+    public const int HealthPoints = 20;
+    public const int Id = 21;
+    public const int IgnoringParentCollision = 22;
+    public const int Invulnerable = 23;
+    public const int KilledBy = 24;
+    public const int Lifetime = 25;
+    public const int MaxAngularVelocity = 26;
+    public const int MaxVelocity = 27;
+    public const int NoncollinearAxises = 28;
+    public const int NonstandardRadius = 29;
+    public const int NotDecelerating = 30;
+    public const int Owner = 31;
+    public const int Parent = 32;
+    public const int ParentDependent = 33;
+    public const int ParentFixed = 34;
+    public const int PassingThrough = 35;
+    public const int PathCollider = 36;
+    public const int Player = 37;
+    public const int Position = 38;
+    public const int RectangleCollider = 39;
+    public const int Round = 40;
+    public const int SingleTargeting = 41;
+    public const int TargetChanging = 42;
+    public const int Target = 43;
+    public const int TargetingParameters = 44;
+    public const int TargetMovingPoint = 45;
+    public const int TryingToShoot = 46;
+    public const int Unmovable = 47;
+    public const int Velocity = 48;
+    public const int ViewType = 49;
+    public const int Zone = 50;
 
-    public const int TotalComponents = 49;
+    public const int TotalComponents = 51;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -79,6 +81,7 @@ public static class GameComponentsLookup {
         "Destroyed",
         "Direction",
         "DirectionTargeting",
+        "DirectionTargetingShooting",
         "GlobalTransform",
         "HealthPoints",
         "Id",
@@ -105,6 +108,7 @@ public static class GameComponentsLookup {
         "TargetChanging",
         "Target",
         "TargetingParameters",
+        "TargetMovingPoint",
         "TryingToShoot",
         "Unmovable",
         "Velocity",
@@ -131,6 +135,7 @@ public static class GameComponentsLookup {
         typeof(DestroyedComponent),
         typeof(DirectionComponent),
         typeof(DirectionTargetingComponent),
+        typeof(DirectionTargetingShootingComponent),
         typeof(GlobalTransformComponent),
         typeof(HealthPointsComponent),
         typeof(IdComponent),
@@ -157,6 +162,7 @@ public static class GameComponentsLookup {
         typeof(TargetChangingComponent),
         typeof(TargetComponent),
         typeof(TargetingParametersComponent),
+        typeof(TargetMovingPointComponent),
         typeof(TryingToShootComponent),
         typeof(UnmovableComponent),
         typeof(VelocityComponent),

@@ -12,7 +12,7 @@ public sealed class DirectionShootingSystem : IExecuteSystem
     public DirectionShootingSystem(Contexts contexts)
     {
         gameContext = contexts.game;
-        var matcher = GameMatcher.AllOf(GameMatcher.Direction, GameMatcher.DirectionTargeting).NoneOf(GameMatcher.Target);
+        var matcher = GameMatcher.AllOf(GameMatcher.Direction, GameMatcher.DirectionTargeting, GameMatcher.DirectionTargetingShooting).NoneOf(GameMatcher.Target);
         shootingGroup = gameContext.GetGroup(matcher);
     }
 
