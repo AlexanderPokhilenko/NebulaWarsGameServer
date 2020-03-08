@@ -20,9 +20,9 @@ namespace Server.GameEngine.Systems
         public NetworkSenderSystem(Contexts contexts)
         {
             gameContext = contexts.game;
-            players = gameContext.GetGroup(GameMatcher.Player);
+            players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             playersWithHp = 
-                gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints));
+                gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints).NoneOf(GameMatcher.Bot));
             var viewMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.GlobalTransform, GameMatcher.ViewType);
             viewObjects = gameContext.GetGroup(viewMatcher);
         }
@@ -40,13 +40,9 @@ namespace Server.GameEngine.Systems
                 UdpSendUtils.SendPositions(player.player.id, visibleObjects);
             }
 
-            foreach (var playerWithHp in playersWithHp.AsEnumerable())
+            foreach (var playerWithHp in playersWithHp)
             {
-                if (playerWithHp.player.id == 888777)
-                {
-                    UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
-                    break;
-                }
+                UdpSendUtils.SendHealthPoints(playerWithHp.player.id, playerWithHp.healthPoints.value);
             }
         }
         
