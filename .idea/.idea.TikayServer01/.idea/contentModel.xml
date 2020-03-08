@@ -25,6 +25,7 @@
               <e p="GameBonusAdderComponent.cs" t="Include" />
               <e p="GameBonusPickableComponent.cs" t="Include" />
               <e p="GameBonusTargetComponent.cs" t="Include" />
+              <e p="GameBotComponent.cs" t="Include" />
               <e p="GameCannonComponent.cs" t="Include" />
               <e p="GameCannonCooldownComponent.cs" t="Include" />
               <e p="GameCircleColliderComponent.cs" t="Include" />
@@ -38,17 +39,21 @@
               <e p="GameDestroyedComponent.cs" t="Include" />
               <e p="GameDirectionComponent.cs" t="Include" />
               <e p="GameDirectionTargetingComponent.cs" t="Include" />
+              <e p="GameDirectionTargetingShootingComponent.cs" t="Include" />
               <e p="GameGlobalTransformComponent.cs" t="Include" />
               <e p="GameHealthPointsComponent.cs" t="Include" />
               <e p="GameIdComponent.cs" t="Include" />
               <e p="GameIgnoringParentCollisionComponent.cs" t="Include" />
               <e p="GameInvulnerableComponent.cs" t="Include" />
+              <e p="GameKilledByComponent.cs" t="Include" />
               <e p="GameLifetimeComponent.cs" t="Include" />
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
+              <e p="GameMaxHealthPointsComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
               <e p="GameNoncollinearAxisesComponent.cs" t="Include" />
               <e p="GameNonstandardRadiusComponent.cs" t="Include" />
               <e p="GameNotDeceleratingComponent.cs" t="Include" />
+              <e p="GameOwnerComponent.cs" t="Include" />
               <e p="GameParentComponent.cs" t="Include" />
               <e p="GameParentDependentComponent.cs" t="Include" />
               <e p="GameParentFixedComponent.cs" t="Include" />
@@ -62,6 +67,7 @@
               <e p="GameTargetChangingComponent.cs" t="Include" />
               <e p="GameTargetComponent.cs" t="Include" />
               <e p="GameTargetingParametersComponent.cs" t="Include" />
+              <e p="GameTargetMovingPointComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
@@ -264,6 +270,7 @@
               <e p="CircleScalingComponent.cs" t="Include" />
             </e>
             <e p="GroupsComponents" t="Include">
+              <e p="OwnerComponent.cs" t="Include" />
               <e p="ParentComponent.cs" t="Include" />
               <e p="ParentDependentComponent.cs" t="Include" />
               <e p="ParentFixedComponent.cs" t="Include" />
@@ -272,6 +279,8 @@
               <e p="DestroyedComponent.cs" t="Include" />
               <e p="HealthPointsComponent.cs" t="Include" />
               <e p="InvulnerableComponent.cs" t="Include" />
+              <e p="KilledByComponent.cs" t="Include" />
+              <e p="MaxHealthPointsComponent.cs" t="Include" />
             </e>
             <e p="IdComponent.cs" t="Include" />
             <e p="MovementComponents" t="Include">
@@ -300,11 +309,14 @@
               <e p="TryingToShootComponent.cs" t="Include" />
             </e>
             <e p="TargetingComponents" t="Include">
+              <e p="BotComponent.cs" t="Include" />
               <e p="DirectionTargetingComponent.cs" t="Include" />
+              <e p="DirectionTargetingShootingComponent.cs" t="Include" />
               <e p="SingleTargetingComponent.cs" t="Include" />
               <e p="TargetChangingComponent.cs" t="Include" />
               <e p="TargetComponent.cs" t="Include" />
               <e p="TargetingParametersComponent.cs" t="Include" />
+              <e p="TargetMovingPointComponent.cs" t="Include" />
             </e>
             <e p="TimeComponents" t="Include">
               <e p="LifetimeComponent.cs" t="Include" />
@@ -319,12 +331,14 @@
             <e p="AISystems" t="Include">
               <e p="AISystems.cs" t="Include" />
               <e p="AngularVelocityTargetingSystem.cs" t="Include" />
+              <e p="BotsMovingSystem.cs" t="Include" />
               <e p="DirectionShootingSystem.cs" t="Include" />
               <e p="DirectionTargetingSystem.cs" t="Include" />
               <e p="RemoveDistantTargetSystem.cs" t="Include" />
               <e p="RemoveTargetForChangingSystem.cs" t="Include" />
               <e p="RemoveTargetForSingleTargetingSystem.cs" t="Include" />
               <e p="TargetDetectionSystem.cs" t="Include" />
+              <e p="TargetPointMovingSystem.cs" t="Include" />
               <e p="TargetShootingSystem.cs" t="Include" />
             </e>
             <e p="CollisionSystems" t="Include">
