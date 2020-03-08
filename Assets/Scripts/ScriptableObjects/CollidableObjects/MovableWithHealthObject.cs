@@ -10,6 +10,7 @@ public class MovableWithHealthObject : MovableObject
     {
         var entity = base.CreateEntity(context);
         entity.AddHealthPoints(maxHealthPoints);
+        entity.AddMaxHealthPoints(maxHealthPoints);
 
         return entity;
     }

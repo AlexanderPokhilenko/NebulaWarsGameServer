@@ -27,7 +27,7 @@ public sealed class BotsMovingSystem : IExecuteSystem
             var zonePosition = zone.GetGlobalPositionVector2(gameContext);
             var zoneRadius = zone.circleCollider.radius;
 
-            float maxRadius = (e.circleCollider.radius + Random.Range(0, e.maxVelocity.value));
+            float maxRadius = e.circleCollider.radius + Random.Range(0, e.maxVelocity.value);
             Vector2 targetPosition = currentPosition + maxRadius * CoordinatesExtensions.GetRandomUnitVector2();
 
             //if (e.hasTargetingParameters)
