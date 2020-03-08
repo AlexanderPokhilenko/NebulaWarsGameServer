@@ -114,9 +114,15 @@
                 <e p="PlayerPingMessage.cs" t="Include" />
               </e>
               <e p="ServerToPlayer" t="Include">
-                <e p="BattleFinishMessage.cs" t="Include" />
-                <e p="HealthPointsMessage.cs" t="Include" />
-                <e p="MaxHealthPointsMessage.cs" t="Include" />
+                <e p="BattleStatus" t="Include">
+                  <e p="PlayerTrackingMessage.cs" t="Include" />
+                  <e p="PointTrackingMessage.cs" t="Include" />
+                  <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
+                </e>
+                <e p="Health" t="Include">
+                  <e p="HealthPointsMessage.cs" t="Include" />
+                  <e p="MaxHealthPointsMessage.cs" t="Include" />
+                </e>
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
                   <e p="ViewTransform.cs" t="Include" />
@@ -126,6 +132,7 @@
                 <e p="MessageFactory.cs" t="Include" />
                 <e p="MessagesContainer.cs" t="Include" />
                 <e p="MessageWrapper.cs" t="Include" />
+                <e p="ViewTypeId.cs" t="Include" />
               </e>
             </e>
           </e>
@@ -169,7 +176,6 @@
             </e>
           </e>
           <e p="StubSpawner.cs" t="Include" />
-          <e p="ViewTypeId.cs" t="Include" />
         </e>
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
