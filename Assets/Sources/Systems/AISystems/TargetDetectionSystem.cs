@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Entitas;
 using UnityEngine;
 
@@ -24,16 +25,18 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         foreach (var e in targetingGroup.GetEntities())
         {
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
-            var currentDirection = Vector2.right.GetRotated(e.GetGlobalAngle(gameContext));
+            var currentDirection = CoordinatesExtensions.GetRotatedUnitVector2(e.GetGlobalAngle(gameContext));
             var onlyPlayerTargeting = e.targetingParameters.onlyPlayerTargeting;
             var targetingRadius = e.targetingParameters.radius;
             var sqrTargetingRadius = targetingRadius * targetingRadius;
+            var grandParent = e.GetGrandParent(gameContext);
+            var currentGrandOwnerId = e.GetGrandOwnerId(gameContext);
             var minVal = float.PositiveInfinity;
             var targetId = 0;
             var targetFound = false;
             foreach (var target in targetGroup)
             {
-                if(e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext)) continue;
+                if(e.id.value == target.id.value || /*e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext) ||*/ e.GetGrandOwnerId(gameContext) == target.GetGrandOwnerId(gameContext)) continue;
                 if(onlyPlayerTargeting && !target.hasPlayer) continue;
                 var targetPosition = target.GetGlobalPositionVector2(gameContext);
                 var direction = targetPosition - currentPosition;
@@ -41,22 +44,53 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                 if (sqrDirection <= sqrTargetingRadius)
                 {
                     targetFound = true;
+                    float currentVal;
                     if (e.targetingParameters.angularTargeting)
                     {
-                        var targetAngle = Vector2.Angle(currentDirection, direction);
-                        if (targetAngle < minVal)
-                        {
-                            minVal = targetAngle;
-                            targetId = target.id.value;
-                        }
+                        currentVal = Vector2.Angle(currentDirection, direction);
                     }
                     else
                     {
-                        if (sqrDirection < minVal)
+                        currentVal = sqrDirection - target.circleCollider.radius * target.circleCollider.radius;
+                    }
+
+                    // Установка приоритетности цели:
+                    // стреляем по игрокам с большей вероятностью
+                    if (target.hasPlayer) currentVal *= 0.5f;
+                    // обращаем внимание на целящиеся объекты
+                    var targetsTargetingChildren = target.GetAllChildrenGameEntities(gameContext, c => c.hasTargetingParameters);
+                    foreach (var targetingChild in targetsTargetingChildren)
+                    {
+                        var childTargetingRadius = targetingChild.targetingParameters.radius;
+                        if (sqrDirection <= childTargetingRadius * childTargetingRadius) currentVal *= 0.5f;
+                    }
+                    // нужно проверить, стреляют ли в нас
+                    var targetsChildrenWithTarget = target.GetAllChildrenGameEntities(gameContext, c => c.hasTarget);
+                    foreach (var childWithTarget in targetsChildrenWithTarget)
+                    {
+                        var childTarget = gameContext.GetEntityWithId(childWithTarget.target.id);
+                        if (childTarget.GetGrandOwnerId(gameContext) == currentGrandOwnerId) currentVal *= 0.05f;
+                    }
+                    // летят ли в нас выстрелы
+                    var targetsDirectionTargetingChildrenCount = target.GetAllChildrenGameEntities(gameContext, c => c.hasDirectionTargeting).Count();
+                    if(targetsDirectionTargetingChildrenCount > 0)
+                    {
+                        var grandParentDirection = targetPosition - grandParent.GetGlobalPositionVector2(gameContext);
+                        var localTargetPosition = target.GetLocalRotatedVector(gameContext, grandParentDirection);
+                        var absProjectionY = Mathf.Abs(localTargetPosition.y);
+                        var overlapLine = target.circleCollider.radius;
+                        if (grandParent.hasCircleCollider)
                         {
-                            minVal = sqrDirection;
-                            targetId = target.id.value;
+                            overlapLine += grandParent.circleCollider.radius;
                         }
+                        var antiOverlap = absProjectionY / overlapLine;
+                        if (antiOverlap < 1f) currentVal *= antiOverlap / targetsDirectionTargetingChildrenCount;
+                    }
+
+                    if (currentVal < minVal)
+                    {
+                        minVal = currentVal;
+                        targetId = target.id.value;
                     }
                 }
             }

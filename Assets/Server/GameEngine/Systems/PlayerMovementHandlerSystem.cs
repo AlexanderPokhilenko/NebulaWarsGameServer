@@ -54,30 +54,24 @@ namespace Server.GameEngine.Systems
 
                     var directionAngle = Mathf.Atan2(newVelocity.y, newVelocity.x) * Mathf.Rad2Deg;
                     if (directionAngle < 0) directionAngle += 360f;
-                    var deltaAngle = directionAngle - gamePlayer.direction.angle;
-                    if (deltaAngle > 180f)
+                    if (gamePlayer.hasDirectionTargeting)
                     {
-                        deltaAngle -= 360f;
-                    }
-                    else if (deltaAngle < -180f)
-                    {
-                        deltaAngle += 360f;
-                    }
-
-                    var deltaAngularVelocity = deltaAngle / Clock.deltaTime;
-                    if (gamePlayer.hasAngularVelocity)
-                    {
-                        gamePlayer.ReplaceAngularVelocity(deltaAngularVelocity);
+                        gamePlayer.ReplaceDirectionTargeting(directionAngle);
                     }
                     else
                     {
-                        gamePlayer.AddAngularVelocity(deltaAngularVelocity);
+                        gamePlayer.AddDirectionTargeting(directionAngle);
                     }
+                    gamePlayer.isDirectionTargetingShooting = false;
                 }
                 else
                 {
                     if (gamePlayer.hasVelocity) gamePlayer.RemoveVelocity();
-                    if (gamePlayer.hasAngularVelocity && !gamePlayer.hasDirectionTargeting) gamePlayer.RemoveAngularVelocity();
+                    if (!gamePlayer.isDirectionTargetingShooting)
+                    {
+                        if (gamePlayer.hasDirectionTargeting) gamePlayer.RemoveDirectionTargeting();
+                        if(gamePlayer.hasAngularVelocity) gamePlayer.RemoveAngularVelocity();
+                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ public sealed class DeleteSystem : IExecuteSystem
         //TODO: посмотреть, можно ли как-то удалять без использования массива
         foreach (var e in deletingGroup.GetEntities())
         {
+            if(e.hasKilledBy) Debug.Log($"Объект с id = {e.id.value} был уничтожен объектом с id = {e.killedBy.id}.");
             e.Destroy();
         }
     }

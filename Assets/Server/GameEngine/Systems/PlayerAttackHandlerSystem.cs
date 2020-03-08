@@ -42,7 +42,8 @@ namespace Server.GameEngine.Systems
 
                 if (float.IsNaN(playerAttackDirection))
                 {
-                    if(gamePlayer.hasDirectionTargeting) gamePlayer.RemoveDirectionTargeting();
+                    //if(gamePlayer.hasDirectionTargeting) gamePlayer.RemoveDirectionTargeting();
+                    gamePlayer.isDirectionTargetingShooting = false;
                     continue;
                 }
 
@@ -67,6 +68,8 @@ namespace Server.GameEngine.Systems
                 {
                     gamePlayer.AddDirectionTargeting(playerAttackDirection);
                 }
+
+                gamePlayer.isDirectionTargetingShooting = true;
             }
         }
     }

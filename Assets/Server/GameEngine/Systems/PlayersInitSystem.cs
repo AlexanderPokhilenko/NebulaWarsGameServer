@@ -49,23 +49,25 @@ namespace Server.GameEngine.Systems
             {
                 PlayerInfoForGameRoom playerInfo = players[i];
 
-                var gameEntity = playerPrototype.CreateEntity(gameContext);
                 var angle = i * step + offset;
-                var position = Vector2.right.GetRotated(angle) * Radius;
-                
+                var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
+                var gameEntity = playerPrototype.CreateEntity(gameContext, position, 180f + angle);
+
                 gameEntity.AddPlayer(playerInfo.TemporaryId);
-                gameEntity.AddPosition(position);
-                gameEntity.AddDirection(180f + angle);
+#warning Нужно убрать костыльную проверку на бота
+                if (playerInfo.GoogleId.StartsWith("Bot_"))
+                {
+                    gameEntity.AddTargetingParameters(false, 7.5f, false);
+                    gameEntity.isTargetChanging = true;
+                    gameEntity.isBot = true;
+                }
             }
         }
         
         private void SpawnPlayer(PlayerInfoForGameRoom playerInfo, int x, int y)
         {
-            var gameEntity = playerPrototype.CreateEntity(gameContext);
-            var position = new Vector2(x,y);
+            var gameEntity = playerPrototype.CreateEntity(gameContext, new Vector2(x, y), 180f);
             gameEntity.AddPlayer(playerInfo.TemporaryId);
-            gameEntity.AddPosition(position);
-            gameEntity.AddDirection(180f);
         }
     }
 }

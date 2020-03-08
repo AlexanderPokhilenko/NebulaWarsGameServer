@@ -29,12 +29,10 @@ public class BonusesInitSystem : IInitializeSystem
             for (int i = 0; i < bonuses.Length; i++)
             {
                 var currentAngle = angle + i * deltaStep;
-                var entity = bonuses[i].CreateEntity(gameContext);
 
-                var position = Vector2.right.GetRotated(currentAngle) * Radius;
+                var position = CoordinatesExtensions.GetRotatedUnitVector2(currentAngle) * Radius;
 
-                entity.AddPosition(position);
-                entity.AddDirection(0);
+                bonuses[i].CreateEntity(gameContext, position, 0f);
             }
         }
     }

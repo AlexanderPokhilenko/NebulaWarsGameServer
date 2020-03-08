@@ -30,6 +30,7 @@ public sealed class RemoveDistantTargetSystem : ICleanupSystem
                 e.RemoveTarget();
                 e.RemoveDirectionTargeting();
                 e.RemoveAngularVelocity();
+                e.isDirectionTargetingShooting = false;
             }
         }
     }

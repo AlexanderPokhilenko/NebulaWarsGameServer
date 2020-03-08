@@ -129,6 +129,12 @@ public static class CoordinatesExtensions
         return vector.GetRotated(sin, cos);
     }
 
+    public static Vector2 GetRotatedUnitVector2(float angle)
+    {
+        GetSinCosFromDegrees(angle, out var sin, out var cos);
+        return new Vector2(cos, sin);
+    }
+
     public static void Rotate(this ref Vector2 vector, float sin, float cos)
     {
         var newX = cos * vector.x - sin * vector.y;

@@ -28,9 +28,12 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             var currentPartCanPickBonuses = current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var currentBonusPickerPart);
             var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
+            var currentGrandOwnerId = current.GetGrandOwnerId(gameContext);
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
+                //TODO: возможно, стоит убрать эту проверку
+                if(e.GetGrandOwnerId(gameContext) == currentGrandOwnerId) continue;
                 if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
                    (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
                 var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
@@ -102,11 +105,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         if (current.hasDamage && e.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var ePart))
                         {
                             ePart.ReplaceHealthPoints(ePart.healthPoints.value - currentDamage);
+                            if(ePart.healthPoints.value <= 0 && !ePart.hasKilledBy) ePart.AddKilledBy(currentGrandOwnerId);
                         }
                         if (e.hasDamage && currentPartHasHealthPoints)
                         {
                             var eDamage = e.isPassingThrough && !e.isCollapses ? e.damage.value * Clock.deltaTime : e.damage.value;
                             currentHealthPart.ReplaceHealthPoints(currentHealthPart.healthPoints.value - eDamage);
+                            if (currentHealthPart.healthPoints.value <= 0 && !currentHealthPart.hasKilledBy) currentHealthPart.AddKilledBy(e.GetGrandOwnerId(gameContext));
                         }
 
                         if (current.hasBonusAdder && !current.hasBonusTarget && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))

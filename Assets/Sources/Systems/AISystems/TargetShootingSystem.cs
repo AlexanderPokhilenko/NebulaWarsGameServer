@@ -11,7 +11,7 @@ public sealed class TargetShootingSystem : IExecuteSystem
     public TargetShootingSystem(Contexts contexts)
     {
         gameContext = contexts.game;
-        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Target).NoneOf(GameMatcher.CannonCooldown);
+        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Target);
         shootingGroup = gameContext.GetGroup(matcher);
     }
 

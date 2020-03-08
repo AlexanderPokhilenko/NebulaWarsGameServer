@@ -19,6 +19,30 @@ public static class ParentsExtensions
         return false;
     }
 
+    public static GameEntity GetGrandParent(this GameEntity entity, GameContext context)
+    {
+        var firstParent = entity;
+        while (firstParent.hasParent)
+        {
+            firstParent = context.GetEntityWithId(firstParent.parent.id);
+        }
+
+        return firstParent;
+    }
+
+    public static int GetGrandOwnerId(this GameEntity entity, GameContext context)
+    {
+        var result = entity.GetGrandParent(context).id.value;
+        var currentEntity = context.GetEntityWithId(result);
+        while (currentEntity != null && currentEntity.hasOwner)
+        {
+            result = currentEntity.owner.id;
+            currentEntity = context.GetEntityWithId(result);
+        }
+
+        return result;
+    }
+
     public static bool TryGetFirstGameEntity(this GameEntity entity, GameContext context, Predicate<GameEntity> predicate, out GameEntity result)
     {
         result = entity;
