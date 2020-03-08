@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Entitas;
 using UnityEngine;
 
@@ -50,26 +51,29 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                     }
                     else
                     {
-                        currentVal = sqrDirection;
+                        currentVal = sqrDirection - target.circleCollider.radius * target.circleCollider.radius;
                     }
 
                     // Установка приоритетности цели:
                     // стреляем по игрокам с большей вероятностью
                     if (target.hasPlayer) currentVal *= 0.5f;
                     // обращаем внимание на целящиеся объекты
-                    if (target.hasTargetingParameters)
+                    var targetsTargetingChildren = target.GetAllChildrenGameEntities(gameContext, c => c.hasTargetingParameters);
+                    foreach (var targetingChild in targetsTargetingChildren)
                     {
-                        var targetTargetingRadius = target.targetingParameters.radius;
-                        if (sqrDirection <= targetTargetingRadius * targetTargetingRadius) currentVal *= 0.5f;
+                        var childTargetingRadius = targetingChild.targetingParameters.radius;
+                        if (sqrDirection <= childTargetingRadius * childTargetingRadius) currentVal *= 0.5f;
                     }
                     // нужно проверить, стреляют ли в нас
-                    if (target.hasTarget)
+                    var targetsChildrenWithTarget = target.GetAllChildrenGameEntities(gameContext, c => c.hasTarget);
+                    foreach (var childWithTarget in targetsChildrenWithTarget)
                     {
-                        var targetsTarget = gameContext.GetEntityWithId(target.target.id);
-                        if (targetsTarget.GetGrandOwnerId(gameContext) == currentGrandOwnerId) currentVal *= 0.05f;
+                        var childTarget = gameContext.GetEntityWithId(childWithTarget.target.id);
+                        if (childTarget.GetGrandOwnerId(gameContext) == currentGrandOwnerId) currentVal *= 0.05f;
                     }
                     // летят ли в нас выстрелы
-                    if (target.hasDirectionTargeting)
+                    var targetsDirectionTargetingChildrenCount = target.GetAllChildrenGameEntities(gameContext, c => c.hasDirectionTargeting).Count();
+                    if(targetsDirectionTargetingChildrenCount > 0)
                     {
                         var grandParentDirection = targetPosition - grandParent.GetGlobalPositionVector2(gameContext);
                         var localTargetPosition = target.GetLocalRotatedVector(gameContext, grandParentDirection);
@@ -80,7 +84,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                             overlapLine += grandParent.circleCollider.radius;
                         }
                         var antiOverlap = absProjectionY / overlapLine;
-                        if (antiOverlap < 1f) currentVal *= antiOverlap;
+                        if (antiOverlap < 1f) currentVal *= antiOverlap / targetsDirectionTargetingChildrenCount;
                     }
 
                     if (currentVal < minVal)
