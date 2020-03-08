@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entitas;
+using Server.GameEngine;
 using UnityEngine;
 
 public class BonusApplyingSystem : ReactiveSystem<GameEntity>
 {
     private readonly GameContext gameContext;
+    private const float colliderScalingCoefficient = 1.25f;
+    private const float maxSameScaleDelta = 0.05f;
 
     public BonusApplyingSystem(Contexts contexts) : base(contexts.game)
     {
@@ -32,16 +35,26 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             addableBonus.AddLifetime(e.bonusAdder.duration);
             if (e.bonusAdder.colliderInheritance)
             {
+                var targetRadius = pickablePart.circleCollider.radius * colliderScalingCoefficient;
                 if (addableBonus.hasCircleCollider)
                 {
-                    if (pickablePart.circleCollider.radius != addableBonus.circleCollider.radius)
+                    if (Math.Abs(targetRadius - addableBonus.circleCollider.radius) > maxSameScaleDelta)
+                    {
                         addableBonus.isNonstandardRadius = true;
-                    addableBonus.ReplaceCircleCollider(pickablePart.circleCollider.radius);
+                        addableBonus.AddTargetScaling(targetRadius);
+                        var scalingTime = Mathf.Min(1f, Mathf.Max(0.05f * e.bonusAdder.duration, Clock.deltaTime));
+                        var scalingSpeed = (targetRadius - addableBonus.circleCollider.radius) / scalingTime;
+                        addableBonus.AddCircleScaling(scalingSpeed);
+                    }
+                    else
+                    {
+                        addableBonus.ReplaceCircleCollider(targetRadius);
+                    }
                 }
                 else
                 {
                     addableBonus.isNonstandardRadius = true;
-                    addableBonus.AddCircleCollider(pickablePart.circleCollider.radius);
+                    addableBonus.AddCircleCollider(targetRadius);
                 }
             }
             addableBonus.AddParent(pickablePart.id.value);

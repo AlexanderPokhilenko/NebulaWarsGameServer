@@ -11,5 +11,6 @@ internal class EffectsSystems : Feature
         Add(new BonusApplyingSystem(contexts));
         Add(new AuraDamageSystem(contexts));
         Add(new CircleScalingSystem(contexts));
+        Add(new CircleTargetScalingCheckerSystem(contexts));
     }
 }

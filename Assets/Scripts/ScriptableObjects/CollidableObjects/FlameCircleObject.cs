@@ -9,6 +9,7 @@ public class FlameCircleObject : AuraObject
     {
         var entity = base.CreateEntity(context);
         entity.AddCircleScaling(scalingSpeed);
+        entity.AddTargetScaling(0f);
         entity.isNonstandardRadius = true;
 
         return entity;
