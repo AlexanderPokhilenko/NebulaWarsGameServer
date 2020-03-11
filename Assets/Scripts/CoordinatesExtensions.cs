@@ -148,4 +148,16 @@ public static class CoordinatesExtensions
         GetSinCosFromDegrees(angle, out var sin, out var cos);
         vector.Rotate(sin, cos);
     }
+
+    public static Vector2[] GetRotatedVectors(Vector2[] vectors, float angle)
+    {
+        GetSinCosFromDegrees(angle, out var sin, out var cos);
+        var newVectors = new Vector2[vectors.Length];
+        for (var i = 0; i < vectors.Length; i++)
+        {
+            newVectors[i] = vectors[i].GetRotated(sin, cos);
+        }
+
+        return newVectors;
+    }
 }

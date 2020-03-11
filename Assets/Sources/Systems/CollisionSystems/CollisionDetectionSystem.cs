@@ -139,15 +139,11 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
     private bool CheckCollisionFigureWithCircle(GameEntity figure, GameEntity circle, out Vector2 penetration)
     {
-        var figureGlobalPosition = figure.GetGlobalPositionVector2(gameContext);
         var circleGlobalPosition = circle.GetGlobalPositionVector2(gameContext);
         var prevDepth = float.PositiveInfinity;
         penetration = new Vector2(0, 0);
-        GetFigureRotatedAxisesAndDots(figure, out var axises, out var dots);
-        for (int i = 0; i < dots.Length; i++)
-        {
-            dots[i] += figureGlobalPosition;
-        }
+        var dots = figure.globalPathCollider.dots;
+        var axises = figure.globalNoncollinearAxises.vectors;
 
         foreach (var axis in axises)
         {
@@ -184,20 +180,12 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
     private bool CheckCollisionFigureWithFigure(GameEntity figure1, GameEntity figure2, out Vector2 penetration)
     {
-        var figure1GlobalPosition = figure1.GetGlobalPositionVector2(gameContext);
-        var figure2GlobalPosition = figure2.GetGlobalPositionVector2(gameContext);
         var prevDepth = float.PositiveInfinity;
         penetration = new Vector2(0, 0);
-        GetFigureRotatedAxisesAndDots(figure1, out var axises1, out var dots1);
-        GetFigureRotatedAxisesAndDots(figure2, out var axises2, out var dots2);
-        for (int i = 0; i < dots1.Length; i++)
-        {
-            dots1[i] += figure1GlobalPosition;
-        }
-        for (int i = 0; i < dots2.Length; i++)
-        {
-            dots2[i] += figure2GlobalPosition;
-        }
+        var axises1 = figure1.globalNoncollinearAxises.vectors;
+        var dots1 = figure1.globalPathCollider.dots;
+        var axises2 = figure2.globalNoncollinearAxises.vectors;
+        var dots2 = figure2.globalPathCollider.dots;
 
         //возможно, стоит переписать участок с HashSet
         var axises = new HashSet<Vector2>(axises1);
@@ -234,13 +222,6 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         return true;
     }
 
-    private void GetFigureRotatedAxisesAndDots(GameEntity figure, out Vector2[] axises, out Vector2[] dots)
-    {
-        var globalAngle = figure.GetGlobalAngle(gameContext);
-        axises = GetRotatedVectors(figure.noncollinearAxises.vectors, globalAngle);
-        dots = GetRotatedVectors(figure.pathCollider.dots, globalAngle);
-    }
-
     private void GetMinMaxOnAxis(Vector2[] dots, Vector2 axis, out float min, out float max)
     {
         min = float.PositiveInfinity;
@@ -251,17 +232,5 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             if (value < min) min = value;
             if (value > max) max = value;
         }
-    }
-
-    private Vector2[] GetRotatedVectors(Vector2[] vectors, float angle)
-    {
-        CoordinatesExtensions.GetSinCosFromDegrees(angle, out var sin, out var cos);
-        var newVecs = new Vector2[vectors.Length];
-        for (int i = 0; i < vectors.Length; i++)
-        {
-            newVecs[i] = vectors[i].GetRotated(sin, cos);
-        }
-
-        return newVecs;
     }
 }
