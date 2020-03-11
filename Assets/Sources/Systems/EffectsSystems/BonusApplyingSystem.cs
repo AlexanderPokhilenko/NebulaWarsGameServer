@@ -59,6 +59,7 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             }
             addableBonus.AddParent(pickablePart.id.value);
             addableBonus.AddOwner(pickablePart.GetGrandParent(gameContext).id.value);
+            addableBonus.AddGrandOwner(pickablePart.GetGrandOwnerId(gameContext));
             addableBonus.isParentFixed = true;
             addableBonus.isParentDependent = true;
             addableBonus.isIgnoringParentCollision = true;

@@ -22,6 +22,7 @@ public class CannonShootingSystem : IExecuteSystem
             var bullet = e.cannon.bullet;
             var bulletEntity = bullet.CreateEntity(gameContext);
             bulletEntity.AddOwner(e.GetGrandParent(gameContext).id.value);
+            bulletEntity.AddGrandOwner(e.GetGrandOwnerId(gameContext));
             var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
                 bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width / 2 :
                 throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался PathCollider.");

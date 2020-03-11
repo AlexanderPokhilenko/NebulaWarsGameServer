@@ -32,6 +32,7 @@ public static class ParentsExtensions
 
     public static int GetGrandOwnerId(this GameEntity entity, GameContext context)
     {
+        if (entity.hasGrandOwner) return entity.grandOwner.id;
         var result = entity.GetGrandParent(context).id.value;
         var currentEntity = context.GetEntityWithId(result);
         while (currentEntity != null && currentEntity.hasOwner)
