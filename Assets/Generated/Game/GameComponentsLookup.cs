@@ -31,41 +31,42 @@ public static class GameComponentsLookup {
     public const int GlobalNoncollinearAxises = 20;
     public const int GlobalPathCollider = 21;
     public const int GlobalTransform = 22;
-    public const int HealthPoints = 23;
-    public const int Id = 24;
-    public const int IgnoringParentCollision = 25;
-    public const int Invulnerable = 26;
-    public const int KilledBy = 27;
-    public const int Lifetime = 28;
-    public const int MaxAngularVelocity = 29;
-    public const int MaxHealthPoints = 30;
-    public const int MaxVelocity = 31;
-    public const int NoncollinearAxises = 32;
-    public const int NonstandardRadius = 33;
-    public const int NotDecelerating = 34;
-    public const int Owner = 35;
-    public const int Parent = 36;
-    public const int ParentDependent = 37;
-    public const int ParentFixed = 38;
-    public const int PassingThrough = 39;
-    public const int PathCollider = 40;
-    public const int Player = 41;
-    public const int Position = 42;
-    public const int RectangleCollider = 43;
-    public const int Round = 44;
-    public const int SingleTargeting = 45;
-    public const int TargetChanging = 46;
-    public const int Target = 47;
-    public const int TargetingParameters = 48;
-    public const int TargetMovingPoint = 49;
-    public const int TargetScaling = 50;
-    public const int TryingToShoot = 51;
-    public const int Unmovable = 52;
-    public const int Velocity = 53;
-    public const int ViewType = 54;
-    public const int Zone = 55;
+    public const int GrandOwner = 23;
+    public const int HealthPoints = 24;
+    public const int Id = 25;
+    public const int IgnoringParentCollision = 26;
+    public const int Invulnerable = 27;
+    public const int KilledBy = 28;
+    public const int Lifetime = 29;
+    public const int MaxAngularVelocity = 30;
+    public const int MaxHealthPoints = 31;
+    public const int MaxVelocity = 32;
+    public const int NoncollinearAxises = 33;
+    public const int NonstandardRadius = 34;
+    public const int NotDecelerating = 35;
+    public const int Owner = 36;
+    public const int Parent = 37;
+    public const int ParentDependent = 38;
+    public const int ParentFixed = 39;
+    public const int PassingThrough = 40;
+    public const int PathCollider = 41;
+    public const int Player = 42;
+    public const int Position = 43;
+    public const int RectangleCollider = 44;
+    public const int Round = 45;
+    public const int SingleTargeting = 46;
+    public const int TargetChanging = 47;
+    public const int Target = 48;
+    public const int TargetingParameters = 49;
+    public const int TargetMovingPoint = 50;
+    public const int TargetScaling = 51;
+    public const int TryingToShoot = 52;
+    public const int Unmovable = 53;
+    public const int Velocity = 54;
+    public const int ViewType = 55;
+    public const int Zone = 56;
 
-    public const int TotalComponents = 56;
+    public const int TotalComponents = 57;
 
     public static readonly string[] componentNames = {
         "AngularVelocity",
@@ -91,6 +92,7 @@ public static class GameComponentsLookup {
         "GlobalNoncollinearAxises",
         "GlobalPathCollider",
         "GlobalTransform",
+        "GrandOwner",
         "HealthPoints",
         "Id",
         "IgnoringParentCollision",
@@ -150,6 +152,7 @@ public static class GameComponentsLookup {
         typeof(GlobalNoncollinearAxisesComponent),
         typeof(GlobalPathColliderComponent),
         typeof(GlobalTransformComponent),
+        typeof(GrandOwnerComponent),
         typeof(HealthPointsComponent),
         typeof(IdComponent),
         typeof(IgnoringParentCollisionComponent),

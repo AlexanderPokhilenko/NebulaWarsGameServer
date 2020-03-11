@@ -64,4 +64,14 @@ public static class ParentsExtensions
             yield return childGameEntity;
         }
     }
+
+    public static IEnumerable<GameEntity> GetAllChildrenGameEntities(this GameEntity entity, GameContext context)
+    {
+        yield return entity;
+        var children = context.GetEntitiesWithParent(entity.id.value);
+        foreach (var childGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context)))
+        {
+            yield return childGameEntity;
+        }
+    }
 }

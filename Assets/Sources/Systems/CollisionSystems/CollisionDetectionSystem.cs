@@ -28,17 +28,17 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             var currentPartCanPickBonuses = current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var currentBonusPickerPart);
             var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
-            var currentGrandOwnerId = current.GetGrandOwnerId(gameContext);
+            var currentGrandOwnerId = current.hasGrandOwner ? current.grandOwner.id : current.id.value;
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
                 //TODO: возможно, стоит убрать эту проверку
-                if(e.GetGrandOwnerId(gameContext) == currentGrandOwnerId) continue;
-                if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
-                   (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
+                if(e.hasGrandOwner && e.grandOwner.id == currentGrandOwnerId) continue;
+                //if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
+                //   (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
                 var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
                 var closeDistance = e.circleCollider.radius + current.circleCollider.radius;
-                var sqrDistance = Vector2.SqrMagnitude(distance);
+                var sqrDistance = distance.sqrMagnitude;
                 if (sqrDistance <= closeDistance * closeDistance)
                 {
                     bool collided;
