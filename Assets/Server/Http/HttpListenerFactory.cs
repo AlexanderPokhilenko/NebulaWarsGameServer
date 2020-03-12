@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using log4net;
-using Server.GameEngine.Systems;
-using Unity.UNetWeaver;
 
 namespace Server.Http
 {

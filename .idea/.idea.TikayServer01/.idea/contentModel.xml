@@ -40,7 +40,10 @@
               <e p="GameDirectionComponent.cs" t="Include" />
               <e p="GameDirectionTargetingComponent.cs" t="Include" />
               <e p="GameDirectionTargetingShootingComponent.cs" t="Include" />
+              <e p="GameGlobalNoncollinearAxisesComponent.cs" t="Include" />
+              <e p="GameGlobalPathColliderComponent.cs" t="Include" />
               <e p="GameGlobalTransformComponent.cs" t="Include" />
+              <e p="GameGrandOwnerComponent.cs" t="Include" />
               <e p="GameHealthPointsComponent.cs" t="Include" />
               <e p="GameIdComponent.cs" t="Include" />
               <e p="GameIgnoringParentCollisionComponent.cs" t="Include" />
@@ -68,6 +71,7 @@
               <e p="GameTargetComponent.cs" t="Include" />
               <e p="GameTargetingParametersComponent.cs" t="Include" />
               <e p="GameTargetMovingPointComponent.cs" t="Include" />
+              <e p="GameTargetScalingComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
@@ -258,6 +262,8 @@
               <e p="CollidedComponent.cs" t="Include" />
               <e p="CollisionVectorComponent.cs" t="Include" />
               <e p="ConcaveComponent.cs" t="Include" />
+              <e p="GlobalNoncollinearAxisesComponent.cs" t="Include" />
+              <e p="GlobalPathColliderComponent.cs" t="Include" />
               <e p="IgnoringParentCollisionComponent.cs" t="Include" />
               <e p="NoncollinearAxisesComponent.cs" t="Include" />
               <e p="PassingThroughComponent.cs" t="Include" />
@@ -268,8 +274,10 @@
             <e p="EffectsComponents" t="Include">
               <e p="AuraComponent.cs" t="Include" />
               <e p="CircleScalingComponent.cs" t="Include" />
+              <e p="TargetScalingComponent.cs" t="Include" />
             </e>
             <e p="GroupsComponents" t="Include">
+              <e p="GrandOwnerComponent.cs" t="Include" />
               <e p="OwnerComponent.cs" t="Include" />
               <e p="ParentComponent.cs" t="Include" />
               <e p="ParentDependentComponent.cs" t="Include" />
@@ -345,11 +353,13 @@
               <e p="AddCollidersToCircleSystem.cs" t="Include" />
               <e p="AddCollidersToPathSystem.cs" t="Include" />
               <e p="AddCollidersToRectSystem.cs" t="Include" />
+              <e p="AddGlobalCollisionComponentsSystem.cs" t="Include" />
               <e p="CollisionDetectionSystem.cs" t="Include" />
               <e p="CollisionFixedPenetrationDetectionSystem.cs" t="Include" />
               <e p="CollisionPenetrationAvoidanceSystem.cs" t="Include" />
               <e p="CollisionSystems.cs" t="Include" />
               <e p="ConcaveColliderDetectionSystem.cs" t="Include" />
+              <e p="UpdateGlobalCollisionComponentsSystem.cs" t="Include" />
             </e>
             <e p="DestroySystems" t="Include">
               <e p="CollapsingSystem.cs" t="Include" />
@@ -365,6 +375,7 @@
               <e p="AuraDamageSystem.cs" t="Include" />
               <e p="BonusApplyingSystem.cs" t="Include" />
               <e p="CircleScalingSystem.cs" t="Include" />
+              <e p="CircleTargetScalingCheckerSystem.cs" t="Include" />
               <e p="EffectsSystems.cs" t="Include" />
             </e>
             <e p="GlobalSystems" t="Include">
@@ -390,6 +401,7 @@
               <e p="ParentFixedRemoverSystem.cs" t="Include" />
               <e p="ParentsRecursionPreventionSystem.cs" t="Include" />
               <e p="ParentsSystems.cs" t="Include" />
+              <e p="UpdateGrandOwnerSystem.cs" t="Include" />
             </e>
             <e p="ShootingSystems" t="Include">
               <e p="AddingCannonCooldownSystem.cs" t="Include" />
