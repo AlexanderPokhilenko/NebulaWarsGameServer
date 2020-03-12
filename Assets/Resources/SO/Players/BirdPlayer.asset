@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
+  m_Name: BirdPlayer
+  m_EditorClassIdentifier: 
+  typeId: 25
+  colliderInfo: {fileID: 11400000, guid: 44dc1a157ff6c3141a03ca31d1467490, type: 2}
+  cannonInfo: {fileID: 11400000, guid: 1c9d07dd83603eb49b090af6061aacfc, type: 2}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
+  parts:
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: 0.9}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: -0.9}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  maxVelocity: 4
+  maxAngularVelocity: 180
+  isNotDecelerating: 0
+  maxHealthPoints: 175

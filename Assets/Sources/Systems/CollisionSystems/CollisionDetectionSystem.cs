@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using Entitas;
+using Server.GameEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Entitas;
-using Server.GameEngine;
 using UnityEngine;
 
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
@@ -26,14 +25,15 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var current = collidableGroup.AsEnumerable().ElementAt(i - 1);
             var currentGlobalPosition = current.GetGlobalPositionVector2(gameContext);
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
-            var currentPartCanPickBonuses = current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var currentBonusPickerPart);
+            GameEntity currentBonusPickerPart = null;
+            var currentPartCanPickBonuses = !current.isPassingThrough && current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out currentBonusPickerPart);
             var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
-            var currentGrandOwnerId = current.hasGrandOwner ? current.grandOwner.id : current.id.value;
+            var currentGrandOwnerId = current.GetGrandOwnerId(gameContext);
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
                 //TODO: возможно, стоит убрать эту проверку
-                if(e.hasGrandOwner && e.grandOwner.id == currentGrandOwnerId) continue;
+                if(e.GetGrandOwnerId(gameContext) == currentGrandOwnerId) continue;
                 //if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
                 //   (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
                 var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
@@ -114,7 +114,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             if (currentHealthPart.healthPoints.value <= 0 && !currentHealthPart.hasKilledBy) currentHealthPart.AddKilledBy(e.GetGrandOwnerId(gameContext));
                         }
 
-                        if (current.hasBonusAdder && !current.hasBonusTarget && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))
+                        if (current.hasBonusAdder && !current.hasBonusTarget && !e.isPassingThrough && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))
                         {
                             current.AddBonusTarget(eBonusPickerPart.id.value);
                         }

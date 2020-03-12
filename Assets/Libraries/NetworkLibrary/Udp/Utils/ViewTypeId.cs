@@ -24,5 +24,6 @@
     Asteroid300,
     Asteroid300X200,
     SpaceStation,
-    StationTurret
+    StationTurret,
+    BirdPlayer
 }

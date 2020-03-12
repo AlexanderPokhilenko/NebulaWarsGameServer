@@ -24,7 +24,7 @@ namespace Server.GameEngine.Systems
         {
             gameContext = contexts.game;
             this.roomData = roomData;
-            playerPrototype = Resources.Load<PlayerObject>("SO/BaseObjects/HarePlayer");
+            playerPrototype = Resources.Load<PlayerObject>("SO/Players/BirdPlayer");
             if (playerPrototype == null)
                 throw new Exception("Не удалось загрузить asset PlayerObject");
         }
