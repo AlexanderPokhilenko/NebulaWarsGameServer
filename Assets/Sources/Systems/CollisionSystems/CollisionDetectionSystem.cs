@@ -32,11 +32,6 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
-                if ((e.viewType.id == ViewTypeId.Shield && current.viewType.id == ViewTypeId.DefaultShoot) ||
-                    (e.viewType.id == ViewTypeId.DefaultShoot && current.viewType.id == ViewTypeId.Shield))
-                {
-                    Debug.Log($"e.view: {e.viewType.id} c.view: {current.viewType.id} e.go: {e.grandOwner.id} c.go: {current.grandOwner.id}");
-                }
                 //TODO: возможно, стоит убрать эту проверку
                 if(e.hasGrandOwner && e.grandOwner.id == currentGrandOwnerId) continue;
                 //if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
