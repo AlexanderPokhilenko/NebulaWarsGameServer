@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7129b16dc397ffa46a0b9f5a51320f35, type: 3}
+  m_Name: SpiderCocoon
+  m_EditorClassIdentifier: 
+  typeId: 26
+  colliderInfo: {fileID: 11400000, guid: 06e151d8a8a3d4647af5eb4d329d1b10, type: 2}
+  cannonInfo: {fileID: 0}
+  isUnmovable: 1
+  isPassingThrough: 1
+  collisionDamage: 0
+  parts: []
+  bonusObject: {fileID: 11400000, guid: ccd12e9708f8f634384ca90fb48d433c, type: 2}
+  duration: 10
+  colliderInheritance: 0

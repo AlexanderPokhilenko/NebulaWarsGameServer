@@ -31,7 +31,18 @@ public class CannonShootingSystem : IExecuteSystem
             bulletEntity.AddPosition(e.cannon.position + Vector2.right * bulletDeltaSize);
             bulletEntity.AddDirection(0);
             bulletEntity.AddVelocity(Vector2.right * bullet.maxVelocity);
-            bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity);
+
+            if (bulletEntity.hasChaser)
+            {
+                if (e.hasTargetingParameters)
+                {
+                    bulletEntity.AddTargetingParameters(true, e.targetingParameters.radius, e.targetingParameters.onlyPlayerTargeting);
+                }
+            }
+            else
+            {
+                bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity * (UnityEngine.Random.value < 0.5f ? 1 : -1));
+            }
 
             bulletEntity.ToGlobal(gameContext, out var globalPosition, out var globalAngle, out var layer, out var globalVelocity, out var globalAngularVelocity);
             if (bullet.detachable)
