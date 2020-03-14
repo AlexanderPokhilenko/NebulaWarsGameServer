@@ -1,20 +1,12 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRepairBonus", menuName = "BaseObjects/Bonuses/RepairBonus", order = 52)]
-public class RepairBonusObject : BaseObject
+public class RepairBonusObject : ActionBonusObject
 {
     [Range(0, 1)]
     public float percentage;
 
-    public override GameEntity CreateEntity(GameContext context)
-    {
-        var entity = base.CreateEntity(context);
-        entity.AddActionBonus(Repair);
-
-        return entity;
-    }
-
-    private void Repair(GameEntity entity)
+    protected override void Action(GameEntity entity)
     {
         if (entity.hasHealthPoints && entity.hasMaxHealthPoints)
         {
