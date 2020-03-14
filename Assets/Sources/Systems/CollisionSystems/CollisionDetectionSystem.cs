@@ -37,7 +37,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             for (int j = i; j < count; j++)
             {
                 var e = entities[j];
-                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : current.id.value;
+                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.id.value;
                 var eGrandParentId = e.GetGrandParent(gameContext).id.value;
                 var eGlobalPosition = e.hasGlobalTransform ? e.globalTransform.position : e.GetGlobalPositionVector2(gameContext);
                 //TODO: возможно, стоит убрать эту проверку
