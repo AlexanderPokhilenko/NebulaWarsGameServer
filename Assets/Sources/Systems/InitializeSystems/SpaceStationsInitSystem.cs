@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class SpaceStationsInitSystem : IInitializeSystem
 {
-    private readonly BaseWithHealthObject spaceStation;
+    private static readonly BaseWithHealthObject spaceStation;
     private readonly GameContext gameContext;
     private const float Radius = 25f;
     private const int Count = 20;
     private const float Step = 360f / Count;
 
+    static SpaceStationsInitSystem()
+    {
+        spaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
+        if (spaceStation == null)
+            throw new Exception($"В {nameof(SpaceStationsInitSystem)} asset был null.");
+    }
+
     public SpaceStationsInitSystem(Contexts contexts)
     {
         gameContext = contexts.game;
-        spaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
-        if (spaceStation == null)
-            throw new Exception($"Не удалось загрузить ассет {nameof(spaceStation)}");
     }
 
     public void Initialize()

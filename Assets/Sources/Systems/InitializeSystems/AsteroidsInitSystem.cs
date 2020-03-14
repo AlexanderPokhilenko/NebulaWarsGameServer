@@ -1,13 +1,29 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Entitas;
-using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AsteroidsInitSystem : IInitializeSystem
 {
-    private readonly (BaseWithHealthObject asset, int probability)[] asteroids;
-    private readonly int max;
+    private static readonly (BaseWithHealthObject asset, int probability)[] asteroids;
+    private static readonly int max;
     private readonly GameContext gameContext;
+
+    static AsteroidsInitSystem()
+    {
+        asteroids = new (BaseWithHealthObject asset, int probability)[]
+        {
+            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid100"), 10),
+            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid300"), 13),
+            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid300x200"), 17)
+        };
+
+        if(asteroids.Any(a => a.asset == null))
+            throw new Exception($"В {nameof(AsteroidsInitSystem)} asset был null.");
+
+        max = asteroids[asteroids.Length - 1].probability;
+    }
 
     public AsteroidsInitSystem(Contexts contexts)
     {
@@ -22,15 +38,7 @@ public class AsteroidsInitSystem : IInitializeSystem
         // };
 
         // Resources.Load<PlayerObject>("SO/BaseObjects/HarePlayer");
-        
-        asteroids = new (BaseWithHealthObject asset, int probability)[]
-        {
-            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid100"), 10),
-            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid300"), 13),
-            (Resources.Load<BaseWithHealthObject>("SO/BaseObjects/Asteroid300x200"), 17)
-        };
 
-        max = asteroids[asteroids.Length - 1].probability;
     }
 
     public void Initialize()
