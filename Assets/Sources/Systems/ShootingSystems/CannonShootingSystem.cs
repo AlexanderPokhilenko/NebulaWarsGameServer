@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class CannonShootingSystem : IExecuteSystem
 {
+    private readonly System.Random random;
     private readonly GameContext gameContext;
     private IGroup<GameEntity> shootingGroup;
 
     public CannonShootingSystem(Contexts contexts)
     {
+        random = new System.Random();
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.TryingToShoot, GameMatcher.Cannon).NoneOf(GameMatcher.CannonCooldown);
         shootingGroup = contexts.game.GetGroup(matcher);
@@ -43,7 +45,7 @@ public class CannonShootingSystem : IExecuteSystem
             }
             else
             {
-                bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity * (UnityEngine.Random.value < 0.5f ? 1 : -1));
+                bulletEntity.AddAngularVelocity(bullet.maxAngularVelocity * random.Next(-1, 2));
             }
 
             bulletEntity.ToGlobal(gameContext, out var globalPosition, out var globalAngle, out var layer, out var globalVelocity, out var globalAngularVelocity);

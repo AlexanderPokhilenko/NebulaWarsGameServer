@@ -2,12 +2,12 @@
 using System.Linq;
 using Entitas;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class AsteroidsInitSystem : IInitializeSystem
 {
     private static readonly (BaseWithHealthObject asset, int probability)[] asteroids;
     private static readonly int max;
+    private readonly System.Random random;
     private readonly GameContext gameContext;
 
     static AsteroidsInitSystem()
@@ -27,6 +27,7 @@ public class AsteroidsInitSystem : IInitializeSystem
 
     public AsteroidsInitSystem(Contexts contexts)
     {
+        random = new System.Random();
         gameContext = contexts.game;
         //TODO: что-то с этим сделать
         // asteroids = new (BaseWithHealthObject asset, int probability)[]
@@ -45,19 +46,21 @@ public class AsteroidsInitSystem : IInitializeSystem
     {
         for (int i = 0; i < 250; i++)
         {
-            var rndType = Random.Range(0, max);
+            var rndType = random.Next(max);
             var asteroid = asteroids.SkipWhile(a => a.probability < rndType).First().asset;
 
             var position = CoordinatesExtensions.GetRandomUnitVector2() * (25 + 5 * GetPositiveRandom(0.4f));
 
-            var entity = asteroid.CreateEntity(gameContext, position, Random.Range(0f, 360f));
+            var randomAngle = (float) random.NextDouble() * 360f;
+
+            var entity = asteroid.CreateEntity(gameContext, position, randomAngle);
         }
     }
 
     private float GetPositiveRandom(float k)
     {
         var limitation = Mathf.PI / k;
-        var rndX = Random.Range(-limitation, limitation);
+        var rndX = 2 * limitation * (float)random.NextDouble() - limitation;
         return Mathf.Cos(k * rndX) + 1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Server.GameEngine.Experimental;
+﻿using System.Threading.Tasks;
+using Server.GameEngine.Experimental;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -35,11 +36,21 @@ namespace Server.GameEngine
         public void Tick()
         {
             StaticInputMessagesSorter.Spread();
+
+#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
             foreach (var gameSession in BattlesStorage.GetAllGameSessions())
             {
                 gameSession.Execute();
                 gameSession.Cleanup();
             }
+#else
+            Parallel.ForEach(BattlesStorage.GetAllGameSessions(), gameSession =>
+            {
+                gameSession.Execute();
+                gameSession.Cleanup();
+            });
+#endif
+
             PingLogger.Log();
             rudpSender.SendUnconfirmedMessages();
             BattlesStorage.UpdateBattlesList();

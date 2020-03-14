@@ -5,10 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Entitas;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public sealed class BotsMovingSystem : IExecuteSystem
 {
+    private readonly System.Random random;
     private readonly GameContext gameContext;
     private IGroup<GameEntity> botsGroup;
     private IGroup<GameEntity> withCannonGroup;
@@ -17,6 +17,7 @@ public sealed class BotsMovingSystem : IExecuteSystem
 
     public BotsMovingSystem(Contexts contexts)
     {
+        random = new System.Random();
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction, GameMatcher.CircleCollider, GameMatcher.Bot).NoneOf(GameMatcher.TargetMovingPoint);
         botsGroup = gameContext.GetGroup(matcher);
@@ -34,7 +35,7 @@ public sealed class BotsMovingSystem : IExecuteSystem
             var zonePosition = zone.GetGlobalPositionVector2(gameContext);
             var zoneRadius = zone.circleCollider.radius;
 
-            float maxRadius = e.circleCollider.radius + Random.Range(0, e.maxVelocity.value);
+            float maxRadius = e.circleCollider.radius + (float)random.NextDouble() * e.maxVelocity.value;
             var sqrMaxRadius = maxRadius * maxRadius;
             Vector2 targetPosition = currentPosition + maxRadius * CoordinatesExtensions.GetRandomUnitVector2();
 
@@ -127,7 +128,8 @@ public sealed class BotsMovingSystem : IExecuteSystem
             if ((targetPosition - zonePosition).sqrMagnitude >= safeRadius * safeRadius)
             {
                 var vectorToCenter = zonePosition - currentPosition;
-                var savingVector = Random.Range(zoneWarningDistance, maxRadius) * vectorToCenter.normalized;
+                var randomLength = zoneWarningDistance + (float) random.NextDouble() * (maxRadius - zoneWarningDistance);
+                var savingVector = randomLength * vectorToCenter.normalized;
                 targetPosition += savingVector;
             }
 

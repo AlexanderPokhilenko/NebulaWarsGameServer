@@ -15,7 +15,7 @@ namespace Server.GameEngine
         public readonly ConcurrentQueue<GameRoomData> battlesToCreate;
         
         //текущие бои
-        public readonly Dictionary<int, Battle> battles;
+        public readonly ConcurrentDictionary<int, Battle> battles;
         //текущие бои (ключ - id игрока)
         public readonly Dictionary<int, Battle> playerToBattle;
         
@@ -28,7 +28,7 @@ namespace Server.GameEngine
         {
             battlesToCreate = new ConcurrentQueue<GameRoomData>();
             finishedBattles = new Queue<int>();
-            battles= new Dictionary<int, Battle>();
+            battles= new ConcurrentDictionary<int, Battle>();
             playerToBattle = new Dictionary<int, Battle>();
         }
         
@@ -46,7 +46,7 @@ namespace Server.GameEngine
                 {
                     Battle battle = new Battle(this);
                     battle.ConfigureSystems(gameRoomData);
-                    battles.Add(gameRoomData.GameRoomNumber, battle);
+                    battles.TryAdd(gameRoomData.GameRoomNumber, battle);
                     foreach (var player in gameRoomData.Players)
                     {
                         playerToBattle.Add(player.TemporaryId, battle);
@@ -66,7 +66,7 @@ namespace Server.GameEngine
                 int[] playersIds = battle.RoomData.Players.Select(player => player.TemporaryId).ToArray();
                 ClearPlayers(playersIds);
                 NotifyPlayers(playersIds);
-                battles.Remove(battleNumber);
+                battles.TryRemove(battleNumber, out _);
                 MetaServerBattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
             }
         }
@@ -92,7 +92,7 @@ namespace Server.GameEngine
             finishedBattles.Enqueue(battleNumber);
         }
 
-        public Dictionary<int,Battle>.ValueCollection GetAllGameSessions()
+        public ICollection<Battle> GetAllGameSessions()
         {
             return battles.Values;
         }

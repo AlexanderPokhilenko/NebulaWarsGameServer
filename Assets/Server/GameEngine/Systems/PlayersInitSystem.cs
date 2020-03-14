@@ -4,9 +4,7 @@ using System.Linq;
 using Entitas;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
-
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Server.GameEngine.Systems
 {
@@ -15,6 +13,7 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class PlayersInitSystem:IInitializeSystem
     {
+        private readonly System.Random random = new System.Random();
         private static readonly Dictionary<string, PlayerObject> playerPrototypes;
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
@@ -48,7 +47,7 @@ namespace Server.GameEngine.Systems
                 //TODO: вынести это в матчер
                 if (string.IsNullOrWhiteSpace(player.WarshipName))
                 {
-                    player.WarshipName = playerPrototypes.ElementAt(Random.Range(0, playerPrototypes.Count)).Key;
+                    player.WarshipName = playerPrototypes.ElementAt(random.Next(playerPrototypes.Count)).Key;
                     Log.Info($"Добавление боту {player.GoogleId} корабля {player.WarshipName}");
                 }
             }

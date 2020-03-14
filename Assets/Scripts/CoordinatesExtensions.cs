@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entitas;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public static class CoordinatesExtensions
 {
+    private static readonly System.Random random = new System.Random();
+
     public static Vector2 GetRandomUnitVector2()
     {
-        float random = UnityEngine.Random.Range(-Mathf.PI, Mathf.PI);
-        return new Vector2(Mathf.Cos(random), Mathf.Sin(random));
+        var randomRadAngle = -Mathf.PI + 2 * (float)random.NextDouble() * Mathf.PI;
+        return new Vector2(Mathf.Cos(randomRadAngle), Mathf.Sin(randomRadAngle));
     }
 
     public static void ToGlobal(this GameEntity entity, GameContext context, out Vector2 position, out float angle, out int layer, out Vector2 velocity, out float angularVelocity)
