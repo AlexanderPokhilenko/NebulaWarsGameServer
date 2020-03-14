@@ -25,24 +25,29 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         for (int i = 1; i < count; i++)
         {
             var current = entities[i - 1];
+            var currentId = current.id.value;
             var currentGlobalPosition = current.hasGlobalTransform ? current.globalTransform.position : current.GetGlobalPositionVector2(gameContext);
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             GameEntity currentBonusPickerPart = null;
             var currentPartCanPickBonuses = !current.isPassingThrough && current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out currentBonusPickerPart);
             var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
-            var currentGrandOwnerId = current.hasGrandOwner ? current.grandOwner.id : current.id.value;
-            var currentGrandParentId = current.GetGrandParent(gameContext).id.value;
+            var currentGrandOwnerId = current.hasGrandOwner ? current.grandOwner.id : currentId;
+            var currentGrandParentId = current.hasParent ? current.GetGrandParent(gameContext).id.value : currentId;
             var currentIsTargetingParasite = current.isParasite && current.hasTarget;
             var currentGrandTargetId = current.hasTarget ? gameContext.GetEntityWithId(current.target.id).GetGrandParent(gameContext).id.value : 0;
             for (int j = i; j < count; j++)
             {
                 var e = entities[j];
-                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.id.value;
-                var eGrandParentId = e.GetGrandParent(gameContext).id.value;
-                var eGlobalPosition = e.hasGlobalTransform ? e.globalTransform.position : e.GetGlobalPositionVector2(gameContext);
+                var eId = e.id.value;
+
+                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : eId;
                 //TODO: возможно, стоит убрать эту проверку
                 if (eGrandOwnerId == currentGrandOwnerId) continue;
+
+                var eGrandParentId = e.hasParent ? e.GetGrandParent(gameContext).id.value : eId;
                 if ((e.isIgnoringParentCollision || current.isIgnoringParentCollision) && currentGrandParentId == eGrandParentId) continue;
+
+                var eGlobalPosition = e.hasGlobalTransform ? e.globalTransform.position : e.GetGlobalPositionVector2(gameContext);
                 var distance = eGlobalPosition - currentGlobalPosition;
                 var closeDistance = e.circleCollider.radius + current.circleCollider.radius;
                 var sqrDistance = distance.sqrMagnitude;
