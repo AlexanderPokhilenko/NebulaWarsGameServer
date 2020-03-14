@@ -25,7 +25,7 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
-  maxVelocity: 6
+  maxVelocity: 3
   maxAngularVelocity: 180
   isNotDecelerating: 0
   maxHealthPoints: 50
