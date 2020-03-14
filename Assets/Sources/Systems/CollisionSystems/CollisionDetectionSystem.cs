@@ -1,7 +1,6 @@
 ﻿using Entitas;
 using Server.GameEngine;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
@@ -26,7 +25,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         for (int i = 1; i < count; i++)
         {
             var current = entities[i - 1];
-            var currentGlobalPosition = current.GetGlobalPositionVector2(gameContext);
+            var currentGlobalPosition = current.hasGlobalTransform ? current.globalTransform.position : current.GetGlobalPositionVector2(gameContext);
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             GameEntity currentBonusPickerPart = null;
             var currentPartCanPickBonuses = !current.isPassingThrough && current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out currentBonusPickerPart);
@@ -38,12 +37,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             for (int j = i; j < count; j++)
             {
                 var e = entities[j];
-                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.id.value;
+                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : current.id.value;
                 var eGrandParentId = e.GetGrandParent(gameContext).id.value;
+                var eGlobalPosition = e.hasGlobalTransform ? e.globalTransform.position : e.GetGlobalPositionVector2(gameContext);
                 //TODO: возможно, стоит убрать эту проверку
                 if (eGrandOwnerId == currentGrandOwnerId) continue;
                 if ((e.isIgnoringParentCollision || current.isIgnoringParentCollision) && currentGrandParentId == eGrandParentId) continue;
-                var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
+                var distance = eGlobalPosition - currentGlobalPosition;
                 var closeDistance = e.circleCollider.radius + current.circleCollider.radius;
                 var sqrDistance = distance.sqrMagnitude;
                 if (sqrDistance <= closeDistance * closeDistance)
@@ -148,7 +148,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
     private bool CheckCollisionFigureWithCircle(GameEntity figure, GameEntity circle, out Vector2 penetration)
     {
-        var circleGlobalPosition = circle.GetGlobalPositionVector2(gameContext);
+        var circleRadius = circle.circleCollider.radius;
+        var circleGlobalPosition = circle.hasGlobalTransform ? circle.globalTransform.position : circle.GetGlobalPositionVector2(gameContext);
         var prevDepth = float.PositiveInfinity;
         penetration = new Vector2(0, 0);
         var dots = figure.globalPathCollider.dots;
@@ -158,8 +159,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         {
             GetMinMaxOnAxis(dots, axis, out var min1, out var max1);
             var circleProjection = Vector2.Dot(circleGlobalPosition, axis);
-            var min2 = circleProjection - circle.circleCollider.radius;
-            var max2 = circleProjection + circle.circleCollider.radius;
+            var min2 = circleProjection - circleRadius;
+            var max2 = circleProjection + circleRadius;
             float depth;
             //первая фигура находится слева
             if (min1 < min2)
@@ -196,11 +197,20 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         var axises2 = figure2.globalNoncollinearAxises.vectors;
         var dots2 = figure2.globalPathCollider.dots;
 
-        //возможно, стоит переписать участок с HashSet
-        var axises = new HashSet<Vector2>(axises1);
-        axises.UnionWith(axises2);
+        //возможно, стоит пропускать оси, между которыми очень малый угол
 
-        foreach (var axis in axises)
+        foreach (var axis in axises1)
+        {
+            if (!CheckAxisPenetration(axis, ref penetration)) return false;
+        }
+        foreach (var axis in axises2)
+        {
+            if (!CheckAxisPenetration(axis, ref penetration)) return false;
+        }
+
+        return true;
+
+        bool CheckAxisPenetration(Vector2 axis, ref Vector2 penetrationVector)
         {
             GetMinMaxOnAxis(dots1, axis, out var min1, out var max1);
             GetMinMaxOnAxis(dots2, axis, out var min2, out var max2);
@@ -212,7 +222,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetration = -depth * axis;
+                    penetrationVector = -depth * axis;
                     prevDepth = depth;
                 }
             }
@@ -222,13 +232,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetration = depth * axis;
+                    penetrationVector = depth * axis;
                     prevDepth = depth;
                 }
             }
-        }
 
-        return true;
+            return true;
+        }
     }
 
     private void GetMinMaxOnAxis(Vector2[] dots, Vector2 axis, out float min, out float max)
