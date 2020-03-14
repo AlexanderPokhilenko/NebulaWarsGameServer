@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpiderCocoon
   m_EditorClassIdentifier: 
   typeId: 26
-  colliderInfo: {fileID: 11400000, guid: 06e151d8a8a3d4647af5eb4d329d1b10, type: 2}
+  colliderInfo: {fileID: 11400000, guid: 2ef463eb40fd8fb418b9a8cee1a9de5e, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1

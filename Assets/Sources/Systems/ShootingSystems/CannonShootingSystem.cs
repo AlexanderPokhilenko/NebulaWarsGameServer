@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entitas;
 using UnityEngine;
 
@@ -25,7 +26,8 @@ public class CannonShootingSystem : IExecuteSystem
             bulletEntity.AddGrandOwner(e.GetGrandOwnerId(gameContext));
             var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
                 bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width / 2 :
-                throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался PathCollider.");
+                bulletEntity.hasPathCollider ? -1 * bulletEntity.pathCollider.dots.Min(d => d.x) :
+                throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался неизвестный коллайдер.");
             // для быстрого перевода из локальной в глобальную системы координат
             bulletEntity.AddParent(e.id.value);
             bulletEntity.AddPosition(e.cannon.position + Vector2.right * bulletDeltaSize);
