@@ -102,7 +102,7 @@ namespace Server.Http
             Log.Info("Игроки");
             foreach (var player in roomData.Players)
             {
-                Log.Info($"PlayerGoogleId = {player.GoogleId}");
+                Log.Info($"PlayerGoogleId = {player.GoogleId} {player.WarshipName} lvl = {player.WarshipCombatPowerLevel}");
             }
         }
     }
