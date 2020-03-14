@@ -29,13 +29,17 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var currentPartCanPickBonuses = !current.isPassingThrough && current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out currentBonusPickerPart);
             var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
             var currentGrandOwnerId = current.GetGrandOwnerId(gameContext);
+            var currentGrandParentId = current.GetGrandParent(gameContext).id.value;
+            var currentIsTargetingParasite = current.isParasite && current.hasTarget;
+            var currentGrandTargetId = current.hasTarget ? gameContext.GetEntityWithId(current.target.id).GetGrandParent(gameContext).id.value : 0;
             var remaining = collidableGroup.AsEnumerable().Skip(i);
             foreach (var e in remaining)
             {
+                var eGrandOwnerId = e.GetGrandOwnerId(gameContext);
+                var eGrandParentId = e.GetGrandParent(gameContext).id.value;
                 //TODO: возможно, стоит убрать эту проверку
-                if(e.GetGrandOwnerId(gameContext) == currentGrandOwnerId) continue;
-                //if((e.isIgnoringParentCollision || current.isIgnoringParentCollision) &&
-                //   (e.IsParentOf(current, gameContext) || current.IsParentOf(e, gameContext))) continue;
+                if (eGrandOwnerId == currentGrandOwnerId) continue;
+                if ((e.isIgnoringParentCollision || current.isIgnoringParentCollision) && currentGrandParentId == eGrandParentId) continue;
                 var distance = e.GetGlobalPositionVector2(gameContext) - currentGlobalPosition;
                 var closeDistance = e.circleCollider.radius + current.circleCollider.radius;
                 var sqrDistance = distance.sqrMagnitude;
@@ -80,7 +84,9 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                     {
                         e.isCollided = true;
                         current.isCollided = true;
-                        if (!current.isPassingThrough && !e.isPassingThrough)
+                        if (!current.isPassingThrough && !e.isPassingThrough &&
+                            !((currentIsTargetingParasite && currentGrandTargetId == eGrandParentId) ||
+                              (e.isParasite && e.hasTarget && gameContext.GetEntityWithId(e.target.id).GetGrandParent(gameContext).id.value == currentGrandParentId)))
                         {
                             if (current.hasCollisionVector)
                             {
