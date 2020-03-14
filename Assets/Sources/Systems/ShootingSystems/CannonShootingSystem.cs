@@ -34,9 +34,9 @@ public class CannonShootingSystem : IExecuteSystem
 
             if (bulletEntity.hasChaser)
             {
-                if (e.hasTargetingParameters)
+                if (e.hasTargetingParameters && !bulletEntity.hasTargetingParameters)
                 {
-                    bulletEntity.AddTargetingParameters(true, e.targetingParameters.radius, e.targetingParameters.onlyPlayerTargeting);
+                    bulletEntity.AddTargetingParameters(e.targetingParameters.angularTargeting, e.targetingParameters.radius, e.targetingParameters.onlyPlayerTargeting);
                 }
             }
             else
