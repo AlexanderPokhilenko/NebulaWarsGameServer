@@ -7,22 +7,25 @@ using UnityEngine;
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> collidableGroup;
+    private readonly IGroup<GameEntity> collidableGroup;
+    private readonly List<GameEntity> buffer;
 
     public CollisionDetectionSystem(Contexts contexts)
     {
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Collidable, GameMatcher.CircleCollider, GameMatcher.Position);
         collidableGroup = gameContext.GetGroup(matcher);
+        buffer = new List<GameEntity>(350);
     }
 
     public void Execute()
     {
-        var count = collidableGroup.count;
+        var entities = collidableGroup.GetEntities(buffer);
+        var count = entities.Count;
         if (count < 2) return;
         for (int i = 1; i < count; i++)
         {
-            var current = collidableGroup.AsEnumerable().ElementAt(i - 1);
+            var current = entities[i - 1];
             var currentGlobalPosition = current.GetGlobalPositionVector2(gameContext);
             var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
             GameEntity currentBonusPickerPart = null;
@@ -32,9 +35,9 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var currentGrandParentId = current.GetGrandParent(gameContext).id.value;
             var currentIsTargetingParasite = current.isParasite && current.hasTarget;
             var currentGrandTargetId = current.hasTarget ? gameContext.GetEntityWithId(current.target.id).GetGrandParent(gameContext).id.value : 0;
-            var remaining = collidableGroup.AsEnumerable().Skip(i);
-            foreach (var e in remaining)
+            for (int j = i; j < count; j++)
             {
+                var e = entities[j];
                 var eGrandOwnerId = e.GetGrandOwnerId(gameContext);
                 var eGrandParentId = e.GetGrandParent(gameContext).id.value;
                 //TODO: возможно, стоит убрать эту проверку
