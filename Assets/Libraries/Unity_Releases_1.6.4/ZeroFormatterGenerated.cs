@@ -32,12 +32,19 @@ namespace ZeroFormatter
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResultEnum?>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.NullableGameRoomValidationResultEnumFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Comparers.ZeroFormatterEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResultEnum?>.Register(new NullableEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResultEnum>());
             
+            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.MatchType>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.MatchTypeFormatter<ZeroFormatter.Formatters.DefaultResolver>());
+            ZeroFormatter.Comparers.ZeroFormatterEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.MatchType>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.MatchTypeEqualityComparer());
+            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.MatchType?>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.NullableMatchTypeFormatter<ZeroFormatter.Formatters.DefaultResolver>());
+            ZeroFormatter.Comparers.ZeroFormatterEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.MatchType?>.Register(new NullableEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.MatchType>());
+            
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.MessageType>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.MessageTypeFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Comparers.ZeroFormatterEqualityComparer<global::NetworkLibrary.NetworkLibrary.Udp.MessageType>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.MessageTypeEqualityComparer());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.MessageType?>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.NullableMessageTypeFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Comparers.ZeroFormatterEqualityComparer<global::NetworkLibrary.NetworkLibrary.Udp.MessageType?>.Register(new NullableEqualityComparer<global::NetworkLibrary.NetworkLibrary.Udp.MessageType>());
             
             // Objects
+            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.WarshipInfoFormatter<ZeroFormatter.Formatters.DefaultResolver>());
+            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.AccountInfo>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.AccountInfoFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.PlayerInfoForGameRoom>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.PlayerInfoForGameRoomFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameRoomData>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameRoomDataFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameMatcherResponse>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameMatcherResponseFormatter<ZeroFormatter.Formatters.DefaultResolver>());
@@ -116,6 +123,7 @@ namespace ZeroFormatter
             ZeroFormatter.Formatters.Formatter.RegisterArray<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.PlayerInfoForGameRoom>();
             ZeroFormatter.Formatters.Formatter.RegisterArray<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.MessageWrapper>();
             ZeroFormatter.Formatters.Formatter.RegisterArray<ZeroFormatter.Formatters.DefaultResolver, string>();
+            ZeroFormatter.Formatters.Formatter.RegisterCollection<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo, global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>>();
         }
     }
 }
@@ -133,6 +141,378 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
     using global::ZeroFormatter.Formatters;
     using global::ZeroFormatter.Internal;
     using global::ZeroFormatter.Segments;
+
+    public class WarshipInfoFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        public override int? GetLength()
+        {
+            return null;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo value)
+        {
+            var segment = value as IZeroFormatterSegment;
+            if (segment != null)
+            {
+                return segment.Serialize(ref bytes, offset);
+            }
+            else if (value == null)
+            {
+                BinaryUtil.WriteInt32(ref bytes, offset, -1);
+                return 4;
+            }
+            else
+            {
+                var startOffset = offset;
+
+                offset += (8 + 4 * (4 + 1));
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, string>(ref bytes, startOffset, offset, 0, value.PrefabName);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 1, value.CombatPowerLevel);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 2, value.CombatPowerValue);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 3, value.Rating);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 4, value.Id);
+
+                return ObjectSegmentHelper.WriteSize(ref bytes, startOffset, offset, 4);
+            }
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = BinaryUtil.ReadInt32(ref bytes, offset);
+            if (byteSize == -1)
+            {
+                byteSize = 4;
+                return null;
+            }
+            return new WarshipInfoObjectSegment<TTypeResolver>(tracker, new ArraySegment<byte>(bytes, offset, byteSize));
+        }
+    }
+
+    public class WarshipInfoObjectSegment<TTypeResolver> : global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo, IZeroFormatterSegment
+        where TTypeResolver : ITypeResolver, new()
+    {
+        static readonly int[] __elementSizes = new int[]{ 0, 4, 4, 4, 4 };
+
+        readonly ArraySegment<byte> __originalBytes;
+        readonly global::ZeroFormatter.DirtyTracker __tracker;
+        readonly int __binaryLastIndex;
+        readonly byte[] __extraFixedBytes;
+
+        CacheSegment<TTypeResolver, string> _PrefabName;
+
+        // 0
+        public override string PrefabName
+        {
+            get
+            {
+                return _PrefabName.Value;
+            }
+            set
+            {
+                _PrefabName.Value = value;
+            }
+        }
+
+        // 1
+        public override int CombatPowerLevel
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 1, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 1, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 2
+        public override int CombatPowerValue
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 2, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 2, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 3
+        public override int Rating
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 4
+        public override int Id
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 4, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 4, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+
+        public WarshipInfoObjectSegment(global::ZeroFormatter.DirtyTracker dirtyTracker, ArraySegment<byte> originalBytes)
+        {
+            var __array = originalBytes.Array;
+
+            this.__originalBytes = originalBytes;
+            this.__tracker = dirtyTracker = dirtyTracker.CreateChild();
+            this.__binaryLastIndex = BinaryUtil.ReadInt32(ref __array, originalBytes.Offset + 4);
+
+            this.__extraFixedBytes = ObjectSegmentHelper.CreateExtraFixedBytes(this.__binaryLastIndex, 4, __elementSizes);
+
+            _PrefabName = new CacheSegment<TTypeResolver, string>(__tracker, ObjectSegmentHelper.GetSegment(originalBytes, 0, __binaryLastIndex, __tracker));
+        }
+
+        public bool CanDirectCopy()
+        {
+            return !__tracker.IsDirty;
+        }
+
+        public ArraySegment<byte> GetBufferReference()
+        {
+            return __originalBytes;
+        }
+
+        public int Serialize(ref byte[] targetBytes, int offset)
+        {
+            if (__extraFixedBytes != null || __tracker.IsDirty)
+            {
+                var startOffset = offset;
+                offset += (8 + 4 * (4 + 1));
+
+                offset += ObjectSegmentHelper.SerializeCacheSegment<TTypeResolver, string>(ref targetBytes, startOffset, offset, 0, ref _PrefabName);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 1, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 2, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 3, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 4, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+
+                return ObjectSegmentHelper.WriteSize(ref targetBytes, startOffset, offset, 4);
+            }
+            else
+            {
+                return ObjectSegmentHelper.DirectCopyAll(__originalBytes, ref targetBytes, offset);
+            }
+        }
+    }
+
+    public class AccountInfoFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.AccountInfo>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        public override int? GetLength()
+        {
+            return null;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.AccountInfo value)
+        {
+            var segment = value as IZeroFormatterSegment;
+            if (segment != null)
+            {
+                return segment.Serialize(ref bytes, offset);
+            }
+            else if (value == null)
+            {
+                BinaryUtil.WriteInt32(ref bytes, offset, -1);
+                return 4;
+            }
+            else
+            {
+                var startOffset = offset;
+
+                offset += (8 + 4 * (6 + 1));
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, string>(ref bytes, startOffset, offset, 0, value.Username);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 1, value.AccountRating);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 2, value.RegularCurrency);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 3, value.PremiumCurrency);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 4, value.PointsForBigChest);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 5, value.PointsForSmallChest);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>>(ref bytes, startOffset, offset, 6, value.Warships);
+
+                return ObjectSegmentHelper.WriteSize(ref bytes, startOffset, offset, 6);
+            }
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Http.AccountInfo Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = BinaryUtil.ReadInt32(ref bytes, offset);
+            if (byteSize == -1)
+            {
+                byteSize = 4;
+                return null;
+            }
+            return new AccountInfoObjectSegment<TTypeResolver>(tracker, new ArraySegment<byte>(bytes, offset, byteSize));
+        }
+    }
+
+    public class AccountInfoObjectSegment<TTypeResolver> : global::NetworkLibrary.NetworkLibrary.Http.AccountInfo, IZeroFormatterSegment
+        where TTypeResolver : ITypeResolver, new()
+    {
+        static readonly int[] __elementSizes = new int[]{ 0, 4, 4, 4, 4, 4, 0 };
+
+        readonly ArraySegment<byte> __originalBytes;
+        readonly global::ZeroFormatter.DirtyTracker __tracker;
+        readonly int __binaryLastIndex;
+        readonly byte[] __extraFixedBytes;
+
+        CacheSegment<TTypeResolver, string> _Username;
+        CacheSegment<TTypeResolver, global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>> _Warships;
+
+        // 0
+        public override string Username
+        {
+            get
+            {
+                return _Username.Value;
+            }
+            set
+            {
+                _Username.Value = value;
+            }
+        }
+
+        // 1
+        public override int AccountRating
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 1, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 1, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 2
+        public override int RegularCurrency
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 2, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 2, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 3
+        public override int PremiumCurrency
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 4
+        public override int PointsForBigChest
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 4, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 4, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 5
+        public override int PointsForSmallChest
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 5, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 5, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
+        // 6
+        public override global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo> Warships
+        {
+            get
+            {
+                return _Warships.Value;
+            }
+            set
+            {
+                _Warships.Value = value;
+            }
+        }
+
+
+        public AccountInfoObjectSegment(global::ZeroFormatter.DirtyTracker dirtyTracker, ArraySegment<byte> originalBytes)
+        {
+            var __array = originalBytes.Array;
+
+            this.__originalBytes = originalBytes;
+            this.__tracker = dirtyTracker = dirtyTracker.CreateChild();
+            this.__binaryLastIndex = BinaryUtil.ReadInt32(ref __array, originalBytes.Offset + 4);
+
+            this.__extraFixedBytes = ObjectSegmentHelper.CreateExtraFixedBytes(this.__binaryLastIndex, 6, __elementSizes);
+
+            _Username = new CacheSegment<TTypeResolver, string>(__tracker, ObjectSegmentHelper.GetSegment(originalBytes, 0, __binaryLastIndex, __tracker));
+            _Warships = new CacheSegment<TTypeResolver, global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>>(__tracker, ObjectSegmentHelper.GetSegment(originalBytes, 6, __binaryLastIndex, __tracker));
+        }
+
+        public bool CanDirectCopy()
+        {
+            return !__tracker.IsDirty;
+        }
+
+        public ArraySegment<byte> GetBufferReference()
+        {
+            return __originalBytes;
+        }
+
+        public int Serialize(ref byte[] targetBytes, int offset)
+        {
+            if (__extraFixedBytes != null || __tracker.IsDirty)
+            {
+                var startOffset = offset;
+                offset += (8 + 4 * (6 + 1));
+
+                offset += ObjectSegmentHelper.SerializeCacheSegment<TTypeResolver, string>(ref targetBytes, startOffset, offset, 0, ref _Username);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 1, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 2, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 3, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 4, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 5, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeCacheSegment<TTypeResolver, global::System.Collections.Generic.List<global::NetworkLibrary.NetworkLibrary.Http.WarshipInfo>>(ref targetBytes, startOffset, offset, 6, ref _Warships);
+
+                return ObjectSegmentHelper.WriteSize(ref targetBytes, startOffset, offset, 6);
+            }
+            else
+            {
+                return ObjectSegmentHelper.DirectCopyAll(__originalBytes, ref targetBytes, offset);
+            }
+        }
+    }
 
     public class PlayerInfoForGameRoomFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.PlayerInfoForGameRoom>
         where TTypeResolver : ITypeResolver, new()
@@ -158,11 +538,13 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             {
                 var startOffset = offset;
 
-                offset += (8 + 4 * (1 + 1));
+                offset += (8 + 4 * (3 + 1));
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, string>(ref bytes, startOffset, offset, 0, value.GoogleId);
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 1, value.TemporaryId);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, string>(ref bytes, startOffset, offset, 2, value.WarshipName);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 3, value.WarshipCombatPowerLevel);
 
-                return ObjectSegmentHelper.WriteSize(ref bytes, startOffset, offset, 1);
+                return ObjectSegmentHelper.WriteSize(ref bytes, startOffset, offset, 3);
             }
         }
 
@@ -181,7 +563,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
     public class PlayerInfoForGameRoomObjectSegment<TTypeResolver> : global::NetworkLibrary.NetworkLibrary.Http.PlayerInfoForGameRoom, IZeroFormatterSegment
         where TTypeResolver : ITypeResolver, new()
     {
-        static readonly int[] __elementSizes = new int[]{ 0, 4 };
+        static readonly int[] __elementSizes = new int[]{ 0, 4, 0, 4 };
 
         readonly ArraySegment<byte> __originalBytes;
         readonly global::ZeroFormatter.DirtyTracker __tracker;
@@ -189,6 +571,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         readonly byte[] __extraFixedBytes;
 
         CacheSegment<TTypeResolver, string> _GoogleId;
+        CacheSegment<TTypeResolver, string> _WarshipName;
 
         // 0
         public override string GoogleId
@@ -216,6 +599,32 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             }
         }
 
+        // 2
+        public override string WarshipName
+        {
+            get
+            {
+                return _WarshipName.Value;
+            }
+            set
+            {
+                _WarshipName.Value = value;
+            }
+        }
+
+        // 3
+        public override int WarshipCombatPowerLevel
+        {
+            get
+            {
+                return ObjectSegmentHelper.GetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, __tracker);
+            }
+            set
+            {
+                ObjectSegmentHelper.SetFixedProperty<TTypeResolver, int>(__originalBytes, 3, __binaryLastIndex, __extraFixedBytes, value, __tracker);
+            }
+        }
+
 
         public PlayerInfoForGameRoomObjectSegment(global::ZeroFormatter.DirtyTracker dirtyTracker, ArraySegment<byte> originalBytes)
         {
@@ -225,9 +634,10 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             this.__tracker = dirtyTracker = dirtyTracker.CreateChild();
             this.__binaryLastIndex = BinaryUtil.ReadInt32(ref __array, originalBytes.Offset + 4);
 
-            this.__extraFixedBytes = ObjectSegmentHelper.CreateExtraFixedBytes(this.__binaryLastIndex, 1, __elementSizes);
+            this.__extraFixedBytes = ObjectSegmentHelper.CreateExtraFixedBytes(this.__binaryLastIndex, 3, __elementSizes);
 
             _GoogleId = new CacheSegment<TTypeResolver, string>(__tracker, ObjectSegmentHelper.GetSegment(originalBytes, 0, __binaryLastIndex, __tracker));
+            _WarshipName = new CacheSegment<TTypeResolver, string>(__tracker, ObjectSegmentHelper.GetSegment(originalBytes, 2, __binaryLastIndex, __tracker));
         }
 
         public bool CanDirectCopy()
@@ -245,12 +655,14 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             if (__extraFixedBytes != null || __tracker.IsDirty)
             {
                 var startOffset = offset;
-                offset += (8 + 4 * (1 + 1));
+                offset += (8 + 4 * (3 + 1));
 
                 offset += ObjectSegmentHelper.SerializeCacheSegment<TTypeResolver, string>(ref targetBytes, startOffset, offset, 0, ref _GoogleId);
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 1, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
+                offset += ObjectSegmentHelper.SerializeCacheSegment<TTypeResolver, string>(ref targetBytes, startOffset, offset, 2, ref _WarshipName);
+                offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 3, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
 
-                return ObjectSegmentHelper.WriteSize(ref targetBytes, startOffset, offset, 1);
+                return ObjectSegmentHelper.WriteSize(ref targetBytes, startOffset, offset, 3);
             }
             else
             {
@@ -1856,6 +2268,77 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         }
 
         public int GetHashCode(global::NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResultEnum x)
+        {
+            return (int)x;
+        }
+    }
+
+
+
+    public class MatchTypeFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.MatchType>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        public override int? GetLength()
+        {
+            return 4;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.MatchType value)
+        {
+            return BinaryUtil.WriteInt32(ref bytes, offset, (Int32)value);
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Http.MatchType Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 4;
+            return (global::NetworkLibrary.NetworkLibrary.Http.MatchType)BinaryUtil.ReadInt32(ref bytes, offset);
+        }
+    }
+
+
+    public class NullableMatchTypeFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.MatchType?>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        public override int? GetLength()
+        {
+            return 5;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.MatchType? value)
+        {
+            BinaryUtil.WriteBoolean(ref bytes, offset, value.HasValue);
+            if (value.HasValue)
+            {
+                BinaryUtil.WriteInt32(ref bytes, offset + 1, (Int32)value.Value);
+            }
+            else
+            {
+                BinaryUtil.EnsureCapacity(ref bytes, offset, offset + 5);
+            }
+
+            return 5;
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Http.MatchType? Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 5;
+            var hasValue = BinaryUtil.ReadBoolean(ref bytes, offset);
+            if (!hasValue) return null;
+
+            return (global::NetworkLibrary.NetworkLibrary.Http.MatchType)BinaryUtil.ReadInt32(ref bytes, offset + 1);
+        }
+    }
+
+
+
+    public class MatchTypeEqualityComparer : IEqualityComparer<global::NetworkLibrary.NetworkLibrary.Http.MatchType>
+    {
+        public bool Equals(global::NetworkLibrary.NetworkLibrary.Http.MatchType x, global::NetworkLibrary.NetworkLibrary.Http.MatchType y)
+        {
+            return (Int32)x == (Int32)y;
+        }
+
+        public int GetHashCode(global::NetworkLibrary.NetworkLibrary.Http.MatchType x)
         {
             return (int)x;
         }
