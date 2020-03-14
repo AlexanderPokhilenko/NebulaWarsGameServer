@@ -25,5 +25,7 @@
     Asteroid300X200,
     SpaceStation,
     StationTurret,
-    BirdPlayer
+    BirdPlayer,
+    SpiderBotCocoonMissile,
+    SpiderBot
 }

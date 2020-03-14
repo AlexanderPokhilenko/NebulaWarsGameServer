@@ -32,7 +32,15 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             var pickablePart = gameContext.GetEntityWithId(e.bonusTarget.id);
 
             var addableBonus = e.bonusAdder.bonusObject.CreateEntity(gameContext, Vector2.zero, 0f);
-            addableBonus.AddLifetime(e.bonusAdder.duration);
+            if (addableBonus.hasLifetime)
+            {
+                addableBonus.ReplaceLifetime(e.bonusAdder.duration);
+            }
+            else
+            {
+                addableBonus.AddLifetime(e.bonusAdder.duration);
+            }
+
             if (e.bonusAdder.colliderInheritance)
             {
                 var targetRadius = pickablePart.circleCollider.radius * colliderScalingCoefficient;
@@ -57,13 +65,31 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
                     addableBonus.AddCircleCollider(targetRadius);
                 }
             }
-            addableBonus.AddParent(pickablePart.id.value);
-            addableBonus.AddOwner(pickablePart.GetGrandParent(gameContext).id.value);
-            addableBonus.AddGrandOwner(pickablePart.GetGrandOwnerId(gameContext));
-            addableBonus.isParentFixed = true;
-            addableBonus.isParentDependent = true;
-            addableBonus.isIgnoringParentCollision = true;
-            addableBonus.ToGlobal(gameContext, out var position, out var angle, out _, out _, out _);
+
+            Vector2 position;
+            float angle;
+
+            if (addableBonus.isParasite)
+            {
+                addableBonus.AddTarget(pickablePart.id.value);
+                var parasiteGrandOwner = e.GetGrandOwnerId(gameContext);
+                addableBonus.AddOwner(parasiteGrandOwner);
+                addableBonus.AddGrandOwner(parasiteGrandOwner);
+                e.ToGlobal(gameContext, out position, out angle, out _, out _, out _);
+                addableBonus.ReplacePosition(position);
+                addableBonus.ReplaceDirection(angle);
+            }
+            else
+            {
+                addableBonus.AddParent(pickablePart.id.value);
+                addableBonus.AddOwner(pickablePart.GetGrandParent(gameContext).id.value);
+                addableBonus.AddGrandOwner(pickablePart.GetGrandOwnerId(gameContext));
+                addableBonus.isParentFixed = true;
+                addableBonus.isParentDependent = true;
+                addableBonus.isIgnoringParentCollision = true;
+                addableBonus.ToGlobal(gameContext, out position, out angle, out _, out _, out _);
+            }
+
             addableBonus.AddGlobalTransform(position, angle);
             e.isDestroyed = true;
         }
