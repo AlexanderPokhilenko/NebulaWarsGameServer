@@ -8,69 +8,71 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int AngularVelocity = 0;
-    public const int Aura = 1;
-    public const int BonusAdder = 2;
-    public const int BonusPickable = 3;
-    public const int BonusTarget = 4;
-    public const int Bot = 5;
-    public const int Cannon = 6;
-    public const int CannonCooldown = 7;
-    public const int Chaser = 8;
-    public const int CircleCollider = 9;
-    public const int CircleScaling = 10;
-    public const int Collapses = 11;
-    public const int Collidable = 12;
-    public const int Collided = 13;
-    public const int CollisionVector = 14;
-    public const int Concave = 15;
-    public const int Damage = 16;
-    public const int Destroyed = 17;
-    public const int Direction = 18;
-    public const int DirectionTargeting = 19;
-    public const int DirectionTargetingShooting = 20;
-    public const int GlobalNoncollinearAxises = 21;
-    public const int GlobalPathCollider = 22;
-    public const int GlobalTransform = 23;
-    public const int GrandOwner = 24;
-    public const int HealthPoints = 25;
-    public const int Id = 26;
-    public const int IgnoringParentCollision = 27;
-    public const int Invulnerable = 28;
-    public const int KilledBy = 29;
-    public const int Lifetime = 30;
-    public const int MaxAngularVelocity = 31;
-    public const int MaxHealthPoints = 32;
-    public const int MaxVelocity = 33;
-    public const int NoncollinearAxises = 34;
-    public const int NonstandardRadius = 35;
-    public const int NotDecelerating = 36;
-    public const int Owner = 37;
-    public const int Parasite = 38;
-    public const int Parent = 39;
-    public const int ParentDependent = 40;
-    public const int ParentFixed = 41;
-    public const int PassingThrough = 42;
-    public const int PathCollider = 43;
-    public const int Player = 44;
-    public const int Position = 45;
-    public const int RectangleCollider = 46;
-    public const int Round = 47;
-    public const int SingleTargeting = 48;
-    public const int TargetChanging = 49;
-    public const int Target = 50;
-    public const int TargetingParameters = 51;
-    public const int TargetMovingPoint = 52;
-    public const int TargetScaling = 53;
-    public const int TryingToShoot = 54;
-    public const int Unmovable = 55;
-    public const int Velocity = 56;
-    public const int ViewType = 57;
-    public const int Zone = 58;
+    public const int ActionBonus = 0;
+    public const int AngularVelocity = 1;
+    public const int Aura = 2;
+    public const int BonusAdder = 3;
+    public const int BonusPickable = 4;
+    public const int BonusTarget = 5;
+    public const int Bot = 6;
+    public const int Cannon = 7;
+    public const int CannonCooldown = 8;
+    public const int Chaser = 9;
+    public const int CircleCollider = 10;
+    public const int CircleScaling = 11;
+    public const int Collapses = 12;
+    public const int Collidable = 13;
+    public const int Collided = 14;
+    public const int CollisionVector = 15;
+    public const int Concave = 16;
+    public const int Damage = 17;
+    public const int Destroyed = 18;
+    public const int Direction = 19;
+    public const int DirectionTargeting = 20;
+    public const int DirectionTargetingShooting = 21;
+    public const int GlobalNoncollinearAxises = 22;
+    public const int GlobalPathCollider = 23;
+    public const int GlobalTransform = 24;
+    public const int GrandOwner = 25;
+    public const int HealthPoints = 26;
+    public const int Id = 27;
+    public const int IgnoringParentCollision = 28;
+    public const int Invulnerable = 29;
+    public const int KilledBy = 30;
+    public const int Lifetime = 31;
+    public const int MaxAngularVelocity = 32;
+    public const int MaxHealthPoints = 33;
+    public const int MaxVelocity = 34;
+    public const int NoncollinearAxises = 35;
+    public const int NonstandardRadius = 36;
+    public const int NotDecelerating = 37;
+    public const int Owner = 38;
+    public const int Parasite = 39;
+    public const int Parent = 40;
+    public const int ParentDependent = 41;
+    public const int ParentFixed = 42;
+    public const int PassingThrough = 43;
+    public const int PathCollider = 44;
+    public const int Player = 45;
+    public const int Position = 46;
+    public const int RectangleCollider = 47;
+    public const int Round = 48;
+    public const int SingleTargeting = 49;
+    public const int TargetChanging = 50;
+    public const int Target = 51;
+    public const int TargetingParameters = 52;
+    public const int TargetMovingPoint = 53;
+    public const int TargetScaling = 54;
+    public const int TryingToShoot = 55;
+    public const int Unmovable = 56;
+    public const int Velocity = 57;
+    public const int ViewType = 58;
+    public const int Zone = 59;
 
-    public const int TotalComponents = 59;
+    public const int TotalComponents = 60;
 
     public static readonly string[] componentNames = {
+        "ActionBonus",
         "AngularVelocity",
         "Aura",
         "BonusAdder",
@@ -133,6 +135,7 @@ public static class GameComponentsLookup {
     };
 
     public static readonly System.Type[] componentTypes = {
+        typeof(ActionBonusComponent),
         typeof(AngularVelocityComponent),
         typeof(AuraComponent),
         typeof(BonusAdderComponent),

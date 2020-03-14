@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewFighter", menuName = "BaseObjects/Fighter", order = 61)]
+[CreateAssetMenu(fileName = "NewFighter", menuName = "BaseObjects/Fighter", order = 60)]
 public class FighterObject : MovableWithHealthObject
 {
     [Min(0)]

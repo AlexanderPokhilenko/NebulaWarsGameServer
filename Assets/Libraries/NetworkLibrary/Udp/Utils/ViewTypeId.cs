@@ -27,5 +27,6 @@
     StationTurret,
     BirdPlayer,
     SpiderBotCocoonMissile,
-    SpiderBot
+    SpiderBot,
+    SmallRepairBonus
 }

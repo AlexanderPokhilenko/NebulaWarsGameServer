@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewTorpedo", menuName = "BaseObjects/Torpedo", order = 60)]
+[CreateAssetMenu(fileName = "NewTorpedo", menuName = "BaseObjects/Torpedo", order = 59)]
 public class TorpedoObject : BulletObject
 {
     public float distance;

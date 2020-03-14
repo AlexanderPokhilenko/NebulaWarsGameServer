@@ -120,11 +120,11 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             if (currentHealthPart.healthPoints.value <= 0 && !currentHealthPart.hasKilledBy) currentHealthPart.AddKilledBy(e.GetGrandOwnerId(gameContext));
                         }
 
-                        if (current.hasBonusAdder && !current.hasBonusTarget && !e.isPassingThrough && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))
+                        if ((current.hasBonusAdder || current.hasActionBonus) && !current.hasBonusTarget && !e.isPassingThrough && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))
                         {
                             current.AddBonusTarget(eBonusPickerPart.id.value);
                         }
-                        else if (e.hasBonusAdder && !e.hasBonusTarget && currentPartCanPickBonuses)
+                        else if ((e.hasBonusAdder || e.hasActionBonus) && !e.hasBonusTarget && currentPartCanPickBonuses)
                         {
                             e.AddBonusTarget(currentBonusPickerPart.id.value);
                         }

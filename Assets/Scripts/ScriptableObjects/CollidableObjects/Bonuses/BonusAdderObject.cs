@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewBonusAdder", menuName = "BaseObjects/BonusAdder", order = 59)]
+[CreateAssetMenu(fileName = "NewBonusAdder", menuName = "BaseObjects/Bonuses/BonusAdder", order = 51)]
 public class BonusAdderObject : BaseObject
 {
     public BaseObject bonusObject;

@@ -48,10 +48,8 @@ public sealed class TargetPointMovingSystem : IExecuteSystem
                 }
             }
 
-
             if (e.hasChaser && !e.GetAllChildrenGameEntities(gameContext, c => c.hasCannon).Any())
             {
-                
                 var directedVelocity = delta.magnitude * CoordinatesExtensions.GetRotatedUnitVector2(e.GetGlobalAngle(gameContext));
                 var angle = Vector2.Angle(newVelocity, directedVelocity);
                 if(angle > angleDelta)
