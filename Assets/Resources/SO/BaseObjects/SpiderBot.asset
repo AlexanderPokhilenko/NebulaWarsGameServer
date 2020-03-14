@@ -17,8 +17,14 @@ MonoBehaviour:
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
-  collisionDamage: 10
-  parts: []
+  collisionDamage: 0
+  parts:
+  - baseObject: {fileID: 11400000, guid: 0c69c8db998a8a44f91df95888d94e31, type: 2}
+    position: {x: 0.5, y: 0}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
   maxVelocity: 6
   maxAngularVelocity: 180
   isNotDecelerating: 0

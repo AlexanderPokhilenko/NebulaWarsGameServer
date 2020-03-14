@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7129b16dc397ffa46a0b9f5a51320f35, type: 3}
-  m_Name: SpiderCocoon
+  m_Script: {fileID: 11500000, guid: bd54a05b891909b4cb529af3843f701f, type: 3}
+  m_Name: InvisibleDamageField
   m_EditorClassIdentifier: 
   typeId: 0
-  colliderInfo: {fileID: 11400000, guid: 2ef463eb40fd8fb418b9a8cee1a9de5e, type: 2}
+  colliderInfo: {fileID: 11400000, guid: 8531e2a5ed2a9db4b9796b97021cd0b8, type: 2}
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
-  collisionDamage: 0
+  collisionDamage: 10
   parts: []
-  bonusObject: {fileID: 11400000, guid: ccd12e9708f8f634384ca90fb48d433c, type: 2}
-  duration: 10
-  colliderInheritance: 0

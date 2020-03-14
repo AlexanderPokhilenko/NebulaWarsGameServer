@@ -17,7 +17,7 @@ public class BaseObject : ScriptableObject
     public virtual GameEntity CreateEntity(GameContext context)
     {
         var entity = context.CreateEntity();
-        if(typeId != ViewTypeId.Unknown) entity.AddViewType(typeId);
+        if(typeId != ViewTypeId.Invisible) entity.AddViewType(typeId);
         if (colliderInfo != null)
         {
             entity.isCollidable = true;

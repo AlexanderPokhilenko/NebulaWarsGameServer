@@ -94,7 +94,12 @@ public sealed class BotsMovingSystem : IExecuteSystem
                 /*static*/ float GetEntityDamagePower(GameEntity combatEntity)
                 {
                     var damage = combatEntity.damage.value;
-                    if (!combatEntity.isCollapses) damage *= combatEntity.lifetime.value;
+
+                    if (!combatEntity.isCollapses && combatEntity.TryGetFirstGameEntity(gameContext, p => p.hasLifetime, out var withLifetime))
+                    {
+                        damage *= withLifetime.lifetime.value;
+                    }
+
                     return damage;
                 }
 

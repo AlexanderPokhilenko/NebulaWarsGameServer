@@ -1,6 +1,6 @@
 ﻿public enum ViewTypeId
 {
-    Unknown,
+    Invisible,
     CircleUfo,
     Square,
     TriangleShip,
