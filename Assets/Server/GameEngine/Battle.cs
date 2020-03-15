@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
@@ -18,6 +19,7 @@ namespace Server.GameEngine
         private readonly BattlesStorage gameSessionsStorage;
 
         private readonly FlameCircleObject zoneObject;
+        private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
 
         private bool GameOver;
         
@@ -26,6 +28,7 @@ namespace Server.GameEngine
         public Battle(BattlesStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
+            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
             zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
@@ -58,6 +61,8 @@ namespace Server.GameEngine
                     .Add(new CollisionSystems(Contexts))
                     .Add(new EffectsSystems(Contexts))
                     .Add(new TimeSystems(Contexts))
+                    .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
+                    .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
                     .Add(new DestroySystems(Contexts))
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))

@@ -38,6 +38,19 @@ namespace Server.Udp.Sending
             }
         }
 
+        internal static void SendKills(int targetPlayerId, int killerId, ViewTypeId killerType, int victimId, ViewTypeId victimType)
+        {
+            var address = GetPlayerIpAddress(targetPlayerId);
+            if (address != null)
+            {
+                var killMessage = new KillMessage(killerId, killerType, victimId, victimType);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
+                ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId, messageId, serializedMessage);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            }
+        }
+
         public static void SendMessage(byte[] serializedMessage, int playerId)
         {
             var address = GetPlayerIpAddress(playerId);

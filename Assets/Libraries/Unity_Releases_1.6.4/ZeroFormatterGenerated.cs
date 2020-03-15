@@ -87,6 +87,11 @@ namespace ZeroFormatter
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerTrackingMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerTrackingMessage>(structFormatter));
             }
             {
+                var structFormatter = new ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage>.Register(structFormatter);
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage>(structFormatter));
+            }
+            {
                 var structFormatter = new ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PointTrackingMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PointTrackingMessage>.Register(structFormatter);
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PointTrackingMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PointTrackingMessage>(structFormatter));
@@ -1782,6 +1787,72 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
             byteSize += size;
             
             return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerTrackingMessage(item0);
+        }
+    }
+
+    public class KillMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, global::ViewTypeId> formatter1;
+        readonly Formatter<TTypeResolver, int> formatter2;
+        readonly Formatter<TTypeResolver, global::ViewTypeId> formatter3;
+        
+        public override bool NoUseDirtyTracker
+        {
+            get
+            {
+                return formatter0.NoUseDirtyTracker
+                    && formatter1.NoUseDirtyTracker
+                    && formatter2.NoUseDirtyTracker
+                    && formatter3.NoUseDirtyTracker
+                ;
+            }
+        }
+
+        public KillMessageFormatter()
+        {
+            formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter1 = Formatter<TTypeResolver, global::ViewTypeId>.Default;
+            formatter2 = Formatter<TTypeResolver, int>.Default;
+            formatter3 = Formatter<TTypeResolver, global::ViewTypeId>.Default;
+            
+        }
+
+        public override int? GetLength()
+        {
+            return 16;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage value)
+        {
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 16);
+            var startOffset = offset;
+            offset += formatter0.Serialize(ref bytes, offset, value.KillerId);
+            offset += formatter1.Serialize(ref bytes, offset, value.KillerType);
+            offset += formatter2.Serialize(ref bytes, offset, value.VictimId);
+            offset += formatter3.Serialize(ref bytes, offset, value.VictimType);
+            return offset - startOffset;
+        }
+
+        public override global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 0;
+            int size;
+            var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item2 = formatter2.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item3 = formatter3.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            
+            return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.KillMessage(item0, item1, item2, item3);
         }
     }
 

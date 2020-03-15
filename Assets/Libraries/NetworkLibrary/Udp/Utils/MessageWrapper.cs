@@ -35,6 +35,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         MaxHealthPoints = 11,
         PlayerTracking = 13,
         PointTracking = 14,
-        ShowPlayerAchievements=15
+        ShowPlayerAchievements = 15,
+        Kill = 16
     }
 }
