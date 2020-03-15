@@ -36,7 +36,7 @@ public sealed class AuraDamageSystem : IExecuteSystem
                 if (sqrDistance <= fullSqrRadius && sqrDistance > colliderSqrRadius)
                 {
                     damagable.ReplaceHealthPoints(damagable.healthPoints.value - currentDamage);
-                    if (damagable.healthPoints.value <= 0f)
+                    if (damagable.healthPoints.value <= 0f && !damagable.hasKilledBy)
                     {
                         damagable.AddKilledBy(e.hasGrandOwner ? e.grandOwner.id : e.GetGrandOwnerId(gameContext));
                     }
