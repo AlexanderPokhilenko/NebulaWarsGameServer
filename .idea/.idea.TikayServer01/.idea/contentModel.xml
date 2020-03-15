@@ -20,6 +20,7 @@
           <e p="Feature.cs" t="Include" />
           <e p="Game" t="Include">
             <e p="Components" t="Include">
+              <e p="GameActionBonusComponent.cs" t="Include" />
               <e p="GameAngularVelocityComponent.cs" t="Include" />
               <e p="GameAuraComponent.cs" t="Include" />
               <e p="GameBonusAdderComponent.cs" t="Include" />
@@ -28,6 +29,7 @@
               <e p="GameBotComponent.cs" t="Include" />
               <e p="GameCannonComponent.cs" t="Include" />
               <e p="GameCannonCooldownComponent.cs" t="Include" />
+              <e p="GameChaserComponent.cs" t="Include" />
               <e p="GameCircleColliderComponent.cs" t="Include" />
               <e p="GameCircleScalingComponent.cs" t="Include" />
               <e p="GameCollapsesComponent.cs" t="Include" />
@@ -57,6 +59,7 @@
               <e p="GameNonstandardRadiusComponent.cs" t="Include" />
               <e p="GameNotDeceleratingComponent.cs" t="Include" />
               <e p="GameOwnerComponent.cs" t="Include" />
+              <e p="GameParasiteComponent.cs" t="Include" />
               <e p="GameParentComponent.cs" t="Include" />
               <e p="GameParentDependentComponent.cs" t="Include" />
               <e p="GameParentFixedComponent.cs" t="Include" />
@@ -173,13 +176,19 @@
               <e p="AuraObject.cs" t="Include" />
               <e p="BaseObject.cs" t="Include" />
               <e p="BaseWithHealthObject.cs" t="Include" />
-              <e p="BonusAdderObject.cs" t="Include" />
+              <e p="Bonuses" t="Include">
+                <e p="ActionBonusObject.cs" t="Include" />
+                <e p="BonusAdderObject.cs" t="Include" />
+                <e p="RepairBonusObject.cs" t="Include" />
+              </e>
               <e p="BulletObject.cs" t="Include" />
+              <e p="FighterObject.cs" t="Include" />
               <e p="FlameCircleObject.cs" t="Include" />
               <e p="MovableObject.cs" t="Include" />
               <e p="MovableWithHealthObject.cs" t="Include" />
               <e p="PlayerObject.cs" t="Include" />
               <e p="TargetingTurretObject.cs" t="Include" />
+              <e p="TorpedoObject.cs" t="Include" />
             </e>
             <e p="Colliders" t="Include">
               <e p="CircleColliderInfo.cs" t="Include" />
@@ -255,9 +264,11 @@
         <e p="Sources" t="Include">
           <e p="Components" t="Include">
             <e p="BonusesComponents" t="Include">
+              <e p="ActionBonusComponent.cs" t="Include" />
               <e p="BonusAdderComponent.cs" t="Include" />
               <e p="BonusPickableComponent.cs" t="Include" />
               <e p="BonusTargetComponent.cs" t="Include" />
+              <e p="ParasiteComponent.cs" t="Include" />
             </e>
             <e p="CollisionComponents" t="Include">
               <e p="CircleColliderComponent.cs" t="Include" />
@@ -321,6 +332,7 @@
             </e>
             <e p="TargetingComponents" t="Include">
               <e p="BotComponent.cs" t="Include" />
+              <e p="ChaserComponent.cs" t="Include" />
               <e p="DirectionTargetingComponent.cs" t="Include" />
               <e p="DirectionTargetingShootingComponent.cs" t="Include" />
               <e p="SingleTargetingComponent.cs" t="Include" />
@@ -343,6 +355,7 @@
               <e p="AISystems.cs" t="Include" />
               <e p="AngularVelocityTargetingSystem.cs" t="Include" />
               <e p="BotsMovingSystem.cs" t="Include" />
+              <e p="ChaserTargetPointUpdaterSystem.cs" t="Include" />
               <e p="DirectionShootingSystem.cs" t="Include" />
               <e p="DirectionTargetingSystem.cs" t="Include" />
               <e p="RemoveDistantTargetSystem.cs" t="Include" />
@@ -376,6 +389,7 @@
             </e>
             <e p="EffectsSystems" t="Include">
               <e p="AuraDamageSystem.cs" t="Include" />
+              <e p="BonusActingSystem.cs" t="Include" />
               <e p="BonusApplyingSystem.cs" t="Include" />
               <e p="CircleScalingSystem.cs" t="Include" />
               <e p="CircleTargetScalingCheckerSystem.cs" t="Include" />

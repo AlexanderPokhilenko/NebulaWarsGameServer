@@ -44,7 +44,8 @@ public static class ParentsExtensions
         return result;
     }
 
-    public static bool TryGetFirstGameEntity(this GameEntity entity, GameContext context, Predicate<GameEntity> predicate, out GameEntity result)
+    public static bool TryGetFirstGameEntity(this GameEntity entity, GameContext context, 
+        Predicate<GameEntity> predicate, out GameEntity result)
     {
         result = entity;
         while (result.hasParent)
