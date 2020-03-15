@@ -6,7 +6,7 @@ using UnityEngine;
 
 public sealed class MoveSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> movableGroup;
+    private readonly IGroup<GameEntity> movableGroup;
 
     public MoveSystem(Contexts contexts)
     {

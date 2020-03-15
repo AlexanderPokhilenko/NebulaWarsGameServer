@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class TargetShootingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> shootingGroup;
+    private readonly IGroup<GameEntity> shootingGroup;
 
     public TargetShootingSystem(Contexts contexts)
     {

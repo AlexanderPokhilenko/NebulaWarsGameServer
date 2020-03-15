@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class DirectionShootingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> shootingGroup;
+    private readonly IGroup<GameEntity> shootingGroup;
     private const float attackDelta = 2.5f;
 
     public DirectionShootingSystem(Contexts contexts)

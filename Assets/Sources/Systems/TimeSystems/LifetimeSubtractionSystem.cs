@@ -6,7 +6,7 @@ using UnityEngine;
 
 public sealed class LifetimeSubtractionSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> lifetimeGroup;
+    private readonly IGroup<GameEntity> lifetimeGroup;
 
     public LifetimeSubtractionSystem(Contexts contexts)
     {

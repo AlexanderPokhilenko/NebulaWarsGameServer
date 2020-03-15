@@ -9,15 +9,17 @@ using UnityEngine;
 public sealed class BotsMovingSystem : IExecuteSystem
 {
     private readonly System.Random random;
+    private readonly List<GameEntity> buffer;
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> botsGroup;
-    private IGroup<GameEntity> withCannonGroup;
-    private IGroup<GameEntity> withDamageGroup;
+    private readonly IGroup<GameEntity> botsGroup;
+    private readonly IGroup<GameEntity> withCannonGroup;
+    private readonly IGroup<GameEntity> withDamageGroup;
     private const float zoneWarningDistance = 1.5f;
 
     public BotsMovingSystem(Contexts contexts)
     {
         random = new System.Random();
+        buffer = new List<GameEntity>();
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction, GameMatcher.CircleCollider, GameMatcher.Bot).NoneOf(GameMatcher.TargetMovingPoint);
         botsGroup = gameContext.GetGroup(matcher);
@@ -28,7 +30,7 @@ public sealed class BotsMovingSystem : IExecuteSystem
     public void Execute()
     {
         //TODO: посмотреть, можно ли как-то добавлять без использования массива
-        foreach (var e in botsGroup.GetEntities())
+        foreach (var e in botsGroup.GetEntities(buffer))
         {
             var zone = gameContext.zone.GetZone(gameContext);
             var currentPosition = e.GetGlobalPositionVector2(gameContext);

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public sealed class CannonCooldownSubtractionSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> cooldownGroup;
+    private readonly IGroup<GameEntity> cooldownGroup;
 
     public CannonCooldownSubtractionSystem(Contexts contexts)
     {

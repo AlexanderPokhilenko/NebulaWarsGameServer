@@ -6,12 +6,14 @@ using UnityEngine;
 
 public sealed class TargetDetectionSystem : IExecuteSystem
 {
+    private readonly List<GameEntity> buffer;
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> targetingGroup;
-    private IGroup<GameEntity> targetGroup;
+    private readonly IGroup<GameEntity> targetingGroup;
+    private readonly IGroup<GameEntity> targetGroup;
 
     public TargetDetectionSystem(Contexts contexts)
     {
+        buffer = new List<GameEntity>();
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.TargetingParameters).NoneOf(GameMatcher.Target);
         targetingGroup = gameContext.GetGroup(matcher);
@@ -21,8 +23,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
 
     public void Execute()
     {
-        //TODO: посмотреть, можно ли как-то добавлять без использования массива
-        foreach (var e in targetingGroup.GetEntities())
+        foreach (var e in targetingGroup.GetEntities(buffer))
         {
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
             var currentDirection = CoordinatesExtensions.GetRotatedUnitVector2(e.GetGlobalAngle(gameContext));

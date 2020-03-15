@@ -1,24 +1,22 @@
-﻿using System.Collections;
+﻿using Entitas;
 using System.Collections.Generic;
-using Entitas;
-using Entitas.Unity;
-using UnityEngine;
 
 public sealed class TargetLinkDeletingSystem : IExecuteSystem
 {
+    private readonly List<GameEntity> buffer;
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> withTargetGroup;
+    private readonly IGroup<GameEntity> withTargetGroup;
 
     public TargetLinkDeletingSystem(Contexts contexts)
     {
+        buffer = new List<GameEntity>();
         gameContext = contexts.game;
         withTargetGroup = gameContext.GetGroup(GameMatcher.Target);
     }
 
     public void Execute()
     {
-        //TODO: посмотреть, можно ли как-то удалять без использования массива
-        foreach (var e in withTargetGroup.GetEntities())
+        foreach (var e in withTargetGroup.GetEntities(buffer))
         {
             var target = gameContext.GetEntityWithId(e.target.id);
             if (target.isDestroyed)

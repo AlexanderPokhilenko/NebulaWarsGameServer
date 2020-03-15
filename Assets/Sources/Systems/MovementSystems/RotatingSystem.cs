@@ -6,7 +6,7 @@ using UnityEngine;
 
 public sealed class RotatingSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> rotatableGroup;
+    private readonly IGroup<GameEntity> rotatableGroup;
 
     public RotatingSystem(Contexts contexts)
     {

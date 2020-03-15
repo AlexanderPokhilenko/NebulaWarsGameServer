@@ -6,7 +6,7 @@ using UnityEngine;
 
 public sealed class CircleScalingSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> scalingGroup;
+    private readonly IGroup<GameEntity> scalingGroup;
 
     public CircleScalingSystem(Contexts contexts)
     {

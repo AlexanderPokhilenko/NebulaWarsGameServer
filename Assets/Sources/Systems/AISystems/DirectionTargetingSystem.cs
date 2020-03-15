@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class DirectionTargetingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> targetingGroup;
+    private readonly IGroup<GameEntity> targetingGroup;
 
     public DirectionTargetingSystem(Contexts contexts)
     {

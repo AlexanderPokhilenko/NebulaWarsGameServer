@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class RemoveTargetForSingleTargetingSystem : IExecuteSystem
 {
-    private IGroup<GameEntity> singleTargetingGroup;
+    private readonly IGroup<GameEntity> singleTargetingGroup;
 
     public RemoveTargetForSingleTargetingSystem(Contexts contexts)
     {

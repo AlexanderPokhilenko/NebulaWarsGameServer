@@ -7,7 +7,7 @@ using UnityEngine;
 public sealed class AngularVelocityTargetingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> targetingGroup;
+    private readonly IGroup<GameEntity> targetingGroup;
 
     public AngularVelocityTargetingSystem(Contexts contexts)
     {

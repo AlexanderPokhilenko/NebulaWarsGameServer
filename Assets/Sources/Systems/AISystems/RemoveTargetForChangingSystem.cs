@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class RemoveTargetForChangingSystem : ICleanupSystem
 {
-    private IGroup<GameEntity> changingGroup;
+    private readonly IGroup<GameEntity> changingGroup;
 
     public RemoveTargetForChangingSystem(Contexts contexts)
     {

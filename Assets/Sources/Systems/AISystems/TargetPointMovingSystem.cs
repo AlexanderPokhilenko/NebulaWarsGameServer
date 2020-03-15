@@ -1,19 +1,20 @@
-﻿using System.Collections;
+﻿using Entitas;
+using Server.GameEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Entitas;
-using Server.GameEngine;
 using UnityEngine;
 
 public sealed class TargetPointMovingSystem : IExecuteSystem
 {
+    private readonly List<GameEntity> buffer;
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> movingGroup;
+    private readonly IGroup<GameEntity> movingGroup;
     private const float positionSqrDelta = 0.01f;
     private const float angleDelta = 5f;
 
     public TargetPointMovingSystem(Contexts contexts)
     {
+        buffer = new List<GameEntity>();
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction, GameMatcher.MaxVelocity, GameMatcher.TargetMovingPoint).NoneOf(GameMatcher.Unmovable);
         movingGroup = gameContext.GetGroup(matcher);
@@ -21,8 +22,7 @@ public sealed class TargetPointMovingSystem : IExecuteSystem
 
     public void Execute()
     {
-        //TODO: посмотреть, можно ли как-то удалять без использования массива
-        foreach (var e in movingGroup.GetEntities())
+        foreach (var e in movingGroup.GetEntities(buffer))
         {
             var delta = e.targetMovingPoint.position - e.GetGlobalPositionVector2(gameContext);
             var deltaSqrMagnitude = delta.sqrMagnitude;

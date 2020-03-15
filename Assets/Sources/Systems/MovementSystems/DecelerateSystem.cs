@@ -7,7 +7,7 @@ using UnityEngine;
 public sealed class DecelerateSystem : IExecuteSystem
 {
     private const float deceleratingConstant = 0.5f;
-    private IGroup<GameEntity> movableGroup;
+    private readonly IGroup<GameEntity> movableGroup;
 
     public DecelerateSystem(Contexts contexts)
     {

@@ -7,8 +7,8 @@ using UnityEngine;
 public sealed class AuraDamageSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> auraGroup;
-    private IGroup<GameEntity> damagableGroup;
+    private readonly IGroup<GameEntity> auraGroup;
+    private readonly IGroup<GameEntity> damagableGroup;
 
     public AuraDamageSystem(Contexts contexts)
     {

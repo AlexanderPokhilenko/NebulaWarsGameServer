@@ -8,7 +8,7 @@ public class CannonShootingSystem : IExecuteSystem
 {
     private readonly System.Random random;
     private readonly GameContext gameContext;
-    private IGroup<GameEntity> shootingGroup;
+    private readonly IGroup<GameEntity> shootingGroup;
 
     public CannonShootingSystem(Contexts contexts)
     {
