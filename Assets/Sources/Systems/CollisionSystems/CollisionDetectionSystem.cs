@@ -20,7 +20,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         collidables = new List<CollisionInfo>(predictedCapacity);
     }
 
-    private struct CollisionInfo
+    private class CollisionInfo
     {
         public readonly int Id;
         public readonly GameEntity Entity;
@@ -147,8 +147,6 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             other.CollisionVector -= penetration;
                         }
 
-                        collidables[j] = other;
-
                         if (current.HasDamage && other.HasHealthPointsPart)
                         {
                             var otherHealthPointsPart = other.HealthPointsPart;
@@ -173,8 +171,6 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                     }
                 }
             }
-
-            if (current.IsCollided) collidables[i - 1] = current;
         }
 
         for (int i = 0; i < count; i++)
