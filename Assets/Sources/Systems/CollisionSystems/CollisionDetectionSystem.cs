@@ -8,13 +8,68 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> collidableGroup;
     private readonly List<GameEntity> buffer;
+    private readonly List<CollisionInfo> collidables;
+    private const int predictedCapacity = 350;
 
     public CollisionDetectionSystem(Contexts contexts)
     {
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Collidable, GameMatcher.CircleCollider, GameMatcher.Position);
         collidableGroup = gameContext.GetGroup(matcher);
-        buffer = new List<GameEntity>(350);
+        buffer = new List<GameEntity>(predictedCapacity);
+        collidables = new List<CollisionInfo>(predictedCapacity);
+    }
+
+    private struct CollisionInfo
+    {
+        public readonly int Id;
+        public readonly GameEntity Entity;
+        public readonly Vector2 GlobalPosition;
+        public readonly float Radius;
+        public readonly Vector2[] GlobalDots;
+        public readonly Vector2[] GlobalAxises;
+        public readonly bool IsIgnoringParentCollision;
+        public readonly bool IsRound;
+        public readonly bool IsPassingThrough;
+        public readonly bool HasHealthPointsPart;
+        public readonly GameEntity HealthPointsPart;
+        public readonly bool HasBonusPickerPart;
+        public readonly GameEntity BonusPickerPart;
+        public readonly bool HasDamage;
+        public readonly float Damage;
+        public readonly int GrandOwnerId;
+        public readonly int GrandParentId;
+        public readonly bool IsTargetingParasite;
+        public readonly int GrandTargetId;
+        public readonly bool HasBonus;
+        public bool IsCollided;
+        public Vector2 CollisionVector;
+
+        public CollisionInfo(int id, GameEntity entity, GameContext gameContext)
+        {
+            Id = id;
+            Entity = entity;
+            Radius = entity.circleCollider.radius;
+            GlobalDots = entity.hasGlobalPathCollider ? entity.globalPathCollider.dots : null;
+            GlobalAxises = entity.hasGlobalNoncollinearAxises ? entity.globalNoncollinearAxises.vectors : null;
+            IsIgnoringParentCollision = entity.isIgnoringParentCollision;
+            IsRound = entity.isRound;
+            IsPassingThrough = entity.isPassingThrough;
+            GlobalPosition = entity.hasGlobalTransform ? entity.globalTransform.position : entity.GetGlobalPositionVector2(gameContext);
+            HasHealthPointsPart = entity.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out HealthPointsPart);
+            BonusPickerPart = null;
+            HasBonusPickerPart = !IsPassingThrough && entity.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out BonusPickerPart);
+            HasDamage = entity.hasDamage;
+            Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Clock.deltaTime : entity.damage.value) : 0f;
+            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
+            GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : Id;
+            var hasTarget = entity.hasTarget;
+            IsTargetingParasite = entity.isParasite && hasTarget;
+            GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : 0;
+            HasBonus = (entity.hasBonusAdder || entity.hasActionBonus) && !entity.hasBonusTarget;
+            IsCollided = false;
+            CollisionVector = new Vector2(0f, 0f);
+        }
     }
 
     public void Execute()
@@ -22,42 +77,35 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         var entities = collidableGroup.GetEntities(buffer);
         var count = entities.Count;
         if (count < 2) return;
+        for (int i = 0; i < count; i++)
+        {
+            var entity = entities[i];
+            var entityId = entity.id.value;
+            collidables.Add(new CollisionInfo(entityId, entity, gameContext));
+        }
         for (int i = 1; i < count; i++)
         {
-            var current = entities[i - 1];
-            var currentId = current.id.value;
-            var currentGlobalPosition = current.hasGlobalTransform ? current.globalTransform.position : current.GetGlobalPositionVector2(gameContext);
-            var currentPartHasHealthPoints = current.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var currentHealthPart);
-            GameEntity currentBonusPickerPart = null;
-            var currentPartCanPickBonuses = !current.isPassingThrough && current.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out currentBonusPickerPart);
-            var currentDamage = current.hasDamage ? (current.isPassingThrough && !current.isCollapses ? current.damage.value * Clock.deltaTime : current.damage.value) : 0f;
-            var currentGrandOwnerId = current.hasGrandOwner ? current.grandOwner.id : currentId;
-            var currentGrandParentId = current.hasParent ? current.GetGrandParent(gameContext).id.value : currentId;
-            var currentIsTargetingParasite = current.isParasite && current.hasTarget;
-            var currentGrandTargetId = current.hasTarget ? gameContext.GetEntityWithId(current.target.id).GetGrandParent(gameContext).id.value : 0;
+            var current = collidables[i - 1];
+            var currentEntity = current.Entity;
             for (int j = i; j < count; j++)
             {
-                var e = entities[j];
-                var eId = e.id.value;
+                var other = collidables[j];
+                var otherEntity = other.Entity;
 
-                var eGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : eId;
-                //TODO: возможно, стоит убрать эту проверку
-                if (eGrandOwnerId == currentGrandOwnerId) continue;
+                if (other.GrandOwnerId == current.GrandOwnerId) continue;
+                if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
+                    && current.GrandParentId == other.GrandParentId) continue;
 
-                var eGrandParentId = e.hasParent ? e.GetGrandParent(gameContext).id.value : eId;
-                if ((e.isIgnoringParentCollision || current.isIgnoringParentCollision) && currentGrandParentId == eGrandParentId) continue;
-
-                var eGlobalPosition = e.hasGlobalTransform ? e.globalTransform.position : e.GetGlobalPositionVector2(gameContext);
-                var distance = eGlobalPosition - currentGlobalPosition;
-                var closeDistance = e.circleCollider.radius + current.circleCollider.radius;
+                var distance = other.GlobalPosition - current.GlobalPosition;
+                var closeDistance = other.Radius + current.Radius;
                 var sqrDistance = distance.sqrMagnitude;
                 if (sqrDistance <= closeDistance * closeDistance)
                 {
                     bool collided;
                     Vector2 penetration;
-                    if (current.isRound)
+                    if (current.IsRound)
                     {
-                        if (e.isRound)
+                        if (other.IsRound)
                         {
                             collided = true;
                             if (distance != Vector2.zero)
@@ -71,75 +119,76 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         }
                         else
                         {
-                            collided = CheckCollisionFigureWithCircle(e, current, out penetration);
+                            collided = CheckCollisionFigureWithCircle(other, current, out penetration);
                             penetration = -penetration;
                         }
                     }
                     else
                     {
-                        if (e.isRound)
+                        if (other.IsRound)
                         {
-                            collided = CheckCollisionFigureWithCircle(current, e, out penetration);
+                            collided = CheckCollisionFigureWithCircle(current, other, out penetration);
                         }
                         else
                         {
-                            collided = CheckCollisionFigureWithFigure(current, e, out penetration);
+                            collided = CheckCollisionFigureWithFigure(current, other, out penetration);
                         }
                     }
 
-                    //TODO: refactoring
                     if (collided)
                     {
-                        e.isCollided = true;
-                        current.isCollided = true;
-                        if (!current.isPassingThrough && !e.isPassingThrough &&
-                            !((currentIsTargetingParasite && currentGrandTargetId == eGrandParentId) ||
-                              (e.isParasite && e.hasTarget && gameContext.GetEntityWithId(e.target.id).GetGrandParent(gameContext).id.value == currentGrandParentId)))
+                        other.IsCollided = true;
+                        current.IsCollided = true;
+                        if (!current.IsPassingThrough && !other.IsPassingThrough &&
+                            !((current.IsTargetingParasite && current.GrandTargetId == other.GrandParentId) ||
+                              (other.IsTargetingParasite && other.GrandTargetId == current.GrandParentId)))
                         {
-                            if (current.hasCollisionVector)
-                            {
-                                var newCCollVec = current.collisionVector.value + penetration;
-                                current.ReplaceCollisionVector(newCCollVec);
-                            }
-                            else
-                            {
-                                current.AddCollisionVector(penetration);
-                            }
-                            if (e.hasCollisionVector)
-                            {
-                                var newECollVec = e.collisionVector.value - penetration;
-                                e.ReplaceCollisionVector(newECollVec);
-                            }
-                            else
-                            {
-                                e.AddCollisionVector(-penetration);
-                            }
+                            current.CollisionVector += penetration;
+                            other.CollisionVector -= penetration;
                         }
 
-                        if (current.hasDamage && e.TryGetFirstGameEntity(gameContext, part => part.hasHealthPoints && !part.isInvulnerable, out var ePart))
+                        collidables[j] = other;
+
+                        if (current.HasDamage && other.HasHealthPointsPart)
                         {
-                            ePart.ReplaceHealthPoints(ePart.healthPoints.value - currentDamage);
-                            if(ePart.healthPoints.value <= 0 && !ePart.hasKilledBy) ePart.AddKilledBy(currentGrandOwnerId);
+                            var otherHealthPointsPart = other.HealthPointsPart;
+                            otherHealthPointsPart.ReplaceHealthPoints(otherHealthPointsPart.healthPoints.value - current.Damage);
+                            if(otherHealthPointsPart.healthPoints.value <= 0 && !otherHealthPointsPart.hasKilledBy) otherHealthPointsPart.AddKilledBy(current.GrandOwnerId);
                         }
-                        if (e.hasDamage && currentPartHasHealthPoints)
+                        if (other.HasDamage && current.HasHealthPointsPart)
                         {
-                            var eDamage = e.isPassingThrough && !e.isCollapses ? e.damage.value * Clock.deltaTime : e.damage.value;
-                            currentHealthPart.ReplaceHealthPoints(currentHealthPart.healthPoints.value - eDamage);
-                            if (currentHealthPart.healthPoints.value <= 0 && !currentHealthPart.hasKilledBy) currentHealthPart.AddKilledBy(e.GetGrandOwnerId(gameContext));
+                            var currentHealthPointsPart = current.HealthPointsPart;
+                            currentHealthPointsPart.ReplaceHealthPoints(currentHealthPointsPart.healthPoints.value - other.Damage);
+                            if (currentHealthPointsPart.healthPoints.value <= 0 && !currentHealthPointsPart.hasKilledBy) currentHealthPointsPart.AddKilledBy(other.GrandOwnerId);
                         }
 
-                        if ((current.hasBonusAdder || current.hasActionBonus) && !current.hasBonusTarget && !e.isPassingThrough && e.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out var eBonusPickerPart))
+                        if (current.HasBonus && other.HasBonusPickerPart)
                         {
-                            current.AddBonusTarget(eBonusPickerPart.id.value);
+                            currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                         }
-                        else if ((e.hasBonusAdder || e.hasActionBonus) && !e.hasBonusTarget && currentPartCanPickBonuses)
+                        else if (other.HasBonus && current.HasBonusPickerPart)
                         {
-                            e.AddBonusTarget(currentBonusPickerPart.id.value);
+                            otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
                     }
                 }
             }
+
+            if (current.IsCollided) collidables[i - 1] = current;
         }
+
+        for (int i = 0; i < count; i++)
+        {
+            var current = collidables[i];
+            if (current.IsCollided)
+            {
+                var currentEntity = current.Entity;
+                currentEntity.isCollided = true;
+                currentEntity.AddCollisionVector(current.CollisionVector);
+            }
+        }
+
+        collidables.Clear();
     }
 
     public void Cleanup()
@@ -151,14 +200,14 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         }
     }
 
-    private bool CheckCollisionFigureWithCircle(GameEntity figure, GameEntity circle, out Vector2 penetration)
+    private static bool CheckCollisionFigureWithCircle(CollisionInfo figure, CollisionInfo circle, out Vector2 penetration)
     {
-        var circleRadius = circle.circleCollider.radius;
-        var circleGlobalPosition = circle.hasGlobalTransform ? circle.globalTransform.position : circle.GetGlobalPositionVector2(gameContext);
+        var circleRadius = circle.Radius;
+        var circleGlobalPosition = circle.GlobalPosition;
         var prevDepth = float.PositiveInfinity;
         penetration = new Vector2(0, 0);
-        var dots = figure.globalPathCollider.dots;
-        var axises = figure.globalNoncollinearAxises.vectors;
+        var dots = figure.GlobalDots;
+        var axises = figure.GlobalAxises;
 
         foreach (var axis in axises)
         {
@@ -193,14 +242,14 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         return true;
     }
 
-    private bool CheckCollisionFigureWithFigure(GameEntity figure1, GameEntity figure2, out Vector2 penetration)
+    private static bool CheckCollisionFigureWithFigure(CollisionInfo figure1, CollisionInfo figure2, out Vector2 penetration)
     {
         var prevDepth = float.PositiveInfinity;
         penetration = new Vector2(0, 0);
-        var axises1 = figure1.globalNoncollinearAxises.vectors;
-        var dots1 = figure1.globalPathCollider.dots;
-        var axises2 = figure2.globalNoncollinearAxises.vectors;
-        var dots2 = figure2.globalPathCollider.dots;
+        var axises1 = figure1.GlobalAxises;
+        var dots1 = figure1.GlobalDots;
+        var axises2 = figure2.GlobalAxises;
+        var dots2 = figure2.GlobalDots;
 
         //возможно, стоит пропускать оси, между которыми очень малый угол
 
@@ -246,7 +295,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         }
     }
 
-    private void GetMinMaxOnAxis(Vector2[] dots, Vector2 axis, out float min, out float max)
+    private static void GetMinMaxOnAxis(Vector2[] dots, Vector2 axis, out float min, out float max)
     {
         min = float.PositiveInfinity;
         max = float.NegativeInfinity;
