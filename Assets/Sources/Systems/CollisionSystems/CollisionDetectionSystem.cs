@@ -22,7 +22,6 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
     private class CollisionInfo
     {
-        public readonly int Id;
         public readonly GameEntity Entity;
         public readonly Vector2 GlobalPosition;
         public readonly float Radius;
@@ -45,9 +44,9 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         public bool IsCollided;
         public Vector2 CollisionVector;
 
-        public CollisionInfo(int id, GameEntity entity, GameContext gameContext)
+        public CollisionInfo(GameEntity entity, GameContext gameContext)
         {
-            Id = id;
+            var id = entity.id.value;
             Entity = entity;
             Radius = entity.circleCollider.radius;
             GlobalDots = entity.hasGlobalPathCollider ? entity.globalPathCollider.dots : null;
@@ -61,8 +60,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             HasBonusPickerPart = !IsPassingThrough && entity.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out BonusPickerPart);
             HasDamage = entity.hasDamage;
             Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Clock.deltaTime : entity.damage.value) : 0f;
-            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
-            GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : Id;
+            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : id;
+            GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : id;
             var hasTarget = entity.hasTarget;
             IsTargetingParasite = entity.isParasite && hasTarget;
             GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : 0;
@@ -80,8 +79,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         for (int i = 0; i < count; i++)
         {
             var entity = entities[i];
-            var entityId = entity.id.value;
-            collidables.Add(new CollisionInfo(entityId, entity, gameContext));
+            collidables.Add(new CollisionInfo(entity, gameContext));
         }
         for (int i = 1; i < count; i++)
         {
