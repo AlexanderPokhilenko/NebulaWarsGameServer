@@ -47,7 +47,7 @@ public class AddCollidersToPathSystem : ReactiveSystem<GameEntity>
                 //    |///
                 foreach (var side in sides)
                 {
-                    var axis = side;
+                    var axis = new Vector2(-side.y, side.x);
                     //Рассматриваем оси с x > 0 и y > 0 при x = 0
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (axis.x < 0 || (axis.x == 0 && axis.y < 0))
@@ -80,9 +80,7 @@ public class AddCollidersToPathSystem : ReactiveSystem<GameEntity>
                     }
                 }
 
-                var perpendiculars = axises.Select(a => a.y <= 0f ? new Vector2(-a.y, a.x) : new Vector2(a.y, -a.x)).ToArray();
-
-                e.AddNoncollinearAxises(perpendiculars.ToArray());
+                e.AddNoncollinearAxises(axises.ToArray());
                 e.isConcave = isConcave;
             }
         }
