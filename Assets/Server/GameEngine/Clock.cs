@@ -38,6 +38,14 @@ namespace Server.GameEngine
             prevTickTime = Time.time - TickDeltaSeconds;
             StartCoroutine(nameof(MakeTick));
         }
+
+        public void OnDestroy()
+        {
+            foreach (var battle in GameEngineMediator.BattlesStorage.GetAllGameSessions())
+            {
+                battle.FinishGame();
+            }
+        }
 #else
         private static TimeSpan tickDeltaTime = new TimeSpan(0, 0, 0, 0, 30);
         private readonly GameEngineMediator gameEngineMediator;

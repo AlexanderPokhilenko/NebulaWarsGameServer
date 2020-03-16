@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using Entitas;
 using UnityEngine;
 
 public class StubSpawner : MonoBehaviour
 {
+    private Systems systems;
     public BaseObject prototype;
     public Vector2 position;
     public float direction;
@@ -15,7 +16,29 @@ public class StubSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameContext = Contexts.sharedInstance.game;
+        Debug.Log($"Запущен {nameof(StubSpawner)}.");
+
+        var contexts = Contexts.sharedInstance;
+        contexts.SubscribeId();
+        gameContext = contexts.game;
+
+        systems = new Systems()
+                .Add(new ParentsSystems(contexts))
+                .Add(new AISystems(contexts))
+                .Add(new MovementSystems(contexts))
+                .Add(new GlobalTransformSystem(contexts))
+                .Add(new ShootingSystems(contexts))
+                .Add(new CollisionSystems(contexts))
+                .Add(new EffectsSystems(contexts))
+                .Add(new TimeSystems(contexts))
+                .Add(new DestroySystems(contexts))
+            ;
+
+        systems.ActivateReactiveSystems();
+        systems.Initialize();
+
+        var collidersDrawer = FindObjectOfType<CollidersDrawer>();
+        collidersDrawer.ChangeContext(gameContext);
     }
 
     // Update is called once per frame
@@ -27,5 +50,16 @@ public class StubSpawner : MonoBehaviour
             if(entity.isNotDecelerating && entity.hasMaxVelocity && !entity.isUnmovable) entity.AddVelocity(CoordinatesExtensions.GetRotatedUnitVector2(direction));
             spawnOne = false;
         }
+
+        systems.Execute();
+        systems.Cleanup();
+    }
+
+    void OnDestroy()
+    {
+        systems.DeactivateReactiveSystems();
+        systems.TearDown();
+        systems.ClearReactiveSystems();
     }
 }
+#endif

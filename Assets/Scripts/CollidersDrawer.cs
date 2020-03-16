@@ -16,20 +16,21 @@ public sealed class CollidersDrawer : MonoBehaviour
     [SerializeField] private bool drawTargetLines = true;
     [SerializeField] private bool drawAuras = true;
     [SerializeField] private bool changeContext = true;
-    [SerializeField] private int contextIndex;
+    [SerializeField, Min(0)] private int contextIndex = 0;
 
     public static List<Contexts> contextsList = new List<Contexts>();
-    private GameContext gameContext;
+    private GameContext currentGameContext;
     private IGroup<GameEntity> collidableGroup;
-    private IMatcher<GameEntity> matcher;
-    
+    private IMatcher<GameEntity> matcher = GameMatcher.AllOf(GameMatcher.Position).AnyOf(GameMatcher.CircleCollider, GameMatcher.PathCollider, GameMatcher.NoncollinearAxises, GameMatcher.Cannon, GameMatcher.TargetingParameters, GameMatcher.Target);
+
     private static readonly ILog Log = LogManager.GetLogger(typeof(CollidersDrawer));
 
-    public void Start()
+    public bool ChangeContext(GameContext gameContext)
     {
-        //gameContext = Contexts.sharedInstance.game;
-        matcher = GameMatcher.AllOf(GameMatcher.Position).AnyOf(GameMatcher.CircleCollider, GameMatcher.PathCollider, GameMatcher.NoncollinearAxises, GameMatcher.Cannon, GameMatcher.TargetingParameters, GameMatcher.Target);
-        //collidableGroup = gameContext.GetGroup(matcher);
+        currentGameContext = gameContext;
+        if (currentGameContext == null) return false;
+        collidableGroup = currentGameContext.GetGroup(matcher);
+        return true;
     }
 
     public void OnDrawGizmos()
@@ -44,17 +45,20 @@ public sealed class CollidersDrawer : MonoBehaviour
         }
     }
 
+    public void OnDestroy()
+    {
+        contextsList.Clear();
+    }
+
     private void Draw()
     {
          if (changeContext && contextIndex >= 0 && contextIndex < contextsList.Count)
          {
-             gameContext = contextsList[contextIndex].game;
-             if (gameContext == null) return;
-             collidableGroup = gameContext.GetGroup(matcher);
+             if(!ChangeContext(contextsList[contextIndex].game)) return;
              changeContext = false;
          }
 
-         if(gameContext == null || collidableGroup == null) return;
+         if(currentGameContext == null || collidableGroup == null) return;
 
          foreach (var e in collidableGroup)
          {
@@ -62,7 +66,7 @@ public sealed class CollidersDrawer : MonoBehaviour
              var firstParent = e;
              while (firstParent.hasParent)
              {
-                 firstParent = gameContext.GetEntityWithId(firstParent.parent.id);
+                 firstParent = currentGameContext.GetEntityWithId(firstParent.parent.id);
                  if (firstParent.id.value == e.id.value)
                  {
                      Log.Error(nameof(CollidersDrawer) + " detected recursion!");
@@ -71,7 +75,7 @@ public sealed class CollidersDrawer : MonoBehaviour
                  }
              }
              if(recursion) continue;
-             e.ToGlobal(gameContext, out var position, out var angle, out var layer, out var velocity, out var angularVelocity);
+             e.ToGlobal(currentGameContext, out var position, out var angle, out var layer, out var velocity, out var angularVelocity);
              var hasDirection = Math.Abs(angle) > 0.001;
 
              float sin = 0, cos = 1;
@@ -149,8 +153,8 @@ public sealed class CollidersDrawer : MonoBehaviour
              if (drawTargetLines && e.hasTarget)
              {
                  Gizmos.color = Color.cyan;
-                 var target = gameContext.GetEntityWithId(e.target.id);
-                 var targetPosition = target.GetGlobalPositionVector2(gameContext);
+                 var target = currentGameContext.GetEntityWithId(e.target.id);
+                 var targetPosition = target.GetGlobalPositionVector2(currentGameContext);
                  Gizmos.DrawLine(position, targetPosition);
              }
 

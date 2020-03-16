@@ -66,6 +66,7 @@ namespace Server.GameEngine
                     .Add(new DestroySystems(Contexts))
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
+                    .Add(new GameDeletingSystem(Contexts))
                     .Add(new FinishBattleSystem(Contexts, this))
                     .Add(new MaxHpUpdaterSystem(Contexts))
                 ;
@@ -105,6 +106,7 @@ namespace Server.GameEngine
             systems.DeactivateReactiveSystems();
             systems.TearDown();
             systems.ClearReactiveSystems();
+            possibleKillersInfo.Clear();
         }
     }
 }

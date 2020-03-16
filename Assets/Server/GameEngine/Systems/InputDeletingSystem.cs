@@ -2,7 +2,7 @@
 
 namespace Server.GameEngine.Systems
 {
-    public class InputDeletingSystem : ICleanupSystem
+    public class InputDeletingSystem : ICleanupSystem, ITearDownSystem
     {
         private readonly InputContext inputContext;
 
@@ -12,6 +12,11 @@ namespace Server.GameEngine.Systems
         }
         
         public void Cleanup()
+        {
+            inputContext.DestroyAllEntities();
+        }
+
+        public void TearDown()
         {
             inputContext.DestroyAllEntities();
         }
