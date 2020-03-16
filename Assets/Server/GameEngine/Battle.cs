@@ -64,11 +64,11 @@ namespace Server.GameEngine
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
                     .Add(new DestroySystems(Contexts))
+                    .Add(new FinishBattleSystem(Contexts, this))
                     .Add(new NetworkSenderSystem(Contexts))
+                    .Add(new MaxHpUpdaterSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new GameDeletingSystem(Contexts))
-                    .Add(new FinishBattleSystem(Contexts, this))
-                    .Add(new MaxHpUpdaterSystem(Contexts))
                 ;
 
             systems.ActivateReactiveSystems();
@@ -92,6 +92,14 @@ namespace Server.GameEngine
             systems.Cleanup();
         }
 
+        public void TearDown()
+        {
+            systems.DeactivateReactiveSystems();
+            systems.TearDown();
+            systems.ClearReactiveSystems();
+            possibleKillersInfo.Clear();
+        }
+
         private bool IsSessionTimedOut()
         {
             if (gameStartTime == null) return false;
@@ -103,10 +111,6 @@ namespace Server.GameEngine
         {
             GameOver = true;
             gameSessionsStorage.MarkBattleAsFinished(RoomData.GameRoomNumber);
-            systems.DeactivateReactiveSystems();
-            systems.TearDown();
-            systems.ClearReactiveSystems();
-            possibleKillersInfo.Clear();
         }
     }
 }

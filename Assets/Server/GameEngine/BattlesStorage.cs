@@ -63,9 +63,10 @@ namespace Server.GameEngine
                 Log.Warn("Удаление боя");
                 int battleNumber = finishedBattles.Dequeue();
                 Battle battle = battles[battleNumber];
+                battle.TearDown();
                 int[] playersIds = battle.RoomData.Players.Select(player => player.TemporaryId).ToArray();
-                ClearPlayers(playersIds);
                 NotifyPlayers(playersIds);
+                ClearPlayers(playersIds);
                 battles.TryRemove(battleNumber, out _);
                 MetaServerBattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
             }

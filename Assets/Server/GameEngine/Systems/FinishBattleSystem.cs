@@ -30,7 +30,7 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            int numberOfPlayers = playersGroup.AsEnumerable().Count();
+            int numberOfPlayers = playersGroup.count;
             switch (numberOfPlayers)
             {
                 case 0:

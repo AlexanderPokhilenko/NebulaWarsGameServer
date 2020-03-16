@@ -16,7 +16,7 @@ namespace Server.GameEngine.Systems
 
         public void Execute()
         {
-            foreach (var gameEntity in playersWithHpGroup.AsEnumerable())
+            foreach (var gameEntity in playersWithHpGroup)
             {
                 int playerId = gameEntity.player.id;
                 UdpSendUtils.SendMaxHealthPoints(playerId, gameEntity.maxHealthPoints.value);
