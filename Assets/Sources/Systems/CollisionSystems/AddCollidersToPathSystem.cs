@@ -80,7 +80,9 @@ public class AddCollidersToPathSystem : ReactiveSystem<GameEntity>
                     }
                 }
 
-                e.AddNoncollinearAxises(axises.ToArray());
+                var perpendiculars = axises.Select(a => a.y <= 0f ? new Vector2(-a.y, a.x) : new Vector2(a.y, -a.x)).ToArray();
+
+                e.AddNoncollinearAxises(perpendiculars.ToArray());
                 e.isConcave = isConcave;
             }
         }
