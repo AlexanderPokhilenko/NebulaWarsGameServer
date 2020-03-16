@@ -135,24 +135,26 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
                     if (collided)
                     {
-                        other.IsCollided = true;
-                        current.IsCollided = true;
                         if (!current.IsPassingThrough && !other.IsPassingThrough &&
                             !((current.IsTargetingParasite && current.GrandTargetId == other.GrandParentId) ||
                               (other.IsTargetingParasite && other.GrandTargetId == current.GrandParentId)))
                         {
+                            current.IsCollided = true;
+                            other.IsCollided = true;
                             current.CollisionVector += penetration;
                             other.CollisionVector -= penetration;
                         }
 
                         if (current.HasDamage && other.HasHealthPointsPart)
                         {
+                            current.IsCollided = true;
                             var otherHealthPointsPart = other.HealthPointsPart;
                             otherHealthPointsPart.ReplaceHealthPoints(otherHealthPointsPart.healthPoints.value - current.Damage);
                             if(otherHealthPointsPart.healthPoints.value <= 0 && !otherHealthPointsPart.hasKilledBy) otherHealthPointsPart.AddKilledBy(current.GrandOwnerId);
                         }
                         if (other.HasDamage && current.HasHealthPointsPart)
                         {
+                            other.IsCollided = true;
                             var currentHealthPointsPart = current.HealthPointsPart;
                             currentHealthPointsPart.ReplaceHealthPoints(currentHealthPointsPart.healthPoints.value - other.Damage);
                             if (currentHealthPointsPart.healthPoints.value <= 0 && !currentHealthPointsPart.hasKilledBy) currentHealthPointsPart.AddKilledBy(other.GrandOwnerId);
@@ -160,10 +162,12 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
                         if (current.HasBonus && other.HasBonusPickerPart)
                         {
+                            current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                         }
                         else if (other.HasBonus && current.HasBonusPickerPart)
                         {
+                            other.IsCollided = true;
                             otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
                     }

@@ -37,3 +37,4 @@ MonoBehaviour:
   useAngularTargeting: 1
   onlyPlayerTargeting: 1
   targetChanging: 0
+  maxHealthPoints: 10
