@@ -4,20 +4,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRandomObject", menuName = "BaseObjects/RandomObject", order = 50)]
 public class RandomObject : EntityCreatorObject
 {
-    private bool initialized;
     private System.Random random;
     private int maxProbability;
     public ProbabilityObject[] objects;
 
+    void OnEnable()
+    {
+        random = new System.Random();
+        maxProbability = objects.Sum(o => o.probability);
+    }
+
     public override GameEntity CreateEntity(GameContext context)
     {
-        if (!initialized)
-        {
-            random = new System.Random();
-            maxProbability = objects.Sum(o => o.probability);
-            initialized = true;
-        }
-
         var probability = random.Next(maxProbability);
 
         EntityCreatorObject result = null;
