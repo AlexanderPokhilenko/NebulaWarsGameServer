@@ -11,14 +11,14 @@ public partial class GameEntity {
     public DropComponent drop { get { return (DropComponent)GetComponent(GameComponentsLookup.Drop); } }
     public bool hasDrop { get { return HasComponent(GameComponentsLookup.Drop); } }
 
-    public void AddDrop(BaseObject newValue) {
+    public void AddDrop(EntityCreatorObject newValue) {
         var index = GameComponentsLookup.Drop;
         var component = (DropComponent)CreateComponent(index, typeof(DropComponent));
         component.value = newValue;
         AddComponent(index, component);
     }
 
-    public void ReplaceDrop(BaseObject newValue) {
+    public void ReplaceDrop(EntityCreatorObject newValue) {
         var index = GameComponentsLookup.Drop;
         var component = (DropComponent)CreateComponent(index, typeof(DropComponent));
         component.value = newValue;

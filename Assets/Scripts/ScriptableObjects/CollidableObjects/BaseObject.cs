@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBaseObject", menuName = "BaseObjects/BaseObject", order = 51)]
-public class BaseObject : ScriptableObject
+public class BaseObject : EntityCreatorObject
 {
     public ViewTypeId typeId;
     public ColliderInfo colliderInfo;
@@ -12,9 +10,10 @@ public class BaseObject : ScriptableObject
     public bool isPassingThrough;
     [Min(0)]
     public float collisionDamage;
+    public EntityCreatorObject drop;
     public PartObject[] parts;
 
-    public virtual GameEntity CreateEntity(GameContext context)
+    public override GameEntity CreateEntity(GameContext context)
     {
         var entity = context.CreateEntity();
         if(typeId != ViewTypeId.Invisible) entity.AddViewType(typeId);
@@ -24,11 +23,13 @@ public class BaseObject : ScriptableObject
             colliderInfo.AddColliderToEntity(entity);
         }
 
-        cannonInfo?.AddCannonToEntity(entity);
+        if(cannonInfo != null) cannonInfo.AddCannonToEntity(entity);
 
         entity.isUnmovable = isUnmovable;
         entity.isPassingThrough = isPassingThrough;
         if(collisionDamage > 0) entity.AddDamage(collisionDamage);
+
+        if(drop != null) entity.AddDrop(drop);
 
         if (parts != null)
         {
@@ -38,14 +39,6 @@ public class BaseObject : ScriptableObject
             }
         }
 
-        return entity;
-    }
-
-    public GameEntity CreateEntity(GameContext context, Vector2 position, float angle)
-    {
-        var entity = CreateEntity(context);
-        entity.AddPosition(position);
-        entity.AddDirection(angle);
         return entity;
     }
 }

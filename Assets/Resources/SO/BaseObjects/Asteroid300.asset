@@ -18,5 +18,6 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
+  drop: {fileID: 0}
   parts: []
   maxHealthPoints: 300

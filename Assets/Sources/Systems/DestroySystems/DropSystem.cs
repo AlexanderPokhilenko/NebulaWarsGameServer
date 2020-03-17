@@ -19,11 +19,12 @@ public class DropSystem : IExecuteSystem
             e.ToGlobal(gameContext, out var position, out var angle, out _, out var velocity, out var angularVelocity);
 
             var drop = e.drop.value;
-            if ((drop is ActionBonusObject || drop is BonusAdderObject) && drop.colliderInfo is CircleColliderInfo) angle = 0f;
             var dropEntity = drop.CreateEntity(gameContext, position, angle);
+            if((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider) dropEntity.ReplaceDirection(angle = 0f);
 
-            dropEntity.AddOwner(e.GetGrandParent(gameContext).id.value);
-            dropEntity.AddGrandOwner(e.GetGrandOwnerId(gameContext));
+            var grandOwnerId = e.GetGrandOwnerId(gameContext);
+            dropEntity.AddOwner(grandOwnerId);
+            dropEntity.AddGrandOwner(grandOwnerId);
 
             if (dropEntity.hasChaser)
             {

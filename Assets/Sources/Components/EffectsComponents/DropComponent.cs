@@ -4,5 +4,5 @@
 [Game]
 public sealed class DropComponent : IComponent
 {
-    public BaseObject value;
+    public EntityCreatorObject value;
 }

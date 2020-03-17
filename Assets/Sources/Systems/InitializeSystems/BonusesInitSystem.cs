@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BonusesInitSystem : IInitializeSystem
 {
-    private static readonly BaseObject[] bonuses;
+    private static readonly EntityCreatorObject[] bonuses;
     private static readonly float deltaStep;
     private const float Radius = 35f;
     private const int Count = 10;
@@ -14,7 +14,7 @@ public class BonusesInitSystem : IInitializeSystem
 
     static BonusesInitSystem()
     {
-        bonuses = new BaseObject[]
+        bonuses = new EntityCreatorObject[]
         {
             Resources.Load<BonusAdderObject>("SO/Bonuses/PickableObjects/ShieldBonus"),
             Resources.Load<BonusAdderObject>("SO/Bonuses/PickableObjects/FireAuraBonus"),

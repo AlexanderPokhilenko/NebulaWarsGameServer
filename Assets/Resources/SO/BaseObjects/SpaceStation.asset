@@ -18,6 +18,7 @@ MonoBehaviour:
   isUnmovable: 1
   isPassingThrough: 0
   collisionDamage: 0
+  drop: {fileID: 11400000, guid: 8fd09ebe1d7e61a49948cdbb0d934067, type: 2}
   parts:
   - baseObject: {fileID: 11400000, guid: 2dd4d877d101c3c4ab8b4aa1aa7da0ce, type: 2}
     position: {x: 0, y: 0}

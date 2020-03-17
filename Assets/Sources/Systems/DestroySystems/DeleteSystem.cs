@@ -18,7 +18,6 @@ public sealed class DeleteSystem : IExecuteSystem
     {
         foreach (var e in deletingGroup.GetEntities(buffer))
         {
-            if(e.hasKilledBy) Log.Info($"Объект с id = {e.id.value} был уничтожен объектом с id = {e.killedBy.id}.");
             e.Destroy();
         }
     }

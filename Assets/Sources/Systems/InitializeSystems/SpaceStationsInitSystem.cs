@@ -5,7 +5,6 @@ using UnityEngine;
 public class SpaceStationsInitSystem : IInitializeSystem
 {
     private static readonly BaseWithHealthObject spaceStation;
-    private static readonly RepairBonusObject repairBonus;
     private readonly GameContext gameContext;
     private const float Radius = 25f;
     private const int Count = 20;
@@ -15,10 +14,6 @@ public class SpaceStationsInitSystem : IInitializeSystem
     {
         spaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
         if (spaceStation == null)
-            throw new Exception($"В {nameof(SpaceStationsInitSystem)} asset был null.");
-
-        repairBonus = Resources.Load<RepairBonusObject>("SO/Bonuses/PickableObjects/SmallRepairBonus");
-        if (repairBonus == null)
             throw new Exception($"В {nameof(SpaceStationsInitSystem)} asset был null.");
     }
 
@@ -34,7 +29,6 @@ public class SpaceStationsInitSystem : IInitializeSystem
             var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
 
             var entity = spaceStation.CreateEntity(gameContext, position, angle);
-            entity.AddDrop(repairBonus);
         }
     }
 }
