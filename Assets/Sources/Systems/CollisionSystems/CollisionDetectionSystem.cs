@@ -162,11 +162,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
                         if (current.HasBonus && other.HasBonusPickerPart)
                         {
+                            if (currentEntity.hasBonusTarget) break;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                         }
                         else if (other.HasBonus && current.HasBonusPickerPart)
                         {
+                            if (otherEntity.hasBonusTarget) continue;
                             other.IsCollided = true;
                             otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
