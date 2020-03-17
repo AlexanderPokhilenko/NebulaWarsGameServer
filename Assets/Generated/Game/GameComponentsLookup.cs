@@ -30,46 +30,47 @@ public static class GameComponentsLookup {
     public const int Direction = 19;
     public const int DirectionTargeting = 20;
     public const int DirectionTargetingShooting = 21;
-    public const int GlobalNoncollinearAxises = 22;
-    public const int GlobalPathCollider = 23;
-    public const int GlobalTransform = 24;
-    public const int GrandOwner = 25;
-    public const int HealthPoints = 26;
-    public const int Id = 27;
-    public const int IgnoringParentCollision = 28;
-    public const int Invulnerable = 29;
-    public const int KilledBy = 30;
-    public const int Lifetime = 31;
-    public const int MaxAngularVelocity = 32;
-    public const int MaxHealthPoints = 33;
-    public const int MaxVelocity = 34;
-    public const int NoncollinearAxises = 35;
-    public const int NonstandardRadius = 36;
-    public const int NotDecelerating = 37;
-    public const int Owner = 38;
-    public const int Parasite = 39;
-    public const int Parent = 40;
-    public const int ParentDependent = 41;
-    public const int ParentFixed = 42;
-    public const int PassingThrough = 43;
-    public const int PathCollider = 44;
-    public const int Player = 45;
-    public const int Position = 46;
-    public const int RectangleCollider = 47;
-    public const int Round = 48;
-    public const int SingleTargeting = 49;
-    public const int TargetChanging = 50;
-    public const int Target = 51;
-    public const int TargetingParameters = 52;
-    public const int TargetMovingPoint = 53;
-    public const int TargetScaling = 54;
-    public const int TryingToShoot = 55;
-    public const int Unmovable = 56;
-    public const int Velocity = 57;
-    public const int ViewType = 58;
-    public const int Zone = 59;
+    public const int Drop = 22;
+    public const int GlobalNoncollinearAxises = 23;
+    public const int GlobalPathCollider = 24;
+    public const int GlobalTransform = 25;
+    public const int GrandOwner = 26;
+    public const int HealthPoints = 27;
+    public const int Id = 28;
+    public const int IgnoringParentCollision = 29;
+    public const int Invulnerable = 30;
+    public const int KilledBy = 31;
+    public const int Lifetime = 32;
+    public const int MaxAngularVelocity = 33;
+    public const int MaxHealthPoints = 34;
+    public const int MaxVelocity = 35;
+    public const int NoncollinearAxises = 36;
+    public const int NonstandardRadius = 37;
+    public const int NotDecelerating = 38;
+    public const int Owner = 39;
+    public const int Parasite = 40;
+    public const int Parent = 41;
+    public const int ParentDependent = 42;
+    public const int ParentFixed = 43;
+    public const int PassingThrough = 44;
+    public const int PathCollider = 45;
+    public const int Player = 46;
+    public const int Position = 47;
+    public const int RectangleCollider = 48;
+    public const int Round = 49;
+    public const int SingleTargeting = 50;
+    public const int TargetChanging = 51;
+    public const int Target = 52;
+    public const int TargetingParameters = 53;
+    public const int TargetMovingPoint = 54;
+    public const int TargetScaling = 55;
+    public const int TryingToShoot = 56;
+    public const int Unmovable = 57;
+    public const int Velocity = 58;
+    public const int ViewType = 59;
+    public const int Zone = 60;
 
-    public const int TotalComponents = 60;
+    public const int TotalComponents = 61;
 
     public static readonly string[] componentNames = {
         "ActionBonus",
@@ -94,6 +95,7 @@ public static class GameComponentsLookup {
         "Direction",
         "DirectionTargeting",
         "DirectionTargetingShooting",
+        "Drop",
         "GlobalNoncollinearAxises",
         "GlobalPathCollider",
         "GlobalTransform",
@@ -157,6 +159,7 @@ public static class GameComponentsLookup {
         typeof(DirectionComponent),
         typeof(DirectionTargetingComponent),
         typeof(DirectionTargetingShootingComponent),
+        typeof(DropComponent),
         typeof(GlobalNoncollinearAxisesComponent),
         typeof(GlobalPathColliderComponent),
         typeof(GlobalTransformComponent),

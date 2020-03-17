@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-internal class DestroySystems : Feature
+﻿internal class DestroySystems : Feature
 {
     public DestroySystems(Contexts contexts) : base("Destroy Systems")
     {
@@ -14,6 +8,7 @@ internal class DestroySystems : Feature
         Add(new ParentDependentDeletingSystem(contexts));
         Add(new ParentLinkDeletingSystem(contexts));
         Add(new TargetLinkDeletingSystem(contexts));
+        Add(new DropSystem(contexts));
         Add(new DeleteSystem(contexts));
     }
 }
