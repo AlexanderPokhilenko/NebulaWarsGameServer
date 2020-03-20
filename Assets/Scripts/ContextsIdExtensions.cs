@@ -13,6 +13,18 @@ public static class ContextsIdExtensions
             }
         }
     }
+    public static void UnsubscribeId(this Contexts contexts)
+    {
+        foreach (var context in contexts.allContexts)
+        {
+            if (Array.FindIndex(context.contextInfo.componentTypes, v => v == typeof(IdComponent)) >= 0)
+            {
+                context.OnEntityCreated -= AddId;
+            }
+        }
+
+        contexts.Reset();
+    }
 
     public static void AddId(IContext context, IEntity entity)
     {

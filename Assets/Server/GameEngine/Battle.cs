@@ -38,11 +38,11 @@ namespace Server.GameEngine
             Log.Info("Создание новой комнаты номер = "+roomData.GameRoomNumber);
 
             RoomData = roomData;
-            Contexts = new Contexts();
+            Contexts = ContextsPool.GetContexts();
             Contexts.SubscribeId();
 #if UNITY_EDITOR
             CollidersDrawer.contextsList.Add(Contexts);
-            Log.Info("Количество контекстов: " + CollidersDrawer.contextsList.Count);
+            Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
 #endif
 
             systems = new Entitas.Systems()
@@ -97,6 +97,8 @@ namespace Server.GameEngine
             systems.DeactivateReactiveSystems();
             systems.TearDown();
             systems.ClearReactiveSystems();
+            Contexts.UnsubscribeId();
+            ContextsPool.RetrieveContexts(Contexts);
             possibleKillersInfo.Clear();
         }
 
