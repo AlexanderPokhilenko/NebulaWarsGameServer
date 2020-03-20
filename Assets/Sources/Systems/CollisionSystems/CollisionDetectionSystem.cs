@@ -51,8 +51,16 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var id = entity.id.value;
             Entity = entity;
             Radius = entity.circleCollider.radius;
-            HasMass = entity.hasMass;
-            Mass = HasMass ? entity.mass.value : 0f;
+            if (entity.hasMass)
+            {
+                HasMass = true;
+                Mass = entity.mass.value;
+            }
+            else
+            {
+                HasMass = entity.TryGetFirstGameEntity(gameContext, part => part.hasMass, out var massPart);
+                Mass = HasMass ? massPart.mass.value : 0f;
+            }
             GlobalDots = entity.hasGlobalPathCollider ? entity.globalPathCollider.dots : null;
             GlobalAxises = entity.hasGlobalNoncollinearAxises ? entity.globalNoncollinearAxises.vectors : null;
             IsIgnoringParentCollision = entity.isIgnoringParentCollision;
