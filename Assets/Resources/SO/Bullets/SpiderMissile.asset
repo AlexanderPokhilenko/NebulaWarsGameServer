@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 26
   colliderInfo: {fileID: 11400000, guid: 2ef463eb40fd8fb418b9a8cee1a9de5e, type: 2}
+  mass: 25
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0

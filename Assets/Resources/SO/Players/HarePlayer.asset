@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 19
   colliderInfo: {fileID: 11400000, guid: 1023ab3cf1dab8a45842200785948b7b, type: 2}
+  mass: 100
   cannonInfo: {fileID: 11400000, guid: 423f8673002a4fc4783dcedbdfdda12b, type: 2}
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
+  drop: {fileID: 0}
   parts:
   - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
     position: {x: -0.1, y: -0.84}

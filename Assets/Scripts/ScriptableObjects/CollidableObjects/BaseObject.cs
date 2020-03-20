@@ -5,6 +5,8 @@ public class BaseObject : EntityCreatorObject
 {
     public ViewTypeId typeId;
     public ColliderInfo colliderInfo;
+    [Min(0)]
+    public float mass;
     public CannonInfo cannonInfo;
     public bool isUnmovable;
     public bool isPassingThrough;
@@ -22,6 +24,8 @@ public class BaseObject : EntityCreatorObject
             entity.isCollidable = true;
             colliderInfo.AddColliderToEntity(entity);
         }
+
+        if(mass > 0) entity.AddMass(mass);
 
         if(cannonInfo != null) cannonInfo.AddCannonToEntity(entity);
 

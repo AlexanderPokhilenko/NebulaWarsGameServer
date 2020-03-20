@@ -26,8 +26,7 @@ public class CollisionPenetrationAvoidanceSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-            //TODO: учитывать массу и импульс
-            var newPos = e.position.value + e.GetLocalVector(gameContext, e.collisionVector.value) / 2;
+            var newPos = e.position.value + e.GetLocalVector(gameContext, e.collisionVector.value);
             e.ReplacePosition(newPos);
         }
     }

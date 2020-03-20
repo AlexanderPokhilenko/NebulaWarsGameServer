@@ -25,6 +25,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         public readonly GameEntity Entity;
         public readonly Vector2 GlobalPosition;
         public readonly float Radius;
+        public readonly bool HasMass;
+        public readonly float Mass;
         public readonly Vector2[] GlobalDots;
         public readonly Vector2[] GlobalAxises;
         public readonly bool IsIgnoringParentCollision;
@@ -49,6 +51,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var id = entity.id.value;
             Entity = entity;
             Radius = entity.circleCollider.radius;
+            HasMass = entity.hasMass;
+            Mass = HasMass ? entity.mass.value : 0f;
             GlobalDots = entity.hasGlobalPathCollider ? entity.globalPathCollider.dots : null;
             GlobalAxises = entity.hasGlobalNoncollinearAxises ? entity.globalNoncollinearAxises.vectors : null;
             IsIgnoringParentCollision = entity.isIgnoringParentCollision;
@@ -141,8 +145,18 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         {
                             current.IsCollided = true;
                             other.IsCollided = true;
-                            current.CollisionVector += penetration;
-                            other.CollisionVector -= penetration;
+
+                            if (current.HasMass && other.HasMass)
+                            {
+                                var totalMass = current.Mass + other.Mass;
+                                current.CollisionVector += penetration * other.Mass / totalMass;
+                                other.CollisionVector -= penetration * current.Mass / totalMass;
+                            }
+                            else
+                            {
+                                current.CollisionVector += penetration * 0.5f;
+                                other.CollisionVector -= penetration * 0.5f;
+                            }
                         }
 
                         if (current.HasDamage && other.HasHealthPointsPart)
