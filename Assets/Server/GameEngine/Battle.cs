@@ -78,7 +78,7 @@ namespace Server.GameEngine
         
         public void Execute()
         {
-            if(GameOver) return;
+            if (GameOver) return;
             if (IsSessionTimedOut())
             {
                 FinishGame();
@@ -89,6 +89,7 @@ namespace Server.GameEngine
 
         public void Cleanup()
         {
+            if (GameOver) return;
             systems.Cleanup();
         }
 
