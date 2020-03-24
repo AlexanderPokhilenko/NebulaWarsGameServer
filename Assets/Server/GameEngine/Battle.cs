@@ -46,11 +46,15 @@ namespace Server.GameEngine
 #endif
 
             systems = new Entitas.Systems()
+#if USE_OLD_INIT_SYSTEMS
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, roomData))
                     .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new BonusesInitSystem(Contexts))
+#else
+                    .Add(new MapInitSystem(Contexts, roomData))
+#endif
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))

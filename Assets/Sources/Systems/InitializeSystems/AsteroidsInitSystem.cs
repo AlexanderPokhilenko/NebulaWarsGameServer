@@ -29,17 +29,6 @@ public class AsteroidsInitSystem : IInitializeSystem
     {
         random = new System.Random();
         gameContext = contexts.game;
-        //TODO: что-то с этим сделать
-        // asteroids = new (BaseWithHealthObject asset, int probability)[]
-            
-        // {
-        //     (AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/Asteroid100.asset"), 10),
-        //     (AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/Asteroid300.asset"), 13),
-        //     (AssetDatabase.LoadAssetAtPath<BaseWithHealthObject>("Assets/SO/BaseObjects/Asteroid300x200.asset"), 17)
-        // };
-
-        // Resources.Load<PlayerObject>("SO/BaseObjects/HarePlayer");
-
     }
 
     public void Initialize()
