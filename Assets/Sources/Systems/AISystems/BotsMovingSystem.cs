@@ -14,7 +14,7 @@ public sealed class BotsMovingSystem : IExecuteSystem
     private readonly IGroup<GameEntity> botsGroup;
     private readonly IGroup<GameEntity> withCannonGroup;
     private readonly IGroup<GameEntity> withDamageGroup;
-    private const float zoneWarningDistance = 1.5f;
+    private const float zoneWarningDistance = 5f;
 
     public BotsMovingSystem(Contexts contexts)
     {
