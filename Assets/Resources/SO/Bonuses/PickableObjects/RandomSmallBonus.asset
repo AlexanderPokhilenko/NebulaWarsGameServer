@@ -19,3 +19,5 @@ MonoBehaviour:
     probability: 1
   - currentObject: {fileID: 11400000, guid: 314b267102511da46aba027d3f02ae2b, type: 2}
     probability: 1
+  - currentObject: {fileID: 11400000, guid: df13bfd4ae0925840972fa76e822df8e, type: 2}
+    probability: 1

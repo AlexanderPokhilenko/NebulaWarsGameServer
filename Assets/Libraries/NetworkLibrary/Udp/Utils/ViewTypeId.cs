@@ -28,5 +28,6 @@
     BirdPlayer,
     SpiderBotCocoonMissile,
     SpiderBot,
-    SmallRepairBonus
+    SmallRepairBonus,
+    SmallUpgradeBonus
 }
