@@ -51,6 +51,9 @@ namespace Server.GameEngine
                     .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new BonusesInitSystem(Contexts))
+#else
+                    .Add(new MapInitSystem(Contexts, roomData))
+#endif
                     
                     .Add(new TestEndMatchSystem2(Contexts))
                     
@@ -78,8 +81,6 @@ namespace Server.GameEngine
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
-        
-        
         
         public void Execute()
         {

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75435134f9856f246b51f6f3cc74186d, type: 3}
+  m_Name: ScarabBoss
+  m_EditorClassIdentifier: 
+  typeId: 30
+  colliderInfo: {fileID: 11400000, guid: 20d16111f734c6546b8a2f6ca3b94846, type: 2}
+  mass: 1000
+  cannonInfo: {fileID: 11400000, guid: 3217ab898519d2741bd2eeb4a5732998, type: 2}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
+  drop: {fileID: 11400000, guid: df13bfd4ae0925840972fa76e822df8e, type: 2}
+  parts:
+  - baseObject: {fileID: 11400000, guid: 2dd4d877d101c3c4ab8b4aa1aa7da0ce, type: 2}
+    position: {x: 0.4, y: 0.8}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: 2dd4d877d101c3c4ab8b4aa1aa7da0ce, type: 2}
+    position: {x: 0.4, y: -0.8}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  maxVelocity: 2
+  maxAngularVelocity: 45
+  isNotDecelerating: 0
+  maxHealthPoints: 500
+  detectionRadius: 10
+  useAngularTargeting: 1
+  onlyPlayerTargeting: 1
+  targetChanging: 1
+  distance: 2
+  isParasite: 0

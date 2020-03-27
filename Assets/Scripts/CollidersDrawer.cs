@@ -15,6 +15,7 @@ public sealed class CollidersDrawer : MonoBehaviour
     [SerializeField] private bool drawTargetingRadius = true;
     [SerializeField] private bool drawTargetLines = true;
     [SerializeField] private bool drawAuras = true;
+    [SerializeField] private bool drawTargetMovingPoints = true;
     [SerializeField] private bool changeContext = true;
     [SerializeField, Min(0)] private int contextIndex = 0;
 
@@ -162,6 +163,13 @@ public sealed class CollidersDrawer : MonoBehaviour
              {
                  Gizmos.color = Color.blue;
                  Gizmos.DrawWireSphere(position, e.circleCollider.radius + e.aura.outerRadius);
+             }
+
+             if (drawTargetMovingPoints && e.hasTargetMovingPoint)
+             {
+                 Gizmos.color = Color.black;
+                 var movingPosition = e.targetMovingPoint.position;
+                 Gizmos.DrawLine(position, movingPosition);
              }
          }
     }

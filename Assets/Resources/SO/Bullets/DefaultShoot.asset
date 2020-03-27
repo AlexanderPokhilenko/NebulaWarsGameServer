@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 18
   colliderInfo: {fileID: 11400000, guid: 0dfb688b16443e542b992befb48006a8, type: 2}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 1
   collisionDamage: 5
+  drop: {fileID: 0}
   parts: []
   maxVelocity: 7
   maxAngularVelocity: 0
   isNotDecelerating: 1
   isCollapses: 1
-  lifetime: 4
+  lifetime: 1.5
   detachable: 1
   parentDependent: 0

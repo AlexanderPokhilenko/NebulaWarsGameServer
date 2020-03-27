@@ -9,22 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a7b70f268384f145b23befb2a68a0b7, type: 3}
-  m_Name: Plasma
+  m_Script: {fileID: 11500000, guid: 30739526a2f82dc468dbd7be5fc99c0e, type: 3}
+  m_Name: SmallUpgradeBonus
   m_EditorClassIdentifier: 
-  typeId: 13
-  colliderInfo: {fileID: 11400000, guid: 554609605a85edf46ae628d7d1f86eab, type: 2}
+  typeId: 29
+  colliderInfo: {fileID: 11400000, guid: 8531e2a5ed2a9db4b9796b97021cd0b8, type: 2}
   mass: 0
   cannonInfo: {fileID: 0}
-  isUnmovable: 0
+  isUnmovable: 1
   isPassingThrough: 1
-  collisionDamage: 10
+  collisionDamage: 0
   drop: {fileID: 0}
   parts: []
-  maxVelocity: 5
-  maxAngularVelocity: 0
-  isNotDecelerating: 1
-  isCollapses: 1
-  lifetime: 2
-  detachable: 1
-  parentDependent: 0
+  percentage: 0.1
