@@ -4,6 +4,6 @@ namespace Server.GameEngine
 {
     public static class GameSessionGlobals
     {
-        public static readonly TimeSpan GameDuration = new TimeSpan(0,5,5);
+        public static readonly TimeSpan GameDuration = new TimeSpan(0,15,5);
     }
 }

@@ -45,33 +45,34 @@ public static class GameComponentsLookup {
     public const int MaxAngularVelocity = 34;
     public const int MaxHealthPoints = 35;
     public const int MaxVelocity = 36;
-    public const int NoncollinearAxises = 37;
-    public const int NonstandardRadius = 38;
-    public const int NotDecelerating = 39;
-    public const int Owner = 40;
-    public const int Parasite = 41;
-    public const int Parent = 42;
-    public const int ParentDependent = 43;
-    public const int ParentFixed = 44;
-    public const int PassingThrough = 45;
-    public const int PathCollider = 46;
-    public const int Player = 47;
-    public const int Position = 48;
-    public const int RectangleCollider = 49;
-    public const int Round = 50;
-    public const int SingleTargeting = 51;
-    public const int TargetChanging = 52;
-    public const int Target = 53;
-    public const int TargetingParameters = 54;
-    public const int TargetMovingPoint = 55;
-    public const int TargetScaling = 56;
-    public const int TryingToShoot = 57;
-    public const int Unmovable = 58;
-    public const int Velocity = 59;
-    public const int ViewType = 60;
-    public const int Zone = 61;
+    public const int MovementFrames = 37;
+    public const int NoncollinearAxises = 38;
+    public const int NonstandardRadius = 39;
+    public const int NotDecelerating = 40;
+    public const int Owner = 41;
+    public const int Parasite = 42;
+    public const int Parent = 43;
+    public const int ParentDependent = 44;
+    public const int ParentFixed = 45;
+    public const int PassingThrough = 46;
+    public const int PathCollider = 47;
+    public const int Player = 48;
+    public const int Position = 49;
+    public const int RectangleCollider = 50;
+    public const int Round = 51;
+    public const int SingleTargeting = 52;
+    public const int TargetChanging = 53;
+    public const int Target = 54;
+    public const int TargetingParameters = 55;
+    public const int TargetMovingPoint = 56;
+    public const int TargetScaling = 57;
+    public const int TryingToShoot = 58;
+    public const int Unmovable = 59;
+    public const int Velocity = 60;
+    public const int ViewType = 61;
+    public const int Zone = 62;
 
-    public const int TotalComponents = 62;
+    public const int TotalComponents = 63;
 
     public static readonly string[] componentNames = {
         "ActionBonus",
@@ -111,6 +112,7 @@ public static class GameComponentsLookup {
         "MaxAngularVelocity",
         "MaxHealthPoints",
         "MaxVelocity",
+        "MovementFrames",
         "NoncollinearAxises",
         "NonstandardRadius",
         "NotDecelerating",
@@ -176,6 +178,7 @@ public static class GameComponentsLookup {
         typeof(MaxAngularVelocityComponent),
         typeof(MaxHealthPointsComponent),
         typeof(MaxVelocityComponent),
+        typeof(MovementFramesComponent),
         typeof(NoncollinearAxisesComponent),
         typeof(NonstandardRadiusComponent),
         typeof(NotDeceleratingComponent),
