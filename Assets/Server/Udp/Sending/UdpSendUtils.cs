@@ -101,12 +101,14 @@ namespace Server.Udp.Sending
         {
             var address = GetPlayerIpAddress(playerId);
             ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage();
-            
-            Log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
-            var serializedMessage =
-                MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
-            ByteArrayRudpStorage.Instance.AddMessage(playerId,  messageId, serializedMessage);
-            NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            if (address != null)
+            {
+                Log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
+                ByteArrayRudpStorage.Instance.AddMessage(playerId,  messageId, serializedMessage);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);    
+            }
         }
 
         private static IPEndPoint GetPlayerIpAddress(int playerId)

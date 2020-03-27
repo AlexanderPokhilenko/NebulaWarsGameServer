@@ -68,7 +68,7 @@ namespace Server.GameEngine
                 NotifyPlayers(playersIds);
                 ClearPlayers(playersIds);
                 battles.TryRemove(battleNumber, out _);
-                MetaServerBattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
+                BattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
             }
         }
 

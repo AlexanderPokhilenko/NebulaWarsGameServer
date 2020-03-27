@@ -43,7 +43,7 @@
         </member>
         <member name="P:Entitas.Entity.isEnabled">
             The context manages the state of an entity.
-            Active entities are enabled, destroyed entities are not.
+            Active killedEntities are enabled, destroyed killedEntities are not.
         </member>
         <member name="P:Entitas.Entity.componentPools">
             componentPools is set by the context which created the entity and
@@ -61,7 +61,7 @@
         </member>
         <member name="P:Entitas.Entity.aerc">
             Automatic Entity Reference Counting (AERC)
-            is used internally to prevent pooling retained entities.
+            is used internally to prevent pooling retained killedEntities.
             If you use retain manually you also have to
             release it manually at some point.
         </member>
@@ -133,7 +133,7 @@
         <member name="M:Entitas.Entity.Retain(System.Object)">
             Retains the entity. An owner can only retain the same entity once.
             Retain/Release is part of AERC (Automatic Entity Reference Counting)
-            and is used internally to prevent pooling retained entities.
+            and is used internally to prevent pooling retained killedEntities.
             If you use retain manually you also have to
             release it manually at some point.
         </member>
@@ -141,7 +141,7 @@
             Releases the entity. An owner can only release an entity
             if it retains it.
             Retain/Release is part of AERC (Automatic Entity Reference Counting)
-            and is used internally to prevent pooling retained entities.
+            and is used internally to prevent pooling retained killedEntities.
             If you use retain manually you also have to
             release it manually at some point.
         </member>
@@ -151,12 +151,12 @@
             Entity_{creationIndex}(*{retainCount})({list of components})
         </member>
         <member name="T:Entitas.Group`1">
-            Use context.GetGroup(matcher) to get a group of entities which match
+            Use context.GetGroup(matcher) to get a group of killedEntities which match
             the specified matcher. Calling context.GetGroup(matcher) with the
             same matcher will always return the same instance of the group.
             The created group is managed by the context and will always be up to date.
-            It will automatically add entities that match the matcher or
-            remove entities as soon as they don't match the matcher anymore.
+            It will automatically add killedEntities that match the matcher or
+            remove killedEntities as soon as they don't match the matcher anymore.
         </member>
         <member name="E:Entitas.Group`1.OnEntityAdded">
             Occurs when an entity gets added.
@@ -168,13 +168,13 @@
             Occurs when a component of an entity in the group gets replaced.
         </member>
         <member name="P:Entitas.Group`1.count">
-            Returns the number of entities in the group.
+            Returns the number of killedEntities in the group.
         </member>
         <member name="P:Entitas.Group`1.matcher">
             Returns the matcher which was used to create this group.
         </member>
         <member name="M:Entitas.Group`1.#ctor(Entitas.IMatcher{`0})">
-            Use context.GetGroup(matcher) to get a group of entities which match
+            Use context.GetGroup(matcher) to get a group of killedEntities which match
             the specified matcher.
         </member>
         <member name="M:Entitas.Group`1.HandleEntitySilently(`0)">
@@ -195,10 +195,10 @@
             Determines whether this group has the specified entity.
         </member>
         <member name="M:Entitas.Group`1.GetEntities">
-            Returns all entities which are currently in this group.
+            Returns all killedEntities which are currently in this group.
         </member>
         <member name="M:Entitas.Group`1.GetEntities(System.Collections.Generic.List{`0})">
-            Fills the buffer with all entities which are currently in this group.
+            Fills the buffer with all killedEntities which are currently in this group.
         </member>
         <member name="M:Entitas.Group`1.GetSingleEntity">
             Returns the only entity in this group. It will return null
@@ -206,8 +206,8 @@
             has more than one entity.
         </member>
         <member name="T:Entitas.Context`1">
-            A context manages the lifecycle of entities and groups.
-            You can create and destroy entities and get groups of entities.
+            A context manages the lifecycle of killedEntities and groups.
+            You can create and destroy killedEntities and get groups of killedEntities.
             The prefered way to create a context is to use the generated methods
             from the code generator, e.g. var context = new GameContext();
         </member>
@@ -240,14 +240,14 @@
             It's used to provide better error messageWrappers.
         </member>
         <member name="P:Entitas.Context`1.count">
-            Returns the number of entities in the context.
+            Returns the number of killedEntities in the context.
         </member>
         <member name="P:Entitas.Context`1.reusableEntitiesCount">
-            Returns the number of entities in the internal ObjectPool
-            for entities which can be reused.
+            Returns the number of killedEntities in the internal ObjectPool
+            for killedEntities which can be reused.
         </member>
         <member name="P:Entitas.Context`1.retainedEntitiesCount">
-            Returns the number of entities that are currently retained by
+            Returns the number of killedEntities that are currently retained by
             other objects (e.g. Group, Collector, ReactiveSystem).
         </member>
         <member name="M:Entitas.Context`1.#ctor(System.Int32,System.Func{`0})">
@@ -260,17 +260,17 @@
         </member>
         <member name="M:Entitas.Context`1.CreateEntity">
             Creates a new entity or gets a reusable entity from the
-            internal ObjectPool for entities.
+            internal ObjectPool for killedEntities.
         </member>
         <member name="M:Entitas.Context`1.DestroyAllEntities">
-            Destroys all entities in the context.
-            Throws an exception if there are still retained entities.
+            Destroys all killedEntities in the context.
+            Throws an exception if there are still retained killedEntities.
         </member>
         <member name="M:Entitas.Context`1.HasEntity(`0)">
             Determines whether the context has the specified entity.
         </member>
         <member name="M:Entitas.Context`1.GetEntities">
-            Returns all entities which are currently in the context.
+            Returns all killedEntities which are currently in the context.
         </member>
         <member name="M:Entitas.Context`1.GetGroup(Entitas.IMatcher{`0})">
             Returns a group for the specified matcher.
@@ -294,7 +294,7 @@
             Clears all componentPools.
         </member>
         <member name="M:Entitas.Context`1.Reset">
-            Resets the context (destroys all entities and
+            Resets the context (destroys all killedEntities and
             resets creationIndex back to 0).
         </member>
         <member name="M:Entitas.Context`1.RemoveAllEventHandlers">
@@ -303,7 +303,7 @@
             OnEntityDestroyed and OnGroupCreated
         </member>
         <member name="T:Entitas.JobSystem`1">
-            A JobSystem calls Execute(entities) with subsets of entities
+            A JobSystem calls Execute(killedEntities) with subsets of killedEntities
             and distributes the workload over the specified amount of threads.
             Don't use the generated methods like AddXyz() and ReplaceXyz() when
             writing multi-threaded code in Entitas.
@@ -350,8 +350,8 @@
             Clears all ReactiveSystems in the systems list.
         </member>
         <member name="T:Entitas.ReactiveSystem`1">
-            A ReactiveSystem calls Execute(entities) if there were changes based on
-            the specified Collector and will only pass in changed entities.
+            A ReactiveSystem calls Execute(killedEntities) if there were changes based on
+            the specified Collector and will only pass in changed killedEntities.
             A common use-case is to react to changes, e.g. a change of the position
             of an entity to update the gameObject.transform.position
             of the related gameObject.
@@ -360,7 +360,7 @@
             Specify the collector that will trigger the ReactiveSystem.
         </member>
         <member name="M:Entitas.ReactiveSystem`1.Filter(`0)">
-            This will exclude all entities which don't pass the filter.
+            This will exclude all killedEntities which don't pass the filter.
         </member>
         <member name="M:Entitas.ReactiveSystem`1.Activate">
             Activates the ReactiveSystem and starts observing changes
@@ -377,11 +377,11 @@
             Clears all accumulated changes.
         </member>
         <member name="M:Entitas.ReactiveSystem`1.Execute">
-            Will call Execute(entities) with changed entities
-            if there are any. Otherwise it will not call Execute(entities).
+            Will call Execute(killedEntities) with changed killedEntities
+            if there are any. Otherwise it will not call Execute(killedEntities).
         </member>
         <member name="M:Entitas.ContextExtension.GetEntities``1(Entitas.IContext{``0},Entitas.IMatcher{``0})">
-            Returns all entities matching the specified matcher.
+            Returns all killedEntities matching the specified matcher.
         </member>
         <member name="M:Entitas.ContextExtension.CloneEntity``1(Entitas.IContext{``0},Entitas.IEntity,System.Boolean,System.Int32[])">
             Creates a new entity and adds copies of all
@@ -393,40 +393,40 @@
         </member>
         <member name="T:Entitas.Collector`1">
             A Collector can observe one or more groups from the same context
-            and collects changed entities based on the specified groupEvent.
+            and collects changed killedEntities based on the specified groupEvent.
         </member>
         <member name="P:Entitas.Collector`1.collectedEntities">
-            Returns all collected entities.
+            Returns all collected killedEntities.
             Call collector.ClearCollectedEntities()
-            once you processed all entities.
+            once you processed all killedEntities.
         </member>
         <member name="P:Entitas.Collector`1.count">
-            Returns the number of all collected entities.
+            Returns the number of all collected killedEntities.
         </member>
         <member name="M:Entitas.Collector`1.#ctor(Entitas.IGroup{`0},Entitas.GroupEvent)">
-            Creates a Collector and will collect changed entities
+            Creates a Collector and will collect changed killedEntities
             based on the specified groupEvent.
         </member>
         <member name="M:Entitas.Collector`1.#ctor(Entitas.IGroup{`0}[],Entitas.GroupEvent[])">
-            Creates a Collector and will collect changed entities
+            Creates a Collector and will collect changed killedEntities
             based on the specified groupEvents.
         </member>
         <member name="M:Entitas.Collector`1.Activate">
             Activates the Collector and will start collecting
-            changed entities. Collectors are activated by default.
+            changed killedEntities. Collectors are activated by default.
         </member>
         <member name="M:Entitas.Collector`1.Deactivate">
             Deactivates the Collector.
-            This will also clear all collected entities.
+            This will also clear all collected killedEntities.
             Collectors are activated by default.
         </member>
         <member name="M:Entitas.Collector`1.GetCollectedEntities``1">
-            Returns all collected entities and casts them.
+            Returns all collected killedEntities and casts them.
             Call collector.ClearCollectedEntities()
-            once you processed all entities.
+            once you processed all killedEntities.
         </member>
         <member name="M:Entitas.Collector`1.ClearCollectedEntities">
-            Clears all collected entities.
+            Clears all collected killedEntities.
         </member>
         <member name="M:Entitas.CollectionExtension.SingleEntity(System.Collections.Generic.ICollection{Entitas.IEntity})">
             Returns the only entity in the collection.
@@ -444,7 +444,7 @@
         </member>
         <member name="T:Entitas.UnsafeAERC">
             Automatic Entity Reference Counting (AERC)
-            is used internally to prevent pooling retained entities.
+            is used internally to prevent pooling retained killedEntities.
             If you use retain manually you also have to
             release it manually at some point.
             UnsafeAERC doesn't check if the entity has already been
@@ -453,7 +453,7 @@
         </member>
         <member name="T:Entitas.SafeAERC">
             Automatic Entity Reference Counting (AERC)
-            is used internally to prevent pooling retained entities.
+            is used internally to prevent pooling retained killedEntities.
             If you use retain manually you also have to
             release it manually at some point.
             SafeAERC checks if the entity has already been
@@ -504,8 +504,8 @@
             Creates a Collector.
         </member>
         <member name="T:Entitas.MultiReactiveSystem`2">
-            A ReactiveSystem calls Execute(entities) if there were changes based on
-            the specified Collector and will only pass in changed entities.
+            A ReactiveSystem calls Execute(killedEntities) if there were changes based on
+            the specified Collector and will only pass in changed killedEntities.
             A common use-case is to react to changes, e.g. a change of the position
             of an entity to update the gameObject.transform.position
             of the related gameObject.
@@ -514,7 +514,7 @@
             Specify the collector that will trigger the ReactiveSystem.
         </member>
         <member name="M:Entitas.MultiReactiveSystem`2.Filter(`0)">
-            This will exclude all entities which don't pass the filter.
+            This will exclude all killedEntities which don't pass the filter.
         </member>
         <member name="M:Entitas.MultiReactiveSystem`2.Activate">
             Activates the ReactiveSystem and starts observing changes
@@ -531,8 +531,8 @@
             Clears all accumulated changes.
         </member>
         <member name="M:Entitas.MultiReactiveSystem`2.Execute">
-            Will call Execute(entities) with changed entities
-            if there are any. Otherwise it will not call Execute(entities).
+            Will call Execute(killedEntities) with changed killedEntities
+            if there are any. Otherwise it will not call Execute(killedEntities).
         </member>
     </members>
 </doc>

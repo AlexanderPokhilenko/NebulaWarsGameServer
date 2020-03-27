@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Threading;
+﻿using System.Threading;
 using Server.GameEngine;
 using Server.Http;
 using Server.Udp;
@@ -16,7 +15,9 @@ namespace Server
         {
             StartGameMatcherListenerThread(HttpPort);
             StartPlayersListenerThread(UdpPort);
-            StartGameRoomDeletingNotifierThread();
+            
+            BattleDeletingNotifier.StartThread();
+            PlayerDeathNotifier.StartThread();
             
             GameEngineMediator gameEngineMediator = new GameEngineMediator();
             gameEngineMediator.StartEndlessLoop();
@@ -36,11 +37,6 @@ namespace Server
             udpBattleConnection
                 .SetUpConnection(port)
                 .StartReceiveThread();
-        }
-
-        private static void StartGameRoomDeletingNotifierThread()
-        {
-            new Thread(() => new MetaServerBattleDeletingNotifier().StartEndlessLoop().Wait()).Start();
         }
     }
 }

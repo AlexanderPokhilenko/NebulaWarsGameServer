@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using DefaultNamespace;
 using log4net;
@@ -10,35 +11,36 @@ using UnityEngine;
 namespace Server.Http
 {
     /// <summary>
-    /// Отправляет гейм матчеру уведомления при окончании боя.
+    /// Отправляет матчеру уведомления при окончании боя.
     /// </summary>
-    public class MetaServerBattleDeletingNotifier
+    public static class BattleDeletingNotifier
     {
         public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MetaServerBattleDeletingNotifier));
-        public async Task StartEndlessLoop()
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BattleDeletingNotifier));
+
+        public static void StartThread()
+        {
+            Thread thread = new Thread(() => StartEndlessLoop().Wait());
+            thread.IsBackground = true;
+            thread.Start();
+        }
+        
+        private static async Task StartEndlessLoop()
         {
             while (true)
             {
-                TrySendDeleteMessages();
+                await TrySendDeleteMessages();
                 await Task.Delay(1000);
             }
             // ReSharper disable once FunctionNeverReturns
         }
 
-        private void TrySendDeleteMessages()
+        private static async Task TrySendDeleteMessages()
         {
-            List<Task> tasks = new List<Task>();
             while (!GameRoomIdsToDelete.IsEmpty)
             {
                 GameRoomIdsToDelete.TryDequeue(out int gameRoomId);
-                tasks.Add(SendMessageAboutGameOver(gameRoomId));
-            }
-
-            if (tasks.Count != 0)
-            {
-                Task t = Task.WhenAll(tasks);
-                t.Wait();                
+                await SendMessageAboutGameOver(gameRoomId);
             }
         }
 
@@ -49,6 +51,7 @@ namespace Server.Http
             await SendDelete(pathname, query);
         }
         
+        //TODO вынести отсюда далеко
         private static async Task SendDelete(string pathname, string query)
         {
             string url = Globals.GameMatcheUrl+pathname+query;
