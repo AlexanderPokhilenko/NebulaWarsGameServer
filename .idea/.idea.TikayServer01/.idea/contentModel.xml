@@ -120,6 +120,7 @@
               <e p="GameMatcherResponse.cs" t="Include" />
               <e p="GameRoomValidationResult.cs" t="Include" />
               <e p="GameUnit.cs" t="Include" />
+              <e p="GameUnitsEnum.cs" t="Include" />
               <e p="GameUnitsForMatch.cs" t="Include" />
               <e p="MatchType.cs" t="Include" />
               <e p="PlayerInfoForMatch.cs" t="Include" />
@@ -157,6 +158,9 @@
                 <e p="ViewTypeId.cs" t="Include" />
               </e>
             </e>
+          </e>
+          <e p="Unity_Releases_1.6.4" t="Include">
+            <e p="ZeroFormatterGenerated.cs" t="Include" />
           </e>
         </e>
         <e p="Logs" t="Include">

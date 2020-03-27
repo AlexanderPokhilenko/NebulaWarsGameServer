@@ -1,4 +1,6 @@
-﻿using System;
+﻿// #define USE_OLD_INIT_SYSTEMS
+
+using System;
 using System.Collections.Generic;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
@@ -53,7 +55,7 @@ namespace Server.GameEngine
                     .Add(new MapInitSystem(Contexts, matchData))
 #endif
                     
-                    .Add(new TestEndMatchSystem2(Contexts))
+                    // .Add(new TestEndMatchSystem2(Contexts))
                     
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))

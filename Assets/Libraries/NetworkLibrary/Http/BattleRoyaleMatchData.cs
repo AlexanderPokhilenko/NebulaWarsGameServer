@@ -1,4 +1,4 @@
-﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Http
 {
@@ -12,6 +12,5 @@ namespace NetworkLibrary.NetworkLibrary.Http
         [Index(1)] public virtual int GameServerPort{ get; set; }
         [Index(2)] public virtual int MatchId{ get; set; }
         [Index(3)] public virtual GameUnitsForMatch GameUnitsForMatch { get; set; }
-        
     }
 }

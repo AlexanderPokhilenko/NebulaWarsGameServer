@@ -45,7 +45,7 @@ namespace Server.GameEngine.Systems
             int startIndex = 0;
             int finishIndex = matchData.GameUnitsForMatch.Count() - 1;
             SpawnPlayersInACircle(matchData.GameUnitsForMatch, startIndex, finishIndex);
-            SpawnPlayer(matchData.GameUnitsForMatch[matchData.GameUnitsForMatch.Count()], 0, 0);
+            SpawnPlayer(matchData.GameUnitsForMatch[matchData.GameUnitsForMatch.Count()-1], 0, 0);
         }
 
         /// <summary>
@@ -62,7 +62,8 @@ namespace Server.GameEngine.Systems
                 var gameUnit = gameUnits[i];
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
-                var gameEntity = PlayerPrototypes[gameUnit.PrefabName]
+                //TODO костыль
+                var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle);
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
@@ -77,7 +78,7 @@ namespace Server.GameEngine.Systems
         
         private void SpawnPlayer(GameUnit playerInfo, int x, int y)
         {
-            var gameEntity = PlayerPrototypes[playerInfo.PrefabName]
+            var gameEntity = PlayerPrototypes[playerInfo.PrefabName.ToLower()]
                 .CreateEntity(gameContext, new Vector2(x, y), 180f);
             gameEntity.AddPlayer(playerInfo.TemporaryId);
         }

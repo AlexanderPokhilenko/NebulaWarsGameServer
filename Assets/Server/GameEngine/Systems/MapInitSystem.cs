@@ -63,7 +63,7 @@ namespace Server.GameEngine.Systems
         public void Initialize()
         {
             Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
-
+            
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
 
@@ -77,7 +77,7 @@ namespace Server.GameEngine.Systems
                 
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
-                var gameEntity = PlayerPrototypes[gameUnit.PrefabName]
+                var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle);
 
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
