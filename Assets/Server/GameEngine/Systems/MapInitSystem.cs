@@ -11,86 +11,78 @@ namespace Server.GameEngine.Systems
     public class MapInitSystem : IInitializeSystem
     {
         private readonly System.Random random = new System.Random();
-        private static readonly FlameCircleObject flameCircle;
-        private static readonly RandomObject randomAsteroid;
-        private static readonly BaseWithHealthObject spaceStation;
-        private static readonly RandomObject randomBonus;
-        private static readonly EntityCreatorObject boss;
-        private static readonly Dictionary<string, PlayerObject> playerPrototypes;
+        private static readonly FlameCircleObject FlameCircle;
+        private static readonly RandomObject RandomAsteroid;
+        private static readonly BaseWithHealthObject SpaceStation;
+        private static readonly RandomObject RandomBonus;
+        private static readonly EntityCreatorObject Boss;
+        private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private readonly GameContext gameContext;
-        private readonly GameRoomData roomData;
+        private readonly BattleRoyaleMatchData matchData;
         
         private static readonly ILog Log = LogManager.GetLogger(typeof(MapInitSystem));
 
         static MapInitSystem()
         {
-            playerPrototypes = new Dictionary<string, PlayerObject>
+            PlayerPrototypes = new Dictionary<string, PlayerObject>
             {
                 {"hare", Resources.Load<PlayerObject>("SO/Players/HarePlayer")},
                 {"bird", Resources.Load<PlayerObject>("SO/Players/BirdPlayer")}
             };
 
-            if (playerPrototypes.Any(a => a.Value == null))
+            if (PlayerPrototypes.Any(a => a.Value == null))
                 throw new Exception($"В {nameof(MapInitSystem)} playerPrototype был null.");
 
-            flameCircle = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
-            if (flameCircle == null)
+            FlameCircle = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
+            if (FlameCircle == null)
                 throw new Exception($"В {nameof(MapInitSystem)} flameCircle был null.");
 
-            randomAsteroid = Resources.Load<RandomObject>("SO/BaseObjects/RandomAsteroid");
-            if (randomAsteroid == null)
+            RandomAsteroid = Resources.Load<RandomObject>("SO/BaseObjects/RandomAsteroid");
+            if (RandomAsteroid == null)
                 throw new Exception($"В {nameof(MapInitSystem)} asteroid был null.");
 
-            spaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
-            if (spaceStation == null)
+            SpaceStation = Resources.Load<BaseWithHealthObject>("SO/BaseObjects/SpaceStation");
+            if (SpaceStation == null)
                 throw new Exception($"В {nameof(MapInitSystem)} spaceStation был null.");
 
-            randomBonus = Resources.Load<RandomObject>("SO/Bonuses/PickableObjects/RandomSmallBonus");
-            if (randomBonus == null)
+            RandomBonus = Resources.Load<RandomObject>("SO/Bonuses/PickableObjects/RandomSmallBonus");
+            if (RandomBonus == null)
                 throw new Exception($"В {nameof(MapInitSystem)} bonus был null.");
 
-            boss = Resources.Load<FighterObject>("SO/BaseObjects/ScarabBoss");
-            if (boss == null)
+            Boss = Resources.Load<FighterObject>("SO/BaseObjects/ScarabBoss");
+            if (Boss == null)
                 throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
         }
 
-        public MapInitSystem(Contexts contexts, GameRoomData roomData)
+        public MapInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
         {
             gameContext = contexts.game;
-            this.roomData = roomData;
+            this.matchData = matchData;
         }
         
         public void Initialize()
         {
-            Log.Info($"Создание игровой комнаты с номером {roomData.GameRoomNumber}");
-            foreach (var player in roomData.Players)
-            {
-                //TODO: вынести это в матчер
-                if (string.IsNullOrWhiteSpace(player.WarshipName))
-                {
-                    player.WarshipName = playerPrototypes.ElementAt(random.Next(playerPrototypes.Count)).Key;
-                    Log.Info($"Добавление боту {player.GoogleId} корабля {player.WarshipName}");
-                }
-            }
+            Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
 
-            var zoneEntity = flameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
+            var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
 
-            var step = 360f / roomData.Players.Length;
+            var step = 360f / matchData.GameUnitsForMatch.Count();
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
-            for (var i = 0; i < roomData.Players.Length; i++)
+            for (var i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
             {
-                PlayerInfoForGameRoom playerInfo = roomData.Players[i];
-
+                var gameUnit = matchData.GameUnitsForMatch[i];
+                
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
-                var gameEntity = playerPrototypes[playerInfo.WarshipName].CreateEntity(gameContext, position, 180f + angle);
+                var gameEntity = PlayerPrototypes[gameUnit.PrefabName]
+                    .CreateEntity(gameContext, position, 180f + angle);
 
-                gameEntity.AddPlayer(playerInfo.TemporaryId);
-#warning Нужно убрать костыльную проверку на бота
-                if (playerInfo.GoogleId.StartsWith("Bot_"))
+                gameEntity.AddPlayer(gameUnit.TemporaryId);
+
+                if (gameUnit.IsBot)
                 {
                     gameEntity.AddTargetingParameters(false, 13f, false);
                     gameEntity.isTargetChanging = true;
@@ -104,18 +96,18 @@ namespace Server.GameEngine.Systems
                 {
                     for (var j = r; j < r + 10; j++)
                     {
-                        randomAsteroid.CreateEntity(gameContext, wallDirection * j, (float)random.NextDouble() * 360f);
+                        RandomAsteroid.CreateEntity(gameContext, wallDirection * j, (float)random.NextDouble() * 360f);
                     }
                 }
 
-                spaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle);
-                spaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle);
-                spaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle);
 
-                randomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
+                RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
 
-            boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f).isBot = true;
+            Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f).isBot = true;
         }
     }
 }

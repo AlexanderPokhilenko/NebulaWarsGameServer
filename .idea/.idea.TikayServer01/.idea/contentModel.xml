@@ -115,12 +115,15 @@
           <e p="NetworkLibrary" t="Include">
             <e p="Http" t="Include">
               <e p="AccountInfo.cs" t="Include" />
+              <e p="BattleRoyaleMatchData.cs" t="Include" />
+              <e p="BotInfo.cs" t="Include" />
               <e p="GameMatcherResponse.cs" t="Include" />
-              <e p="GameRoomData.cs" t="Include" />
               <e p="GameRoomValidationResult.cs" t="Include" />
+              <e p="GameUnit.cs" t="Include" />
+              <e p="GameUnitsForMatch.cs" t="Include" />
               <e p="MatchType.cs" t="Include" />
-              <e p="PlayerInfoForGameRoom.cs" t="Include" />
-              <e p="WarshipInfo.cs" t="Include" />
+              <e p="PlayerInfoForMatch.cs" t="Include" />
+              <e p="WarshipCopy.cs" t="Include" />
             </e>
             <e p="Udp" t="Include">
               <e p="Common" t="Include">
@@ -155,9 +158,6 @@
               </e>
             </e>
           </e>
-          <e p="Unity_Releases_1.6.4" t="Include">
-            <e p="ZeroFormatterGenerated.cs" t="Include" />
-          </e>
         </e>
         <e p="Logs" t="Include">
           <e p="LoggingConfiguration.cs" t="Include" />
@@ -184,6 +184,7 @@
                 <e p="ActionBonusObject.cs" t="Include" />
                 <e p="BonusAdderObject.cs" t="Include" />
                 <e p="RepairBonusObject.cs" t="Include" />
+                <e p="UpgradeBonusObject.cs" t="Include" />
               </e>
               <e p="BulletObject.cs" t="Include" />
               <e p="EntityCreatorObject.cs" t="Include" />
@@ -224,6 +225,7 @@
               <e p="FinishBattleSystem.cs" t="Include" />
               <e p="GameDeletingSystem.cs" t="Include" />
               <e p="InputDeletingSystem.cs" t="Include" />
+              <e p="MapInitSystem.cs" t="Include" />
               <e p="MaxHpUpdaterSystem.cs" t="Include" />
               <e p="NetworkKillsSenderSystem.cs" t="Include" />
               <e p="NetworkSenderSystem.cs" t="Include" />

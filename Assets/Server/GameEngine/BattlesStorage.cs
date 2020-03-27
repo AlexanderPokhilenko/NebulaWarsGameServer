@@ -11,8 +11,8 @@ namespace Server.GameEngine
 {
     public class BattlesStorage
     {
-        //В эту очередь элементы кладутся послу получения http от гейм матчера
-        public readonly ConcurrentQueue<GameRoomData> battlesToCreate;
+        //В эту очередь элементы кладутся после получения http от гейм матчера
+        public readonly ConcurrentQueue<BattleRoyaleMatchData> battlesToCreate;
         
         //текущие бои
         public readonly ConcurrentDictionary<int, Battle> battles;
@@ -26,7 +26,7 @@ namespace Server.GameEngine
         
         public BattlesStorage()
         {
-            battlesToCreate = new ConcurrentQueue<GameRoomData>();
+            battlesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
             finishedBattles = new Queue<int>();
             battles= new ConcurrentDictionary<int, Battle>();
             playerToBattle = new Dictionary<int, Battle>();
@@ -42,12 +42,12 @@ namespace Server.GameEngine
         {
             while (!battlesToCreate.IsEmpty)
             {
-                if (battlesToCreate.TryDequeue(out var gameRoomData))
+                if (battlesToCreate.TryDequeue(out var matchData))
                 {
                     Battle battle = new Battle(this);
-                    battle.ConfigureSystems(gameRoomData);
-                    battles.TryAdd(gameRoomData.GameRoomNumber, battle);
-                    foreach (var player in gameRoomData.Players)
+                    battle.ConfigureSystems(matchData);
+                    battles.TryAdd(matchData.MatchId, battle);
+                    foreach (var player in matchData.GameUnitsForMatch.Players)
                     {
                         playerToBattle.Add(player.TemporaryId, battle);
                     }
@@ -64,7 +64,7 @@ namespace Server.GameEngine
                 int battleNumber = finishedBattles.Dequeue();
                 Battle battle = battles[battleNumber];
                 battle.TearDown();
-                int[] playersIds = battle.RoomData.Players.Select(player => player.TemporaryId).ToArray();
+                int[] playersIds = battle.matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId).ToArray();
                 NotifyPlayers(playersIds);
                 ClearPlayers(playersIds);
                 battles.TryRemove(battleNumber, out _);

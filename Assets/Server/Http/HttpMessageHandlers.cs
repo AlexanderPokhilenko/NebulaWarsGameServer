@@ -1,4 +1,5 @@
-﻿using NetworkLibrary.NetworkLibrary.Http;
+﻿using System;
+using NetworkLibrary.NetworkLibrary.Http;
 
 namespace Server.Http
 {
@@ -6,9 +7,22 @@ namespace Server.Http
     {
         private readonly BattleCreator battleCreator=new BattleCreator();
 
-        public GameRoomValidationResult Handle(GameRoomData roomData)
+        public GameRoomValidationResult Handle(BattleRoyaleMatchData matchData)
         {
-            return battleCreator.Handle(roomData);
+            CheckMatchData(matchData);
+            return battleCreator.Handle(matchData);
+        }
+
+        private void CheckMatchData(BattleRoyaleMatchData matchData)
+        {
+            for (int i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
+            {
+                var gameUnit = matchData.GameUnitsForMatch[i];
+                if (string.IsNullOrWhiteSpace(gameUnit.PrefabName))
+                {
+                    throw new ArgumentException(nameof(gameUnit.PrefabName));
+                }
+            }
         }
     }
 }

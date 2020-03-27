@@ -85,8 +85,8 @@ namespace Server.Http
 
         private GameRoomValidationResult HandleBytes(byte[] data)
         {
-            GameRoomData roomData = ZeroFormatterSerializer.Deserialize<GameRoomData>(data);
-            return messageHandlers.Handle(roomData);
+            BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
+            return messageHandlers.Handle(matchData);
         }
     }
 }

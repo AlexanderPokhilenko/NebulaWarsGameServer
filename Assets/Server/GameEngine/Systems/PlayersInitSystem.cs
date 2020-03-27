@@ -14,51 +14,44 @@ namespace Server.GameEngine.Systems
     public class PlayersInitSystem:IInitializeSystem
     {
         private readonly System.Random random = new System.Random();
-        private static readonly Dictionary<string, PlayerObject> playerPrototypes;
+        private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private readonly GameContext gameContext;
-        private readonly GameRoomData roomData;
+        private readonly BattleRoyaleMatchData matchData;
         private const float Radius = 40f;
         
         private static readonly ILog Log = LogManager.GetLogger(typeof(PlayersInitSystem));
 
         static PlayersInitSystem()
         {
-            playerPrototypes = new Dictionary<string, PlayerObject>
+            PlayerPrototypes = new Dictionary<string, PlayerObject>
             {
                 {"hare", Resources.Load<PlayerObject>("SO/Players/HarePlayer")},
                 {"bird", Resources.Load<PlayerObject>("SO/Players/BirdPlayer")}
             };
 
-            if (playerPrototypes.Any(a => a.Value == null))
+            if (PlayerPrototypes.Any(a => a.Value == null))
                 throw new Exception($"В {nameof(PlayersInitSystem)} asset был null.");
         }
 
-        public PlayersInitSystem(Contexts contexts, GameRoomData roomData)
+        public PlayersInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
         {
             gameContext = contexts.game;
-            this.roomData = roomData;
+            this.matchData = matchData;
         }
         
         public void Initialize()
         {
-            Log.Info($"Создание игроков для игровой комнаты с номером {roomData.GameRoomNumber}");
-            foreach (var player in roomData.Players)
-            {
-                //TODO: вынести это в матчер
-                if (string.IsNullOrWhiteSpace(player.WarshipName))
-                {
-                    player.WarshipName = playerPrototypes.ElementAt(random.Next(playerPrototypes.Count)).Key;
-                    Log.Info($"Добавление боту {player.GoogleId} корабля {player.WarshipName}");
-                }
-            }
-            SpawnPlayersInACircle(roomData.Players, 0, roomData.Players.Length - 1);
-            SpawnPlayer(roomData.Players.Last(), 0, 0);
+            Log.Info($"Создание игроков для игровой комнаты с номером {matchData.MatchId}");
+            int startIndex = 0;
+            int finishIndex = matchData.GameUnitsForMatch.Count() - 1;
+            SpawnPlayersInACircle(matchData.GameUnitsForMatch, startIndex, finishIndex);
+            SpawnPlayer(matchData.GameUnitsForMatch[matchData.GameUnitsForMatch.Count()], 0, 0);
         }
 
         /// <summary>
         /// Стартовый индекс включается в промежуток. Последний индекс не входит в промежуток.
         /// </summary>
-        private void SpawnPlayersInACircle(PlayerInfoForGameRoom[] players, int startIndex, int finishIndex)
+        private void SpawnPlayersInACircle(GameUnitsForMatch gameUnits, int startIndex, int finishIndex)
         {
             int numberOfPlayersInACircle = finishIndex;
             var step = 360f / numberOfPlayersInACircle;
@@ -66,15 +59,14 @@ namespace Server.GameEngine.Systems
 
             for (var i = startIndex; i < numberOfPlayersInACircle; i++)
             {
-                PlayerInfoForGameRoom playerInfo = players[i];
-
+                var gameUnit = gameUnits[i];
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
-                var gameEntity = playerPrototypes[playerInfo.WarshipName].CreateEntity(gameContext, position, 180f + angle);
+                var gameEntity = PlayerPrototypes[gameUnit.PrefabName]
+                    .CreateEntity(gameContext, position, 180f + angle);
+                gameEntity.AddPlayer(gameUnit.TemporaryId);
 
-                gameEntity.AddPlayer(playerInfo.TemporaryId);
-#warning Нужно убрать костыльную проверку на бота
-                if (playerInfo.GoogleId.StartsWith("Bot_"))
+                if (gameUnit.IsBot)
                 {
                     gameEntity.AddTargetingParameters(false, 7.5f, false);
                     gameEntity.isTargetChanging = true;
@@ -83,9 +75,10 @@ namespace Server.GameEngine.Systems
             }
         }
         
-        private void SpawnPlayer(PlayerInfoForGameRoom playerInfo, int x, int y)
+        private void SpawnPlayer(GameUnit playerInfo, int x, int y)
         {
-            var gameEntity = playerPrototypes[playerInfo.WarshipName].CreateEntity(gameContext, new Vector2(x, y), 180f);
+            var gameEntity = PlayerPrototypes[playerInfo.PrefabName]
+                .CreateEntity(gameContext, new Vector2(x, y), 180f);
             gameEntity.AddPlayer(playerInfo.TemporaryId);
         }
     }

@@ -11,7 +11,7 @@ namespace Server.GameEngine
     {
         private Entitas.Systems systems;
         public Contexts Contexts { get; private set; }
-        public GameRoomData RoomData { get; private set; }
+        public BattleRoyaleMatchData matchData { get; private set; }
         private DateTime? gameStartTime;
 
         private readonly BattlesStorage gameSessionsStorage;
@@ -31,11 +31,11 @@ namespace Server.GameEngine
             zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
-        public void ConfigureSystems(GameRoomData roomData)
+        public void ConfigureSystems(BattleRoyaleMatchData matchData)
         {
-            Log.Info("Создание новой комнаты номер = "+roomData.GameRoomNumber);
+            Log.Info("Создание новой комнаты номер = "+matchData.MatchId);
 
-            RoomData = roomData;
+            this.matchData = matchData;
             Contexts = ContextsPool.GetContexts();
             Contexts.SubscribeId();
 #if UNITY_EDITOR
@@ -45,12 +45,12 @@ namespace Server.GameEngine
             systems = new Entitas.Systems()
 #if USE_OLD_INIT_SYSTEMS
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
-                    .Add(new PlayersInitSystem(Contexts, roomData))
+                    .Add(new PlayersInitSystem(Contexts, matchData))
                     .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new BonusesInitSystem(Contexts))
 #else
-                    .Add(new MapInitSystem(Contexts, roomData))
+                    .Add(new MapInitSystem(Contexts, matchData))
 #endif
                     
                     .Add(new TestEndMatchSystem2(Contexts))
@@ -117,7 +117,7 @@ namespace Server.GameEngine
         public void FinishGame()
         {
             GameOver = true;
-            gameSessionsStorage.MarkBattleAsFinished(RoomData.GameRoomNumber);
+            gameSessionsStorage.MarkBattleAsFinished(matchData.MatchId);
         }
     }
 }

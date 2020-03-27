@@ -4,7 +4,6 @@ using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine;
 
-
 namespace Server.Http
 {
     /// <summary>
@@ -14,7 +13,7 @@ namespace Server.Http
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(BattleCreator));
         
-        public GameRoomValidationResult Handle(GameRoomData roomData)
+        public GameRoomValidationResult Handle(BattleRoyaleMatchData roomData)
         {
             GameRoomValidationResult result = CheckRoom(roomData);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
@@ -29,7 +28,7 @@ namespace Server.Http
             return result;
         }
         
-        private GameRoomValidationResult CheckRoom(GameRoomData roomData)
+        private GameRoomValidationResult CheckRoom(BattleRoyaleMatchData roomData)
         {
             DebugLogGameRoom(roomData);
             
@@ -39,13 +38,13 @@ namespace Server.Http
             return result;
         }
 
-        private bool CheckPlayers(GameRoomData roomData)
+        private bool CheckPlayers(BattleRoyaleMatchData matchData)
         {
             if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
 
             bool thereIsNoRoomWithSuchPlayers = true;
-            foreach (var playerId in roomData.Players.Select(player => player.TemporaryId))
+            foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
                 if (GameEngineMediator.BattlesStorage.playerToBattle.ContainsKey(playerId))
                 {
@@ -56,12 +55,12 @@ namespace Server.Http
             return thereIsNoRoomWithSuchPlayers;
         }
 
-        private bool CheckRoomNumber(GameRoomData roomData)
+        private bool CheckRoomNumber(BattleRoyaleMatchData matchData)
         {
             if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
-            return !GameEngineMediator.BattlesStorage.battles.ContainsKey(roomData.GameRoomNumber);
+            return !GameEngineMediator.BattlesStorage.battles.ContainsKey(matchData.MatchId);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -84,25 +83,32 @@ namespace Server.Http
             return result;
         }
 
-        private static void AddRoomToQueue(GameRoomData roomData)
+        private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
             if (GameEngineMediator.BattlesStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
             
-            GameEngineMediator.BattlesStorage.battlesToCreate.Enqueue(roomData);
+            GameEngineMediator.BattlesStorage.battlesToCreate.Enqueue(matchData);
         }
 
-        private static void DebugLogGameRoom(GameRoomData roomData)
+        private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)
         {
             Log.Info("Информация об игрой комнате");
-            Log.Info($"{nameof(roomData.GameRoomNumber)}  {roomData.GameRoomNumber}");
-            Log.Info($"{nameof(roomData.GameServerIp)}  {roomData.GameServerIp}");
-            Log.Info($"{nameof(roomData.GameServerPort)}  {roomData.GameServerPort}");
+            Log.Info($"{nameof(matchData.MatchId)}  {matchData.MatchId}");
+            Log.Info($"{nameof(matchData.GameServerIp)}  {matchData.GameServerIp}");
+            Log.Info($"{nameof(matchData.GameServerPort)}  {matchData.GameServerPort}");
+            
             Log.Info("Игроки");
-            foreach (var player in roomData.Players)
+            foreach (var player in matchData.GameUnitsForMatch.Players)
             {
-                Log.Info($"PlayerGoogleId = {player.GoogleId} {player.WarshipName} lvl = {player.WarshipCombatPowerLevel}");
+                Log.Info($"PlayerGoogleId = {player.ServiceId} {player.PrefabName} lvl = {player.WarshipCombatPowerLevel}");
+            }
+            
+            Log.Info("Боты");
+            foreach (var bot in matchData.GameUnitsForMatch.Bots)
+            {
+                Log.Info($"PlayerGoogleId = {bot.TemporaryId} {bot.PrefabName} lvl = {bot.WarshipCombatPowerLevel}");
             }
         }
     }
