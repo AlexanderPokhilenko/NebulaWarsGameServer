@@ -20,7 +20,15 @@ public class DropSystem : IExecuteSystem
 
             var drop = e.drop.value;
             var dropEntity = drop.CreateEntity(gameContext, position, angle);
-            if((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider) dropEntity.ReplaceDirection(angle = 0f);
+            if ((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider)
+            {
+                dropEntity.ReplaceDirection(angle = 0f);
+            }
+            else
+            {
+                dropEntity.AddVelocity(velocity);
+                dropEntity.AddAngularVelocity(angularVelocity);
+            }
 
             var grandOwnerId = e.GetGrandOwnerId(gameContext);
             dropEntity.AddOwner(grandOwnerId);
@@ -38,9 +46,6 @@ public class DropSystem : IExecuteSystem
                     dropEntity.AddTarget(e.target.id);
                 }
             }
-
-            dropEntity.AddVelocity(velocity);
-            dropEntity.AddAngularVelocity(angularVelocity);
 
             dropEntity.AddGlobalTransform(position, angle);
         }
