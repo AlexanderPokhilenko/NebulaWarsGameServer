@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
-
-using UnityEditor;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -44,8 +42,8 @@ namespace Server.GameEngine
             CollidersDrawer.contextsList.Add(Contexts);
             Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
 #endif
-
             systems = new Entitas.Systems()
+#if USE_OLD_INIT_SYSTEMS
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, roomData))
                     .Add(new AsteroidsInitSystem(Contexts))
