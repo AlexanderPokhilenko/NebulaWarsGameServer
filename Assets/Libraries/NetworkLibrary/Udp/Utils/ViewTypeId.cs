@@ -29,5 +29,6 @@
     SpiderBotCocoonMissile,
     SpiderBot,
     SmallRepairBonus,
-    SmallUpgradeBonus
+    SmallUpgradeBonus,
+    ScarabBoss
 }

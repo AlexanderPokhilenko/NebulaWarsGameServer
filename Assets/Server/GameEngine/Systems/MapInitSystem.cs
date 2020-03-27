@@ -15,6 +15,7 @@ namespace Server.GameEngine.Systems
         private static readonly RandomObject randomAsteroid;
         private static readonly BaseWithHealthObject spaceStation;
         private static readonly RandomObject randomBonus;
+        private static readonly EntityCreatorObject boss;
         private static readonly Dictionary<string, PlayerObject> playerPrototypes;
         private readonly GameContext gameContext;
         private readonly GameRoomData roomData;
@@ -47,6 +48,10 @@ namespace Server.GameEngine.Systems
             randomBonus = Resources.Load<RandomObject>("SO/Bonuses/PickableObjects/RandomSmallBonus");
             if (randomBonus == null)
                 throw new Exception($"В {nameof(MapInitSystem)} bonus был null.");
+
+            boss = Resources.Load<FighterObject>("SO/BaseObjects/ScarabBoss");
+            if (boss == null)
+                throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
         }
 
         public MapInitSystem(Contexts contexts, GameRoomData roomData)
@@ -109,6 +114,8 @@ namespace Server.GameEngine.Systems
 
                 randomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
+
+            boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f).isBot = true;
         }
     }
 }
