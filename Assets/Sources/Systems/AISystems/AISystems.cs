@@ -16,5 +16,7 @@ public class AISystems : Feature
         Add(new RemoveTargetForChangingSystem(contexts));
         Add(new RemoveTargetForSingleTargetingSystem(contexts));
         Add(new RemoveDistantTargetSystem(contexts));
+        Add(new BotsFrameMovingControlSystem(contexts));
+        Add(new MovingFramesDecreaseSystem(contexts));
     }
 }
