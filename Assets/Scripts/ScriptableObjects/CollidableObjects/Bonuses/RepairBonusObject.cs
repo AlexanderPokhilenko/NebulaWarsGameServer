@@ -8,7 +8,7 @@ public class RepairBonusObject : ActionBonusObject
 
     protected override void Action(GameEntity entity)
     {
-        if (entity.hasHealthPoints && entity.hasMaxHealthPoints)
+        if (entity.hasHealthPoints && entity.hasMaxHealthPoints && entity.healthPoints.value < entity.maxHealthPoints.value)
         {
             var newHealth = entity.maxHealthPoints.value * percentage + entity.healthPoints.value;
 
