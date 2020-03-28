@@ -57,6 +57,7 @@
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxHealthPointsComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
+              <e p="GameMovementFramesComponent.cs" t="Include" />
               <e p="GameNoncollinearAxisesComponent.cs" t="Include" />
               <e p="GameNonstandardRadiusComponent.cs" t="Include" />
               <e p="GameNotDeceleratingComponent.cs" t="Include" />
@@ -354,6 +355,7 @@
               <e p="ChaserComponent.cs" t="Include" />
               <e p="DirectionTargetingComponent.cs" t="Include" />
               <e p="DirectionTargetingShootingComponent.cs" t="Include" />
+              <e p="MovementFramesComponent.cs" t="Include" />
               <e p="SingleTargetingComponent.cs" t="Include" />
               <e p="TargetChangingComponent.cs" t="Include" />
               <e p="TargetComponent.cs" t="Include" />
@@ -373,11 +375,13 @@
             <e p="AISystems" t="Include">
               <e p="AISystems.cs" t="Include" />
               <e p="AngularVelocityTargetingSystem.cs" t="Include" />
+              <e p="BotsFrameMovingControlSystem.cs" t="Include" />
               <e p="BotsMovingSystem.cs" t="Include" />
               <e p="BotsOnHealthMoveChangingSystem.cs" t="Include" />
               <e p="ChaserTargetPointUpdaterSystem.cs" t="Include" />
               <e p="DirectionShootingSystem.cs" t="Include" />
               <e p="DirectionTargetingSystem.cs" t="Include" />
+              <e p="MovingFramesDecreaseSystem.cs" t="Include" />
               <e p="RemoveDistantTargetSystem.cs" t="Include" />
               <e p="RemoveTargetForChangingSystem.cs" t="Include" />
               <e p="RemoveTargetForSingleTargetingSystem.cs" t="Include" />

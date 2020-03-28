@@ -84,6 +84,7 @@ namespace Server.GameEngine.Systems
 
                 if (gameUnit.IsBot)
                 {
+                    Debug.LogError("Бот");
                     gameEntity.AddTargetingParameters(false, 13f, false);
                     gameEntity.isTargetChanging = true;
                     gameEntity.isBot = true;
