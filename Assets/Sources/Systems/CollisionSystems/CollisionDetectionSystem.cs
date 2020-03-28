@@ -167,14 +167,14 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             }
                         }
 
-                        if (current.HasDamage && other.HasHealthPointsPart)
+                        if (current.HasDamage && !other.IsPassingThrough && other.HasHealthPointsPart)
                         {
                             current.IsCollided = true;
                             var otherHealthPointsPart = other.HealthPointsPart;
                             otherHealthPointsPart.ReplaceHealthPoints(otherHealthPointsPart.healthPoints.value - current.Damage);
                             if(otherHealthPointsPart.healthPoints.value <= 0 && !otherHealthPointsPart.hasKilledBy) otherHealthPointsPart.AddKilledBy(current.GrandOwnerId);
                         }
-                        if (other.HasDamage && current.HasHealthPointsPart)
+                        if (other.HasDamage && !current.IsPassingThrough && current.HasHealthPointsPart)
                         {
                             other.IsCollided = true;
                             var currentHealthPointsPart = current.HealthPointsPart;
@@ -182,13 +182,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             if (currentHealthPointsPart.healthPoints.value <= 0 && !currentHealthPointsPart.hasKilledBy) currentHealthPointsPart.AddKilledBy(other.GrandOwnerId);
                         }
 
-                        if (current.HasBonus && other.HasBonusPickerPart)
+                        if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
                         {
                             if (currentEntity.hasBonusTarget) break;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                         }
-                        else if (other.HasBonus && current.HasBonusPickerPart)
+                        else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
                         {
                             if (otherEntity.hasBonusTarget) continue;
                             other.IsCollided = true;
