@@ -13,18 +13,24 @@ namespace Server.GameEngine.Systems
     {
         private readonly IGroup<GameEntity> players;
         private readonly IGroup<GameEntity> playersWithHp;
-        private readonly IGroup<GameEntity> viewObjects;
+        private readonly IGroup<GameEntity> grandObjects;
+        private readonly IGroup<GameEntity> visibleObjects;
         private GameEntity zone;
         private readonly GameContext gameContext;
+        private readonly List<GameEntity> visibleObjectsBuffer;
+        private const float visibleAreaRadius = 15;
+        //private const float sqrVisibleAreaRadius = visibleAreaRadius * visibleAreaRadius;
 
         public NetworkSenderSystem(Contexts contexts)
         {
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            playersWithHp = 
-                gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints).NoneOf(GameMatcher.Bot));
-            var viewMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.GlobalTransform, GameMatcher.ViewType);
-            viewObjects = gameContext.GetGroup(viewMatcher);
+            playersWithHp = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints).NoneOf(GameMatcher.Bot));
+            var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
+            grandObjects = gameContext.GetGroup(grandMatcher);
+            var visibleMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform, GameMatcher.ViewType);
+            visibleObjects = gameContext.GetGroup(visibleMatcher);
+            visibleObjectsBuffer = new List<GameEntity>();
         }
         
         public void Initialize()
@@ -34,10 +40,21 @@ namespace Server.GameEngine.Systems
         
         public void Execute()
         {
-            foreach (var player in players)
+            if (zone.circleCollider.radius > visibleAreaRadius)
             {
-                var visibleObjects = GetVisibleObjects(player);
-                UdpSendUtils.SendPositions(player.player.id, visibleObjects);
+                foreach (var player in players)
+                {
+                    var playerVisibleObjects = GetVisibleObjects(player);
+                    UdpSendUtils.SendPositions(player.player.id, playerVisibleObjects);
+                }
+            }
+            else
+            {
+                var enumerableVisibleObjects = visibleObjects.GetEntities(visibleObjectsBuffer);
+                foreach (var player in players)
+                {
+                    UdpSendUtils.SendPositions(player.player.id, enumerableVisibleObjects);
+                }
             }
 
             foreach (var playerWithHp in playersWithHp)
@@ -50,21 +67,32 @@ namespace Server.GameEngine.Systems
         {
             HashSet<GameEntity> result = new HashSet<GameEntity>();
             Vector2 currentPlayerPosition = currentPlayer.globalTransform.position;
-            const float sqrVisibleAreaRadius = 13*13;
             
             // if (currentPlayer.player.id == 888_777) Log.Info("current position = " + position.x + " " + position.y);
             
-            foreach (var withView in viewObjects)
+            foreach (var withView in grandObjects)
             {
-                if ((withView.globalTransform.position - currentPlayerPosition).sqrMagnitude < sqrVisibleAreaRadius)
-                {
-                    result.Add(withView);
-                }
+                AddViewObject(withView);
             }
 
             result.Add(zone);
             
             return result;
+
+            void AddViewObject(GameEntity e)
+            {
+                var radius = e.hasCircleCollider ? e.circleCollider.radius : 0;
+                //var sqrRadius = radius * radius;
+                if ((e.globalTransform.position - currentPlayerPosition).magnitude - radius <= visibleAreaRadius)
+                {
+                    var viewChildren = e.GetAllChildrenGameEntities(gameContext, c => c.hasGlobalTransform &&
+                        c.hasViewType);
+                    foreach (var child in viewChildren)
+                    {
+                        result.Add(child);
+                    }
+                }
+            }
         }
     }
 }
