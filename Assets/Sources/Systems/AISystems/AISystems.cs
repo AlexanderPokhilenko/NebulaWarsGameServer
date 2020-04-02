@@ -6,9 +6,9 @@ public class AISystems : Feature
     {
         Add(new BotsOnHealthMoveChangingSystem(contexts));
         Add(new BotsMovingSystem(contexts));
-        Add(new ChaserTargetPointUpdaterSystem(contexts));
         Add(new TargetPointMovingSystem(contexts));
         Add(new TargetDetectionSystem(contexts));
+        Add(new ChaserTargetPointUpdaterSystem(contexts));
         Add(new TargetShootingSystem(contexts));
         Add(new DirectionShootingSystem(contexts));
         Add(new DirectionTargetingSystem(contexts));

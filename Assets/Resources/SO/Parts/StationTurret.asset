@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 24
   colliderInfo: {fileID: 0}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
+  drop: {fileID: 0}
   parts:
   - baseObject: {fileID: 11400000, guid: f030fb19a8577364281999e70fc861a0, type: 2}
     position: {x: 1, y: 0.23}
@@ -32,7 +34,7 @@ MonoBehaviour:
     isIgnoringParentCollision: 1
     isParentFixed: 1
   maxAngularVelocity: 180
-  detectionRadius: 5
+  detectionRadius: 7
   useAngularTargeting: 1
   onlyPlayerTargeting: 1
   targetChanging: 1
