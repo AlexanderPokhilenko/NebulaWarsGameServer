@@ -1,15 +1,15 @@
-﻿using System;
-using Entitas;
+﻿using Entitas;
 using System.Collections.Generic;
 using log4net;
 using Server.Http;
 using Server.Udp.Sending;
-using UnityEngine;
 
+/// <summary>
+/// Отвечает за отправку сообщения об убийствах.
+/// </summary>
 public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
 {
-    private readonly GameContext gameContext;
-    IGroup<GameEntity> alivePlayersAndBots;
+    readonly IGroup<GameEntity> alivePlayersAndBots;
     private readonly IGroup<GameEntity> alivePlayers;
     private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
@@ -17,7 +17,7 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos) : base(contexts.game)
     {
         killersInfo = killersInfos;
-        gameContext = contexts.game;
+        var gameContext = contexts.game;
         alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
     }
@@ -62,8 +62,8 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                     PlayerId = e.player.id,
                     PlaceInBattle = placeInBattle
                 };
-
                 PlayerDeathNotifier.KilledPlayerIds.Enqueue(playerDeathData);
+                UdpSendUtils.SendBattleFinishMessage(e.player.id);
             }
         }
     }

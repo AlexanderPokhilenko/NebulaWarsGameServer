@@ -237,6 +237,7 @@
               <e p="PlayerAttackHandlerSystem.cs" t="Include" />
               <e p="PlayerMovementHandlerSystem.cs" t="Include" />
               <e p="PlayersInitSystem.cs" t="Include" />
+              <e p="TestEndMatchSystem2.cs" t="Include" />
               <e p="UpdatePossibleKillersSystem.cs" t="Include" />
             </e>
           </e>

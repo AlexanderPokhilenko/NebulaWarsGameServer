@@ -47,7 +47,7 @@ namespace Server.Http
         private static async Task SendMessageAboutGameOver(int gameRoomId)
         {
             string pathname = "/GameServer/DeleteRoom";
-            string query = $"?gameRoomId={gameRoomId.ToString()}";
+            string query = $"?matchId={gameRoomId.ToString()}";
             await SendDelete(pathname, query);
         }
         

@@ -61,7 +61,7 @@ namespace Server.Udp.Connection
                     byte[] data = result.Buffer;
                     HandleBytes(data, result.RemoteEndPoint);
                 }
-                catch (SocketException e)
+                catch (SocketException)
                 {
                     // 10004 thrown when socket is closed
                     // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving data from udp client: " + e.MessageWrapper);
@@ -80,7 +80,7 @@ namespace Server.Udp.Connection
             {
                 udpClient.Send(data, data.Length, endPoint);
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
                 //ignore   
             }
