@@ -185,12 +185,14 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
                         {
                             if (currentEntity.hasBonusTarget) break;
+                            if(currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherEntity)) continue;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                         }
                         else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
                         {
                             if (otherEntity.hasBonusTarget) continue;
+                            if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentEntity)) continue;
                             other.IsCollided = true;
                             otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
