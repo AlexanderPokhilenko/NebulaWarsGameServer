@@ -31,10 +31,6 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
             {
                 e.RemoveGlobalTransform();
             }
-            else
-            {
-                Log.Error("Объект с id " + e.id.value + " не имел GlobalTransform!");
-            }
         }
     }
 
