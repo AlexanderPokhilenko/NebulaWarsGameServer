@@ -21,7 +21,6 @@ namespace Server.GameEngine.Systems
         }
         public void Initialize()
         {
-            Log.Warn($"{nameof(MatchDataInitSystem)} {nameof(matchData.MatchId)} {matchData.MatchId}");
             contexts.game.SetMatchData(matchData.MatchId);
         }
     }

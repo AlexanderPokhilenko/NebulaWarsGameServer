@@ -230,7 +230,7 @@
             <e p="MatchStorageFacade.cs" t="Include" />
             <e p="PlayersNotifyHelper.cs" t="Include" />
             <e p="Systems" t="Include">
-              <e p="FinishBattleSystem.cs" t="Include" />
+              <e p="FinishMatchSystem.cs" t="Include" />
               <e p="GameDeletingSystem.cs" t="Include" />
               <e p="InputDeletingSystem.cs" t="Include" />
               <e p="MapInitSystem.cs" t="Include" />
@@ -272,6 +272,7 @@
             </e>
             <e p="NetworkMediator.cs" t="Include" />
             <e p="Sending" t="Include">
+              <e p="KillData.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">

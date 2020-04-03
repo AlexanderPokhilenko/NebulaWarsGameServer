@@ -28,7 +28,8 @@ namespace Server.GameEngine
             matches.TryAdd(match.matchData.MatchId, match);
             foreach (var player in match.matchData.GameUnitsForMatch.Players)
             {
-                Log.Warn($"Добавление игрока {nameof(player.TemporaryId)} {player.TemporaryId}");
+                Log.Warn($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
+                         $"{player.TemporaryId}");
                 activePlayers.TryAdd(player.TemporaryId, match);
             }
         }
@@ -43,6 +44,7 @@ namespace Server.GameEngine
         }
         public void RemoveMatch(int matchId)
         {
+            Log.Warn(nameof(RemoveMatch));
             matches.TryRemove(matchId, out var match);
             foreach (var playerInfoForMatch in match.matchData.GameUnitsForMatch.Players)
             {
@@ -52,6 +54,7 @@ namespace Server.GameEngine
 
         public void TearDownMatch(int matchId)
         {
+            Log.Warn(nameof(TearDownMatch));
             Match match = matches[matchId];
             match.TearDown();
         }

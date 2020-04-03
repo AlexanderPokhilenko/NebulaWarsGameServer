@@ -85,7 +85,9 @@ namespace Server.Http
                     }
                     else
                     {
-                        throw new Exception("Не удалось отправить сообщение о смерти игрока");
+                        string message = $"Не удалось отправить сообщение о смерти игрока. " +
+                                         $"{nameof(response.StatusCode)} {response.StatusCode}";
+                        throw new Exception(message);
                     }
                 }
                 catch (Exception e)

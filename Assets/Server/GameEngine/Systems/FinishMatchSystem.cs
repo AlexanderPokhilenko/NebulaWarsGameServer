@@ -5,14 +5,18 @@ using log4net;
 
 namespace Server.GameEngine.Systems
 {
-    public class FinishBattleSystem:ReactiveSystem<GameEntity>
+    /// <summary>
+    /// Вызывает удаление матча, когда остаётся 0 или 1 игрок
+    /// </summary>
+    public class FinishMatchSystem:ReactiveSystem<GameEntity>
     {
         private readonly IGroup<GameEntity> playersGroup;
         private readonly Match match;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorageFacade));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FinishMatchSystem));
 
-        public FinishBattleSystem(Contexts contexts, Match match) : base(contexts.game)
+        public FinishMatchSystem(Contexts contexts, Match match) : base(contexts.game)
         {
+            Log.Warn(nameof(FinishMatchSystem)+" ctor");
             playersGroup = contexts.game.GetGroup(GameMatcher.Player);
             this.match = match;
         }
@@ -29,12 +33,12 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
+            Log.Warn($"{nameof(FinishMatchSystem)}");
             int numberOfPlayers = playersGroup.count;
             switch (numberOfPlayers)
             {
                 case 0:
-                    //все сдохли
-                    //такого быть не должно
+                    //последние игроки сдохли в одном кадре
                     match.FinishGame();
                     break;
                 case 1 :

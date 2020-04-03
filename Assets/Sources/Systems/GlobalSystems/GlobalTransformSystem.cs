@@ -25,15 +25,16 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
 
     public void Cleanup()
     {
-        foreach (var e in positionedGroup)
+        foreach (var gameEntity in positionedGroup)
         {
-            if (e.hasGlobalTransform)
+            if (gameEntity.hasGlobalTransform)
             {
-                e.RemoveGlobalTransform();
+                gameEntity.RemoveGlobalTransform();
             }
             else
             {
-                Log.Error("Объект с id " + e.id.value + " не имел GlobalTransform!");
+                //TODO оно тут ругается
+                Log.Error("Объект с id " + gameEntity.id.value + " не имел GlobalTransform!");
             }
         }
     }

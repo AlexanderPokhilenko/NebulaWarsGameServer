@@ -27,7 +27,7 @@ namespace Server.Http
         {
             Thread thread = new Thread(() => StartEndlessLoop().Wait())
             {
-                    IsBackground = true
+                IsBackground = true
             };
             thread.Start();
         }

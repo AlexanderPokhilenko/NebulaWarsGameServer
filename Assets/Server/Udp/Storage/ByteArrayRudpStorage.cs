@@ -26,24 +26,24 @@ namespace Server.Udp.Storage
             unconfirmedMessages = new ConcurrentDictionary<int, Dictionary<uint, byte[]>>();
         }
         
-        public void AddMessage(int playerId, MessageWrapper messageWrapper)
-        {
-            if (!unconfirmedMessages.ContainsKey(playerId))
-            {
-                if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
-                {
-                    //структура данных для хранения сообщений для конкретного игрока создана
-                }
-                else
-                {
-                    throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId="+playerId);
-                }
-            }
-
-            byte[] serializedMessage = ZeroFormatterSerializer.Serialize(messageWrapper);
-            unconfirmedMessages[playerId].Add(messageWrapper.MessageId, serializedMessage);
-            messageIdPlayerId.TryAdd(messageWrapper.MessageId, playerId);
-        }
+        // public void AddMessage(int playerId, MessageWrapper messageWrapper)
+        // {
+        //     if (!unconfirmedMessages.ContainsKey(playerId))
+        //     {
+        //         if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
+        //         {
+        //             //структура данных для хранения сообщений для конкретного игрока создана
+        //         }
+        //         else
+        //         {
+        //             throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId="+playerId);
+        //         }
+        //     }
+        //
+        //     byte[] serializedMessage = ZeroFormatterSerializer.Serialize(messageWrapper);
+        //     unconfirmedMessages[playerId].Add(messageWrapper.MessageId, serializedMessage);
+        //     messageIdPlayerId.TryAdd(messageWrapper.MessageId, playerId);
+        // }
         
         public void AddMessage(int playerId, uint messageId, byte[] serializedMessage) 
         {

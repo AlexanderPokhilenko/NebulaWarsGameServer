@@ -1,8 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -74,6 +76,7 @@ namespace Server.GameEngine
         /// <param name="matchId"></param>
         private void DeleteMatch(int matchId)
         {
+            Log.Warn("method "+nameof(DeleteMatch));
             var playersIds = matchStorage.GetPlayersIds(matchId);
             matchStorage.TearDownMatch(matchId);
             matchStorage.RemoveMatch(matchId);
@@ -89,7 +92,7 @@ namespace Server.GameEngine
         public bool TryRemovePlayer(int playerTmpId)
         {
             bool success = matchStorage.TryRemovePlayer(playerTmpId); 
-            Log.Warn("Удаление игрока из комнаты. success = "+success);
+            Log.Info("Удаление игрока из комнаты. success = "+success);
             return success;
         }
 
