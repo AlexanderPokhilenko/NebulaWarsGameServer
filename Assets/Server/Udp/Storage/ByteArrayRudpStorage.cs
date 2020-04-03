@@ -88,7 +88,7 @@ namespace Server.Udp.Storage
                 if(!messageIdPlayerId.TryRemove(confirmedMessageNumber, out int playerId))
                     throw new Exception("Ошибка удаления сообщения");
                 
-                if(!unconfirmedMessages.TryRemove(playerId, out var dict))
+                if(!unconfirmedMessages.TryGetValue(playerId, out var dict) || !dict.Remove(confirmedMessageNumber))
                     throw new Exception("Ошибка удаления сообщения");
                 
                 Log.Info("Успешное удаление сообщения из коллекции");
