@@ -74,6 +74,7 @@ namespace Server.GameEngine
                     .Add(new FinishMatchSystem(Contexts, this))
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new MaxHpUpdaterSystem(Contexts))
+                    .Add(new ShieldPointsUpdaterSystem(Contexts))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new GameDeletingSystem(Contexts))
                 ;

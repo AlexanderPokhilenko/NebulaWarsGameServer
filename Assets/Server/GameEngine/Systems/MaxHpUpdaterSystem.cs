@@ -9,9 +9,8 @@ namespace Server.GameEngine.Systems
         
         public MaxHpUpdaterSystem(Contexts contexts)
         {
-            playersWithHpGroup = contexts
-                .game
-                .GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints, GameMatcher.MaxHealthPoints));
+            playersWithHpGroup = contexts.game
+                .GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints, GameMatcher.MaxHealthPoints).NoneOf(GameMatcher.Bot));
         }
 
         public void Execute()

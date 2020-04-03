@@ -36,6 +36,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         PlayerTracking = 13,
         PointTracking = 14,
         ShowPlayerAchievements = 15,
-        Kill = 16
+        Kill = 16,
+        ShieldPoints = 17,
+        MaxShieldPoints = 18
     }
 }

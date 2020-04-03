@@ -97,6 +97,31 @@ namespace Server.Udp.Sending
             }
         }
 
+        public static void SendShieldPoints(int targetPlayerId, float shieldPoints)
+        {
+            var address = GetPlayerIpAddress(targetPlayerId);
+            if (address != null)
+            {
+                var healthPointsMessage = new ShieldPointsMessage(shieldPoints);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            }
+        }
+
+        public static void SendMaxShieldPoints(int targetPlayerId, float maxShieldPoints)
+        {
+            var address = GetPlayerIpAddress(targetPlayerId);
+            if (address != null)
+            {
+                var healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+                ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId, messageId, serializedMessage);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
+            }
+        }
+
         public static void SendBattleFinishMessage(int playerId)
         {
             var address = GetPlayerIpAddress(playerId);
