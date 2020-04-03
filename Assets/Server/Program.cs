@@ -16,7 +16,7 @@ namespace Server
             StartGameMatcherListenerThread(HttpPort);
             StartPlayersListenerThread(UdpPort);
             
-            BattleDeletingNotifier.StartThread();
+            MatchDeletingNotifier.StartThread();
             PlayerDeathNotifier.StartThread();
             
             GameEngineMediator gameEngineMediator = new GameEngineMediator();

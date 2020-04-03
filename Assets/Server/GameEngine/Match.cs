@@ -16,21 +16,21 @@ namespace Server.GameEngine
         public BattleRoyaleMatchData matchData { get; private set; }
         private DateTime? gameStartTime;
 
-        private readonly MatchStorage gameSessionsStorage;
+        private readonly MatchStorageFacade gameSessionsStorageFacade;
 
-        private readonly FlameCircleObject zoneObject;
+        // private readonly FlameCircleObject zoneObject;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
 
         private bool gameOver;
         
         private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
         
-        public Match(MatchStorage gameSessionsStorage)
+        public Match(MatchStorageFacade gameSessionsStorageFacade)
         {
-            this.gameSessionsStorage = gameSessionsStorage;
+            this.gameSessionsStorageFacade = gameSessionsStorageFacade;
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
-            zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
+            // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
@@ -120,7 +120,7 @@ namespace Server.GameEngine
         public void FinishGame()
         {
             gameOver = true;
-            gameSessionsStorage.MarkBattleAsFinished(matchData.MatchId);
+            gameSessionsStorageFacade.MarkBattleAsFinished(matchData.MatchId);
         }
     }
 }

@@ -8,26 +8,18 @@ using log4net;
 
 namespace Server.Http
 {
-    public struct PlayerDeathData
-    {
-        public int PlayerId;
-        //TODO пирдумать нормальное название для переменной
-        public int PlaceInBattle;
-        public int MatchId;
-    }
-    
     /// <summary>
     /// Отправляет матчеру уведомления при смерти игрока.
     /// </summary>
     public static class PlayerDeathNotifier
     {
-        public static readonly ConcurrentQueue<PlayerDeathData> KilledPlayerIds = new ConcurrentQueue<PlayerDeathData>();
+        public static readonly ConcurrentQueue<PlayerDeathData> KilledPlayerIds =
+            new ConcurrentQueue<PlayerDeathData>();
         private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerDeathNotifier));
         
         public static void StartThread()
         {
-            Thread thread = new Thread(() => Start().Wait());
-            thread.IsBackground = true;
+            Thread thread = new Thread(() => Start().Wait()) {IsBackground = true};
             thread.Start();
         }
 
@@ -46,10 +38,29 @@ namespace Server.Http
             while (!KilledPlayerIds.IsEmpty)
             {
                 KilledPlayerIds.TryDequeue(out var playerDeathData);
+                CheckDeathData(playerDeathData);
                 await SendMessageAboutPlayerDeath(playerDeathData);
             }
         }
 
+        private static void CheckDeathData(PlayerDeathData playerDeathData)
+        {
+            if (playerDeathData.MatchId == 0)
+            {
+                throw new Exception(nameof(playerDeathData.MatchId));
+            }
+            
+            if (playerDeathData.PlayerId == 0)
+            {
+                throw new Exception(nameof(playerDeathData.PlayerId));
+            }
+            
+            if (playerDeathData.PlaceInBattle == 0)
+            {
+                throw new Exception(nameof(playerDeathData.PlaceInBattle));
+            }
+        }
+        
         private static async Task SendMessageAboutPlayerDeath(PlayerDeathData playerDeathData)
         {
             string pathname = "/GameServer/PlayerDeath";

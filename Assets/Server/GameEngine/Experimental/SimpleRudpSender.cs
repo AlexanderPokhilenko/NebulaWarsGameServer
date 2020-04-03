@@ -1,6 +1,8 @@
 ﻿using Server.Udp.Sending;
 using Server.Udp.Storage;
 
+//TODO как тут красиво получить список активных игроков?
+
 namespace Server.GameEngine.Experimental
 {
     /// <summary>
@@ -8,16 +10,16 @@ namespace Server.GameEngine.Experimental
     /// </summary>
     public class SimpleRudpSender:IRudpSender
     {
-        private readonly MatchStorage matchStorage;
+        private readonly MatchStorageFacade matchStorageFacade;
 
-        public SimpleRudpSender(MatchStorage matchStorage)
+        public SimpleRudpSender(MatchStorageFacade matchStorageFacade)
         {
-            this.matchStorage = matchStorage;
+            this.matchStorageFacade = matchStorageFacade;
         }
 
         public void SendUnconfirmedMessages()
         {
-            foreach (var playerId in matchStorage.playerToBattle.Keys)
+            foreach (var playerId in matchStorageFacade.GetActivePlayerIds())
             {
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count != 0)

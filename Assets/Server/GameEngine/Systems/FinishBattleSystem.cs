@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Entitas;
 using log4net;
-
 
 namespace Server.GameEngine.Systems
 {
@@ -10,7 +9,7 @@ namespace Server.GameEngine.Systems
     {
         private readonly IGroup<GameEntity> playersGroup;
         private readonly Match match;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorageFacade));
 
         public FinishBattleSystem(Contexts contexts, Match match) : base(contexts.game)
         {
@@ -20,12 +19,12 @@ namespace Server.GameEngine.Systems
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
         {
-            return context.CreateCollector(GameMatcher.Player.Removed());
+            return context.CreateCollector(GameMatcher.KilledBy.Added());
         }
 
         protected override bool Filter(GameEntity entity)
         {
-            return !entity.hasPlayer;
+            return entity.hasKilledBy;
         }
 
         protected override void Execute(List<GameEntity> entities)
@@ -44,6 +43,12 @@ namespace Server.GameEngine.Systems
                     break;
                 default:
                     Log.Warn("Минус игрок. Текущее кол-во: "+numberOfPlayers);
+                    Log.Warn("Список погибших за этот кадр.");
+                    foreach (var gameEntity in entities)
+                    {
+                        Console.WriteLine($"{nameof(gameEntity.player.id)} {gameEntity.player.id}");
+                    }
+                    Log.Warn("Список погибших за этот кард окончен.");
                     break;
             }
         }

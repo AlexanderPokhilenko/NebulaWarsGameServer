@@ -15,6 +15,7 @@ namespace Server.Http
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchData roomData)
         {
+            DebugLogGameRoom(roomData);
             GameRoomValidationResult result = CheckRoom(roomData);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
@@ -22,7 +23,7 @@ namespace Server.Http
             }
             else
             {
-                throw new Exception($"От гейм матчера пришло сообщение о создании комнаты, но оно было " +
+                throw new Exception("От гейм матчера пришло сообщение о создании комнаты, но оно было " +
                                     $"отклонено. result?.ResultEnum = {result?.ResultEnum.ToString()}");
             }
             return result;
@@ -30,8 +31,6 @@ namespace Server.Http
         
         private GameRoomValidationResult CheckRoom(BattleRoyaleMatchData roomData)
         {
-            DebugLogGameRoom(roomData);
-            
             bool roomWithThisNumberDoesNotExist = CheckRoomNumber(roomData);
             bool thereIsNoRoomWithSuchPlayers = CheckPlayers(roomData);
             var result = GetValidationResult(roomWithThisNumberDoesNotExist, thereIsNoRoomWithSuchPlayers);
@@ -40,14 +39,17 @@ namespace Server.Http
 
         private bool CheckPlayers(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorage == null)
+            if (GameEngineMediator.MatchStorageFacade == null)
+            {
                 throw new Exception("Игра ещё не инициализирована.");
+            }
 
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineMediator.MatchStorage.playerToBattle.ContainsKey(playerId))
+                if (GameEngineMediator.MatchStorageFacade.HasPlayerWithId(playerId))
                 {
+                    Log.Error("В словаре уже содержится игрок с id = "+playerId);
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
                 }
@@ -57,17 +59,18 @@ namespace Server.Http
 
         private bool CheckRoomNumber(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorage == null)
+            if (GameEngineMediator.MatchStorageFacade == null)
+            {
                 throw new Exception("Игра ещё не инициализирована.");
+            }
             
-            return !GameEngineMediator.MatchStorage.matches.ContainsKey(matchData.MatchId);
+            return !GameEngineMediator.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
             bool thereIsNoRoomWithSuchPlayers )
         {
-            GameRoomValidationResult result = new GameRoomValidationResult();    
-            
+            GameRoomValidationResult result = new GameRoomValidationResult();
             if (roomWithThisNumberDoesNotExist && thereIsNoRoomWithSuchPlayers)
             {
                 result.ResultEnum = GameRoomValidationResultEnum.Ok;
@@ -85,11 +88,11 @@ namespace Server.Http
 
         private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorage == null)
+            if (GameEngineMediator.MatchStorageFacade == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
             
-            GameEngineMediator.MatchStorage.battlesToCreate.Enqueue(matchData);
+            GameEngineMediator.MatchStorageFacade.AddMatchToQueue(matchData);
         }
 
         private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)

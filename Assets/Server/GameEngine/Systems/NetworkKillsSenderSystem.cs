@@ -2,6 +2,7 @@
 using Entitas;
 using System.Collections.Generic;
 using log4net;
+using Server.GameEngine;
 using Server.Http;
 using Server.Udp.Sending;
 
@@ -56,13 +57,13 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                     killerInfo = (0, 0);
                 }
 
-                KillData killData = new KillData()
+                KillData killData = new KillData
                 {
                     TargetPlayerId = player.player.id,
                     KillerId = killerInfo.playerId,
-                    VictimType = killerInfo.type,
-                    VictimId = killedEntity.player.id,
-                    KillerType = killedEntity.viewType.id
+                    KillerType = killerInfo.type,
+                    VictimType = killedEntity.viewType.id,
+                    VictimId = killedEntity.player.id
                 };
                 
                 UdpSendUtils.SendKill(killData);
@@ -74,8 +75,11 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                     {
                         throw new Exception("gameContext do not have match data");
                     }
+
+                    //TODO это говнище
+                    var dich = GameEngineMediator.MatchStorageFacade.TryRemovePlayer(playerTmpId);
+                    
                     int matchId = gameContext.matchData.MatchId;
-                    Log.Warn($"{nameof(matchId)} {matchId}");
                     int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
                     PlayerDeathData playerDeathData = new PlayerDeathData
                     {

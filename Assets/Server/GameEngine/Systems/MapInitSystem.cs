@@ -80,7 +80,7 @@ namespace Server.GameEngine.Systems
         
         public void Initialize()
         {
-            Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
+            Log.Warn($"Создание игровой комнаты с номером {matchData.MatchId}");
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
@@ -89,6 +89,7 @@ namespace Server.GameEngine.Systems
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
+            
             for (var i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
             {
                 var gameUnit = matchData.GameUnitsForMatch[i];

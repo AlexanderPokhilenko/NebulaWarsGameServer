@@ -227,6 +227,8 @@
             <e p="GameSessionGlobals.cs" t="Include" />
             <e p="Match.cs" t="Include" />
             <e p="MatchStorage.cs" t="Include" />
+            <e p="MatchStorageFacade.cs" t="Include" />
+            <e p="PlayersNotifyHelper.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="FinishBattleSystem.cs" t="Include" />
               <e p="GameDeletingSystem.cs" t="Include" />
@@ -244,10 +246,11 @@
           </e>
           <e p="Http" t="Include">
             <e p="BattleCreator.cs" t="Include" />
-            <e p="BattleDeletingNotifier.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="HttpListenerWrapper.cs" t="Include" />
             <e p="HttpMessageHandlers.cs" t="Include" />
+            <e p="MatchDeletingNotifier.cs" t="Include" />
+            <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
           </e>
           <e p="Program.cs" t="Include" />

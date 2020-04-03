@@ -11,17 +11,24 @@ using UnityEngine;
 namespace Server.Http
 {
     /// <summary>
-    /// Отправляет матчеру уведомления при окончании боя.
+    /// Отправляет матчмейкеру уведомления при окончании боя.
     /// </summary>
-    public static class BattleDeletingNotifier
+    public static class MatchDeletingNotifier
     {
-        public static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BattleDeletingNotifier));
+        private static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDeletingNotifier));
 
+        public static void SendMatchDeletingMessage(int matchId)
+        {
+            MatchIdsToDelete.Enqueue(matchId);
+        }
+        
         public static void StartThread()
         {
-            Thread thread = new Thread(() => StartEndlessLoop().Wait());
-            thread.IsBackground = true;
+            Thread thread = new Thread(() => StartEndlessLoop().Wait())
+            {
+                    IsBackground = true
+            };
             thread.Start();
         }
         
