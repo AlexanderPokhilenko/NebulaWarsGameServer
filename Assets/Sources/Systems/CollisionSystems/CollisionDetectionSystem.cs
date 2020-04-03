@@ -1,6 +1,7 @@
 ﻿using Entitas;
 using Server.GameEngine;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
@@ -185,12 +186,17 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
                         {
                             if (currentEntity.hasBonusTarget) break;
+                            if(currentEntity.hasBonusAdder && otherEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                            if(currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherEntity)) continue;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
+                            break;
                         }
                         else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
                         {
                             if (otherEntity.hasBonusTarget) continue;
+                            if (otherEntity.hasBonusAdder && currentEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == otherEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                            if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentEntity)) continue;
                             other.IsCollided = true;
                             otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
