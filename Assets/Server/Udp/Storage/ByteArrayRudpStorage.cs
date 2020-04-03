@@ -6,11 +6,12 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using ZeroFormatter;
 
 //TODO я не смог в ioc поэтому впихнул синглтон. не делайте так.
-
+//TODO я не смог понять, почему оно падает и как это правильно исправить, поэтому добавил lock
 namespace Server.Udp.Storage
 {
     public class ByteArrayRudpStorage
     {
+        private static readonly object lockObj = new object();
         private static readonly Lazy<ByteArrayRudpStorage> Lazy = new Lazy<ByteArrayRudpStorage> (
             () => new ByteArrayRudpStorage());
         public static ByteArrayRudpStorage Instance => Lazy.Value;
@@ -26,40 +27,48 @@ namespace Server.Udp.Storage
             unconfirmedMessages = new ConcurrentDictionary<int, Dictionary<uint, byte[]>>();
         }
         
-        // public void AddMessage(int playerId, MessageWrapper messageWrapper)
-        // {
-        //     if (!unconfirmedMessages.ContainsKey(playerId))
-        //     {
-        //         if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
-        //         {
-        //             //структура данных для хранения сообщений для конкретного игрока создана
-        //         }
-        //         else
-        //         {
-        //             throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId="+playerId);
-        //         }
-        //     }
-        //
-        //     byte[] serializedMessage = ZeroFormatterSerializer.Serialize(messageWrapper);
-        //     unconfirmedMessages[playerId].Add(messageWrapper.MessageId, serializedMessage);
-        //     messageIdPlayerId.TryAdd(messageWrapper.MessageId, playerId);
-        // }
+        public void AddMessage(int playerId, MessageWrapper messageWrapper)
+        {
+            lock (lockObj)
+            {
+                if (!unconfirmedMessages.ContainsKey(playerId))
+                {
+                    if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
+                    {
+                        //структура данных для хранения сообщений для конкретного игрока создана
+                    }
+                    else
+                    {
+                        throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId=" + playerId);
+                    }
+                }
+
+                byte[] serializedMessage = ZeroFormatterSerializer.Serialize(messageWrapper);
+                unconfirmedMessages[playerId].Add(messageWrapper.MessageId, serializedMessage);
+            }
+
+            messageIdPlayerId.TryAdd(messageWrapper.MessageId, playerId);
+        }
         
         public void AddMessage(int playerId, uint messageId, byte[] serializedMessage) 
         {
-            if (!unconfirmedMessages.ContainsKey(playerId))
+            lock (lockObj)
             {
-                if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
+                if (!unconfirmedMessages.ContainsKey(playerId))
                 {
-                    //структура данных для хранения сообщений для конкретного игрока создана
+                    if (unconfirmedMessages.TryAdd(playerId, new Dictionary<uint, byte[]>()))
+                    {
+                        //структура данных для хранения сообщений для конкретного игрока создана
+                    }
+                    else
+                    {
+                        throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId=" + playerId);
+                    }
                 }
-                else
-                {
-                    throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId="+playerId);
-                }
+
+                unconfirmedMessages[playerId].Add(messageId, serializedMessage);
             }
-            
-            unconfirmedMessages[playerId].Add(messageId, serializedMessage);
+
             messageIdPlayerId.TryAdd(messageId, playerId);
         }
 
@@ -74,9 +83,12 @@ namespace Server.Udp.Storage
             {
                 if(!messageIdPlayerId.TryRemove(confirmedMessageNumber, out int playerId))
                     throw new Exception("Ошибка удаления сообщения");
-                
-                if(!unconfirmedMessages.TryGetValue(playerId, out var dict) || !dict.Remove(confirmedMessageNumber))
-                    throw new Exception("Ошибка удаления сообщения");
+
+                lock (lockObj)
+                {
+                    if (!unconfirmedMessages.TryGetValue(playerId, out var dict) || !dict.Remove(confirmedMessageNumber))
+                        throw new Exception("Ошибка удаления сообщения");
+                }
                 
                 Log.Info("Успешное удаление сообщения из коллекции");
             }
