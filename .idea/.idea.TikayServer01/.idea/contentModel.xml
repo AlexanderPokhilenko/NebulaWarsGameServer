@@ -152,6 +152,10 @@
                   <e p="PositionsMessage.cs" t="Include" />
                   <e p="ViewTransform.cs" t="Include" />
                 </e>
+                <e p="Shield" t="Include">
+                  <e p="MaxShieldPointsMessage.cs" t="Include" />
+                  <e p="ShieldPointsMessage.cs" t="Include" />
+                </e>
               </e>
               <e p="Utils" t="Include">
                 <e p="MessageFactory.cs" t="Include" />
@@ -240,6 +244,7 @@
               <e p="PlayerAttackHandlerSystem.cs" t="Include" />
               <e p="PlayerMovementHandlerSystem.cs" t="Include" />
               <e p="PlayersInitSystem.cs" t="Include" />
+              <e p="ShieldPointsUpdaterSystem.cs" t="Include" />
               <e p="TestEndMatchSystem2.cs" t="Include" />
               <e p="UpdatePossibleKillersSystem.cs" t="Include" />
             </e>

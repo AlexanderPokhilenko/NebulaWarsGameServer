@@ -76,14 +76,22 @@ namespace Server.Udp.Connection
         public void Send(byte[] data, IPEndPoint endPoint)
         {
             // Log.Info($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
-            try
+            if (data != null)
             {
-                udpClient.Send(data, data.Length, endPoint);
+                try
+                { 
+                    udpClient.Send(data, data.Length, endPoint);
+                }
+                catch (SocketException)
+                {
+                    //ignore   
+                }    
             }
-            catch (SocketException)
+            else
             {
-                //ignore   
+                Log.Warn("Отправляемые данные пусты");
             }
+            
         }
      
         public void Stop()
