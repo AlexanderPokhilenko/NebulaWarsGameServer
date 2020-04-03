@@ -9,13 +9,13 @@ namespace Server.GameEngine.Systems
     public class FinishBattleSystem:ReactiveSystem<GameEntity>
     {
         private readonly IGroup<GameEntity> playersGroup;
-        private readonly Battle battle;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BattlesStorage));
+        private readonly Match match;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
 
-        public FinishBattleSystem(Contexts contexts, Battle battle) : base(contexts.game)
+        public FinishBattleSystem(Contexts contexts, Match match) : base(contexts.game)
         {
             playersGroup = contexts.game.GetGroup(GameMatcher.Player);
-            this.battle = battle;
+            this.match = match;
         }
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -36,11 +36,11 @@ namespace Server.GameEngine.Systems
                 case 0:
                     //все сдохли
                     //такого быть не должно
-                    battle.FinishGame();
+                    match.FinishGame();
                     break;
                 case 1 :
                     //есть победитель
-                    battle.FinishGame();
+                    match.FinishGame();
                     break;
                 default:
                     Log.Warn("Минус игрок. Текущее кол-во: "+numberOfPlayers);

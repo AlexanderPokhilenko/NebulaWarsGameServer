@@ -1,7 +1,7 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using System.Collections.Generic;
 using log4net;
-using Server.GameEngine;
 using Server.Http;
 using Server.Udp.Sending;
 
@@ -14,12 +14,13 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     private readonly IGroup<GameEntity> alivePlayers;
     private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
+    readonly GameContext gameContext;
     
     public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos)
         : base(contexts.game)
     {
         killersInfo = killersInfos;
-        var gameContext = contexts.game;
+        gameContext = contexts.game;
         alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
     }
@@ -55,13 +56,26 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                     killerInfo = (0, 0);
                 }
 
-                UdpSendUtils.SendKills(player.player.id, killerInfo.playerId,
-                    killerInfo.type, killedEntity.player.id, killedEntity.viewType.id);
+                KillData killData = new KillData()
+                {
+                    TargetPlayerId = player.player.id,
+                    KillerId = killerInfo.playerId,
+                    VictimType = killerInfo.type,
+                    VictimId = killedEntity.player.id,
+                    KillerType = killedEntity.viewType.id
+                };
+                
+                UdpSendUtils.SendKill(killData);
 
                 if (!killedEntity.isBot)
                 {
                     int playerTmpId = killedEntity.player.id;
-                    int matchId = BattlesStorage.Instance.GetMatchId(playerTmpId);
+                    if (!gameContext.hasMatchData)
+                    {
+                        throw new Exception("gameContext do not have match data");
+                    }
+                    int matchId = gameContext.matchData.MatchId;
+                    Log.Warn($"{nameof(matchId)} {matchId}");
                     int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
                     PlayerDeathData playerDeathData = new PlayerDeathData
                     {

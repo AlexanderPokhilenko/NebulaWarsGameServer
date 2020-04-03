@@ -3,18 +3,21 @@ using Server.Udp.Storage;
 
 namespace Server.GameEngine.Experimental
 {
+    /// <summary>
+    /// Отправляет все сообщения, доставка которыъ не была подтверждена
+    /// </summary>
     public class SimpleRudpSender:IRudpSender
     {
-        private readonly BattlesStorage battlesStorage;
+        private readonly MatchStorage matchStorage;
 
-        public SimpleRudpSender(BattlesStorage battlesStorage)
+        public SimpleRudpSender(MatchStorage matchStorage)
         {
-            this.battlesStorage = battlesStorage;
+            this.matchStorage = matchStorage;
         }
 
         public void SendUnconfirmedMessages()
         {
-            foreach (var playerId in battlesStorage.playerToBattle.Keys)
+            foreach (var playerId in matchStorage.playerToBattle.Keys)
             {
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count != 0)

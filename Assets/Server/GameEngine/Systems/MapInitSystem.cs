@@ -8,6 +8,24 @@ using UnityEngine;
 
 namespace Server.GameEngine.Systems
 {
+    public class MatchDataInitSystem : IInitializeSystem
+    {
+        private readonly Contexts contexts;
+        private readonly BattleRoyaleMatchData matchData;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDataInitSystem));
+        
+        public MatchDataInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
+        {
+            this.contexts = contexts;
+            this.matchData = matchData;
+        }
+        public void Initialize()
+        {
+            Log.Warn($"{nameof(MatchDataInitSystem)} {nameof(matchData.MatchId)} {matchData.MatchId}");
+            contexts.game.SetMatchData(matchData.MatchId);
+        }
+    }
+    
     public class MapInitSystem : IInitializeSystem
     {
         private readonly System.Random random = new System.Random();

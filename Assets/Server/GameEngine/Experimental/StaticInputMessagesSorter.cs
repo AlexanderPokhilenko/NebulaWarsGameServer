@@ -30,7 +30,7 @@ namespace Server.GameEngine.Experimental
                 var playerId = pair.Key;
                 var value = pair.Value;
 
-                if (GameEngineMediator.BattlesStorage.playerToBattle.TryGetValue(playerId, out var gameSession))
+                if (GameEngineMediator.MatchStorage.playerToBattle.TryGetValue(playerId, out var gameSession))
                 {
                     Contexts contexts = gameSession.Contexts;
 

@@ -40,13 +40,13 @@ namespace Server.Http
 
         private bool CheckPlayers(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.BattlesStorage == null)
+            if (GameEngineMediator.MatchStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
 
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineMediator.BattlesStorage.playerToBattle.ContainsKey(playerId))
+                if (GameEngineMediator.MatchStorage.playerToBattle.ContainsKey(playerId))
                 {
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
@@ -57,10 +57,10 @@ namespace Server.Http
 
         private bool CheckRoomNumber(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.BattlesStorage == null)
+            if (GameEngineMediator.MatchStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
-            return !GameEngineMediator.BattlesStorage.battles.ContainsKey(matchData.MatchId);
+            return !GameEngineMediator.MatchStorage.matches.ContainsKey(matchData.MatchId);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -85,11 +85,11 @@ namespace Server.Http
 
         private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.BattlesStorage == null)
+            if (GameEngineMediator.MatchStorage == null)
                 throw new Exception("Игра ещё не инициализирована.");
             
             
-            GameEngineMediator.BattlesStorage.battlesToCreate.Enqueue(matchData);
+            GameEngineMediator.MatchStorage.battlesToCreate.Enqueue(matchData);
         }
 
         private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)

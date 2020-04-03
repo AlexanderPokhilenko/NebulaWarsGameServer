@@ -15,7 +15,7 @@ namespace Server.Http
     /// </summary>
     public static class BattleDeletingNotifier
     {
-        public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
+        public static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
         private static readonly ILog Log = LogManager.GetLogger(typeof(BattleDeletingNotifier));
 
         public static void StartThread()
@@ -37,9 +37,9 @@ namespace Server.Http
 
         private static async Task TrySendDeleteMessages()
         {
-            while (!GameRoomIdsToDelete.IsEmpty)
+            while (!MatchIdsToDelete.IsEmpty)
             {
-                GameRoomIdsToDelete.TryDequeue(out int gameRoomId);
+                MatchIdsToDelete.TryDequeue(out int gameRoomId);
                 await SendMessageAboutGameOver(gameRoomId);
             }
         }

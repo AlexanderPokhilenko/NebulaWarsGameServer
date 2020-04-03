@@ -9,23 +9,23 @@ using UnityEngine;
 
 namespace Server.GameEngine
 {
-    public class Battle
+    public class Match
     {
         private Entitas.Systems systems;
         public Contexts Contexts { get; private set; }
         public BattleRoyaleMatchData matchData { get; private set; }
         private DateTime? gameStartTime;
 
-        private readonly BattlesStorage gameSessionsStorage;
+        private readonly MatchStorage gameSessionsStorage;
 
         private readonly FlameCircleObject zoneObject;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
 
-        private bool GameOver;
+        private bool gameOver;
         
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Battle));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
         
-        public Battle(BattlesStorage gameSessionsStorage)
+        public Match(MatchStorage gameSessionsStorage)
         {
             this.gameSessionsStorage = gameSessionsStorage;
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
@@ -33,11 +33,11 @@ namespace Server.GameEngine
             zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
-        public void ConfigureSystems(BattleRoyaleMatchData matchData)
+        public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
-            Log.Info("Создание новой комнаты номер = "+matchData.MatchId);
+            Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
 
-            this.matchData = matchData;
+            matchData = matchDataArg;
             Contexts = ContextsPool.GetContexts();
             Contexts.SubscribeId();
 #if UNITY_EDITOR
@@ -47,16 +47,17 @@ namespace Server.GameEngine
             systems = new Entitas.Systems()
 #if USE_OLD_INIT_SYSTEMS
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
-                    .Add(new PlayersInitSystem(Contexts, matchData))
+                    .Add(new PlayersInitSystem(Contexts, matchDataArg))
                     .Add(new AsteroidsInitSystem(Contexts))
                     .Add(new SpaceStationsInitSystem(Contexts))
                     .Add(new BonusesInitSystem(Contexts))
 #else
-                    .Add(new MapInitSystem(Contexts, matchData))
+                    .Add(new MapInitSystem(Contexts, matchDataArg))
 #endif
                     
                     // .Add(new TestEndMatchSystem2(Contexts))
                     
+                    .Add(new MatchDataInitSystem(Contexts, matchDataArg))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
@@ -84,7 +85,7 @@ namespace Server.GameEngine
         
         public void Execute()
         {
-            if (GameOver) return;
+            if (gameOver) return;
             if (IsSessionTimedOut())
             {
                 FinishGame();
@@ -95,7 +96,7 @@ namespace Server.GameEngine
 
         public void Cleanup()
         {
-            if (GameOver) return;
+            if (gameOver) return;
             systems.Cleanup();
         }
 
@@ -118,7 +119,7 @@ namespace Server.GameEngine
 
         public void FinishGame()
         {
-            GameOver = true;
+            gameOver = true;
             gameSessionsStorage.MarkBattleAsFinished(matchData.MatchId);
         }
     }

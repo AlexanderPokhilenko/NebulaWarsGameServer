@@ -7,27 +7,30 @@ using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
 using Server.Udp.Sending;
 
+//TODO Это пиздец
 
 namespace Server.GameEngine
 {
-    public class BattlesStorage
+    /// <summary>
+    /// Скрывает в себе данные про текущие матчи.
+    /// </summary>
+    public class MatchStorage
     {
-        private static readonly Lazy<BattlesStorage> Lazy = new Lazy<BattlesStorage> (
-            () => new BattlesStorage());
-        public static BattlesStorage Instance => Lazy.Value;
+        private static readonly Lazy<MatchStorage> Lazy = new Lazy<MatchStorage> (() => new MatchStorage());
+        public static MatchStorage Instance => Lazy.Value;
         
         //В эту очередь элементы кладутся после получения http от гейм матчера
         public readonly ConcurrentQueue<BattleRoyaleMatchData> battlesToCreate;
         
         //текущие бои
-        public readonly ConcurrentDictionary<int, Battle> battles;
+        public readonly ConcurrentDictionary<int, Match> matches;
         //текущие бои (ключ - id игрока)
-        public readonly ConcurrentDictionary<int, Battle> playerToBattle;
+        public readonly ConcurrentDictionary<int, Match> playerToBattle;
         
         //номера боёв, про окончание которых нужно сообщинь гейм матчеру
         private readonly Queue<int> finishedBattles;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BattlesStorage));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
 
         public int GetMatchId(int playerTmpId)
         {
@@ -51,12 +54,13 @@ namespace Server.GameEngine
                 throw new Exception($"Не удалось найти matchId {nameof(playerTmpId)} {playerTmpId}");
             }
         }
-        public BattlesStorage()
+        
+        public MatchStorage()
         {
             battlesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
             finishedBattles = new Queue<int>();
-            battles= new ConcurrentDictionary<int, Battle>();
-            playerToBattle = new ConcurrentDictionary<int, Battle>();
+            matches= new ConcurrentDictionary<int, Match>();
+            playerToBattle = new ConcurrentDictionary<int, Match>();
         }
         
         public void UpdateBattlesList()
@@ -69,19 +73,25 @@ namespace Server.GameEngine
         {
             while (!battlesToCreate.IsEmpty)
             {
-                if (battlesToCreate.TryDequeue(out var matchData))
+                if (battlesToCreate.TryDequeue(out BattleRoyaleMatchData matchData))
                 {
-                    Battle battle = new Battle(this);
-                    battle.ConfigureSystems(matchData);
-                    battles.TryAdd(matchData.MatchId, battle);
-                    foreach (var player in matchData.GameUnitsForMatch.Players)
-                    {
-                        Log.Warn($"Добавление игрока {nameof(player.TemporaryId)} {player.TemporaryId}");
-                        playerToBattle.TryAdd(player.TemporaryId, battle);
-                    }
-                    Log.Info("Создана новая комната");
+                   CreateBattle(matchData);
                 }
             }
+        }
+
+        private void CreateBattle(BattleRoyaleMatchData matchData)
+        {
+            Match match = new Match(this);
+            match.ConfigureSystems(matchData);
+            //TODO добавить чек
+            matches.TryAdd(matchData.MatchId, match);
+            foreach (var player in matchData.GameUnitsForMatch.Players)
+            {
+                Log.Warn($"Добавление игрока {nameof(player.TemporaryId)} {player.TemporaryId}");
+                playerToBattle.TryAdd(player.TemporaryId, match);
+            }
+            Log.Info("Создана новая комната");
         }
         
         private void DeleteFinishedBattles()
@@ -89,18 +99,22 @@ namespace Server.GameEngine
             while (finishedBattles.Count!=0)
             {
                 Log.Warn("Удаление боя");
-                int battleNumber = finishedBattles.Dequeue();
-                Battle battle = battles[battleNumber];
-                battle.TearDown();
-                int[] playersIds = battle.matchData.GameUnitsForMatch.Players
-                    .Select(player => player.TemporaryId).ToArray();
-                NotifyPlayers(playersIds);
-                ClearPlayers(playersIds);
-                battles.TryRemove(battleNumber, out _);
-                BattleDeletingNotifier.GameRoomIdsToDelete.Enqueue(battleNumber);
+                int matchId = finishedBattles.Dequeue();
+                DeleteMatch(matchId);
             }
         }
 
+        private void DeleteMatch(int matchId)
+        {
+            Match match = matches[matchId];
+            match.TearDown();
+            int[] playersIds = match.matchData.GameUnitsForMatch.Players
+                .Select(player => player.TemporaryId).ToArray();
+            NotifyPlayers(playersIds);
+            ClearPlayers(playersIds);
+            matches.TryRemove(matchId, out _);
+            BattleDeletingNotifier.MatchIdsToDelete.Enqueue(matchId);
+        }
         private void NotifyPlayers(IEnumerable<int> playersIds)
         {
             foreach (var playerId in playersIds)
@@ -123,9 +137,9 @@ namespace Server.GameEngine
             finishedBattles.Enqueue(battleNumber);
         }
 
-        public ICollection<Battle> GetAllGameSessions()
+        public ICollection<Match> GetAllGameSessions()
         {
-            return battles.Values;
+            return matches.Values;
         }
     }
 }

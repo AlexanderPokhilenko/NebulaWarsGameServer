@@ -53,7 +53,9 @@ namespace Server.Http
         private static async Task SendMessageAboutPlayerDeath(PlayerDeathData playerDeathData)
         {
             string pathname = "/GameServer/PlayerDeath";
-            string query = $"?accountId={playerDeathData.PlayerId}&placeInBattle={playerDeathData.PlaceInBattle}&matchId=";
+            string query = $"?accountId={playerDeathData.PlayerId}" +
+                           $"&placeInBattle={playerDeathData.PlaceInBattle}" +
+                           $"&matchId={playerDeathData.MatchId}";
             await SendDelete(pathname, query);
         }
         

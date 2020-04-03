@@ -2,11 +2,11 @@
 {
     public class ContainerRudpSender:IRudpSender
     {
-        private BattlesStorage battlesStorage;
+        private MatchStorage matchStorage;
 
-        public ContainerRudpSender(BattlesStorage battlesStorage)
+        public ContainerRudpSender(MatchStorage matchStorage)
         {
-            this.battlesStorage = battlesStorage;
+            this.matchStorage = matchStorage;
         }
         
         public void SendUnconfirmedMessages()
