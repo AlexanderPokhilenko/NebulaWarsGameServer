@@ -17,7 +17,7 @@ namespace Server.GameEngine.Systems
         public FinishMatchSystem(Contexts contexts, Match match) : base(contexts.game)
         {
             Log.Warn(nameof(FinishMatchSystem)+" ctor");
-            playersGroup = contexts.game.GetGroup(GameMatcher.Player);
+            playersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
             this.match = match;
         }
 
@@ -28,7 +28,7 @@ namespace Server.GameEngine.Systems
 
         protected override bool Filter(GameEntity entity)
         {
-            return entity.hasKilledBy;
+            return entity.hasKilledBy && entity.hasPlayer;
         }
 
         protected override void Execute(List<GameEntity> entities)

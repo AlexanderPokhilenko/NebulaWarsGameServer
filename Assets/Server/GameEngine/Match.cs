@@ -70,8 +70,21 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(Contexts))
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
-                    .Add(new DestroySystems(Contexts))
                     .Add(new FinishMatchSystem(Contexts, this))
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //TODO важно
+                    .Add(new DestroySystems(Contexts))
+                    //TODO важно
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new MaxHpUpdaterSystem(Contexts))
                     .Add(new ShieldPointsUpdaterSystem(Contexts))
