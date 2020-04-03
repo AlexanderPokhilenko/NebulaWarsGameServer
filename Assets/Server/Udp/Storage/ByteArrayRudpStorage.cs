@@ -65,20 +65,7 @@ namespace Server.Udp.Storage
 
         public Dictionary<uint, byte[]>.ValueCollection GetReliableMessages(int playerId)
         {
-            //TODO тут почему-то бросается исключение
-            try
-            {
-                if (unconfirmedMessages.ContainsKey(playerId))
-                {
-                    return unconfirmedMessages[playerId].Values;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{nameof(GetReliableMessages)} брошено исключение "+e.Message);
-            }
-            
-            return null;
+            return unconfirmedMessages.TryGetValue(playerId, out var dict) ? dict.Values : null;
         }
 
         public void RemoveMessage(uint confirmedMessageNumber)

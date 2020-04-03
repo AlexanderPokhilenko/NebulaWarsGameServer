@@ -1,4 +1,5 @@
-﻿using Server.Udp.Sending;
+﻿using System.Linq;
+using Server.Udp.Sending;
 using Server.Udp.Storage;
 
 //TODO как тут красиво получить список активных игроков?
@@ -21,7 +22,8 @@ namespace Server.GameEngine.Experimental
         {
             foreach (var playerId in matchStorageFacade.GetActivePlayerIds())
             {
-                var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
+                //TODO: попробовать разобраться без ToList - пока без него падает из-за модификации коллекции
+                var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId)?.ToList();
                 if (messages != null && messages.Count != 0)
                 {
                     foreach (var message in messages)
