@@ -116,7 +116,7 @@ namespace Server.Udp.Sending
             var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
             if (address == null)
             {
-                Log.Warn($"Не найден ip для игрока {playerId}");
+                // Log.Warn($"Не найден ip для игрока {playerId}");
             }
             return address;
         }

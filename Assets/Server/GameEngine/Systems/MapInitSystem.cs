@@ -80,6 +80,7 @@ namespace Server.GameEngine.Systems
                 var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle);
 
+                Log.Warn($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
                 if (gameUnit.IsBot)

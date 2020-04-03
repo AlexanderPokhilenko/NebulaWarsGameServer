@@ -13,6 +13,7 @@ namespace Server.Http
         public int PlayerId;
         //TODO пирдумать нормальное название для переменной
         public int PlaceInBattle;
+        public int MatchId;
     }
     
     /// <summary>
@@ -52,14 +53,14 @@ namespace Server.Http
         private static async Task SendMessageAboutPlayerDeath(PlayerDeathData playerDeathData)
         {
             string pathname = "/GameServer/PlayerDeath";
-            string query = $"?playerId={playerDeathData.PlayerId}&placeInBattle={playerDeathData.PlaceInBattle}";
+            string query = $"?accountId={playerDeathData.PlayerId}&placeInBattle={playerDeathData.PlaceInBattle}&matchId=";
             await SendDelete(pathname, query);
         }
         
         //TODO вынести отсюда далеко
         private static async Task SendDelete(string pathname, string query)
         {
-            string url = Globals.GameMatcheUrl+pathname+query;
+            string url = Globals.MatchmakerUrl+pathname+query;
             using (var client = new HttpClient())
             {
                 try

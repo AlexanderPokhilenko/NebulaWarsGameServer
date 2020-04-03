@@ -25,7 +25,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-            Log.Warn("Пришло уведомление о плучении сообщения с номером = "+messageIdToConfirm);
+            // Log.Warn("Пришло уведомление о плучении сообщения с номером = "+messageIdToConfirm);
             rudpStorage.RemoveMessage(messageIdToConfirm);
         }
     }

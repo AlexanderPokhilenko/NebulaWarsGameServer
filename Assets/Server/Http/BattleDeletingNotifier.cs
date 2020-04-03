@@ -54,7 +54,7 @@ namespace Server.Http
         //TODO вынести отсюда далеко
         private static async Task SendDelete(string pathname, string query)
         {
-            string url = Globals.GameMatcheUrl+pathname+query;
+            string url = Globals.MatchmakerUrl+pathname+query;
             
             using (var client = new HttpClient())
             {

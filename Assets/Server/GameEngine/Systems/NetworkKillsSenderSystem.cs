@@ -1,6 +1,7 @@
 ﻿using Entitas;
 using System.Collections.Generic;
 using log4net;
+using Server.GameEngine;
 using Server.Http;
 using Server.Udp.Sending;
 
@@ -14,7 +15,8 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
     
-    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos) : base(contexts.game)
+    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos)
+        : base(contexts.game)
     {
         killersInfo = killersInfos;
         var gameContext = contexts.game;
@@ -47,23 +49,29 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
         {
             for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
             {
-                GameEntity e = killedEntities[killedEntityIndex];
-                if (!killersInfo.TryGetValue(e.killedBy.id, out var killerInfo))
+                GameEntity killedEntity = killedEntities[killedEntityIndex];
+                if (!killersInfo.TryGetValue(killedEntity.killedBy.id, out var killerInfo))
                 {
                     killerInfo = (0, 0);
                 }
 
                 UdpSendUtils.SendKills(player.player.id, killerInfo.playerId,
-                    killerInfo.type, e.player.id, e.viewType.id);
+                    killerInfo.type, killedEntity.player.id, killedEntity.viewType.id);
 
-                int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
-                PlayerDeathData playerDeathData = new PlayerDeathData
+                if (!killedEntity.isBot)
                 {
-                    PlayerId = e.player.id,
-                    PlaceInBattle = placeInBattle
-                };
-                PlayerDeathNotifier.KilledPlayerIds.Enqueue(playerDeathData);
-                UdpSendUtils.SendBattleFinishMessage(e.player.id);
+                    int playerTmpId = killedEntity.player.id;
+                    int matchId = BattlesStorage.Instance.GetMatchId(playerTmpId);
+                    int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
+                    PlayerDeathData playerDeathData = new PlayerDeathData
+                    {
+                        PlayerId = playerTmpId,
+                        PlaceInBattle = placeInBattle,
+                        MatchId = matchId 
+                    };
+                    PlayerDeathNotifier.KilledPlayerIds.Enqueue(playerDeathData);
+                    UdpSendUtils.SendBattleFinishMessage(killedEntity.player.id);    
+                }
             }
         }
     }
