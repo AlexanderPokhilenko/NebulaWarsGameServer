@@ -42,37 +42,38 @@ public static class GameComponentsLookup {
     public const int KilledBy = 31;
     public const int Lifetime = 32;
     public const int Mass = 33;
-    public const int MaxAngularVelocity = 34;
-    public const int MaxHealthPoints = 35;
-    public const int MaxVelocity = 36;
-    public const int MovementFrames = 37;
-    public const int NoncollinearAxises = 38;
-    public const int NonstandardRadius = 39;
-    public const int NotDecelerating = 40;
-    public const int Owner = 41;
-    public const int Parasite = 42;
-    public const int Parent = 43;
-    public const int ParentDependent = 44;
-    public const int ParentFixed = 45;
-    public const int PassingThrough = 46;
-    public const int PathCollider = 47;
-    public const int Player = 48;
-    public const int Position = 49;
-    public const int RectangleCollider = 50;
-    public const int Round = 51;
-    public const int SingleTargeting = 52;
-    public const int TargetChanging = 53;
-    public const int Target = 54;
-    public const int TargetingParameters = 55;
-    public const int TargetMovingPoint = 56;
-    public const int TargetScaling = 57;
-    public const int TryingToShoot = 58;
-    public const int Unmovable = 59;
-    public const int Velocity = 60;
-    public const int ViewType = 61;
-    public const int Zone = 62;
+    public const int MatchData = 34;
+    public const int MaxAngularVelocity = 35;
+    public const int MaxHealthPoints = 36;
+    public const int MaxVelocity = 37;
+    public const int MovementFrames = 38;
+    public const int NoncollinearAxises = 39;
+    public const int NonstandardRadius = 40;
+    public const int NotDecelerating = 41;
+    public const int Owner = 42;
+    public const int Parasite = 43;
+    public const int Parent = 44;
+    public const int ParentDependent = 45;
+    public const int ParentFixed = 46;
+    public const int PassingThrough = 47;
+    public const int PathCollider = 48;
+    public const int Player = 49;
+    public const int Position = 50;
+    public const int RectangleCollider = 51;
+    public const int Round = 52;
+    public const int SingleTargeting = 53;
+    public const int TargetChanging = 54;
+    public const int Target = 55;
+    public const int TargetingParameters = 56;
+    public const int TargetMovingPoint = 57;
+    public const int TargetScaling = 58;
+    public const int TryingToShoot = 59;
+    public const int Unmovable = 60;
+    public const int Velocity = 61;
+    public const int ViewType = 62;
+    public const int Zone = 63;
 
-    public const int TotalComponents = 63;
+    public const int TotalComponents = 64;
 
     public static readonly string[] componentNames = {
         "ActionBonus",
@@ -109,6 +110,7 @@ public static class GameComponentsLookup {
         "KilledBy",
         "Lifetime",
         "Mass",
+        "MatchData",
         "MaxAngularVelocity",
         "MaxHealthPoints",
         "MaxVelocity",
@@ -175,6 +177,7 @@ public static class GameComponentsLookup {
         typeof(KilledByComponent),
         typeof(LifetimeComponent),
         typeof(MassComponent),
+        typeof(MatchData),
         typeof(MaxAngularVelocityComponent),
         typeof(MaxHealthPointsComponent),
         typeof(MaxVelocityComponent),

@@ -2,6 +2,6 @@
 {
     public static class Globals
     {
-        public static string GameMatcheUrl = "http://localhost:53846";
+        public static string MatchmakerUrl = "http://localhost:53846";
     }
 }

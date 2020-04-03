@@ -11,17 +11,24 @@ using UnityEngine;
 namespace Server.Http
 {
     /// <summary>
-    /// Отправляет матчеру уведомления при окончании боя.
+    /// Отправляет матчмейкеру уведомления при окончании боя.
     /// </summary>
-    public static class BattleDeletingNotifier
+    public static class MatchDeletingNotifier
     {
-        public static readonly ConcurrentQueue<int> GameRoomIdsToDelete = new ConcurrentQueue<int>();
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BattleDeletingNotifier));
+        private static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDeletingNotifier));
 
+        public static void SendMatchDeletingMessage(int matchId)
+        {
+            MatchIdsToDelete.Enqueue(matchId);
+        }
+        
         public static void StartThread()
         {
-            Thread thread = new Thread(() => StartEndlessLoop().Wait());
-            thread.IsBackground = true;
+            Thread thread = new Thread(() => StartEndlessLoop().Wait())
+            {
+                    IsBackground = true
+            };
             thread.Start();
         }
         
@@ -37,9 +44,9 @@ namespace Server.Http
 
         private static async Task TrySendDeleteMessages()
         {
-            while (!GameRoomIdsToDelete.IsEmpty)
+            while (!MatchIdsToDelete.IsEmpty)
             {
-                GameRoomIdsToDelete.TryDequeue(out int gameRoomId);
+                MatchIdsToDelete.TryDequeue(out int gameRoomId);
                 await SendMessageAboutGameOver(gameRoomId);
             }
         }
@@ -47,14 +54,14 @@ namespace Server.Http
         private static async Task SendMessageAboutGameOver(int gameRoomId)
         {
             string pathname = "/GameServer/DeleteRoom";
-            string query = $"?gameRoomId={gameRoomId.ToString()}";
+            string query = $"?matchId={gameRoomId.ToString()}";
             await SendDelete(pathname, query);
         }
         
         //TODO вынести отсюда далеко
         private static async Task SendDelete(string pathname, string query)
         {
-            string url = Globals.GameMatcheUrl+pathname+query;
+            string url = Globals.MatchmakerUrl+pathname+query;
             
             using (var client = new HttpClient())
             {

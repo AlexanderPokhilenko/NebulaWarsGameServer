@@ -20,12 +20,12 @@ namespace Server.Udp.MessageProcessing.Handlers
 
         private void AddPlayerInputComponent(int playerId, Vector2 vector)
         {
-            StaticInputMessagesSorter.MovementMessages.TryAdd(playerId, vector);
+            StaticInputMessagesSorter.TryAddMovementMessage(playerId, vector);
         }
 
         private void AddPlayerAttackComponent(int playerId, float angle)
         {
-            StaticInputMessagesSorter.AttackMessages.TryAdd(playerId, angle);
+            StaticInputMessagesSorter.TryAddAttackMessage(playerId, angle);
         }
     }
 }

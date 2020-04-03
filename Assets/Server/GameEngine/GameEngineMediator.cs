@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Server.GameEngine.Experimental;
+﻿using Server.GameEngine.Experimental;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -8,12 +7,12 @@ namespace Server.GameEngine
     {
         private Clock clock;
         private readonly IRudpSender rudpSender;
-        public static BattlesStorage BattlesStorage;
+        public static MatchStorageFacade MatchStorageFacade;
 
         public GameEngineMediator()
         {
-            BattlesStorage = new BattlesStorage();
-            rudpSender = new SimpleRudpSender(BattlesStorage);
+            MatchStorageFacade = new MatchStorageFacade();
+            rudpSender = new SimpleRudpSender(MatchStorageFacade);
             InitClock();
         }
 
@@ -38,13 +37,13 @@ namespace Server.GameEngine
             StaticInputMessagesSorter.Spread();
 
 #if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
-            foreach (var gameSession in BattlesStorage.GetAllGameSessions())
+            foreach (var gameSession in MatchStorageFacade.GetAllGameSessions())
             {
                 gameSession.Execute();
                 gameSession.Cleanup();
             }
 #else
-            Parallel.ForEach(BattlesStorage.GetAllGameSessions(), gameSession =>
+            Parallel.ForEach(MatchStorageFacade.GetAllGameSessions(), gameSession =>
             {
                 gameSession.Execute();
                 gameSession.Cleanup();
@@ -53,7 +52,7 @@ namespace Server.GameEngine
 
             PingLogger.Log();
             rudpSender.SendUnconfirmedMessages();
-            BattlesStorage.UpdateBattlesList();
+            MatchStorageFacade.UpdateBattlesList();
         }
     }
 }

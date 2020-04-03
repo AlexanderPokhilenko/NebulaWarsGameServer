@@ -2,19 +2,23 @@
 using Entitas;
 using System.Collections.Generic;
 using log4net;
+using Server.GameEngine;
 using Server.Http;
 using Server.Udp.Sending;
-using UnityEngine;
 
+/// <summary>
+/// Отвечает за отправку сообщения об убийствах.
+/// </summary>
 public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
 {
-    private readonly GameContext gameContext;
-    IGroup<GameEntity> alivePlayersAndBots;
+    readonly IGroup<GameEntity> alivePlayersAndBots;
     private readonly IGroup<GameEntity> alivePlayers;
     private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
+    readonly GameContext gameContext;
     
-    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos) : base(contexts.game)
+    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos)
+        : base(contexts.game)
     {
         killersInfo = killersInfos;
         gameContext = contexts.game;
@@ -47,23 +51,45 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
         {
             for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
             {
-                GameEntity e = killedEntities[killedEntityIndex];
-                if (!killersInfo.TryGetValue(e.killedBy.id, out var killerInfo))
+                GameEntity killedEntity = killedEntities[killedEntityIndex];
+                if (!killersInfo.TryGetValue(killedEntity.killedBy.id, out var killerInfo))
                 {
                     killerInfo = (0, 0);
                 }
 
-                UdpSendUtils.SendKills(player.player.id, killerInfo.playerId,
-                    killerInfo.type, e.player.id, e.viewType.id);
-
-                int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
-                PlayerDeathData playerDeathData = new PlayerDeathData
+                KillData killData = new KillData
                 {
-                    PlayerId = e.player.id,
-                    PlaceInBattle = placeInBattle
+                    TargetPlayerId = player.player.id,
+                    KillerId = killerInfo.playerId,
+                    KillerType = killerInfo.type,
+                    VictimType = killedEntity.viewType.id,
+                    VictimId = killedEntity.player.id
                 };
+                
+                UdpSendUtils.SendKill(killData);
 
-                PlayerDeathNotifier.KilledPlayerIds.Enqueue(playerDeathData);
+                if (!killedEntity.isBot)
+                {
+                    int playerTmpId = killedEntity.player.id;
+                    if (!gameContext.hasMatchData)
+                    {
+                        throw new Exception("gameContext do not have match data");
+                    }
+
+                    //TODO это говнище
+                    var dich = GameEngineMediator.MatchStorageFacade.TryRemovePlayer(playerTmpId);
+                    
+                    int matchId = gameContext.matchData.MatchId;
+                    int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities, killedEntityIndex);
+                    PlayerDeathData playerDeathData = new PlayerDeathData
+                    {
+                        PlayerId = playerTmpId,
+                        PlaceInBattle = placeInBattle,
+                        MatchId = matchId 
+                    };
+                    PlayerDeathNotifier.KilledPlayerIds.Enqueue(playerDeathData);
+                    UdpSendUtils.SendBattleFinishMessage(killedEntity.player.id);    
+                }
             }
         }
     }

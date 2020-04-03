@@ -41,7 +41,7 @@ namespace Server.GameEngine
 
         public void OnDestroy()
         {
-            foreach (var battle in GameEngineMediator.BattlesStorage.GetAllGameSessions())
+            foreach (var battle in GameEngineMediator.MatchStorageFacade.GetAllGameSessions())
             {
                 battle.FinishGame();
             }

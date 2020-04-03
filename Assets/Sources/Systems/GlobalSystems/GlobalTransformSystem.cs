@@ -1,4 +1,5 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using log4net;
 
 public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
@@ -48,7 +49,7 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
             if (!parent.hasGlobalTransform) AddGlobalTransform(parent);
 
             var parentAngle = parent.globalTransform.angle;
-            if (parentAngle != 0f)
+            if (Math.Abs(parentAngle) > 0.001)
             {
                 position.Rotate(parentAngle);
                 angle += parentAngle;

@@ -13,6 +13,15 @@ using Server.Udp.Storage;
 
 namespace Server.Udp.Sending
 {
+    public struct KillData
+    {
+        public int TargetPlayerId;
+        public int KillerId;
+        public ViewTypeId KillerType;
+        public int VictimId;
+        public ViewTypeId VictimType;
+    }
+    
     public static class UdpSendUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(UdpSendUtils));
@@ -38,15 +47,15 @@ namespace Server.Udp.Sending
             }
         }
 
-        internal static void SendKills(int targetPlayerId, int killerId, ViewTypeId killerType, int victimId, ViewTypeId victimType)
+        internal static void SendKill(KillData killData)
         {
-            var address = GetPlayerIpAddress(targetPlayerId);
+            var address = GetPlayerIpAddress(killData.TargetPlayerId);
             if (address != null)
             {
-                var killMessage = new KillMessage(killerId, killerType, victimId, victimType);
+                var killMessage = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, killData.VictimType);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
-                ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId, messageId, serializedMessage);
+                ByteArrayRudpStorage.Instance.AddMessage(killData.TargetPlayerId, messageId, serializedMessage);
                 NetworkMediator.udpBattleConnection.Send(serializedMessage, address);
             }
         }
@@ -76,10 +85,10 @@ namespace Server.Udp.Sending
             if (address != null)
             {
                 HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
-                // Log.Warning($"Отправка хп игрока {targetPlayerId} {healthPoints}");
+                // Log.Warning($"Отправка хп игрока {TargetPlayerId} {healthPoints}");
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
-                // ByteArrayRudpStorage.Instance.AddMessage(targetPlayerId,  messageId, serializedMessage);
+                // ByteArrayRudpStorage.Instance.AddMessage(TargetPlayerId,  messageId, serializedMessage);
                 NetworkMediator.udpBattleConnection.Send(serializedMessage, address);   
             }
         }
@@ -141,7 +150,7 @@ namespace Server.Udp.Sending
             var address = NetworkMediator.IpAddressesStorage.GetPlayerIpAddress(playerId);
             if (address == null)
             {
-                Log.Warn($"Не найден ip для игрока {playerId}");
+                // Log.Warn($"Не найден ip для игрока {playerId}");
             }
             return address;
         }

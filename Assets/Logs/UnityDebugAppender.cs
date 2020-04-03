@@ -1,5 +1,5 @@
-﻿// #define EnableInfoLogLevel
-// #define EnableConsoleLogs
+﻿#define EnableInfoLogLevel
+#define EnableConsoleLogs
 
 using log4net.Appender;
 using log4net.Core;

@@ -8,6 +8,24 @@ using UnityEngine;
 
 namespace Server.GameEngine.Systems
 {
+    public class MatchDataInitSystem : IInitializeSystem
+    {
+        private readonly Contexts contexts;
+        private readonly BattleRoyaleMatchData matchData;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDataInitSystem));
+        
+        public MatchDataInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
+        {
+            this.contexts = contexts;
+            this.matchData = matchData;
+        }
+        public void Initialize()
+        {
+            Log.Warn($"{nameof(MatchDataInitSystem)} {nameof(matchData.MatchId)} {matchData.MatchId}");
+            contexts.game.SetMatchData(matchData.MatchId);
+        }
+    }
+    
     public class MapInitSystem : IInitializeSystem
     {
         private readonly System.Random random = new System.Random();
@@ -62,7 +80,7 @@ namespace Server.GameEngine.Systems
         
         public void Initialize()
         {
-            Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
+            Log.Warn($"Создание игровой комнаты с номером {matchData.MatchId}");
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
@@ -71,6 +89,7 @@ namespace Server.GameEngine.Systems
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
+            
             for (var i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
             {
                 var gameUnit = matchData.GameUnitsForMatch[i];
@@ -80,6 +99,7 @@ namespace Server.GameEngine.Systems
                 var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle);
 
+                Log.Warn($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
                 if (gameUnit.IsBot)

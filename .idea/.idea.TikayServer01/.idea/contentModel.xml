@@ -54,6 +54,7 @@
               <e p="GameKilledByComponent.cs" t="Include" />
               <e p="GameLifetimeComponent.cs" t="Include" />
               <e p="GameMassComponent.cs" t="Include" />
+              <e p="GameMatchDataComponent.cs" t="Include" />
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxHealthPointsComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
@@ -213,8 +214,6 @@
         </e>
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
-            <e p="Battle.cs" t="Include" />
-            <e p="BattlesStorage.cs" t="Include" />
             <e p="Clock.cs" t="Include" />
             <e p="ContextsPool.cs" t="Include" />
             <e p="Experimental" t="Include">
@@ -226,6 +225,10 @@
             </e>
             <e p="GameEngineMediator.cs" t="Include" />
             <e p="GameSessionGlobals.cs" t="Include" />
+            <e p="Match.cs" t="Include" />
+            <e p="MatchStorage.cs" t="Include" />
+            <e p="MatchStorageFacade.cs" t="Include" />
+            <e p="PlayersNotifyHelper.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="FinishBattleSystem.cs" t="Include" />
               <e p="GameDeletingSystem.cs" t="Include" />
@@ -237,15 +240,17 @@
               <e p="PlayerAttackHandlerSystem.cs" t="Include" />
               <e p="PlayerMovementHandlerSystem.cs" t="Include" />
               <e p="PlayersInitSystem.cs" t="Include" />
+              <e p="TestEndMatchSystem2.cs" t="Include" />
               <e p="UpdatePossibleKillersSystem.cs" t="Include" />
             </e>
           </e>
           <e p="Http" t="Include">
             <e p="BattleCreator.cs" t="Include" />
-            <e p="BattleDeletingNotifier.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="HttpListenerWrapper.cs" t="Include" />
             <e p="HttpMessageHandlers.cs" t="Include" />
+            <e p="MatchDeletingNotifier.cs" t="Include" />
+            <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
           </e>
           <e p="Program.cs" t="Include" />
@@ -325,6 +330,7 @@
               <e p="MaxHealthPointsComponent.cs" t="Include" />
             </e>
             <e p="IdComponent.cs" t="Include" />
+            <e p="MatchData.cs" t="Include" />
             <e p="MovementComponents" t="Include">
               <e p="AngularVelocityComponent.cs" t="Include" />
               <e p="DirectionComponent.cs" t="Include" />
@@ -459,10 +465,15 @@
             </e>
           </e>
         </e>
+        <e p="Tests" t="Include">
+          <e p="NewTestScript.cs" t="Include" />
+          <e p="Tests.asmdef" t="Include" />
+        </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Tests.csproj" t="IncludeRecursive" />
       <e p="TikayServer01.sln" t="IncludeFlat" />
     </e>
   </component>

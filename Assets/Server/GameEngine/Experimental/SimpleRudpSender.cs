@@ -1,20 +1,25 @@
 ﻿using Server.Udp.Sending;
 using Server.Udp.Storage;
 
+//TODO как тут красиво получить список активных игроков?
+
 namespace Server.GameEngine.Experimental
 {
+    /// <summary>
+    /// Отправляет все сообщения, доставка которыъ не была подтверждена
+    /// </summary>
     public class SimpleRudpSender:IRudpSender
     {
-        private readonly BattlesStorage battlesStorage;
+        private readonly MatchStorageFacade matchStorageFacade;
 
-        public SimpleRudpSender(BattlesStorage battlesStorage)
+        public SimpleRudpSender(MatchStorageFacade matchStorageFacade)
         {
-            this.battlesStorage = battlesStorage;
+            this.matchStorageFacade = matchStorageFacade;
         }
 
         public void SendUnconfirmedMessages()
         {
-            foreach (var playerId in battlesStorage.playerToBattle.Keys)
+            foreach (var playerId in matchStorageFacade.GetActivePlayerIds())
             {
                 var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId);
                 if (messages != null && messages.Count != 0)
