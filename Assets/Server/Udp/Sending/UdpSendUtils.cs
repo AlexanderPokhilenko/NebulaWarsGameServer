@@ -13,15 +13,6 @@ using Server.Udp.Storage;
 
 namespace Server.Udp.Sending
 {
-    public struct KillData
-    {
-        public int TargetPlayerId;
-        public int KillerId;
-        public ViewTypeId KillerType;
-        public int VictimId;
-        public ViewTypeId VictimType;
-    }
-    
     public static class UdpSendUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(UdpSendUtils));

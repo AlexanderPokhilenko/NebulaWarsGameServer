@@ -16,7 +16,7 @@ namespace Server.GameEngine
         public BattleRoyaleMatchData matchData { get; private set; }
         private DateTime? gameStartTime;
 
-        private readonly MatchStorageFacade gameSessionsStorageFacade;
+        private readonly MatchStorageFacade matchStorageFacade;
 
         // private readonly FlameCircleObject zoneObject;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
@@ -25,9 +25,9 @@ namespace Server.GameEngine
         
         private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
         
-        public Match(MatchStorageFacade gameSessionsStorageFacade)
+        public Match(MatchStorageFacade matchStorageFacade)
         {
-            this.gameSessionsStorageFacade = gameSessionsStorageFacade;
+            this.matchStorageFacade = matchStorageFacade;
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
             // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
@@ -70,8 +70,21 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(Contexts))
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
+                    .Add(new FinishMatchSystem(Contexts, this))
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //TODO важно
                     .Add(new DestroySystems(Contexts))
-                    .Add(new FinishBattleSystem(Contexts, this))
+                    //TODO важно
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new MaxHpUpdaterSystem(Contexts))
                     .Add(new ShieldPointsUpdaterSystem(Contexts))
@@ -120,8 +133,9 @@ namespace Server.GameEngine
 
         public void FinishGame()
         {
+            Log.Error(nameof(FinishGame));
             gameOver = true;
-            gameSessionsStorageFacade.MarkBattleAsFinished(matchData.MatchId);
+            matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);
         }
     }
 }

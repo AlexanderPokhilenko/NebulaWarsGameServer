@@ -10,7 +10,8 @@ namespace Server.GameEngine.Systems
         
         public TestEndMatchSystem2(Contexts contexts)
         {
-            botsGroup = contexts.game.GetGroup(GameMatcher.AnyOf(GameMatcher.Bot, GameMatcher.HealthPoints));
+            botsGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Bot,
+                GameMatcher.HealthPoints));
             clockwork = new Clockwork(new TimeSpan(0,0,0,2));
         }
         

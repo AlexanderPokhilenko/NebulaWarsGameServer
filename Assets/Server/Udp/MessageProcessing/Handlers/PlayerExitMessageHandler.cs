@@ -21,7 +21,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 
             if (NetworkMediator.IpAddressesStorage.TryRemovePlayerIp(exitMessage.PlayerId))
             {
-                Log.Warn($"ip игрока с id {exitMessage.PlayerId} удалён из списка");
+                Log.Warn($"ip игрока с id {exitMessage.PlayerId} удалён");
             }
         }
     }
