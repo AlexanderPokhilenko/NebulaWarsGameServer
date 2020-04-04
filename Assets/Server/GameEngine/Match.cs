@@ -74,17 +74,7 @@ namespace Server.GameEngine
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    //TODO важно
                     .Add(new DestroySystems(Contexts))
-                    //TODO важно
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new MaxHpUpdaterSystem(Contexts))
                     .Add(new ShieldPointsUpdaterSystem(Contexts))
@@ -133,7 +123,7 @@ namespace Server.GameEngine
 
         public void FinishGame()
         {
-            Log.Error(nameof(FinishGame));
+            // Log.Error(nameof(FinishGame));
             gameOver = true;
             matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);
         }
