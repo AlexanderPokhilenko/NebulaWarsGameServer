@@ -30,5 +30,6 @@
     SpiderBot,
     SmallRepairBonus,
     SmallUpgradeBonus,
-    ScarabBoss
+    ScarabBoss,
+    MediumUpgradeBonus
 }
