@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -10,21 +11,33 @@ namespace Server.GameEngine
     {
         private static float prevTickTime;
         public static float deltaTime;
-        private void Tick()
-        {
-            gameEngineMediator.Tick();
-        }
+        private const float TickDeltaSeconds = 1f / 20;
+        private Action action;
+        
+      
 
 #if UNITY_5_3_OR_NEWER
-        private const float TickDeltaSeconds = 1f / 20;
-        public GameEngineMediator gameEngineMediator;
+      
+
+        public void SetAction(Action actionArg)
+        {
+            if (action != null)
+            {
+                throw new Exception("Повторная инициализация таймера.");
+            }
+            else
+            {
+                action = actionArg;
+            }
+        }
+        
         private IEnumerator MakeTick()
         {
             while (true)
             {
                 var currentTime = Time.time;
                 deltaTime = currentTime - prevTickTime;
-                Tick();
+                action.Invoke();
                 prevTickTime = currentTime;
                 yield return new WaitForSeconds(TickDeltaSeconds);
             }
@@ -37,6 +50,7 @@ namespace Server.GameEngine
             StartCoroutine(nameof(MakeTick));
         }
 
+        //TODO почему это находится здесь?
         public void OnDestroy()
         {
             foreach (var battle in GameEngineMediator.MatchStorageFacade.GetAllGameSessions())

@@ -5,6 +5,9 @@ using log4net;
 
 namespace Server.Udp.Storage
 {
+    /// <summary>
+    /// Содержит таблицу ip адресов для игроков
+    /// </summary>
     public class IpAddressesStorage
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(IpAddressesStorage));

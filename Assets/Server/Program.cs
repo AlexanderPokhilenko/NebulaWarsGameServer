@@ -13,8 +13,8 @@ namespace Server
         
         public static void Main()
         {
-            StartGameMatcherListenerThread(HttpPort);
-            StartPlayersListenerThread(UdpPort);
+            StartMatchmakerListening(HttpPort);
+            StartPlayersListening(UdpPort);
             
             MatchDeletingNotifier.StartThread();
             PlayerDeathNotifier.StartThread();
@@ -24,16 +24,19 @@ namespace Server
         }
         
 
-        private static void StartGameMatcherListenerThread(int port)
+        private static void StartMatchmakerListening(int port)
         {
             new Thread(() => { new HttpListenerWrapper().StartListenHttp(port).Wait(); })
                 .Start();
         }
 
-        private static void StartPlayersListenerThread(int port)
+        private static void StartPlayersListening(int port)
         {
+            var udpBattleConnection = new UdpBattleConnection();
+
             NetworkMediator mediator = new NetworkMediator();
-            var udpBattleConnection = new UdpBattleConnection(mediator);
+            mediator.SetUdpConnection(udpBattleConnection);
+            
             udpBattleConnection
                 .SetUpConnection(port)
                 .StartReceiveThread();

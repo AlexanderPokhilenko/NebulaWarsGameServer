@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
@@ -8,10 +9,10 @@ using ZeroFormatter;
 
 namespace Server.Udp
 {
+    //TODO говно
     public class NetworkMediator
     {
         private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
-        //TODO Почему эта херня публичная?
         public static readonly IpAddressesStorage IpAddressesStorage = new IpAddressesStorage();
         public static UdpBattleConnection udpBattleConnection { get; private set; }
         
@@ -27,6 +28,7 @@ namespace Server.Udp
             if (udpBattleConnection == null)
             {
                 udpBattleConnection = udpBattleConn;
+                udpBattleConnection.SetMediator(this);
             }
             else
             {

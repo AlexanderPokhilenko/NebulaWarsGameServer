@@ -17,8 +17,7 @@ namespace Server.Udp.MessageProcessing.Handlers
         {
             PlayerPingMessage mes = 
                 ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
-
-            // int gameRoomNumber = mes.GameRoomNumber;
+            
             int playerId = mes.TemporaryId;
 
             TrySetUpIpAddress(sender, playerId);

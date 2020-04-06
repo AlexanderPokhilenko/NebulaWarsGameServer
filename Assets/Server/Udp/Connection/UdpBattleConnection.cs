@@ -1,15 +1,22 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace Server.Udp.Connection
 {
     public class UdpBattleConnection:UdpConnection
     {
-        private readonly NetworkMediator mediator;
+        private NetworkMediator mediator;
         
-        public UdpBattleConnection(NetworkMediator mediator)
+        public void SetMediator(NetworkMediator mediatorArg)
         {
-            this.mediator = mediator;
-            mediator.SetUdpConnection(this);
+            if (mediator != null)
+            {
+                throw new Exception("Повторная инициализация медиатора.");
+            }
+            else
+            {
+                mediator = mediatorArg;
+            }
         }
         
         protected override void HandleBytes(byte[] data, IPEndPoint endPoint)

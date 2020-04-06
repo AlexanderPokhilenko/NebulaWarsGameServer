@@ -13,7 +13,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     public class RudpConfirmationReceiver:IMessageHandler
     {
         private readonly ByteArrayRudpStorage rudpStorage;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitMessageHandler));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationReceiver));
 
         public RudpConfirmationReceiver()
         {

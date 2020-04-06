@@ -5,18 +5,24 @@ using Server.Udp.MessageProcessing.Handlers;
 
 namespace Server.Udp.MessageProcessing
 {
+    /// <summary>
+    /// Перенаправляет все сообщения от игроков по обработчикам.
+    /// </summary>
     internal class MessageProcessor
     {
         private readonly InputMessageHandler inputMessageHandler = new InputMessageHandler();
         private readonly PingMessageHandler pingMessageHandler = new PingMessageHandler();
         private readonly RudpConfirmationReceiver confirmationReceiver = new RudpConfirmationReceiver();
-        private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
         private readonly PlayerExitMessageHandler exitMessageHandler = new PlayerExitMessageHandler();
         
-        
+        private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
+
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            if (messageWrapper.NeedResponse) confirmationSender.Handle(messageWrapper, sender);
+            if (messageWrapper.NeedResponse)
+            {
+                confirmationSender.Handle(messageWrapper, sender);
+            }
             
             switch (messageWrapper.MessageType)
             {

@@ -285,9 +285,6 @@
               <e p="IpAddressesStorage.cs" t="Include" />
             </e>
           </e>
-          <e p="Utils" t="Include">
-            <e p="Log.cs" t="Include" />
-          </e>
         </e>
         <e p="ServerController.cs" t="Include" />
         <e p="Sources" t="Include">
