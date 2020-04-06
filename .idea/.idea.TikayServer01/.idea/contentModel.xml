@@ -54,7 +54,7 @@
               <e p="GameKilledByComponent.cs" t="Include" />
               <e p="GameLifetimeComponent.cs" t="Include" />
               <e p="GameMassComponent.cs" t="Include" />
-              <e p="GameMatchDataComponent.cs" t="Include" />
+              <e p="GameMatchComponent.cs" t="Include" />
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxHealthPointsComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
@@ -97,6 +97,7 @@
               <e p="InputIdComponent.cs" t="Include" />
               <e p="InputMovementComponent.cs" t="Include" />
               <e p="InputPlayerComponent.cs" t="Include" />
+              <e p="InputPlayerExitComponent.cs" t="Include" />
             </e>
             <e p="InputAttribute.cs" t="Include" />
             <e p="InputComponentsLookup.cs" t="Include" />
@@ -219,6 +220,7 @@
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
             <e p="Clock.cs" t="Include" />
+            <e p="ClockFacade.cs" t="Include" />
             <e p="ContextsPool.cs" t="Include" />
             <e p="Experimental" t="Include">
               <e p="ContainerRudpSender.cs" t="Include" />
@@ -238,10 +240,12 @@
               <e p="GameDeletingSystem.cs" t="Include" />
               <e p="InputDeletingSystem.cs" t="Include" />
               <e p="MapInitSystem.cs" t="Include" />
+              <e p="MatchIDInitSystem.cs" t="Include" />
               <e p="MaxHpUpdaterSystem.cs" t="Include" />
               <e p="NetworkKillsSenderSystem.cs" t="Include" />
               <e p="NetworkSenderSystem.cs" t="Include" />
               <e p="PlayerAttackHandlerSystem.cs" t="Include" />
+              <e p="PlayerExitSystem.cs" t="Include" />
               <e p="PlayerMovementHandlerSystem.cs" t="Include" />
               <e p="PlayersInitSystem.cs" t="Include" />
               <e p="ShieldPointsUpdaterSystem.cs" t="Include" />
@@ -333,7 +337,7 @@
               <e p="MaxHealthPointsComponent.cs" t="Include" />
             </e>
             <e p="IdComponent.cs" t="Include" />
-            <e p="MatchData.cs" t="Include" />
+            <e p="MatchComponent.cs" t="Include" />
             <e p="MovementComponents" t="Include">
               <e p="AngularVelocityComponent.cs" t="Include" />
               <e p="DirectionComponent.cs" t="Include" />

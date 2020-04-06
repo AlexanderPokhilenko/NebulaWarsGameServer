@@ -19,7 +19,7 @@ namespace Server.GameEngine
 
         public MatchStorage()
         {
-            matches= new ConcurrentDictionary<int, Match>();
+            matches = new ConcurrentDictionary<int, Match>();
             activePlayers = new ConcurrentDictionary<int, Match>();
         }
 
@@ -42,6 +42,7 @@ namespace Server.GameEngine
                 .Select(player => player.TemporaryId);
             return playersIds;
         }
+        
         public void RemoveMatch(int matchId)
         {
             Log.Warn(nameof(RemoveMatch));
@@ -66,6 +67,7 @@ namespace Server.GameEngine
 
         public bool TryRemovePlayer(int playerTmpId)
         {
+            Log.Error($"{nameof(TryRemovePlayer)} {playerTmpId}");
             bool success = activePlayers.TryRemove(playerTmpId, out _);
             return success;
         }
@@ -87,6 +89,11 @@ namespace Server.GameEngine
 
         public bool TryGetMatchByPlayerId(int playerId, out Match match)
         {
+            Log.Error("Вывод всех игроков");
+            foreach (var pair in activePlayers)
+            {
+                Log.Error($"playerId = {pair.Key} matchId {pair.Value.matchData.MatchId}");
+            }
             return activePlayers.TryGetValue(playerId, out match);
         }
     }

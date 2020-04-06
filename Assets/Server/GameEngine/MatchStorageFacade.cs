@@ -1,10 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
-using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -111,7 +109,7 @@ namespace Server.GameEngine
             return matchStorage.GetActivePlayerIds();
         }
 
-        public bool TryGetValueMatchByPlayerId(int playerId, out Match match)
+        public bool TryGetMatchByPlayerId(int playerId, out Match match)
         {
             return matchStorage.TryGetMatchByPlayerId(playerId, out match);
         }

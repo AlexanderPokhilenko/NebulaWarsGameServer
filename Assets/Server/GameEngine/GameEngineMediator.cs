@@ -1,33 +1,7 @@
-﻿using System;
-using Server.GameEngine.Experimental;
-using UnityEngine;
+﻿using Server.GameEngine.Experimental;
 
 namespace Server.GameEngine
 {
-    /// <summary>
-    /// Вызывает метод раз в период.
-    /// </summary>
-    public class ClockFacade
-    {
-        private readonly Clock clock;
-
-        public ClockFacade(Action action)
-        {
-#if UNITY_5_3_OR_NEWER
-            var go = new GameObject("Clock");
-            clock = go.AddComponent<Clock>();
-            clock.SetAction(action);
-#else
-            clock = new Clock(this);
-#endif
-        }
-   
-        public void StartEndlessLoop()
-        {
-            clock.StartEndlessLoop();
-        }
-    }
-    
     /// <summary>
     /// Отвечает за правильный вызов подпрограмм во время тика.
     /// </summary>
@@ -52,6 +26,7 @@ namespace Server.GameEngine
         private void Tick()
         {
             StaticInputMessagesSorter.Spread();
+            StaticExitMessageSorter.Spread();
 
 #if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
             foreach (var gameSession in MatchStorageFacade.GetAllGameSessions())

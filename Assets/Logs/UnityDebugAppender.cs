@@ -1,5 +1,4 @@
-﻿#define EnableInfoLogLevel
-#define EnableConsoleLogs
+﻿#define EnableConsoleLogs
 
 using log4net.Appender;
 using log4net.Core;
@@ -14,25 +13,19 @@ public class UnityDebugAppender : AppenderSkeleton
 {
     protected override void Append(LoggingEvent loggingEvent)
     {
+#if EnableConsoleLogs
         if (loggingEvent.Level.CompareTo(Level.Error) >= 0)
         {
-            #if EnableConsoleLogs
-                Debug.LogError(RenderLoggingEvent(loggingEvent));
-            #endif
+            Debug.LogError(RenderLoggingEvent(loggingEvent));
         }
         else if (loggingEvent.Level.CompareTo(Level.Warn) >= 0)
         {
-            #if EnableConsoleLogs
-                Debug.LogWarning(RenderLoggingEvent(loggingEvent));
-            #endif
+            Debug.LogWarning(RenderLoggingEvent(loggingEvent));
         }
-        #if EnableInfoLogLevel
-        else if (loggingEvent.Level.CompareTo(Level.Notice) >= 0)
+        else
         {
-            #if EnableConsoleLogs
-                Debug.Log(RenderLoggingEvent(loggingEvent));
-            #endif
+            Debug.Log(RenderLoggingEvent(loggingEvent));
         }
-        #endif
+#endif    
     }
 }

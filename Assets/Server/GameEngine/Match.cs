@@ -54,10 +54,11 @@ namespace Server.GameEngine
 #else
                     .Add(new MapInitSystem(Contexts, matchDataArg))
 #endif
+                    .Add(new MatchIdInitSystem(Contexts, matchDataArg))
                     
                     // .Add(new TestEndMatchSystem2(Contexts))
                     
-                    .Add(new MatchDataInitSystem(Contexts, matchDataArg))
+                    
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
@@ -69,7 +70,10 @@ namespace Server.GameEngine
                     .Add(new EffectsSystems(Contexts))
                     .Add(new TimeSystems(Contexts))
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
+                    
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
+                    .Add(new PlayerExitSystem(Contexts, matchDataArg.MatchId))
+                    
                     .Add(new FinishMatchSystem(Contexts, this))
                     
                     

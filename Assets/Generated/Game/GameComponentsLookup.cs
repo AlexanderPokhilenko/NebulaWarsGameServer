@@ -42,7 +42,7 @@ public static class GameComponentsLookup {
     public const int KilledBy = 31;
     public const int Lifetime = 32;
     public const int Mass = 33;
-    public const int MatchData = 34;
+    public const int Match = 34;
     public const int MaxAngularVelocity = 35;
     public const int MaxHealthPoints = 36;
     public const int MaxVelocity = 37;
@@ -110,7 +110,7 @@ public static class GameComponentsLookup {
         "KilledBy",
         "Lifetime",
         "Mass",
-        "MatchData",
+        "Match",
         "MaxAngularVelocity",
         "MaxHealthPoints",
         "MaxVelocity",
@@ -177,7 +177,7 @@ public static class GameComponentsLookup {
         typeof(KilledByComponent),
         typeof(LifetimeComponent),
         typeof(MassComponent),
-        typeof(MatchData),
+        typeof(MatchComponent),
         typeof(MaxAngularVelocityComponent),
         typeof(MaxHealthPointsComponent),
         typeof(MaxVelocityComponent),

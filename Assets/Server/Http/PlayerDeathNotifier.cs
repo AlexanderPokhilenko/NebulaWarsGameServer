@@ -13,9 +13,9 @@ namespace Server.Http
     /// </summary>
     public static class PlayerDeathNotifier
     {
-        public static readonly ConcurrentQueue<PlayerDeathData> KilledPlayerIds =
-            new ConcurrentQueue<PlayerDeathData>();
         private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerDeathNotifier));
+        public static readonly ConcurrentQueue<PlayerDeathData> KilledPlayers =
+            new ConcurrentQueue<PlayerDeathData>();
         
         public static void StartThread()
         {
@@ -35,9 +35,10 @@ namespace Server.Http
         
         private static async Task TrySendMessages()
         {
-            while (!KilledPlayerIds.IsEmpty)
+            while (!KilledPlayers.IsEmpty)
             {
-                KilledPlayerIds.TryDequeue(out var playerDeathData);
+                Log.Error("Отправка уведомления о смерти игрока");
+                KilledPlayers.TryDequeue(out var playerDeathData);
                 CheckDeathData(playerDeathData);
                 await SendMessageAboutPlayerDeath(playerDeathData);
             }

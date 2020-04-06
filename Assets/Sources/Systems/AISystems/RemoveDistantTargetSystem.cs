@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Entitas;
-using UnityEngine;
 
 public sealed class RemoveDistantTargetSystem : ICleanupSystem
 {
@@ -13,7 +11,8 @@ public sealed class RemoveDistantTargetSystem : ICleanupSystem
     {
         buffer = new List<GameEntity>();
         gameContext = contexts.game;
-        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.TargetingParameters, GameMatcher.Target);
+        var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.TargetingParameters, 
+            GameMatcher.Target);
         targetingGroup = gameContext.GetGroup(matcher);
     }
 
