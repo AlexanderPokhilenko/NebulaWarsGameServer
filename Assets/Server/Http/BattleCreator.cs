@@ -105,13 +105,13 @@ namespace Server.Http
             Log.Info("Игроки");
             foreach (var player in matchData.GameUnitsForMatch.Players)
             {
-                Log.Info($"PlayerGoogleId = {player.ServiceId} {player.PrefabName} lvl = {player.WarshipCombatPowerLevel}");
+                Log.Info($"{nameof(player.ServiceId)} = {player.ServiceId}, {nameof(player.AccountId)} = {player.AccountId}, {player.PrefabName} lvl = {player.WarshipCombatPowerLevel}");
             }
             
             Log.Info("Боты");
             foreach (var bot in matchData.GameUnitsForMatch.Bots)
             {
-                Log.Info($"PlayerGoogleId = {bot.TemporaryId} {bot.PrefabName} lvl = {bot.WarshipCombatPowerLevel}");
+                Log.Info($"{nameof(bot.TemporaryId)} = {bot.TemporaryId} {bot.PrefabName} lvl = {bot.WarshipCombatPowerLevel}");
             }
         }
     }

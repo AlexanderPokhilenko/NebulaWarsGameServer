@@ -3,8 +3,19 @@ using UnityEngine;
 
 public class ServerController : MonoBehaviour
 {
-    void Start()
+    private GameServer gameServer;
+    
+    private void Start()
     {
-        Program.Main();
+        gameServer = new GameServer();
+        gameServer.Run();
+    }
+
+    /// <summary>
+    /// Это нужно для того, чтобы после остановки unity проекта оно не писало в консоль.
+    /// </summary>
+    private void OnDestroy()
+    {
+        gameServer.StopListeningThreads();
     }
 }

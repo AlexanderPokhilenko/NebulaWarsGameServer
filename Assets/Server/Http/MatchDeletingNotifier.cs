@@ -23,13 +23,14 @@ namespace Server.Http
             MatchIdsToDelete.Enqueue(matchId);
         }
         
-        public static void StartThread()
+        public static Thread StartThread()
         {
             Thread thread = new Thread(() => StartEndlessLoop().Wait())
             {
                 IsBackground = true
             };
             thread.Start();
+            return thread;
         }
         
         private static async Task StartEndlessLoop()

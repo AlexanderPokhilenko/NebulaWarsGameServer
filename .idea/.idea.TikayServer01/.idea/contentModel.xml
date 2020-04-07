@@ -282,6 +282,7 @@
             <e p="NetworkMediator.cs" t="Include" />
             <e p="Sending" t="Include">
               <e p="KillData.cs" t="Include" />
+              <e p="UdpDich.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">

@@ -1,39 +1,65 @@
 ﻿// #define USE_OLD_INIT_SYSTEMS
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
+using Server.GameEngine.Experimental;
 using Server.GameEngine.Systems;
+using Server.Udp.Storage;
 using UnityEngine;
+
+//TODO говно
 
 namespace Server.GameEngine
 {
     public class Match
     {
-        private Entitas.Systems systems;
-        public Contexts Contexts { get; private set; }
-        public BattleRoyaleMatchData matchData { get; private set; }
-        private DateTime? gameStartTime;
-
-        private readonly MatchStorageFacade matchStorageFacade;
-
-        // private readonly FlameCircleObject zoneObject;
-        private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
-
-        private bool gameOver;
-        
         private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
         
-        public Match(MatchStorageFacade matchStorageFacade)
+        #region Ip
+
+        private readonly IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
+
+        public bool ContainsIpEnpPointForPlayer(int playerId)
         {
-            this.matchStorageFacade = matchStorageFacade;
-            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-            //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
-            // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
+            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
         }
 
-        public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
+        public void AddEndPoint(int playerId, IPEndPoint ipEndPoint)
+        {
+            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
+        }
+
+        public bool TryGetPlayerIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
+        {
+            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+        }
+
+     
+        
+        #endregion
+
+        #region Rudp
+        
+        private readonly ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
+        
+        public void AddReliableMessage(int playerId, uint messageId, byte[] serializedMessage)
+        {
+            byteArrayRudpStorage.AddMessage(playerId, messageId, serializedMessage);
+        }
+
+        #endregion
+        
+        #region Ecs
+        private Entitas.Systems systems;
+        public Contexts Contexts { get; private set; }
+        // private readonly FlameCircleObject zoneObject;
+        
+        
+           public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
             Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
 
@@ -71,7 +97,7 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(Contexts))
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     
-                    .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
+                    .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo, matchDataArg.MatchId))
                     .Add(new PlayerExitSystem(Contexts, matchDataArg.MatchId))
                     
                     .Add(new FinishMatchSystem(Contexts, this))
@@ -79,9 +105,9 @@ namespace Server.GameEngine
                     
                     
                     .Add(new DestroySystems(Contexts))
-                    .Add(new NetworkSenderSystem(Contexts))
-                    .Add(new MaxHpUpdaterSystem(Contexts))
-                    .Add(new ShieldPointsUpdaterSystem(Contexts))
+                    .Add(new NetworkSenderSystem(Contexts,matchDataArg.MatchId))
+                    .Add(new MaxHpUpdaterSystem(Contexts,matchDataArg.MatchId))
+                    .Add(new ShieldPointsUpdaterSystem(Contexts,matchDataArg.MatchId))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new GameDeletingSystem(Contexts))
                 ;
@@ -117,7 +143,25 @@ namespace Server.GameEngine
             ContextsPool.RetrieveContexts(Contexts);
             possibleKillersInfo.Clear();
         }
+        
+        #endregion
 
+        #region Dich
+        private DateTime? gameStartTime;
+        private readonly MatchStorageFacade matchStorageFacade;
+        public BattleRoyaleMatchData matchData { get; private set; }
+        private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
+        private bool gameOver;
+        #endregion
+
+        public Match(MatchStorageFacade matchStorageFacade)
+        {
+            this.matchStorageFacade = matchStorageFacade;
+            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+            //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
+            // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
+        }
+        
         private bool IsSessionTimedOut()
         {
             if (gameStartTime == null) return false;
@@ -127,9 +171,28 @@ namespace Server.GameEngine
 
         public void FinishGame()
         {
-            // Log.Error(nameof(FinishGame));
             gameOver = true;
             matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);
+        }
+
+        public bool TryRemoveRemoveRudpMessage(uint messageIdToConfirm)
+        {
+            return byteArrayRudpStorage.TryRemoveMessage(messageIdToConfirm);
+        }
+
+        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
+        {
+            List<ReliableMessagesPack> result = new List<ReliableMessagesPack>();
+            
+            //Для всех игроков с известными ip достать их сообщения из словаря
+            foreach (var pair in ipAddressesStorage.GetPlayersRoutingData())
+            {
+                int playerId = pair.Key;
+                IPEndPoint ipEndPoint = pair.Value;
+                var messagePacks = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
+                result.Add(new ReliableMessagesPack(ipEndPoint, messagePacks));
+            }
+            return result;
         }
     }
 }

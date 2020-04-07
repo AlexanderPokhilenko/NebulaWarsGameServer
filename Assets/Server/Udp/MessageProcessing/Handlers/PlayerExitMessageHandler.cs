@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using Libraries.NetworkLibrary.Udp.PlayerToServer;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
@@ -37,15 +38,22 @@ namespace Server.Udp.MessageProcessing.Handlers
             //     Log.Warn($"ip игрока с id {exitMessage.PlayerId} не удалён");
             // }
 
-            // if (GameEngineMediator.MatchStorageFacade.TryRemovePlayer(exitMessage.PlayerId))
-            // {
-            //     Log.Info($"игрока с id {exitMessage.PlayerId} удалён из списка активных игроков");
-            // }
-            // else
-            // {
-            //     Log.Warn($"игрока с id {exitMessage.PlayerId} не удалён из списка активных игроков");
-            // }
-            
+            //TODO говно
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                if (GameEngineMediator.MatchStorageFacade.TryRemovePlayer(exitMessage.PlayerId))
+                {
+                    Log.Info($"игрока с id {exitMessage.PlayerId} удалён из списка активных игроков");
+                }
+                else
+                {
+                    Log.Warn($"игрока с id {exitMessage.PlayerId} не удалён из списка активных игроков");
+                }
+            }).ConfigureAwait(false);
+
+          
+
         }
     }
 }

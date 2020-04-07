@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Entitas;
 using Server.Udp.Sending;
@@ -8,12 +9,14 @@ namespace Server.GameEngine.Systems
 {
     public class ShieldPointsUpdaterSystem : IExecuteSystem, IInitializeSystem
     {
+        private readonly int matchId;
         private readonly Dictionary<int, float> playerMaxShieldPoints;
         private readonly GameContext gameContext;
         private readonly IGroup<GameEntity> players;
 
-        public ShieldPointsUpdaterSystem(Contexts contexts)
+        public ShieldPointsUpdaterSystem(Contexts contexts, int matchId)
         {
+            this.matchId = matchId;
             gameContext = contexts.game;
             players = gameContext
                 .GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
@@ -39,18 +42,18 @@ namespace Server.GameEngine.Systems
                     if (playerMaxShieldPoints[playerId] >= 0f)
                     {
                         playerMaxShieldPoints[playerId] = 0;
-                        UdpSendUtils.SendMaxShieldPoints(playerId, 0f);
+                        UdpSendUtils.SendMaxShieldPoints(matchId, playerId, 0f);
                     }
                     continue;
                 }
 
-                UdpSendUtils.SendShieldPoints(playerId, shield.healthPoints.value);
+                UdpSendUtils.SendShieldPoints(matchId, playerId, shield.healthPoints.value);
 
                 var maxPoints = shield.maxHealthPoints.value;
-                if (maxPoints != playerMaxShieldPoints[playerId])
+                if (Math.Abs(maxPoints - playerMaxShieldPoints[playerId]) > 0.001)
                 {
                     playerMaxShieldPoints[playerId] = maxPoints;
-                    UdpSendUtils.SendMaxShieldPoints(playerId, maxPoints);
+                    UdpSendUtils.SendMaxShieldPoints(matchId, playerId, maxPoints);
                 }
             }
         }

@@ -16,7 +16,6 @@ namespace Server.GameEngine.Systems
 
         public FinishMatchSystem(Contexts contexts, Match match) : base(contexts.game)
         {
-            Log.Warn(nameof(FinishMatchSystem)+" ctor");
             playersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
             this.match = match;
         }
@@ -33,7 +32,7 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            Log.Warn($"{nameof(FinishMatchSystem)}");
+            Log.Info($"{nameof(FinishMatchSystem)}");
             int numberOfPlayers = playersGroup.count;
             switch (numberOfPlayers)
             {

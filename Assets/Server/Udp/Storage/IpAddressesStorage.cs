@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
+using System.Threading;
 using log4net;
 
 namespace Server.Udp.Storage
@@ -10,7 +11,7 @@ namespace Server.Udp.Storage
     /// </summary>
     public class IpAddressesStorage
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(IpAddressesStorage));
+        private readonly ILog Log = LogManager.GetLogger(typeof(IpAddressesStorage));
         
         /// <summary>
         /// playerId , ip 
@@ -38,19 +39,34 @@ namespace Server.Udp.Storage
                 throw new Exception("Не удалось добавить игрока с playerId = "+playerId);
             }
         }
+
+        public bool ContainsPlayerIpEndPoint(int playerId)
+        {
+            return playersIpAddresses.Keys.Contains(playerId);
+        }
         
-        public IPEndPoint GetPlayerIpAddress(int playerId)
+        public bool TryGetPlayerIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
         {
             if(playersIpAddresses.Keys.Contains(playerId))
             {
-                return playersIpAddresses[playerId];
+                ipEndPoint= playersIpAddresses[playerId];
+                return true;
             }
-            return null;
+            else
+            {
+                ipEndPoint = null;
+                return false;
+            }
         }
 
         public bool TryRemovePlayerIp(int playerId)
         {
             return playersIpAddresses.TryRemove(playerId, out var ip);
+        }
+
+        public ConcurrentDictionary<int, IPEndPoint> GetPlayersRoutingData()
+        {
+            return playersIpAddresses;
         }
     }
 }

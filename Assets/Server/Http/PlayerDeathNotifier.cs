@@ -17,10 +17,11 @@ namespace Server.Http
         public static readonly ConcurrentQueue<PlayerDeathData> KilledPlayers =
             new ConcurrentQueue<PlayerDeathData>();
         
-        public static void StartThread()
+        public static Thread StartThread()
         {
             Thread thread = new Thread(() => Start().Wait()) {IsBackground = true};
             thread.Start();
+            return thread;
         }
 
         private static async Task Start()
@@ -37,7 +38,7 @@ namespace Server.Http
         {
             while (!KilledPlayers.IsEmpty)
             {
-                Log.Error("Отправка уведомления о смерти игрока");
+                Log.Info("Отправка уведомления о смерти игрока");
                 KilledPlayers.TryDequeue(out var playerDeathData);
                 CheckDeathData(playerDeathData);
                 await SendMessageAboutPlayerDeath(playerDeathData);

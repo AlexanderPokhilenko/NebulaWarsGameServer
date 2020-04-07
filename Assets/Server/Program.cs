@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using log4net.Util;
 using Server.GameEngine;
 using Server.Http;
 using Server.Udp;
@@ -6,33 +7,38 @@ using Server.Udp.Connection;
 
 namespace Server
 {
-    static class Program
+    class GameServer
     {
         private const int HttpPort = 14065;
         private const int UdpPort = 48956;
         
-        public static void Main()
+        private Thread httpListeningThread;
+        private UdpBattleConnection udpBattleConnection;
+        private Thread matchDeletingNotifier;
+        private Thread playerDeathNotifierThread;
+        
+        public void Run()
         {
-            StartMatchmakerListening(HttpPort);
-            StartPlayersListening(UdpPort);
-            
-            MatchDeletingNotifier.StartThread();
-            PlayerDeathNotifier.StartThread();
-            
+            httpListeningThread = StartMatchmakerListening(HttpPort);
+            udpBattleConnection = StartPlayersListening(UdpPort);
+
+            matchDeletingNotifier = MatchDeletingNotifier.StartThread();
+            playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
+
             GameEngineMediator gameEngineMediator = new GameEngineMediator();
             gameEngineMediator.StartEndlessLoop();
         }
         
-
-        private static void StartMatchmakerListening(int port)
+        private Thread StartMatchmakerListening(int port)
         {
-            new Thread(() => { new HttpListenerWrapper().StartListenHttp(port).Wait(); })
-                .Start();
+            Thread thread = new Thread(() => { new HttpListenerWrapper().StartListenHttp(port).Wait(); });
+            thread.Start();
+            return thread;
         }
 
-        private static void StartPlayersListening(int port)
+        private UdpBattleConnection StartPlayersListening(int port)
         {
-            var udpBattleConnection = new UdpBattleConnection();
+            udpBattleConnection = new UdpBattleConnection();
 
             NetworkMediator mediator = new NetworkMediator();
             mediator.SetUdpConnection(udpBattleConnection);
@@ -40,6 +46,16 @@ namespace Server
             udpBattleConnection
                 .SetUpConnection(port)
                 .StartReceiveThread();
+            
+            return udpBattleConnection;
+        }
+
+        public void StopListeningThreads()
+        {
+            httpListeningThread.Interrupt();
+            udpBattleConnection.Stop();
+            matchDeletingNotifier.Interrupt();
+            playerDeathNotifierThread.Interrupt();
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using log4net;
+using Server.GameEngine.Experimental;
 
 namespace Server.GameEngine
 {
     /// <summary>
-    /// Скрывает в себе данные про текущие матчи.
+    /// Управляет всеми текущими матчами.
     /// </summary>
     public class MatchStorage
     {
@@ -17,6 +20,18 @@ namespace Server.GameEngine
         //accountId Match
         private readonly ConcurrentDictionary<int, Match> activePlayers;
 
+        public bool ContainsIpEndPoint(int matchId, int playerId)
+        {
+            if (matches.ContainsKey(matchId))
+            {
+                return matches[matchId].ContainsIpEnpPointForPlayer(playerId);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         public MatchStorage()
         {
             matches = new ConcurrentDictionary<int, Match>();
@@ -28,7 +43,7 @@ namespace Server.GameEngine
             matches.TryAdd(match.matchData.MatchId, match);
             foreach (var player in match.matchData.GameUnitsForMatch.Players)
             {
-                Log.Warn($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
+                Log.Info($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
                          $"{player.TemporaryId}");
                 activePlayers.TryAdd(player.TemporaryId, match);
             }
@@ -45,7 +60,7 @@ namespace Server.GameEngine
         
         public void RemoveMatch(int matchId)
         {
-            Log.Warn(nameof(RemoveMatch));
+            Log.Info(nameof(RemoveMatch));
             matches.TryRemove(matchId, out var match);
             foreach (var playerInfoForMatch in match.matchData.GameUnitsForMatch.Players)
             {
@@ -55,7 +70,7 @@ namespace Server.GameEngine
 
         public void TearDownMatch(int matchId)
         {
-            Log.Warn(nameof(TearDownMatch));
+            Log.Info(nameof(TearDownMatch));
             Match match = matches[matchId];
             match.TearDown();
         }
@@ -67,7 +82,7 @@ namespace Server.GameEngine
 
         public bool TryRemovePlayer(int playerTmpId)
         {
-            Log.Error($"{nameof(TryRemovePlayer)} {playerTmpId}");
+            Log.Info($"{nameof(TryRemovePlayer)} {playerTmpId}");
             bool success = activePlayers.TryRemove(playerTmpId, out _);
             return success;
         }
@@ -81,20 +96,72 @@ namespace Server.GameEngine
         {
             return activePlayers.ContainsKey(playerId);
         }
-
-        public ICollection<int> GetActivePlayerIds()
-        {
-            return activePlayers.Keys;
-        }
-
+        
         public bool TryGetMatchByPlayerId(int playerId, out Match match)
         {
-            Log.Error("Вывод всех игроков");
-            foreach (var pair in activePlayers)
-            {
-                Log.Error($"playerId = {pair.Key} matchId {pair.Value.matchData.MatchId}");
-            }
             return activePlayers.TryGetValue(playerId, out match);
+        }
+
+        public void AddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        {
+            if (matches.ContainsKey(matchId))
+            {
+                matches[matchId].AddEndPoint(playerId, ipEndPoint);
+            }
+            else
+            {
+                Log.Error("Такого боя не существует.");
+            }
+        }
+
+        public bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
+        {
+            if(matches.ContainsKey(matchId))
+            {
+                return matches[matchId].TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+            }
+            else
+            {
+                ipEndPoint = null;
+                return false;
+            }
+        }
+        
+        public void AddReliableMessage(int matchId, int playerId, uint messageId, byte[] serializedMessage)
+        {
+            if (matches.ContainsKey(matchId))
+            {
+                matches[matchId].AddReliableMessage(playerId, messageId, serializedMessage);
+            }
+            else
+            {
+                throw new Exception("asofvnoasiv");
+            } 
+        }
+
+        public void RemoveRudpMessage(uint messageIdToConfirm)
+        {
+            foreach (var pair in matches)
+            {
+                Match match = pair.Value;
+                if (match.TryRemoveRemoveRudpMessage(messageIdToConfirm))
+                {
+                    break;
+                }
+            }
+        }
+
+        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
+        {
+            List<ReliableMessagesPack> result = new List<ReliableMessagesPack>();
+            foreach (var pair in matches)
+            {
+                Match match = pair.Value;
+                List<ReliableMessagesPack> reliableMessagesPacksFromMatch = match.GetActivePlayersRudpMessages();
+                result.AddRange(reliableMessagesPacksFromMatch);
+            }
+
+            return result;
         }
     }
 }

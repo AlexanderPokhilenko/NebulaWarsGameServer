@@ -98,8 +98,8 @@ namespace Server.Udp.Connection
         {
             Log.Info("Остановка udp клиента");
             isThreadRunning = false;
-            receiveThread.Interrupt();
             udpClient.Close();
+            receiveThread.Interrupt();
         }
         
         protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)

@@ -1,11 +1,26 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using Server.Udp.Sending;
-using Server.Udp.Storage;
 
-//TODO как тут красиво получить список активных игроков?
+//TODO: попробовать разобраться без ToList - пока без него падает из-за модификации коллекции
 
 namespace Server.GameEngine.Experimental
 {
+    public struct ReliableMessagesPack
+    {
+        // public int playerId;
+        // public int matchId;
+        public readonly IPEndPoint IpEndPoint;
+        public readonly Dictionary<uint, byte[]>.ValueCollection reliableMessages;
+
+        public ReliableMessagesPack(IPEndPoint ipEndPoint, Dictionary<uint, byte[]>.ValueCollection reliableMessages)
+        {
+            IpEndPoint = ipEndPoint;
+            this.reliableMessages = reliableMessages;
+        }
+    }
+    
     /// <summary>
     /// Отправляет все сообщения, доставка которыъ не была подтверждена
     /// </summary>
@@ -20,16 +35,11 @@ namespace Server.GameEngine.Experimental
 
         public void SendUnconfirmedMessages()
         {
-            foreach (var playerId in matchStorageFacade.GetActivePlayerIds())
+            foreach (ReliableMessagesPack reliableMessagesPack in matchStorageFacade.GetActivePlayersRudpMessages().ToArray())
             {
-                //TODO: попробовать разобраться без ToList - пока без него падает из-за модификации коллекции
-                var messages = ByteArrayRudpStorage.Instance.GetReliableMessages(playerId)?.ToList();
-                if (messages != null && messages.Count != 0)
+                foreach (var message in reliableMessagesPack.reliableMessages.ToList())
                 {
-                    foreach (var message in messages)
-                    {
-                        UdpSendUtils.SendMessage(message, playerId);
-                    }
+                    UdpSendUtils.SendReadyMadeMessage(message, reliableMessagesPack.IpEndPoint);
                 }
             }
         }

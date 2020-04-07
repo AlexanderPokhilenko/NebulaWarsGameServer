@@ -1,8 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
+using Server.GameEngine.Experimental;
 using Server.Http;
+using UnityEngine.Rendering;
 
 namespace Server.GameEngine
 {
@@ -17,6 +20,16 @@ namespace Server.GameEngine
         private readonly Queue<int> finishedBattles;
         private readonly MatchStorage matchStorage;
 
+        public bool ContainsIpEndPoint(int matchId, int playerId)
+        {
+            return matchStorage.ContainsIpEndPoint(matchId, playerId);
+        }
+        
+        public void AddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        {
+            matchStorage.AddEndPoint(matchId, playerId, ipEndPoint);
+        }
+        
         public MatchStorageFacade()
         {
             battlesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
@@ -78,7 +91,7 @@ namespace Server.GameEngine
             var playersIds = matchStorage.GetPlayersIds(matchId);
             matchStorage.TearDownMatch(matchId);
             matchStorage.RemoveMatch(matchId);
-            PlayersNotifyHelper.Notify(playersIds);
+            PlayersNotifyHelper.Notify(matchId, playersIds);
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
         }
         
@@ -104,14 +117,31 @@ namespace Server.GameEngine
             return matchStorage.HasPlayerWithId(playerId);
         }
 
-        public ICollection<int> GetActivePlayerIds()
+        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
         {
-            return matchStorage.GetActivePlayerIds();
+            return matchStorage.GetActivePlayersRudpMessages();
         }
 
         public bool TryGetMatchByPlayerId(int playerId, out Match match)
         {
             return matchStorage.TryGetMatchByPlayerId(playerId, out match);
         }
+
+        public bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
+        {
+            return matchStorage.TryGetPlayerIpEndPoint(matchId, playerId, out ipEndPoint);
+        }
+
+        public void AddReliableMessage(int matchId, int playerId, uint messageId, byte[] serializedMessage)
+        {
+            matchStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+        }
+
+        public void RemoveRudpMessage(uint messageIdToConfirm)
+        {
+            matchStorage.RemoveRudpMessage(messageIdToConfirm);
+        }
     }
+
+    
 }

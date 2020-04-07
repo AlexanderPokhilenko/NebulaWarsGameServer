@@ -17,12 +17,14 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     readonly IGroup<GameEntity> alivePlayersAndBots;
     private readonly IGroup<GameEntity> alivePlayers;
     private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
+    private readonly int matchId;
     readonly GameContext gameContext;
     
-    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos)
+    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId)
         : base(contexts.game)
     {
         killersInfo = killersInfos;
+        this.matchId = matchId;
         gameContext = contexts.game;
         alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
@@ -67,7 +69,7 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                     VictimId = killedEntity.player.id
                 };
                 
-                UdpSendUtils.SendKill(killData);
+                UdpSendUtils.SendKill(matchId, killData);
 
                 if (!killedEntity.isBot)
                 {
@@ -90,7 +92,7 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                         MatchId = matchId 
                     };
                     PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                    UdpSendUtils.SendBattleFinishMessage(killedEntity.player.id);    
+                    UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);    
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace Server.Udp
     public class NetworkMediator
     {
         private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
-        public static readonly IpAddressesStorage IpAddressesStorage = new IpAddressesStorage();
+        
         public static UdpBattleConnection udpBattleConnection { get; private set; }
         
         

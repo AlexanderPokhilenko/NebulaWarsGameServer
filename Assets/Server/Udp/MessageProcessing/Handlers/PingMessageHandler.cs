@@ -3,6 +3,7 @@ using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
+using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.Connection;
 using ZeroFormatter;
@@ -19,21 +20,22 @@ namespace Server.Udp.MessageProcessing.Handlers
                 ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
             
             int playerId = mes.TemporaryId;
+            int matchId = mes.GameRoomNumber;
 
-            TrySetUpIpAddress(sender, playerId);
+            TrySetUpIpAddress(sender,matchId, playerId);
             UpdateOrAddPingRecord(playerId);
         }
 
-        private static void TrySetUpIpAddress(IPEndPoint sender, int playerId)
+        private static void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
         {
-            if (!NetworkMediator.IpAddressesStorage.IsIpAddressAlreadyExists(sender))
+            if (!GameEngineMediator.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
             {
-                NetworkMediator.IpAddressesStorage.AddPlayer(playerId, sender);
-                Log.Info($"Ip нового игрока добавлен {sender.Address} {sender.Port} {sender.AddressFamily}");
+                GameEngineMediator.MatchStorageFacade.AddEndPoint(matchId, playerId, ipEndPoint);
+                Log.Info($"Ip нового игрока добавлен {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
             }
             else
             {
-                // Log.Info($"Такой Ip уже был {sender.Address} {sender.Port} {sender.AddressFamily}");
+                // Log.Info($"Такой Ip уже был {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
             }
         }
         

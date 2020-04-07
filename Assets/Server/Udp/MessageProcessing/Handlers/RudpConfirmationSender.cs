@@ -20,7 +20,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             {
                 MessageNumberThatConfirms = messageWrapper.MessageId
             };
-            UdpSendUtils.SendDeliveryConfirmationMessage(mes, sender);
+            UdpDich.SendDeliveryConfirmationMessage(mes, sender);
         }
     }
 }
