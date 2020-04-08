@@ -8,28 +8,16 @@ using ZeroFormatter;
 
 namespace Server.Http
 {
-    public class HttpMediator
-    {
-        private HttpMessageProcessor httpMessageProcessor = new HttpMessageProcessor();
-        
-        private GameRoomValidationResult HandleBytes(byte[] data)
-        {
-            BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
-            return httpMessageProcessor.Handle(matchData);
-        }
-    }
-
-    
-
     public sealed class HttpConnection
     {
-        private HttpListener listener;
-        private readonly MatchDataMessageHandler messageHandler;
         private static readonly ILog Log = LogManager.GetLogger(typeof(HttpConnection));
+        
+        private HttpListener listener;
+        private readonly MatchDataMessageHandler matchDataMessageHandler;
 
-        public HttpConnection()
+        public HttpConnection(MatchDataMessageHandler matchDataMessageHandler)
         {
-            messageHandler = new MatchDataMessageHandler();
+            this.matchDataMessageHandler = matchDataMessageHandler;
         }
         
         public async Task StartListenHttp(int port)
@@ -92,16 +80,10 @@ namespace Server.Http
             }
         }
 
-        private void LogGameRoomValidationResult(GameRoomValidationResult result)
-        {
-            Log.Warn(result.ResultEnum.ToString());
-            Log.Warn(result.ProblemPlayersIds?.Length);
-        }
-
         private GameRoomValidationResult HandleBytes(byte[] data)
         {
             BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
-            return messageHandler.Handle(matchData);
+            return matchDataMessageHandler.Handle(matchData);
         }
     }
 }

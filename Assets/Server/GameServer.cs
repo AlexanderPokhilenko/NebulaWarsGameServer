@@ -25,6 +25,7 @@ namespace Server
         
         public void Run()
         {
+            //Чек
             if (httpListeningThread != null)
             {
                 throw new Exception("Сервер уже запущен");
@@ -36,8 +37,6 @@ namespace Server
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager);
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             
-            
-
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort);
             udpConnectionFacade = StartPlayersListening(UdpPort);

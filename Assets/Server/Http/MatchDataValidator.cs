@@ -11,7 +11,13 @@ namespace Server.Http
     /// </summary>
     public class MatchDataValidator
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDataMessageHandler));
+        private readonly MatchStorage matchStorage;
+        private readonly ILog log = LogManager.GetLogger(typeof(MatchDataMessageHandler));
+
+        public MatchDataValidator(MatchStorage matchStorage)
+        {
+            this.matchStorage = matchStorage;
+        }
         
         public GameRoomValidationResult Validate(BattleRoyaleMatchData matchData)
         {
@@ -39,9 +45,9 @@ namespace Server.Http
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineTicker.MatchStorageFacade.HasPlayerWithId(playerId))
+                if (matchStorage.HasPlayer(playerId))
                 {
-                    Log.Error("В словаре уже содержится игрок с id = "+playerId);
+                    log.Error("В словаре уже содержится игрок с id = "+playerId);
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
                 }
@@ -51,7 +57,7 @@ namespace Server.Http
 
         private bool CheckMatchId(BattleRoyaleMatchData matchData)
         {
-            return !GameEngineTicker.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
+            return !matchStorage.HasMatch(matchData.MatchId);
         }
 
         //TODO говно

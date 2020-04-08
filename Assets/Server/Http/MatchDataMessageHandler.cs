@@ -14,10 +14,10 @@ namespace Server.Http
         private readonly MatchDataValidator matchDataValidator;
         private readonly MatchCreator matchCreator;
 
-        public MatchDataMessageHandler(MatchCreator matchCreator)
+        public MatchDataMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
         {
             this.matchCreator = matchCreator;
-            matchDataValidator = new MatchDataValidator();
+            matchDataValidator = new MatchDataValidator(matchStorage);
         }
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchData matchData)
