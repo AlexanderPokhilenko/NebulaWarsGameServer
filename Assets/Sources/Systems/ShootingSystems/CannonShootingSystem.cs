@@ -57,6 +57,20 @@ public class CannonShootingSystem : IExecuteSystem
                 bulletEntity.ReplaceDirection(globalAngle);
                 bulletEntity.ReplaceVelocity(globalVelocity);
                 bulletEntity.ReplaceAngularVelocity(globalAngularVelocity);
+
+                if (!bulletEntity.hasChaser)
+                {
+                    if (bullet.maxVelocity * bullet.maxVelocity < globalVelocity.sqrMagnitude)
+                    {
+                        bulletEntity.ReplaceMaxVelocity(globalVelocity.magnitude);
+                    }
+
+                    var absGlobalAngularVelocity = Mathf.Abs(globalAngularVelocity);
+                    if (bullet.maxAngularVelocity < absGlobalAngularVelocity)
+                    {
+                        bulletEntity.ReplaceMaxVelocity(absGlobalAngularVelocity);
+                    }
+                }
             }
             bulletEntity.AddGlobalTransform(globalPosition, globalAngle);
             
