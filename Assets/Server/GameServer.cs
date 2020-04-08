@@ -6,6 +6,9 @@ using Server.Udp.Connection;
 
 namespace Server
 {
+    /// <summary>
+    /// Запускает все потоки при старте и убивает их при остановке.
+    /// </summary>
     public class GameServer
     {
         private const int HttpPort = 14065;
@@ -24,8 +27,8 @@ namespace Server
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
 
-            MatchManager matchManager = new MatchManager();
-            Chronometer chronometer = ChronometerFactory.Create(matchManager.Tick);
+            GameEngineTicker gameEngineTicker = new GameEngineTicker();
+            Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             chronometer.StartEndlessLoop();
         }
         

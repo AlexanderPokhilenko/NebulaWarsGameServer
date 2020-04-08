@@ -20,7 +20,7 @@ public class ServerController : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
-        foreach (var match in MatchManager.MatchStorageFacade.GetAllMatches())
+        foreach (var match in GameEngineTicker.MatchStorageFacade.GetAllMatches())
         {
             match.Finish();
         }

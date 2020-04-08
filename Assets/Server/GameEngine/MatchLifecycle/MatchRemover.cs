@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using log4net;
 using Server.Http;
+using Server.Udp.Sending;
 
 namespace Server.GameEngine
 {
@@ -48,6 +49,18 @@ namespace Server.GameEngine
             Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
             List<int> playersIds = matchStorage.GetActivePlayersIds(matchId);
             PlayersNotifyHelper.Notify(matchId, playersIds);
+            
+            
+            Log.Warn($" Старт уведомления игроков про окончание матча");
+            foreach (int playerId in playersIds)
+            {
+                Log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
+                UdpSendUtils.SendBattleFinishMessage(matchId, playerId);
+            }
+            Log.Warn($" Конец уведомления игроков про окончание матча");
+            
+            
+            
             matchStorage.TearDownMatch(matchId);
             matchStorage.RemoveMatch(matchId);
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);

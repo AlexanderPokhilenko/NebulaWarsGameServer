@@ -30,7 +30,7 @@ namespace Server.GameEngine.Experimental
                 var playerId = pair.Key;
                 var value = pair.Value;
 
-                if (MatchManager.MatchStorageFacade.TryGetMatchByPlayerId(playerId, out var gameSession))
+                if (GameEngineTicker.MatchStorageFacade.TryGetMatchByPlayerId(playerId, out var gameSession))
                 {
                     Contexts contexts = gameSession.Contexts;
 

@@ -226,22 +226,22 @@
             <e p="ChronometerFactory.cs" t="Include" />
             <e p="ContextsPool.cs" t="Include" />
             <e p="Experimental" t="Include">
-              <e p="ContainerRudpSender.cs" t="Include" />
               <e p="IRudpSender.cs" t="Include" />
               <e p="ReliableMessagesPack.cs" t="Include" />
-              <e p="SimpleRudpSender.cs" t="Include" />
-              <e p="StaticExitMessageSorter.cs" t="Include" />
-              <e p="StaticInputMessagesSorter.cs" t="Include" />
             </e>
+            <e p="GameEngineTicker.cs" t="Include" />
             <e p="GameSessionGlobals.cs" t="Include" />
             <e p="LifeCycleManagerOfAllMatches.cs" t="Include" />
             <e p="Match.cs" t="Include" />
             <e p="MatchCreator.cs" t="Include" />
-            <e p="MatchManager.cs" t="Include" />
             <e p="MatchRemover.cs" t="Include" />
             <e p="MatchStorage.cs" t="Include" />
             <e p="MatchStorageFacade.cs" t="Include" />
             <e p="PlayersNotifyHelper.cs" t="Include" />
+            <e p="StaticMessageSorters" t="Include">
+              <e p="StaticExitMessageSorter.cs" t="Include" />
+              <e p="StaticInputMessagesSorter.cs" t="Include" />
+            </e>
             <e p="Systems" t="Include">
               <e p="Debug" t="Include">
                 <e p="MatchDebugSenderSystem.cs" t="Include" />

@@ -6,14 +6,14 @@ namespace Server.GameEngine
     /// <summary>
     /// Создаёт и уничтожает матчи, которые были добавлены в соответствующие очереди. 
     /// </summary>
-    public class LifeCycleManagerOfAllMatches
+    public class MatchLifeCycleManager
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(LifeCycleManagerOfAllMatches));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchLifeCycleManager));
 
         private readonly MatchCreator matchCreator;
         private readonly MatchRemover matchRemover;
         
-        public LifeCycleManagerOfAllMatches()
+        public MatchLifeCycleManager()
         {
             matchCreator = new MatchCreator();
             matchRemover = new MatchRemover();

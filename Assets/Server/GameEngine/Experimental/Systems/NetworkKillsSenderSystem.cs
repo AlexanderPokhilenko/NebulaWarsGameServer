@@ -94,13 +94,13 @@ namespace Server.GameEngine.Systems
                         UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);   
                     
                         //TODO это говнище
-                        if (MatchManager.MatchStorageFacade.TryRemovePlayer(matchId, playerTmpId))
+                        if (GameEngineTicker.MatchStorageFacade.TryRemovePlayer(matchId, playerTmpId))
                         { 
-                            Log.Warn("MatchManager.MatchStorageFacade.TryRemovePlayer success");
+                            Log.Warn("GameEngineTicker.MatchStorageFacade.TryRemovePlayer success");
                         }
                         else
                         {
-                            Log.Error("MatchManager.MatchStorageFacade.TryRemovePlayer fail");
+                            Log.Error("GameEngineTicker.MatchStorageFacade.TryRemovePlayer fail");
                         }
                     }
                 }

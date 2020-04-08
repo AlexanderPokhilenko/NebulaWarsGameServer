@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Server.GameEngine
 {
     /// <summary>
-    /// Создаёт game object на сцене и цепляет на него таймер.
+    /// Создаёт game object на сцене и цепляет на него хронометр.
     /// </summary>
     public static class ChronometerFactory
     {

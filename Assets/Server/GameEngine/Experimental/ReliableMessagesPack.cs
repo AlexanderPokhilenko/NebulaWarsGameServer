@@ -5,8 +5,6 @@ namespace Server.GameEngine.Experimental
 {
     public struct ReliableMessagesPack
     {
-        // public int PlayerId;
-        // public int MatchId;
         public readonly IPEndPoint IpEndPoint;
         public readonly Dictionary<uint, byte[]>.ValueCollection reliableMessages;
 

@@ -5,12 +5,12 @@ namespace Server.Http
 {
     public class HttpMessageHandlers
     {
-        private readonly BattleCreator battleCreator=new BattleCreator();
+        private readonly HttpMatchDataReceiver httpMatchDataReceiver=new HttpMatchDataReceiver();
 
         public GameRoomValidationResult Handle(BattleRoyaleMatchData matchData)
         {
             CheckMatchData(matchData);
-            return battleCreator.Handle(matchData);
+            return httpMatchDataReceiver.Handle(matchData);
         }
 
         private void CheckMatchData(BattleRoyaleMatchData matchData)

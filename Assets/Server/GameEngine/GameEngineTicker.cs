@@ -2,17 +2,18 @@
 
 namespace Server.GameEngine
 {
-    //TODO название не очень
     /// <summary>
     /// Отвечает за правильный вызов подпрограмм во время тика.
     /// </summary>
-    public class MatchManager
+    public class GameEngineTicker
     {
-        public static MatchStorageFacade MatchStorageFacade;
+        private readonly MatchStorageFacade matchStorageFacade;
+        private readonly MatchLifeCycleManager matchLifeCycleManager;
         
-        public MatchManager()
+        public GameEngineTicker()
         {
-            MatchStorageFacade = new MatchStorageFacade();
+            matchStorageFacade = new MatchStorageFacade();
+            matchLifeCycleManager = new MatchLifeCycleManager();
         }
 
         public void Tick()
@@ -22,14 +23,14 @@ namespace Server.GameEngine
             StaticExitMessageSorter.Spread();
             
             //Обработка 
-            foreach (var match in MatchStorageFacade.GetAllMatches())
+            foreach (var match in matchStorageFacade.GetAllMatches())
             {
                 match.Execute();
                 match.Cleanup();
             }
 
             //создание/удаление матчей
-            MatchStorageFacade.UpdateBattlesList();
+            matchLifeCycleManager.UpdateMatchesLifeStatus();
         }
     }
 }

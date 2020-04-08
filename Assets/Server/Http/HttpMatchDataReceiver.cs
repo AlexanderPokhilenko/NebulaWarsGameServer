@@ -9,13 +9,12 @@ namespace Server.Http
     /// <summary>
     /// Добавляет комнаты в очередь на создание.
     /// </summary>
-    internal class BattleCreator
+    internal class HttpMatchDataReceiver
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BattleCreator));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpMatchDataReceiver));
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchData roomData)
         {
-            // DebugLogGameRoom(roomData);
             GameRoomValidationResult result = CheckRoom(roomData);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
@@ -39,7 +38,7 @@ namespace Server.Http
 
         private bool CheckPlayers(BattleRoyaleMatchData matchData)
         {
-            if (MatchManager.MatchStorageFacade == null)
+            if (GameEngineTicker.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
@@ -47,7 +46,7 @@ namespace Server.Http
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
-                if (MatchManager.MatchStorageFacade.HasPlayerWithId(playerId))
+                if (GameEngineTicker.MatchStorageFacade.HasPlayerWithId(playerId))
                 {
                     Log.Error("В словаре уже содержится игрок с id = "+playerId);
                     thereIsNoRoomWithSuchPlayers = false;
@@ -59,12 +58,12 @@ namespace Server.Http
 
         private bool CheckRoomNumber(BattleRoyaleMatchData matchData)
         {
-            if (MatchManager.MatchStorageFacade == null)
+            if (GameEngineTicker.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
             
-            return !MatchManager.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
+            return !GameEngineTicker.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -88,11 +87,11 @@ namespace Server.Http
 
         private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
-            if (MatchManager.MatchStorageFacade == null)
+            if (GameEngineTicker.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
-            MatchManager.MatchStorageFacade.AddMatchToQueue(matchData);
+            GameEngineTicker.MatchStorageFacade.AddMatchToQueue(matchData);
         }
 
         private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)

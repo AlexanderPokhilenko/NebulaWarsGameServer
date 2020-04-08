@@ -19,7 +19,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-            MatchManager.MatchStorageFacade.RemoveRudpMessage(messageIdToConfirm);
+            GameEngineTicker.MatchStorageFacade.RemoveRudpMessage(messageIdToConfirm);
         }
     }
 }
