@@ -23,32 +23,20 @@ namespace Server.Udp.MessageProcessing.Handlers
             int matchId = mes.GameRoomNumber;
 
             TrySetUpIpAddress(sender,matchId, playerId);
-            UpdateOrAddPingRecord(playerId);
         }
 
         private static void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
         {
             if (!GameEngineMediator.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
             {
-                GameEngineMediator.MatchStorageFacade.AddEndPoint(matchId, playerId, ipEndPoint);
-                Log.Info($"Ip нового игрока добавлен {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
+                if (GameEngineMediator.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
+                {
+                    Log.Info($"Ip нового игрока добавлен {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
+                }
             }
             else
             {
                 // Log.Info($"Такой Ip уже был {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
-            }
-        }
-        
-        private static void UpdateOrAddPingRecord(int playerId)
-        {
-            if (PingLogger.LastPingTime.ContainsKey(playerId))
-            {
-                PingLogger.LastPingTime[playerId] = DateTime.UtcNow;
-                // Log.Info($"Успешно обновлена пинг запись от игрока {playerGoogleId}");
-            }
-            else
-            {
-                PingLogger.LastPingTime.TryAdd(playerId, DateTime.UtcNow);
             }
         }
     }

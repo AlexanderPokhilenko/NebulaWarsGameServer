@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entitas;
 using log4net;
+using Server.GameEngine;
 using Server.Http;
 
 public class PlayerExitSystem:ReactiveSystem<InputEntity>, ICleanupSystem
@@ -10,12 +12,15 @@ public class PlayerExitSystem:ReactiveSystem<InputEntity>, ICleanupSystem
     private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
     private readonly IGroup<InputEntity> playerExitGroup;
     private readonly int matchId;
-    public PlayerExitSystem(Contexts contexts, int matchId):base(contexts.input)
+    private readonly MatchStorageFacade matchStorageFacade;
+
+    public PlayerExitSystem(Contexts contexts, int matchId, MatchStorageFacade matchStorageFacade):base(contexts.input)
     {
         var gameContext = contexts.game;
         alivePlayerAndBotsGroup = gameContext.GetGroup(GameMatcher.Player);
         playerExitGroup = contexts.input.GetGroup(InputMatcher.PlayerExit);
         this.matchId = matchId;
+        this.matchStorageFacade = matchStorageFacade;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
@@ -30,12 +35,18 @@ public class PlayerExitSystem:ReactiveSystem<InputEntity>, ICleanupSystem
 
     protected override void Execute(List<InputEntity> entities)
     {
-        Log.Warn("Вызов нужной реактивной системы");
+        Log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
         foreach (var inputEntity in entities)
         {
             int playerId = inputEntity.playerExit.PlayerId;
-            Log.Warn($"{nameof(playerId)} {playerId}");
+            Log.Warn($"преждевременное удаление игрока из матча {nameof(playerId)} {playerId}");
             //TODO Пометить сущность игрока для передачи управления в AI системы.
+            //TODO удалить нахуй игрока из структуры данных текущего матча
+            bool success = matchStorageFacade.TryRemovePlayer(matchId, playerId);
+            if (!success)
+            {
+                throw new Exception("Сука блять какого хуя ты упал, уёбок?!");
+            }
             SendPlayerDeathMessageToMatchmaker(playerId);
         }
     }

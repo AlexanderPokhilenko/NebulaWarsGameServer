@@ -5,7 +5,6 @@ using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Experimental;
 using Server.Http;
-using UnityEngine.Rendering;
 
 namespace Server.GameEngine
 {
@@ -25,16 +24,16 @@ namespace Server.GameEngine
             return matchStorage.ContainsIpEndPoint(matchId, playerId);
         }
         
-        public void AddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        public bool TryAddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
         {
-            matchStorage.AddEndPoint(matchId, playerId, ipEndPoint);
+            return matchStorage.TryAddEndPoint(matchId, playerId, ipEndPoint);
         }
         
         public MatchStorageFacade()
         {
             battlesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
             finishedBattles = new Queue<int>();
-            matchStorage = new MatchStorage();
+            matchStorage = new MatchStorage(this);
         }
         
         public void AddMatchToQueue(BattleRoyaleMatchData battleRoyaleMatchData)
@@ -66,9 +65,7 @@ namespace Server.GameEngine
 
         private void CreateBattle(BattleRoyaleMatchData matchData)
         {
-            Match match = new Match(this);
-            match.ConfigureSystems(matchData);
-            matchStorage.AddMatch(match);
+            matchStorage.CreateMatch(matchData);
         }
         
         private void DeleteFinishedBattles()
@@ -89,9 +86,9 @@ namespace Server.GameEngine
         {
             Log.Warn("method "+nameof(DeleteMatch));
             var playersIds = matchStorage.GetPlayersIds(matchId);
+            PlayersNotifyHelper.Notify(matchId, playersIds);
             matchStorage.TearDownMatch(matchId);
             matchStorage.RemoveMatch(matchId);
-            PlayersNotifyHelper.Notify(matchId, playersIds);
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
         }
         
@@ -100,9 +97,10 @@ namespace Server.GameEngine
             return matchStorage.DichGetMatches();
         }
 
-        public bool TryRemovePlayer(int playerTmpId)
+       
+        public bool TryRemovePlayer(int matchId, int playerId)
         {
-            bool success = matchStorage.TryRemovePlayer(playerTmpId); 
+            bool success = matchStorage.TryRemovePlayer(matchId, playerId); 
             Log.Info("Удаление игрока из комнаты. success = "+success);
             return success;
         }

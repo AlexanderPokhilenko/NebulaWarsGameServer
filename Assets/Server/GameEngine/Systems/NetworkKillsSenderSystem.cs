@@ -20,7 +20,8 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     private readonly int matchId;
     readonly GameContext gameContext;
     
-    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId)
+    public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, 
+        int matchId)
         : base(contexts.game)
     {
         killersInfo = killersInfos;
@@ -79,10 +80,7 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                         throw new Exception("gameContext do not have match data");
                     }
 
-                    //TODO это говнище
-                    var dich = GameEngineMediator.MatchStorageFacade.TryRemovePlayer(playerTmpId);
                     
-                    int matchId = gameContext.match.MatchId;
                     int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                         killedEntityIndex);
                     PlayerDeathData playerDeathData = new PlayerDeathData
@@ -92,7 +90,17 @@ public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
                         MatchId = matchId 
                     };
                     PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                    UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);    
+                    UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);   
+                    
+                    //TODO это говнище
+                    if (GameEngineMediator.MatchStorageFacade.TryRemovePlayer(matchId, playerTmpId))
+                    { 
+                        Log.Error("GameEngineMediator.MatchStorageFacade.TryRemovePlayer success");
+                    }
+                    else
+                    {
+                        Log.Error("GameEngineMediator.MatchStorageFacade.TryRemovePlayer fail");
+                    }
                 }
             }
         }

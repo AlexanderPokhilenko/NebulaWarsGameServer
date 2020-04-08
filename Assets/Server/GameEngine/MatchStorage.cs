@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using log4net;
+using log4net.Util;
+using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Experimental;
 
 namespace Server.GameEngine
@@ -14,12 +16,20 @@ namespace Server.GameEngine
     public class MatchStorage
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
+        private readonly MatchStorageFacade matchStorageFacade;
         
-        //matchId Match
+        //MatchId Match
         private readonly ConcurrentDictionary<int, Match> matches;
         //accountId Match
         private readonly ConcurrentDictionary<int, Match> activePlayers;
 
+        public MatchStorage(MatchStorageFacade matchStorageFacade)
+        {
+            this.matchStorageFacade = matchStorageFacade;
+            matches = new ConcurrentDictionary<int, Match>();
+            activePlayers = new ConcurrentDictionary<int, Match>();
+        }
+        
         public bool ContainsIpEndPoint(int matchId, int playerId)
         {
             if (matches.ContainsKey(matchId))
@@ -31,15 +41,11 @@ namespace Server.GameEngine
                 return false;
             }
         }
-        
-        public MatchStorage()
-        {
-            matches = new ConcurrentDictionary<int, Match>();
-            activePlayers = new ConcurrentDictionary<int, Match>();
-        }
 
-        public void AddMatch(Match match)
+        public void CreateMatch(BattleRoyaleMatchData matchData)
         {
+            Match match = new Match(matchStorageFacade, matchData.MatchId);
+            match.ConfigureSystems(matchData);
             matches.TryAdd(match.matchData.MatchId, match);
             foreach (var player in match.matchData.GameUnitsForMatch.Players)
             {
@@ -49,6 +55,7 @@ namespace Server.GameEngine
             }
         }
 
+        //TODO говно
         public IEnumerable<int> GetPlayersIds(int matchId)
         {
             var playersIds = matches[matchId].matchData
@@ -80,11 +87,33 @@ namespace Server.GameEngine
             return matches.Values;
         }
 
-        public bool TryRemovePlayer(int playerTmpId)
+        /// <summary>
+        /// Удаляет игрока нахуй.
+        /// </summary>
+        public bool TryRemovePlayer(int matchId, int playerId)
         {
-            Log.Info($"{nameof(TryRemovePlayer)} {playerTmpId}");
-            bool success = activePlayers.TryRemove(playerTmpId, out _);
-            return success;
+            //TODO говно 
+            //костыльная проверка на удаление игрока из нужного матча
+            if (activePlayers.ContainsKey(playerId) && activePlayers[playerId].matchData.MatchId == matchId)
+            {
+                Log.Info($"Удаление игформаци о игроке из матча {nameof(TryRemovePlayer)} " +
+                         $"{nameof(playerId)} {playerId}");
+                bool success1;
+                bool success2=false;
+            
+                success1 = activePlayers.TryRemove(playerId, out Match match);
+                if (success1)
+                {
+                    success2 = match.TryRemovePlayerIpEndPoint(playerId);
+                }
+                return success1 && success2;
+            }
+            else
+            {
+                //TODO что с этим делать?
+                Log.Warn("Попытка удалить игрока не из того бояю");
+                return false;
+            }
         }
 
         public bool HasMatchWithId(int matchId)
@@ -102,15 +131,18 @@ namespace Server.GameEngine
             return activePlayers.TryGetValue(playerId, out match);
         }
 
-        public void AddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        public bool TryAddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
         {
+            Log.Warn($"Добавление ip адреса {nameof(matchId)} {matchId}");
             if (matches.ContainsKey(matchId))
             {
                 matches[matchId].AddEndPoint(playerId, ipEndPoint);
+                return true;
             }
             else
             {
-                Log.Error("Такого боя не существует.");
+                Log.Error($"Такого боя не существует. {nameof(matchId)} = {matchId}");
+                return false;
             }
         }
 

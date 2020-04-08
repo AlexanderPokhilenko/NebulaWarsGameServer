@@ -8,7 +8,6 @@ namespace Server.GameEngine.Systems
     {
         private readonly Contexts contexts;
         private readonly BattleRoyaleMatchData matchData;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchIdInitSystem));
         
         public MatchIdInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
         {
@@ -17,7 +16,6 @@ namespace Server.GameEngine.Systems
         }
         public void Initialize()
         {
-            Log.Info($"Инициализация {nameof(matchData.MatchId)} {matchData.MatchId}");
             contexts.game.SetMatch(matchData.MatchId);
         }
     }

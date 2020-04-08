@@ -11,32 +11,30 @@ namespace Server.Udp.Storage
     /// </summary>
     public class IpAddressesStorage
     {
-        private readonly ILog Log = LogManager.GetLogger(typeof(IpAddressesStorage));
+        private readonly int matchId;
+        private readonly ILog log = LogManager.GetLogger(typeof(IpAddressesStorage));
         
         /// <summary>
-        /// playerId , ip 
+        /// PlayerId , ip 
         /// </summary>
         private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
 
-        public IpAddressesStorage()
+        public IpAddressesStorage(int matchId)
         {
+            this.matchId = matchId;
             playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
-        }
-
-        public bool IsIpAddressAlreadyExists(IPEndPoint point)
-        {
-            return playersIpAddresses.Values.Contains(point);
         }
         
         public void AddPlayer(int playerId, IPEndPoint sender)
         {
             if (playersIpAddresses.TryAdd(playerId, sender))
             {
-                Log.Info($"Добавлен клиент с id={playerId}");
+                log.Info($"В словарь ip адресов для матча {matchId} добавлен игрок с id={playerId}");
             }
             else
             {
-                throw new Exception("Не удалось добавить игрока с playerId = "+playerId);
+                throw new Exception($"Не удалось добавить игрока с PlayerId = {playerId} " +
+                                    $"{nameof(matchId)} {matchId}");
             }
         }
 

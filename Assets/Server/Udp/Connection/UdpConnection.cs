@@ -57,9 +57,12 @@ namespace Server.Udp.Connection
             {
                 try
                 {
-                    var result = await client.ReceiveAsync();
-                    byte[] data = result.Buffer;
-                    HandleBytes(data, result.RemoteEndPoint);
+                    if (client != null)
+                    {
+                        var result = await client.ReceiveAsync();
+                        byte[] data = result.Buffer;
+                        HandleBytes(data, result.RemoteEndPoint);   
+                    }
                 }
                 catch (SocketException)
                 {

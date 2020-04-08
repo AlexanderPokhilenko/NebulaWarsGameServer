@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using log4net;
@@ -115,12 +116,24 @@ namespace Server.Udp.Sending
         {
             if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage();
+                ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage(matchId);
                 Log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
                 GameEngineMediator.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 NetworkMediator.udpBattleConnection.Send(serializedMessage, ipEndPoint);    
+            }
+        }
+
+        public static void SendMatchId(int matchId, int playerId)
+        {
+            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            {
+                // Log.Warn($"Отправка сообщения о завершении боя игроку с id {PlayerId}.");
+                DebugIdMessage debugIdMessage = new DebugIdMessage(matchId, playerId);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(debugIdMessage, false, out uint messageId);
+                NetworkMediator.udpBattleConnection.Send(serializedMessage, ipEndPoint);
             }
         }
     }

@@ -38,6 +38,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         ShowPlayerAchievements = 15,
         Kill = 16,
         ShieldPoints = 17,
-        MaxShieldPoints = 18
+        MaxShieldPoints = 18,
+        Debug = 19
     }
 }

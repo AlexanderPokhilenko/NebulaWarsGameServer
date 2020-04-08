@@ -18,7 +18,7 @@ namespace Server.Udp.MessageProcessing.Handlers
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            Log.Error("Сообщение о выходе из боя пришло");
+            Log.Warn("Сообщение о выходе из боя пришло");
             BattleExitMessage exitMessage =
                 ZeroFormatterSerializer.Deserialize<BattleExitMessage>(messageWrapper.SerializedMessage);
 
@@ -28,32 +28,6 @@ namespace Server.Udp.MessageProcessing.Handlers
             }
             
             StaticExitMessageSorter.AddExitMessage(exitMessage.PlayerId);
-
-            // if (NetworkMediator.IpAddressesStorage.TryRemovePlayerIp(exitMessage.PlayerId))
-            // {
-            //     Log.Info($"ip игрока с id {exitMessage.PlayerId} удалён");
-            // }
-            // else
-            // {
-            //     Log.Warn($"ip игрока с id {exitMessage.PlayerId} не удалён");
-            // }
-
-            //TODO говно
-            Task.Run(async () =>
-            {
-                await Task.Delay(1000);
-                if (GameEngineMediator.MatchStorageFacade.TryRemovePlayer(exitMessage.PlayerId))
-                {
-                    Log.Info($"игрока с id {exitMessage.PlayerId} удалён из списка активных игроков");
-                }
-                else
-                {
-                    Log.Warn($"игрока с id {exitMessage.PlayerId} не удалён из списка активных игроков");
-                }
-            }).ConfigureAwait(false);
-
-          
-
         }
     }
 }

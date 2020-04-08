@@ -44,7 +44,7 @@ namespace Server.GameEngine
             });
 #endif
 
-            PingLogger.Log();
+            
             rudpSender.SendUnconfirmedMessages();
             MatchStorageFacade.UpdateBattlesList();
         }

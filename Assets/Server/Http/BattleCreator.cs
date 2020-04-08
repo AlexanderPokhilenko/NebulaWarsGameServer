@@ -15,7 +15,7 @@ namespace Server.Http
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchData roomData)
         {
-            DebugLogGameRoom(roomData);
+            // DebugLogGameRoom(roomData);
             GameRoomValidationResult result = CheckRoom(roomData);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
@@ -89,26 +89,26 @@ namespace Server.Http
         private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
             if (GameEngineMediator.MatchStorageFacade == null)
+            {
                 throw new Exception("Игра ещё не инициализирована.");
-            
-            
+            }
             GameEngineMediator.MatchStorageFacade.AddMatchToQueue(matchData);
         }
 
         private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)
         {
-            Log.Info("Информация об игрой комнате");
+            Log.Info(nameof(DebugLogGameRoom));
             Log.Info($"{nameof(matchData.MatchId)}  {matchData.MatchId}");
             Log.Info($"{nameof(matchData.GameServerIp)}  {matchData.GameServerIp}");
             Log.Info($"{nameof(matchData.GameServerPort)}  {matchData.GameServerPort}");
             
-            Log.Info("Игроки");
+            Log.Info("Игроки:");
             foreach (var player in matchData.GameUnitsForMatch.Players)
             {
                 Log.Info($"{nameof(player.ServiceId)} = {player.ServiceId}, {nameof(player.AccountId)} = {player.AccountId}, {player.PrefabName} lvl = {player.WarshipCombatPowerLevel}");
             }
             
-            Log.Info("Боты");
+            Log.Info("Боты:");
             foreach (var bot in matchData.GameUnitsForMatch.Bots)
             {
                 Log.Info($"{nameof(bot.TemporaryId)} = {bot.TemporaryId} {bot.PrefabName} lvl = {bot.WarshipCombatPowerLevel}");

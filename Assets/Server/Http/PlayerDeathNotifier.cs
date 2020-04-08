@@ -68,7 +68,7 @@ namespace Server.Http
             string pathname = "/GameServer/PlayerDeath";
             string query = $"?accountId={playerDeathData.PlayerId}" +
                            $"&placeInBattle={playerDeathData.PlaceInBattle}" +
-                           $"&matchId={playerDeathData.MatchId}";
+                           $"&MatchId={playerDeathData.MatchId}";
             await SendDelete(pathname, query);
         }
         

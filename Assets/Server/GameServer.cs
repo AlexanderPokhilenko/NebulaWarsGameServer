@@ -14,7 +14,7 @@ namespace Server
         
         private Thread httpListeningThread;
         private UdpBattleConnection udpBattleConnection;
-        private Thread matchDeletingNotifier;
+        private Thread matchDeletingNotifierThread;
         private Thread playerDeathNotifierThread;
         
         public void Run()
@@ -22,7 +22,7 @@ namespace Server
             httpListeningThread = StartMatchmakerListening(HttpPort);
             udpBattleConnection = StartPlayersListening(UdpPort);
 
-            matchDeletingNotifier = MatchDeletingNotifier.StartThread();
+            matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
 
             GameEngineMediator gameEngineMediator = new GameEngineMediator();
@@ -54,7 +54,7 @@ namespace Server
         {
             httpListeningThread.Interrupt();
             udpBattleConnection.Stop();
-            matchDeletingNotifier.Interrupt();
+            matchDeletingNotifierThread.Interrupt();
             playerDeathNotifierThread.Interrupt();
         }
     }

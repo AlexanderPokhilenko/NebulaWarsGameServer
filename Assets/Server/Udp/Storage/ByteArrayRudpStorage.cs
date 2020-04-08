@@ -21,9 +21,9 @@ namespace Server.Udp.Storage
         
         private static readonly object LockObj = new object();
         
-        //messageId playerId
+        //messageId PlayerId
         private readonly ConcurrentDictionary<uint, int> messageIdPlayerId;
-        //playerId messageId message
+        //PlayerId messageId message
         private readonly ConcurrentDictionary<int, Dictionary<uint, byte[]>> unconfirmedMessages;
 
         public ByteArrayRudpStorage()
@@ -44,7 +44,7 @@ namespace Server.Udp.Storage
                     }
                     else
                     {
-                        throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с playerId=" + playerId);
+                        throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с PlayerId=" + playerId);
                     }
                 }
 
@@ -93,11 +93,20 @@ namespace Server.Udp.Storage
         }
 
 
+        [CanBeNull]
         public Dictionary<uint, byte[]>.ValueCollection GetAllMessagesForPlayer(int playerId)
         {
+            //TODO тут бросает исключение
             lock (LockObj)
             {
-                return unconfirmedMessages[playerId].Values;
+                if (unconfirmedMessages.ContainsKey(playerId))
+                {
+                    return unconfirmedMessages[playerId].Values;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

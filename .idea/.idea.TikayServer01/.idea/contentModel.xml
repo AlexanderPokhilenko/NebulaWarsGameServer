@@ -145,6 +145,9 @@
                   <e p="PointTrackingMessage.cs" t="Include" />
                   <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
                 </e>
+                <e p="Debug" t="Include">
+                  <e p="DebugIdMessage.cs" t="Include" />
+                </e>
                 <e p="Health" t="Include">
                   <e p="HealthPointsMessage.cs" t="Include" />
                   <e p="MaxHealthPointsMessage.cs" t="Include" />
@@ -225,8 +228,8 @@
             <e p="Experimental" t="Include">
               <e p="ContainerRudpSender.cs" t="Include" />
               <e p="IRudpSender.cs" t="Include" />
-              <e p="PingLogger.cs" t="Include" />
               <e p="SimpleRudpSender.cs" t="Include" />
+              <e p="StaticExitMessageSorter.cs" t="Include" />
               <e p="StaticInputMessagesSorter.cs" t="Include" />
             </e>
             <e p="GameEngineMediator.cs" t="Include" />
@@ -236,6 +239,9 @@
             <e p="MatchStorageFacade.cs" t="Include" />
             <e p="PlayersNotifyHelper.cs" t="Include" />
             <e p="Systems" t="Include">
+              <e p="Debug" t="Include">
+                <e p="MatchDebugSenderSystem.cs" t="Include" />
+              </e>
               <e p="FinishMatchSystem.cs" t="Include" />
               <e p="GameDeletingSystem.cs" t="Include" />
               <e p="InputDeletingSystem.cs" t="Include" />
@@ -253,6 +259,7 @@
               <e p="UpdatePossibleKillersSystem.cs" t="Include" />
             </e>
           </e>
+          <e p="GameServer.cs" t="Include" />
           <e p="Http" t="Include">
             <e p="BattleCreator.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
@@ -262,7 +269,6 @@
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
           </e>
-          <e p="Program.cs" t="Include" />
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
               <e p="UdpBattleConnection.cs" t="Include" />

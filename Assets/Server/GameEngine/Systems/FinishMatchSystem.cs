@@ -47,9 +47,21 @@ namespace Server.GameEngine.Systems
                 default:
                     Log.Warn("Минус игрок. Текущее кол-во: "+numberOfPlayers);
                     Log.Warn("Список погибших за этот кадр.");
+                    //TODO почему тут не выводит ботов?
                     foreach (var gameEntity in entities)
                     {
-                        Console.WriteLine($"{nameof(gameEntity.player.id)} {gameEntity.player.id}");
+                        if (gameEntity.isBot)
+                        {
+                            Log.Warn($"Был убит бот {gameEntity.viewType.id}");
+                        }
+                        else if(gameEntity.hasPlayer)
+                        {
+                            Log.Warn($"Был убит игрок {gameEntity.player.id}");
+                        }
+                        else
+                        {
+                            Log.Warn("Было убито хер знает что");
+                        }
                     }
                     Log.Warn("Список погибших за этот кард окончен.");
                     break;

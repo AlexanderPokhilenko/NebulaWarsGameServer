@@ -105,6 +105,11 @@ namespace ZeroFormatter
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage>(structFormatter));
             }
             {
+                var structFormatter = new ZeroFormatter.DynamicObjectSegments.DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage>.Register(structFormatter);
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage>(structFormatter));
+            }
+            {
                 var structFormatter = new ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.ServerToPlayer.HealthPointsMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.HealthPointsMessage>.Register(structFormatter);
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.HealthPointsMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.HealthPointsMessage>(structFormatter));
@@ -2419,22 +2424,33 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
     public class ShowPlayerAchievementsMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage>
         where TTypeResolver : ITypeResolver, new()
     {
+        readonly Formatter<TTypeResolver, int> formatter0;
         
+        public override bool NoUseDirtyTracker
+        {
+            get
+            {
+                return formatter0.NoUseDirtyTracker
+                ;
+            }
+        }
 
         public ShowPlayerAchievementsMessageFormatter()
         {
+            formatter0 = Formatter<TTypeResolver, int>.Default;
             
         }
 
         public override int? GetLength()
         {
-            return 0;
+            return 4;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 0);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 4);
             var startOffset = offset;
+            offset += formatter0.Serialize(ref bytes, offset, value.MatchId);
             return offset - startOffset;
         }
 
@@ -2442,8 +2458,81 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
         {
             byteSize = 0;
             int size;
+            var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
             
-            return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage();
+            return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.ShowPlayerAchievementsMessage(item0);
+        }
+    }
+
+
+}
+
+#pragma warning restore 168
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
+#pragma warning disable 168
+namespace ZeroFormatter.DynamicObjectSegments.DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug
+{
+    using global::System;
+    using global::ZeroFormatter.Formatters;
+    using global::ZeroFormatter.Internal;
+    using global::ZeroFormatter.Segments;
+
+    public class DebugIdMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, int> formatter1;
+        
+        public override bool NoUseDirtyTracker
+        {
+            get
+            {
+                return formatter0.NoUseDirtyTracker
+                    && formatter1.NoUseDirtyTracker
+                ;
+            }
+        }
+
+        public DebugIdMessageFormatter()
+        {
+            formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter1 = Formatter<TTypeResolver, int>.Default;
+            
+        }
+
+        public override int? GetLength()
+        {
+            return 8;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage value)
+        {
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
+            var startOffset = offset;
+            offset += formatter0.Serialize(ref bytes, offset, value.MatchId);
+            offset += formatter1.Serialize(ref bytes, offset, value.PlayerId);
+            return offset - startOffset;
+        }
+
+        public override global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 0;
+            int size;
+            var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            
+            return new global::DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug.DebugIdMessage(item0, item1);
         }
     }
 
