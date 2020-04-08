@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entitas;
 using Server.Udp.Sending;
-
 using UnityEngine;
 
 namespace Server.GameEngine.Systems

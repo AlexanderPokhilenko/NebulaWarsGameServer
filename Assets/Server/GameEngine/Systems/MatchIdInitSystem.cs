@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 
 namespace Server.GameEngine.Systems

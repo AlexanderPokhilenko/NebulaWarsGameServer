@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using log4net.Util;
 using Server.GameEngine;
 using Server.Http;
 using Server.Udp;
@@ -7,20 +6,20 @@ using Server.Udp.Connection;
 
 namespace Server
 {
-    class GameServer
+    public class GameServer
     {
         private const int HttpPort = 14065;
         private const int UdpPort = 48956;
         
         private Thread httpListeningThread;
-        private UdpBattleConnection udpBattleConnection;
+        private UdpConnectionFacade udpConnectionFacade;
         private Thread matchDeletingNotifierThread;
         private Thread playerDeathNotifierThread;
         
         public void Run()
         {
             httpListeningThread = StartMatchmakerListening(HttpPort);
-            udpBattleConnection = StartPlayersListening(UdpPort);
+            udpConnectionFacade = StartPlayersListening(UdpPort);
 
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
@@ -36,24 +35,24 @@ namespace Server
             return thread;
         }
 
-        private UdpBattleConnection StartPlayersListening(int port)
+        private UdpConnectionFacade StartPlayersListening(int port)
         {
-            udpBattleConnection = new UdpBattleConnection();
+            var udpBattleConnectionLocal = new UdpConnectionFacade();
 
             NetworkMediator mediator = new NetworkMediator();
-            mediator.SetUdpConnection(udpBattleConnection);
+            mediator.SetUdpConnection(udpBattleConnectionLocal);
             
-            udpBattleConnection
+            udpBattleConnectionLocal
                 .SetUpConnection(port)
                 .StartReceiveThread();
             
-            return udpBattleConnection;
+            return udpBattleConnectionLocal;
         }
 
         public void StopListeningThreads()
         {
             httpListeningThread.Interrupt();
-            udpBattleConnection.Stop();
+            udpConnectionFacade.Stop();
             matchDeletingNotifierThread.Interrupt();
             playerDeathNotifierThread.Interrupt();
         }

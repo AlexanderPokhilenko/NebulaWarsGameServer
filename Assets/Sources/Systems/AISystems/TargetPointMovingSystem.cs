@@ -1,7 +1,7 @@
 ﻿using Entitas;
-using Server.GameEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Server.GameEngine;
 using UnityEngine;
 
 public sealed class TargetPointMovingSystem : IExecuteSystem

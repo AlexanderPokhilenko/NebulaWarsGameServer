@@ -1,26 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using Server.Udp.Sending;
 
 //TODO: попробовать разобраться без ToList - пока без него падает из-за модификации коллекции
 
 namespace Server.GameEngine.Experimental
 {
-    public struct ReliableMessagesPack
-    {
-        // public int PlayerId;
-        // public int MatchId;
-        public readonly IPEndPoint IpEndPoint;
-        public readonly Dictionary<uint, byte[]>.ValueCollection reliableMessages;
-
-        public ReliableMessagesPack(IPEndPoint ipEndPoint, Dictionary<uint, byte[]>.ValueCollection reliableMessages)
-        {
-            IpEndPoint = ipEndPoint;
-            this.reliableMessages = reliableMessages;
-        }
-    }
-    
     /// <summary>
     /// Отправляет все сообщения, доставка которыъ не была подтверждена
     /// </summary>

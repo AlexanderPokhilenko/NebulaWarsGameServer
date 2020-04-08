@@ -1,7 +1,6 @@
 ﻿// #define USE_OLD_INIT_SYSTEMS
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using log4net;
@@ -10,9 +9,14 @@ using Server.GameEngine.Experimental;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Debug;
 using Server.Udp.Storage;
-using UnityEngine;
 
 //TODO говно
+//разделить на подклассы
+//Ecs
+//Ip
+//RUDP
+//управление состоянием
+
 
 namespace Server.GameEngine
 {
@@ -26,7 +30,6 @@ namespace Server.GameEngine
 
         public Match(MatchStorageFacade matchStorageFacade, int matchId)
         {
-            Log.Info($"{nameof(Match)} ctor {nameof(matchId)} {matchId}");
             ipAddressesStorage = new IpAddressesStorage(matchId);
             
             this.matchStorageFacade = matchStorageFacade;
@@ -88,8 +91,7 @@ namespace Server.GameEngine
         #region Ecs
         private Entitas.Systems systems;
         public Contexts Contexts { get; private set; }
-        // private readonly FlameCircleObject zoneObject;
-        
+       
         
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
@@ -100,7 +102,7 @@ namespace Server.GameEngine
             Contexts.SubscribeId();
 #if UNITY_EDITOR
             CollidersDrawer.contextsList.Add(Contexts);
-            Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
+            // Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
 #endif
             systems = new Entitas.Systems()
 #if USE_OLD_INIT_SYSTEMS
@@ -129,10 +131,11 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(Contexts))
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     
+                    
+                    .Add(new FinishMatchSystem(Contexts, this))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo, matchDataArg.MatchId))
                     .Add(new PlayerExitSystem(Contexts, matchDataArg.MatchId, matchStorageFacade))
                     
-                    .Add(new FinishMatchSystem(Contexts, this))
                     
                     
                     

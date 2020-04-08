@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
-using System.Threading;
 using log4net;
 
 namespace Server.Udp.Storage

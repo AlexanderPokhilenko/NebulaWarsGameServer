@@ -7,7 +7,6 @@
     <e p="C:\Users\Zenit\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Zenit\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_TikayServer01.295355446.00" t="ExcludeRecursive" />
     <e p="C:\Users\Zenit\Downloads\MultiplayerGameProgramming-master\MultiplayerGameProgramming-master\TikayServer01" t="IncludeRecursive">
-      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Generated" t="Include">
           <e p="Components" t="Include">
@@ -177,6 +176,7 @@
           <e p="LoggingConfiguration.cs" t="Include" />
           <e p="UnityDebugAppender.cs" t="Include" />
         </e>
+        <e p="Main.asmdef" t="Include" />
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />
@@ -228,6 +228,7 @@
             <e p="Experimental" t="Include">
               <e p="ContainerRudpSender.cs" t="Include" />
               <e p="IRudpSender.cs" t="Include" />
+              <e p="ReliableMessagesPack.cs" t="Include" />
               <e p="SimpleRudpSender.cs" t="Include" />
               <e p="StaticExitMessageSorter.cs" t="Include" />
               <e p="StaticInputMessagesSorter.cs" t="Include" />
@@ -271,8 +272,8 @@
           </e>
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
-              <e p="UdpBattleConnection.cs" t="Include" />
               <e p="UdpConnection.cs" t="Include" />
+              <e p="UdpConnectionFacade.cs" t="Include" />
             </e>
             <e p="MessageProcessing" t="Include">
               <e p="Handlers" t="Include">
@@ -480,10 +481,11 @@
           </e>
         </e>
         <e p="Tests" t="Include">
-          <e p="NewTestScript.cs" t="Include" />
+          <e p="MatchTests.cs" t="Include" />
           <e p="Tests.asmdef" t="Include" />
         </e>
       </e>
+      <e p="Main.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />

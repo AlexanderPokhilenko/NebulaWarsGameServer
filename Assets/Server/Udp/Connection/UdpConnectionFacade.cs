@@ -3,7 +3,10 @@ using System.Net;
 
 namespace Server.Udp.Connection
 {
-    public class UdpBattleConnection:UdpConnection
+    /// <summary>
+    /// Принимает все udp сообщения от игроков.
+    /// </summary>
+    public class UdpConnectionFacade:UdpConnection
     {
         private NetworkMediator mediator;
         
@@ -11,7 +14,7 @@ namespace Server.Udp.Connection
         {
             if (mediator != null)
             {
-                throw new Exception("Повторная инициализация медиатора.");
+                throw new Exception("Повторная инициализация.");
             }
             else
             {

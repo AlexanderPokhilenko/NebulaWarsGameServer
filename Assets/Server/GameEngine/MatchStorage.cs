@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using log4net;
-using log4net.Util;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Experimental;
 
@@ -55,14 +54,29 @@ namespace Server.GameEngine
             }
         }
 
-        //TODO говно
-        public IEnumerable<int> GetPlayersIds(int matchId)
+        //TODO кусок ебаного говна
+        /// <summary>
+        /// Возвращает список активных игроков из этого матча.
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public List<int> GetActivePlayersIds(int matchId)
         {
-            var playersIds = matches[matchId].matchData
+            List<int> activePlayersIds = matches[matchId].matchData
                 .GameUnitsForMatch
                 .Players
-                .Select(player => player.TemporaryId);
-            return playersIds;
+                .Select(player => player.TemporaryId)
+                .Where(playerId => activePlayers.ContainsKey(playerId) 
+                                   && activePlayers[playerId].matchData.MatchId==matchId)
+                .ToList();
+            
+            foreach (var activePlayerId in activePlayersIds)
+            {
+                Log.Warn($"{nameof(GetActivePlayersIds)}" +
+                         $" {nameof(matchId)} {matchId} " +
+                         $"{nameof(activePlayerId)} {activePlayerId}");
+            }
+            return activePlayersIds;
         }
         
         public void RemoveMatch(int matchId)
@@ -92,28 +106,44 @@ namespace Server.GameEngine
         /// </summary>
         public bool TryRemovePlayer(int matchId, int playerId)
         {
-            //TODO говно 
-            //костыльная проверка на удаление игрока из нужного матча
-            if (activePlayers.ContainsKey(playerId) && activePlayers[playerId].matchData.MatchId == matchId)
-            {
-                Log.Info($"Удаление игформаци о игроке из матча {nameof(TryRemovePlayer)} " +
-                         $"{nameof(playerId)} {playerId}");
-                bool success1;
-                bool success2=false;
+            Log.Warn($"{nameof(TryRemovePlayer)} {nameof(matchId)} {matchId} {nameof(playerId)} {playerId}");
             
-                success1 = activePlayers.TryRemove(playerId, out Match match);
-                if (success1)
+            //Игрок есть в списке активных игроков?
+            if (activePlayers.ContainsKey(playerId))
+            {
+                Log.Info("Игрок есть в списке активных игроков");
+                if (activePlayers[playerId].matchData.MatchId == matchId)
                 {
-                    success2 = match.TryRemovePlayerIpEndPoint(playerId);
+                    Log.Info($"Матч совпадает.");
+                    
+                    if (activePlayers.TryRemove(playerId, out Match match))
+                    {
+                        Log.Info($"Успешное удаление из списка активных игроков.");
+                        if (match.TryRemovePlayerIpEndPoint(playerId))
+                        {
+                            Log.Info($"Успешное удаление ip адреса.");
+                            return true;
+                        }
+                        else
+                        {
+                            Log.Info($"Не удалось удалить ip адрес");
+                        }
+                    }
+                    else
+                    {
+                        Log.Info($"Не удалось удалить из списка активных игроков.");
+                    }
                 }
-                return success1 && success2;
+                else
+                {
+                    Log.Error($"Матч не совпадает. {activePlayers[playerId].matchData.MatchId} {matchId}");
+                }
             }
             else
             {
-                //TODO что с этим делать?
-                Log.Warn("Попытка удалить игрока не из того бояю");
-                return false;
+                Log.Warn("Игрока не в списке активных игроков.");
             }
+            return false;
         }
 
         public bool HasMatchWithId(int matchId)
@@ -133,18 +163,37 @@ namespace Server.GameEngine
 
         public bool TryAddEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
         {
-            Log.Warn($"Добавление ip адреса {nameof(matchId)} {matchId}");
+            Log.Warn($"Добавление ip адреса {nameof(matchId)} {matchId} {nameof(playerId)} {playerId}");
             if (matches.ContainsKey(matchId))
             {
+                //TODO удалить ip этого игрока из других матчей
+                foreach (var pair in matches)
+                {
+                    var match = pair.Value;
+                    if (match.matchData.MatchId != matchId)
+                    {
+                        if (match.ContainsIpEnpPointForPlayer(playerId))
+                        {
+                            if (match.TryRemovePlayerIpEndPoint(playerId))
+                            {
+                                Log.Warn("Эта ебаная хуйня сработала. ЕБОЙ");
+                            }
+                        }
+                    }
+                }
+                
+                
                 matches[matchId].AddEndPoint(playerId, ipEndPoint);
                 return true;
             }
             else
             {
-                Log.Error($"Такого боя не существует. {nameof(matchId)} = {matchId}");
+                Log.Error($"Такого матча не существует. {nameof(matchId)} = {matchId}");
                 return false;
             }
         }
+        
+        
 
         public bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {

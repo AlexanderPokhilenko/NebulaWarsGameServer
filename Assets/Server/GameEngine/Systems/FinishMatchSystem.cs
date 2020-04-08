@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Entitas;
 using log4net;
 
@@ -10,9 +9,9 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class FinishMatchSystem:ReactiveSystem<GameEntity>
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FinishMatchSystem));
         private readonly IGroup<GameEntity> playersGroup;
         private readonly Match match;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FinishMatchSystem));
 
         public FinishMatchSystem(Contexts contexts, Match match) : base(contexts.game)
         {
@@ -32,9 +31,30 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            Log.Info($"{nameof(FinishMatchSystem)}");
-            int numberOfPlayers = playersGroup.count;
-            switch (numberOfPlayers)
+            int numberOfAlivePlayers = playersGroup.count;
+            
+            Log.Warn($" {nameof(match.matchData.MatchId)} {match.matchData.MatchId} " +
+                     $"Погибло игровых сущностей: {entities.Count}. " +
+                     $"Текущее кол-во игровых сущностей: {numberOfAlivePlayers}");
+            foreach (var gameEntity in entities)
+            {
+                if (gameEntity.isBot)
+                {
+                    Log.Warn($"{nameof(match.matchData.MatchId)} {match.matchData.MatchId} " +
+                             $"Погиб бот {gameEntity.viewType.id}");
+                }
+                else if(gameEntity.hasPlayer)
+                {
+                    Log.Warn($"{nameof(match.matchData.MatchId)} {match.matchData.MatchId}" +
+                             $"  Погиб игрок {gameEntity.player.id}");
+                }
+                else
+                {
+                    Log.Warn("Было убито хер знает что");
+                }
+            }
+
+            switch (numberOfAlivePlayers)
             {
                 case 0:
                     //последние игроки сдохли в одном кадре
@@ -43,27 +63,6 @@ namespace Server.GameEngine.Systems
                 case 1 :
                     //есть победитель
                     match.FinishGame();
-                    break;
-                default:
-                    Log.Warn("Минус игрок. Текущее кол-во: "+numberOfPlayers);
-                    Log.Warn("Список погибших за этот кадр.");
-                    //TODO почему тут не выводит ботов?
-                    foreach (var gameEntity in entities)
-                    {
-                        if (gameEntity.isBot)
-                        {
-                            Log.Warn($"Был убит бот {gameEntity.viewType.id}");
-                        }
-                        else if(gameEntity.hasPlayer)
-                        {
-                            Log.Warn($"Был убит игрок {gameEntity.player.id}");
-                        }
-                        else
-                        {
-                            Log.Warn("Было убито хер знает что");
-                        }
-                    }
-                    Log.Warn("Список погибших за этот кард окончен.");
                     break;
             }
         }

@@ -38,7 +38,7 @@ namespace Server.Http
         {
             while (!KilledPlayers.IsEmpty)
             {
-                Log.Info("Отправка уведомления о смерти игрока");
+                Log.Info("Отправка уведомления о смерти игрока на матчмейкер");
                 KilledPlayers.TryDequeue(out var playerDeathData);
                 CheckDeathData(playerDeathData);
                 await SendMessageAboutPlayerDeath(playerDeathData);

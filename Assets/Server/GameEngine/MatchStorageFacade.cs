@@ -16,7 +16,7 @@ namespace Server.GameEngine
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorageFacade));
         
         private readonly ConcurrentQueue<BattleRoyaleMatchData> battlesToCreate;
-        private readonly Queue<int> finishedBattles;
+        private readonly ConcurrentQueue<int> finishedBattles;
         private readonly MatchStorage matchStorage;
 
         public bool ContainsIpEndPoint(int matchId, int playerId)
@@ -32,7 +32,7 @@ namespace Server.GameEngine
         public MatchStorageFacade()
         {
             battlesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
-            finishedBattles = new Queue<int>();
+            finishedBattles = new ConcurrentQueue<int>();
             matchStorage = new MatchStorage(this);
         }
         
@@ -70,11 +70,13 @@ namespace Server.GameEngine
         
         private void DeleteFinishedBattles()
         {
-            while (finishedBattles.Count!=0)
+            while (finishedBattles.Count != 0)
             {
-                Log.Warn("Удаление боя");
-                int matchId = finishedBattles.Dequeue();
-                DeleteMatch(matchId);
+                if (finishedBattles.TryDequeue(out int matchId))
+                {
+                    Log.Warn("Удаление боя "+matchId);
+                    DeleteMatch(matchId);    
+                }
             }
         }
 
@@ -84,8 +86,8 @@ namespace Server.GameEngine
         /// <param name="matchId"></param>
         private void DeleteMatch(int matchId)
         {
-            Log.Warn("method "+nameof(DeleteMatch));
-            var playersIds = matchStorage.GetPlayersIds(matchId);
+            Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
+            List<int> playersIds = matchStorage.GetActivePlayersIds(matchId);
             PlayersNotifyHelper.Notify(matchId, playersIds);
             matchStorage.TearDownMatch(matchId);
             matchStorage.RemoveMatch(matchId);
@@ -96,12 +98,10 @@ namespace Server.GameEngine
         {
             return matchStorage.DichGetMatches();
         }
-
-       
+        
         public bool TryRemovePlayer(int matchId, int playerId)
         {
-            bool success = matchStorage.TryRemovePlayer(matchId, playerId); 
-            Log.Info("Удаление игрока из комнаты. success = "+success);
+            bool success = matchStorage.TryRemovePlayer(matchId, playerId);
             return success;
         }
 

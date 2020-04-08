@@ -30,7 +30,7 @@ namespace Server.Http
              while(true)
              {
                  await HandleNextRequest();
-                 Log.Info("Отправлен ответ по http");
+                 // Log.Info("Отправлен ответ по http");
              }
              // ReSharper disable once FunctionNeverReturns
         }
@@ -59,7 +59,10 @@ namespace Server.Http
 
                 if (result != null)
                 {
-                    Log.Info(result.ResultEnum);
+                    if (result.ResultEnum != GameRoomValidationResultEnum.Ok)
+                    {
+                        Log.Error(result.ResultEnum);
+                    }
                     byte[] responseData = ZeroFormatterSerializer.Serialize(result);
                     context.Response.StatusCode = 200;
                     context.Response.ContentLength64 = responseData.Length;

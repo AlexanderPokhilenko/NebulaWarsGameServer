@@ -7,11 +7,9 @@ namespace Server.GameEngine
     /// </summary>
     public class GameEngineMediator
     {
-        private readonly IRudpSender rudpSender;
         private readonly ClockFacade clockFacade;
-        
         public static MatchStorageFacade MatchStorageFacade;
-        
+        private readonly IRudpSender rudpSender;
 
         public GameEngineMediator()
         {
@@ -27,25 +25,20 @@ namespace Server.GameEngine
 
         private void Tick()
         {
+            //Создание сущностей после ввода игроков
             StaticInputMessagesSorter.Spread();
             StaticExitMessageSorter.Spread();
-
-#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
+            
+            //Обработка 
             foreach (var gameSession in MatchStorageFacade.GetAllGameSessions())
             {
                 gameSession.Execute();
                 gameSession.Cleanup();
             }
-#else
-            Parallel.ForEach(MatchStorageFacade.GetAllGameSessions(), gameSession =>
-            {
-                gameSession.Execute();
-                gameSession.Cleanup();
-            });
-#endif
 
-            
+            //Отправка rudp
             rudpSender.SendUnconfirmedMessages();
+            //создание/удаление матчей
             MatchStorageFacade.UpdateBattlesList();
         }
     }

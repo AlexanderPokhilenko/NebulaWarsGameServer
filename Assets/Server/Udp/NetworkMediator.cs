@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
-using Server.Udp.Storage;
 using ZeroFormatter;
 
 namespace Server.Udp
 {
-    //TODO говно
     public class NetworkMediator
     {
         private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
-        
-        public static UdpBattleConnection udpBattleConnection { get; private set; }
+        //TODO говно
+        public static UdpConnectionFacade udpConnectionFacade { get; private set; }
         
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
@@ -23,12 +20,12 @@ namespace Server.Udp
             MessageProcessor.Handle(messageWrapper, endPoint);
         }
 
-        public void SetUdpConnection(UdpBattleConnection udpBattleConn)
+        public void SetUdpConnection(UdpConnectionFacade udpConn)
         {
-            if (udpBattleConnection == null)
+            if (udpConnectionFacade == null)
             {
-                udpBattleConnection = udpBattleConn;
-                udpBattleConnection.SetMediator(this);
+                udpConnectionFacade = udpConn;
+                udpConnectionFacade.SetMediator(this);
             }
             else
             {
