@@ -91,8 +91,9 @@ namespace Server.GameEngine
         #region Ecs
         private Entitas.Systems systems;
         public Contexts Contexts { get; private set; }
-       
-        
+
+
+        private IRudpMessagesStorage rudpMessagesStorage;
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
             Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
@@ -146,6 +147,8 @@ namespace Server.GameEngine
                     .Add(new ShieldPointsUpdaterSystem(Contexts, matchDataArg.MatchId))
                     .Add(new InputDeletingSystem(Contexts))
                     .Add(new GameDeletingSystem(Contexts))
+                
+                    .Add(new RudpSendingSystem(rudpMessagesStorage))
                 ;
 
             systems.ActivateReactiveSystems();

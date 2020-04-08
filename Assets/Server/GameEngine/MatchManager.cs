@@ -9,12 +9,10 @@ namespace Server.GameEngine
     public class MatchManager
     {
         public static MatchStorageFacade MatchStorageFacade;
-        private readonly IRudpSender rudpSender;
-
+        
         public MatchManager()
         {
             MatchStorageFacade = new MatchStorageFacade();
-            rudpSender = new SimpleRudpSender(MatchStorageFacade);
         }
 
         public void Tick()
@@ -24,14 +22,12 @@ namespace Server.GameEngine
             StaticExitMessageSorter.Spread();
             
             //Обработка 
-            foreach (var gameSession in MatchStorageFacade.GetAllGameSessions())
+            foreach (var match in MatchStorageFacade.GetAllMatches())
             {
-                gameSession.Execute();
-                gameSession.Cleanup();
+                match.Execute();
+                match.Cleanup();
             }
 
-            //Отправка rudp
-            rudpSender.SendUnconfirmedMessages();
             //создание/удаление матчей
             MatchStorageFacade.UpdateBattlesList();
         }
