@@ -25,8 +25,8 @@ namespace Server.GameEngine
 
         public void AddMatch(Match match)
         {
-            matches.TryAdd(match.matchData.MatchId, match);
-            foreach (var player in match.matchData.GameUnitsForMatch.Players)
+            matches.TryAdd(match.MatchData.MatchId, match);
+            foreach (var player in match.MatchData.GameUnitsForMatch.Players)
             {
                 Log.Warn($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
                          $"{player.TemporaryId}");
@@ -36,7 +36,7 @@ namespace Server.GameEngine
 
         public IEnumerable<int> GetPlayersIds(int matchId)
         {
-            var playersIds = matches[matchId].matchData
+            var playersIds = matches[matchId].MatchData
                 .GameUnitsForMatch
                 .Players
                 .Select(player => player.TemporaryId);
@@ -46,7 +46,7 @@ namespace Server.GameEngine
         {
             Log.Warn(nameof(RemoveMatch));
             matches.TryRemove(matchId, out var match);
-            foreach (var playerInfoForMatch in match.matchData.GameUnitsForMatch.Players)
+            foreach (var playerInfoForMatch in match.MatchData.GameUnitsForMatch.Players)
             {
                 activePlayers.TryRemove(playerInfoForMatch.TemporaryId, out _);
             }

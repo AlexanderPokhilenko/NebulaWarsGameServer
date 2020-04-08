@@ -1,11 +1,10 @@
 ﻿// #define USE_OLD_INIT_SYSTEMS
 
-using System;
-using System.Collections.Generic;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
-using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace Server.GameEngine
 {
@@ -13,12 +12,11 @@ namespace Server.GameEngine
     {
         private Entitas.Systems systems;
         public Contexts Contexts { get; private set; }
-        public BattleRoyaleMatchData matchData { get; private set; }
+        public BattleRoyaleMatchData MatchData { get; private set; }
         private DateTime? gameStartTime;
 
         private readonly MatchStorageFacade matchStorageFacade;
 
-        // private readonly FlameCircleObject zoneObject;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
 
         private bool gameOver;
@@ -29,15 +27,13 @@ namespace Server.GameEngine
         {
             this.matchStorageFacade = matchStorageFacade;
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-            //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
-            // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
             Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
 
-            matchData = matchDataArg;
+            MatchData = matchDataArg;
             Contexts = ContextsPool.GetContexts();
             Contexts.SubscribeId();
 #if UNITY_EDITOR
@@ -71,10 +67,9 @@ namespace Server.GameEngine
                     .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo))
                     .Add(new FinishMatchSystem(Contexts, this))
-                    
-                    
-                    
+                    //Важно: после систем уничтожения убитые игроки удаляются и следующие системы их не увидят!
                     .Add(new DestroySystems(Contexts))
+                    //Важно!!!
                     .Add(new NetworkSenderSystem(Contexts))
                     .Add(new MaxHpUpdaterSystem(Contexts))
                     .Add(new ShieldPointsUpdaterSystem(Contexts))
@@ -125,7 +120,7 @@ namespace Server.GameEngine
         {
             // Log.Error(nameof(FinishGame));
             gameOver = true;
-            matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);
+            matchStorageFacade.MarkBattleAsFinished(MatchData.MatchId);
         }
     }
 }
