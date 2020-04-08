@@ -39,7 +39,7 @@ namespace Server.Http
 
         private bool CheckPlayers(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorageFacade == null)
+            if (MatchManager.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
@@ -47,7 +47,7 @@ namespace Server.Http
             bool thereIsNoRoomWithSuchPlayers = true;
             foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
-                if (GameEngineMediator.MatchStorageFacade.HasPlayerWithId(playerId))
+                if (MatchManager.MatchStorageFacade.HasPlayerWithId(playerId))
                 {
                     Log.Error("В словаре уже содержится игрок с id = "+playerId);
                     thereIsNoRoomWithSuchPlayers = false;
@@ -59,12 +59,12 @@ namespace Server.Http
 
         private bool CheckRoomNumber(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorageFacade == null)
+            if (MatchManager.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
             
-            return !GameEngineMediator.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
+            return !MatchManager.MatchStorageFacade.HasMatchWithId(matchData.MatchId);
         }
 
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
@@ -88,11 +88,11 @@ namespace Server.Http
 
         private static void AddRoomToQueue(BattleRoyaleMatchData matchData)
         {
-            if (GameEngineMediator.MatchStorageFacade == null)
+            if (MatchManager.MatchStorageFacade == null)
             {
                 throw new Exception("Игра ещё не инициализирована.");
             }
-            GameEngineMediator.MatchStorageFacade.AddMatchToQueue(matchData);
+            MatchManager.MatchStorageFacade.AddMatchToQueue(matchData);
         }
 
         private static void DebugLogGameRoom(BattleRoyaleMatchData matchData)

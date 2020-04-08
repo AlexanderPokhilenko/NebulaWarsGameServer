@@ -18,7 +18,7 @@ public sealed class MoveSystem : IExecuteSystem
     {
         foreach (var e in movableGroup)
         {
-            e.ReplacePosition(e.position.value + e.velocity.value * Clock.deltaTime);
+            e.ReplacePosition(e.position.value + e.velocity.value * Chronometer.deltaTime);
         }
     }
 }

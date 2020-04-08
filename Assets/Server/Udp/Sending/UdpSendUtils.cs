@@ -19,7 +19,7 @@ namespace Server.Udp.Sending
 
         private static bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {
-            return GameEngineMediator.MatchStorageFacade.TryGetPlayerIpEndPoint(matchId, playerId, out ipEndPoint);
+            return MatchManager.MatchStorageFacade.TryGetPlayerIpEndPoint(matchId, playerId, out ipEndPoint);
         }
         
         public static void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)
@@ -52,7 +52,7 @@ namespace Server.Udp.Sending
                     killData.VictimType);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
-                GameEngineMediator.MatchStorageFacade.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, 
+                MatchManager.MatchStorageFacade.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, 
                     serializedMessage);
                 NetworkMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
@@ -84,7 +84,7 @@ namespace Server.Udp.Sending
                 MaxHealthPointsMessage healthPointsMessage = new MaxHealthPointsMessage(maxHealthPoints);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-                GameEngineMediator.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
+                MatchManager.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 NetworkMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -107,7 +107,7 @@ namespace Server.Udp.Sending
                 var healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-                GameEngineMediator.MatchStorageFacade.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+                MatchManager.MatchStorageFacade.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 NetworkMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -120,7 +120,7 @@ namespace Server.Udp.Sending
                 Log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
-                GameEngineMediator.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
+                MatchManager.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 NetworkMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);    
             }
         }

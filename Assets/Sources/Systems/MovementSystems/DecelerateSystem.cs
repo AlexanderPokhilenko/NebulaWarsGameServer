@@ -20,7 +20,7 @@ public sealed class DecelerateSystem : IExecuteSystem
         foreach (var e in movableGroup)
         {
             //TODO: заменить на нормальную формулу
-            var newVelocity = e.velocity.value / (1 + deceleratingConstant * Clock.deltaTime);
+            var newVelocity = e.velocity.value / (1 + deceleratingConstant * Chronometer.deltaTime);
             e.ReplaceVelocity(newVelocity);
         }
     }

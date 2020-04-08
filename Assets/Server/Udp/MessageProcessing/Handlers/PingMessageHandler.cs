@@ -25,9 +25,9 @@ namespace Server.Udp.MessageProcessing.Handlers
 
         private static void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
         {
-            if (!GameEngineMediator.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
+            if (!MatchManager.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
             {
-                if (GameEngineMediator.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
+                if (MatchManager.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
                 {
                     Log.Info($"Ip нового игрока добавлен {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
                 }

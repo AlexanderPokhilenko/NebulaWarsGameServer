@@ -158,7 +158,7 @@ namespace Server.GameEngine
             if (gameOver) return;
             if (IsSessionTimedOut())
             {
-                FinishGame();
+                Finish();
                 return;
             }
             systems.Execute();
@@ -199,7 +199,7 @@ namespace Server.GameEngine
             return gameDuration > GameSessionGlobals.GameDuration;
         }
 
-        public void FinishGame()
+        public void Finish()
         {
             gameOver = true;
             matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);

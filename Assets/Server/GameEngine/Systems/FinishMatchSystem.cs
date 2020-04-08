@@ -58,11 +58,11 @@ namespace Server.GameEngine.Systems
             {
                 case 0:
                     //последние игроки сдохли в одном кадре
-                    match.FinishGame();
+                    match.Finish();
                     break;
                 case 1 :
                     //есть победитель
-                    match.FinishGame();
+                    match.Finish();
                     break;
             }
         }

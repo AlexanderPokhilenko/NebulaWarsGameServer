@@ -1,4 +1,5 @@
 ﻿using Server;
+using Server.GameEngine;
 using UnityEngine;
 
 public class ServerController : MonoBehaviour
@@ -16,6 +17,10 @@ public class ServerController : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
+        foreach (var match in MatchManager.MatchStorageFacade.GetAllGameSessions())
+        {
+            match.Finish();
+        }
         gameServer.StopListeningThreads();
     }
 }

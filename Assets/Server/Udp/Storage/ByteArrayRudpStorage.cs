@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using log4net;
 
-//TODO я не смог понять, почему оно падает и как это правильно исправить, поэтому добавил lock
+//TODO убрать lock и выяснить в чём проблема
 
 namespace Server.Udp.Storage
 {
@@ -13,9 +14,9 @@ namespace Server.Udp.Storage
     /// </summary>
     public class ByteArrayRudpStorage
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ByteArrayRudpStorage));
+        private readonly ILog log = LogManager.GetLogger(typeof(ByteArrayRudpStorage));
         
-        private static readonly object LockObj = new object();
+        private readonly object lockObj = new object();
         
         //messageId PlayerId
         private readonly ConcurrentDictionary<uint, int> messageIdPlayerId;
@@ -30,7 +31,7 @@ namespace Server.Udp.Storage
         
         public void AddMessage(int playerId, uint messageId, byte[] serializedMessage) 
         {
-            lock (LockObj)
+            lock (lockObj)
             {
                 if (!unconfirmedMessages.ContainsKey(playerId))
                 {
@@ -56,7 +57,7 @@ namespace Server.Udp.Storage
             {
                 if (messageIdPlayerId.TryRemove(confirmedMessageNumber, out int playerId))
                 {
-                    lock (LockObj)
+                    lock (lockObj)
                     {
                         if (unconfirmedMessages.TryGetValue(playerId, out var dict))
                         {
@@ -83,8 +84,6 @@ namespace Server.Udp.Storage
             else
             {
                 return false;
-                // throw new Exception($"Не удалось удалить сообщение из коллекции " +
-                //                     $"{nameof(confirmedMessageNumber)}={confirmedMessageNumber}");
             }
         }
 
@@ -93,7 +92,7 @@ namespace Server.Udp.Storage
         public Dictionary<uint, byte[]>.ValueCollection GetAllMessagesForPlayer(int playerId)
         {
             //TODO тут бросает исключение
-            lock (LockObj)
+            lock (lockObj)
             {
                 if (unconfirmedMessages.ContainsKey(playerId))
                 {
@@ -104,6 +103,16 @@ namespace Server.Udp.Storage
                     return null;
                 }
             }
+        }
+        
+        public int GetCountOfMessages1()
+        {
+            return messageIdPlayerId.Count;
+        }
+
+        public int GetCountOfMessages2()
+        {
+            return unconfirmedMessages.Values.Sum(collection => collection.Count);
         }
     }
 }

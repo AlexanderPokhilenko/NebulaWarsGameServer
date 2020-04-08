@@ -2,30 +2,24 @@
 
 namespace Server.GameEngine
 {
+    //TODO название не очень
     /// <summary>
     /// Отвечает за правильный вызов подпрограмм во время тика.
     /// </summary>
-    public class GameEngineMediator
+    public class MatchManager
     {
-        private readonly ClockFacade clockFacade;
         public static MatchStorageFacade MatchStorageFacade;
         private readonly IRudpSender rudpSender;
 
-        public GameEngineMediator()
+        public MatchManager()
         {
             MatchStorageFacade = new MatchStorageFacade();
             rudpSender = new SimpleRudpSender(MatchStorageFacade);
-            clockFacade = new ClockFacade(Tick);
         }
 
-        public void StartEndlessLoop()
+        public void Tick()
         {
-            clockFacade.StartEndlessLoop();
-        }
-
-        private void Tick()
-        {
-            //Создание сущностей после ввода игроков
+            //Создание сущностей ввода игроков
             StaticInputMessagesSorter.Spread();
             StaticExitMessageSorter.Spread();
             

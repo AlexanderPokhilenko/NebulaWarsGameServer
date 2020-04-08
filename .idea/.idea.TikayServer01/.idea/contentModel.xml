@@ -222,8 +222,8 @@
         </e>
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
-            <e p="Clock.cs" t="Include" />
-            <e p="ClockFacade.cs" t="Include" />
+            <e p="Chronometer.cs" t="Include" />
+            <e p="ChronometerFactory.cs" t="Include" />
             <e p="ContextsPool.cs" t="Include" />
             <e p="Experimental" t="Include">
               <e p="ContainerRudpSender.cs" t="Include" />
@@ -233,9 +233,9 @@
               <e p="StaticExitMessageSorter.cs" t="Include" />
               <e p="StaticInputMessagesSorter.cs" t="Include" />
             </e>
-            <e p="GameEngineMediator.cs" t="Include" />
             <e p="GameSessionGlobals.cs" t="Include" />
             <e p="Match.cs" t="Include" />
+            <e p="MatchManager.cs" t="Include" />
             <e p="MatchStorage.cs" t="Include" />
             <e p="MatchStorageFacade.cs" t="Include" />
             <e p="PlayersNotifyHelper.cs" t="Include" />
@@ -482,6 +482,10 @@
         </e>
         <e p="Tests" t="Include">
           <e p="MatchTests.cs" t="Include" />
+          <e p="readme.txt" t="Include" />
+          <e p="Rudp" t="Include">
+            <e p="RudpTests.cs" t="Include" />
+          </e>
           <e p="Tests.asmdef" t="Include" />
         </e>
       </e>

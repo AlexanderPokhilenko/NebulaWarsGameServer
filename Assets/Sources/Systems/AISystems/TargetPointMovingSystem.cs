@@ -32,7 +32,7 @@ public sealed class TargetPointMovingSystem : IExecuteSystem
                 continue;
             }
 
-            var newVelocity = delta / Clock.deltaTime;
+            var newVelocity = delta / Chronometer.deltaTime;
 
             if (!e.isDirectionTargetingShooting)
             {

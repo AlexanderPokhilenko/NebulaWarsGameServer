@@ -33,7 +33,7 @@ public sealed class BotsFrameMovingControlSystem : ReactiveSystem<GameEntity>
 
             var pathVector = e.targetMovingPoint.position - e.GetGlobalPositionVector2(gameContext);
             var maxVelocity = e.maxVelocity.value;
-            var perFrameMovement = Clock.deltaTime * maxVelocity;
+            var perFrameMovement = Chronometer.deltaTime * maxVelocity;
             var framesCount = Mathf.FloorToInt(Mathf.Sqrt(1.25f * pathVector.sqrMagnitude / (perFrameMovement * perFrameMovement)));
 
             if (e.hasMovementFrames)

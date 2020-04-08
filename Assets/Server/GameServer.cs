@@ -24,8 +24,9 @@ namespace Server
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
 
-            GameEngineMediator gameEngineMediator = new GameEngineMediator();
-            gameEngineMediator.StartEndlessLoop();
+            MatchManager matchManager = new MatchManager();
+            Chronometer chronometer = ChronometerFactory.Create(matchManager.Tick);
+            chronometer.StartEndlessLoop();
         }
         
         private Thread StartMatchmakerListening(int port)

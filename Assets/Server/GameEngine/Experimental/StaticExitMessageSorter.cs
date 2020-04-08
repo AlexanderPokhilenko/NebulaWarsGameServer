@@ -27,7 +27,7 @@ namespace Server.GameEngine.Experimental
             {
                 ConcurrentBag.TryTake(out int playerId);
                 Log.Warn($"{nameof(playerId)} {playerId}");
-                if (GameEngineMediator.MatchStorageFacade.TryGetMatchByPlayerId(playerId, out var match))
+                if (MatchManager.MatchStorageFacade.TryGetMatchByPlayerId(playerId, out var match))
                 {
                     Contexts contexts = match.Contexts;
 
