@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Server.GameEngine;
 using Server.Http;
 using Server.Udp;
@@ -8,6 +9,7 @@ namespace Server
 {
     /// <summary>
     /// Запускает все потоки при старте и убивает их при остановке.
+    /// Устанавливает зависимости.
     /// </summary>
     public class GameServer
     {
@@ -19,15 +21,23 @@ namespace Server
         private Thread matchDeletingNotifierThread;
         private Thread playerDeathNotifierThread;
         
+        private MatchStorage matchStorage;
+        
         public void Run()
         {
+            if (httpListeningThread != null)
+            {
+                throw new Exception("Сервер уже запущен");
+            }
+            
             httpListeningThread = StartMatchmakerListening(HttpPort);
             udpConnectionFacade = StartPlayersListening(UdpPort);
 
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
 
-            MatchStorage matchStorage = new MatchStorage();
+            
+            matchStorage = new MatchStorage();
             MatchLifeCycleManager matchLifeCycleManager = new MatchLifeCycleManager();
             
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager);
@@ -56,6 +66,11 @@ namespace Server
             return udpBattleConnectionLocal;
         }
 
+        public void FinishAllMatches()
+        {
+            throw new NotImplementedException();
+        }
+        
         public void StopListeningThreads()
         {
             httpListeningThread.Interrupt();

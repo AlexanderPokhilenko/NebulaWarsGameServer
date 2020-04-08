@@ -21,7 +21,7 @@ namespace Server.GameEngine
 
         public void UpdateMatchesLifeStatus()
         {
-            matchCreator.CreateBattles();
+            matchCreator.CreateMatches();
             matchRemover.DeleteFinishedBattles();
         }
     }

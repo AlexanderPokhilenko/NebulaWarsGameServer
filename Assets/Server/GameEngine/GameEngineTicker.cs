@@ -23,7 +23,7 @@ namespace Server.GameEngine
             StaticExitMessageSorter.Spread();
             
             //Перемещение игровых сущностей
-            foreach (var match in matchStorage.DichGetMatches())
+            foreach (var match in matchStorage.GetAllMatches())
             {
                 match.Execute();
                 match.Cleanup();

@@ -23,20 +23,29 @@ namespace Server.GameEngine
             matchesToCreate.Enqueue(battleRoyaleMatchData);
         }
         
-        public void CreateBattles()
+        public void CreateMatches()
         {
             while (!matchesToCreate.IsEmpty)
             {
                 if (matchesToCreate.TryDequeue(out BattleRoyaleMatchData matchData))
                 {
-                    CreateBattle(matchData);
+                    CreateMatch(matchData);
                 }
             }
         }
 
-        private void CreateBattle(BattleRoyaleMatchData matchData)
+       
+        private void CreateMatch(BattleRoyaleMatchData matchData)
         {
-            matchStorage.CreateMatch(matchData);
+            Match match = new Match(matchStorageFacade, matchData.MatchId);
+            match.ConfigureSystems(matchData);
+            matches.TryAdd(match.matchData.MatchId, match);
+            foreach (var player in match.matchData.GameUnitsForMatch.Players)
+            {
+                Log.Info($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
+                         $"{player.TemporaryId}");
+                activePlayers.TryAdd(player.TemporaryId, match);
+            }
         }
     }
 }

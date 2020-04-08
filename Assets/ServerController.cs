@@ -17,10 +17,8 @@ public class ServerController : MonoBehaviour
     
     private void OnDestroy()
     {
-        foreach (var match in GameEngineTicker.MatchStorageFacade.GetAllMatches())
-        {
-            match.Finish();
-        }
+        gameServer.FinishAllMatches();
+        
         //Это нужно для того, чтобы после остановки unity проекта потоки остановились и не писали в консоль.
         gameServer.StopListeningThreads();
     }
