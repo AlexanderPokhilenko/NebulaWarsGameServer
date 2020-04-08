@@ -9,7 +9,7 @@ using log4net;
 namespace Server.Http
 {
     /// <summary>
-    /// Отправляет матчмейкеру уведомления при окончании боя.
+    /// Отправляет матчмейкеру уведомление об окончании боя.
     /// </summary>
     public static class MatchDeletingNotifier
     {

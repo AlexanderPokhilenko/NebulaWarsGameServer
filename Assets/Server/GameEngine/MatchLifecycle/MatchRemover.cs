@@ -1,16 +1,16 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
 using log4net;
 using Server.Http;
-using Server.Udp.Sending;
 
 namespace Server.GameEngine
 {
     /// <summary>
-    /// Правильно очищает данные и убивает матч, который положили в очередь.
+    /// Правильно очищает данные и убивает матч, номер которого положили в очередь.
     /// </summary>
     public class MatchRemover
     {
+        private readonly MatchStorage matchStorage;
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchRemover));
         
         /// <summary>
@@ -18,14 +18,15 @@ namespace Server.GameEngine
         /// </summary>
         private readonly ConcurrentQueue<int> matchesToRemove;
 
-        public MatchRemover()
+        public MatchRemover(MatchStorage matchStorage)
         {
+            this.matchStorage = matchStorage;
             matchesToRemove = new ConcurrentQueue<int>();
         }
         
-        public void MarkMatchAsFinished(int battleNumber)
+        public void MarkMatchAsFinished(int matchNumber)
         {
-            matchesToRemove.Enqueue(battleNumber);
+            matchesToRemove.Enqueue(matchNumber);
         }
         
         public void DeleteFinishedBattles()
@@ -47,23 +48,12 @@ namespace Server.GameEngine
         private void DeleteMatch(int matchId)
         {
             Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
-            List<int> playersIds = matchStorage.GetActivePlayersIds(matchId);
-            PlayersNotifyHelper.Notify(matchId, playersIds);
-            
-            
-            Log.Warn($" Старт уведомления игроков про окончание матча");
-            foreach (int playerId in playersIds)
-            {
-                Log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
-                UdpSendUtils.SendBattleFinishMessage(matchId, playerId);
-            }
-            Log.Warn($" Конец уведомления игроков про окончание матча");
-            
-            
-            
-            matchStorage.TearDownMatch(matchId);
+            Match match=null;
+            match.NotifyPlayersAboutMatchFinish();
+            match.TearDown();
             matchStorage.RemoveMatch(matchId);
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
+            throw new NotImplementedException();
         }
         
     }

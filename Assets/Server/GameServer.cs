@@ -30,24 +30,27 @@ namespace Server
                 throw new Exception("Сервер уже запущен");
             }
             
-            httpListeningThread = StartMatchmakerListening(HttpPort);
-            udpConnectionFacade = StartPlayersListening(UdpPort);
-
-            matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
-            playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
-
-            
+            //Создание структур данных для матчей
             matchStorage = new MatchStorage();
-            MatchLifeCycleManager matchLifeCycleManager = new MatchLifeCycleManager();
-            
+            MatchLifeCycleManager matchLifeCycleManager = new MatchLifeCycleManager(matchStorage);
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager);
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
+            
+            
+
+            //Старт прослушки
+            httpListeningThread = StartMatchmakerListening(HttpPort);
+            udpConnectionFacade = StartPlayersListening(UdpPort);
+            matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
+            playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
+           
+            //Старт обработки
             chronometer.StartEndlessLoop();
         }
         
         private Thread StartMatchmakerListening(int port)
         {
-            Thread thread = new Thread(() => { new HttpListenerWrapper().StartListenHttp(port).Wait(); });
+            Thread thread = new Thread(() => { new HttpConnection().StartListenHttp(port).Wait(); });
             thread.Start();
             return thread;
         }
@@ -56,7 +59,7 @@ namespace Server
         {
             var udpBattleConnectionLocal = new UdpConnectionFacade();
 
-            NetworkMediator mediator = new NetworkMediator();
+            UdpMediator mediator = new UdpMediator();
             mediator.SetUdpConnection(udpBattleConnectionLocal);
             
             udpBattleConnectionLocal

@@ -12,7 +12,7 @@ namespace Server.Udp.Sending
             if (address != null)
             {
                 var data = MessageFactory.GetSerializedMessage(message, false, out uint messageId);
-                NetworkMediator.udpConnectionFacade.Send(data, address);
+                UdpMediator.udpConnectionFacade.Send(data, address);
             }
             else
             {

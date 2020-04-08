@@ -8,9 +8,9 @@ namespace Server.Udp.Connection
     /// </summary>
     public class UdpConnectionFacade:UdpConnection
     {
-        private NetworkMediator mediator;
+        private UdpMediator mediator;
         
-        public void SetMediator(NetworkMediator mediatorArg)
+        public void SetMediator(UdpMediator mediatorArg)
         {
             if (mediator != null)
             {

@@ -15,8 +15,6 @@ namespace Server.GameEngine
     public class MatchStorage
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
-        
-        
         //MatchId Match
         private readonly ConcurrentDictionary<int, Match> matches;
         //accountId MatchId
@@ -27,7 +25,10 @@ namespace Server.GameEngine
             matches = new ConcurrentDictionary<int, Match>();
             activePlayers = new ConcurrentDictionary<int, int>();
         }
-        
-        
+
+        public void RemoveMatch(int matchId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

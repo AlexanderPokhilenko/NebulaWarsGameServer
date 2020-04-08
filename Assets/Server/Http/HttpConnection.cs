@@ -8,15 +8,28 @@ using ZeroFormatter;
 
 namespace Server.Http
 {
-    public sealed class HttpListenerWrapper
+    public class HttpMediator
+    {
+        private HttpMessageProcessor httpMessageProcessor = new HttpMessageProcessor();
+        
+        private GameRoomValidationResult HandleBytes(byte[] data)
+        {
+            BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
+            return httpMessageProcessor.Handle(matchData);
+        }
+    }
+
+    
+
+    public sealed class HttpConnection
     {
         private HttpListener listener;
-        private readonly HttpMessageHandlers messageHandlers;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpListenerWrapper));
+        private readonly MatchDataMessageHandler messageHandler;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpConnection));
 
-        public HttpListenerWrapper()
+        public HttpConnection()
         {
-            messageHandlers = new HttpMessageHandlers();
+            messageHandler = new MatchDataMessageHandler();
         }
         
         public async Task StartListenHttp(int port)
@@ -30,7 +43,6 @@ namespace Server.Http
              while(true)
              {
                  await HandleNextRequest();
-                 // Log.Info("Отправлен ответ по http");
              }
              // ReSharper disable once FunctionNeverReturns
         }
@@ -89,7 +101,7 @@ namespace Server.Http
         private GameRoomValidationResult HandleBytes(byte[] data)
         {
             BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
-            return messageHandlers.Handle(matchData);
+            return messageHandler.Handle(matchData);
         }
     }
 }

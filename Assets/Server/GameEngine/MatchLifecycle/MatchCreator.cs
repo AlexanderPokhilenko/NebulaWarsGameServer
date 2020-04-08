@@ -1,20 +1,25 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEditor.Experimental.GraphView;
 
 namespace Server.GameEngine
 {
     /// <summary>
-    /// Правильно создаёт матчи, которые кладутся в очередь.
+    /// Правильно создаёт матчи, данные о которых есть в очереди.
     /// </summary>
     public class MatchCreator
     {
+        private readonly MatchFactory matchFactory;
+
         /// <summary>
         /// Очередь на создание.
         /// </summary>
         private readonly ConcurrentQueue<BattleRoyaleMatchData> matchesToCreate;
 
-        public MatchCreator()
+        public MatchCreator(MatchFactory matchFactory)
         {
+            this.matchFactory = matchFactory;
             matchesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
         }
         
@@ -23,29 +28,35 @@ namespace Server.GameEngine
             matchesToCreate.Enqueue(battleRoyaleMatchData);
         }
         
-        public void CreateMatches()
+        public List<Match> CreateMatches()
         {
+            List<Match> result = new List<Match>();
             while (!matchesToCreate.IsEmpty)
             {
                 if (matchesToCreate.TryDequeue(out BattleRoyaleMatchData matchData))
                 {
-                    CreateMatch(matchData);
+                    var match = matchFactory.Create(matchData);
+                    result.Add(match);
                 }
             }
-        }
 
-       
-        private void CreateMatch(BattleRoyaleMatchData matchData)
+            return result;
+        }
+    }
+
+    public class MatchFactory
+    {
+        private readonly MatchRemover matchRemover;
+
+        public MatchFactory(MatchRemover matchRemover)
         {
-            Match match = new Match(matchStorageFacade, matchData.MatchId);
+            this.matchRemover = matchRemover;
+        }
+        public Match Create(BattleRoyaleMatchData matchData)
+        {
+            Match match = new Match(matchData.MatchId, matchRemover);
             match.ConfigureSystems(matchData);
-            matches.TryAdd(match.matchData.MatchId, match);
-            foreach (var player in match.matchData.GameUnitsForMatch.Players)
-            {
-                Log.Info($"Добавление игрока к списку активных игроков {nameof(player.TemporaryId)} " +
-                         $"{player.TemporaryId}");
-                activePlayers.TryAdd(player.TemporaryId, match);
-            }
+            return match;
         }
     }
 }

@@ -8,6 +8,7 @@ using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Experimental;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Debug;
+using Server.Udp.Sending;
 using Server.Udp.Storage;
 
 //TODO говно
@@ -22,20 +23,20 @@ namespace Server.GameEngine
 {
     public class Match
     {
+        private readonly MatchRemover matchRemover;
+        private readonly IPlayerRemover playerRemover;
         private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
         
         #region Ip
 
         private readonly IpAddressesStorage ipAddressesStorage;
 
-        public Match(MatchStorageFacade matchStorageFacade, int matchId)
+        public Match(int matchId, MatchRemover matchRemover)
         {
+            this.matchRemover = matchRemover;
+
             ipAddressesStorage = new IpAddressesStorage(matchId);
-            
-            this.matchStorageFacade = matchStorageFacade;
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-            //TODO: как-то обойтись без использования AssetDatabase; добавить возможность менять параметры зоны для разных карт
-            // zoneObject = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
         }
 
         public bool ContainsIpEnpPointForPlayer(int playerId)
@@ -187,7 +188,7 @@ namespace Server.GameEngine
 
         #region Dich
         private DateTime? gameStartTime;
-        private readonly MatchStorageFacade matchStorageFacade;
+        
         public BattleRoyaleMatchData matchData { get; private set; }
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
         private bool gameOver;
@@ -205,12 +206,24 @@ namespace Server.GameEngine
         public void Finish()
         {
             gameOver = true;
-            matchStorageFacade.MarkBattleAsFinished(matchData.MatchId);
+            matchRemover.MarkMatchAsFinished(matchData.MatchId);
         }
 
         public bool TryRemovePlayerIpEndPoint(int playerId)
         {
             return ipAddressesStorage.TryRemovePlayerIp(playerId);
+        }
+
+        public void NotifyPlayersAboutMatchFinish()
+        {
+            Log.Warn($" Старт уведомления игроков про окончание матча");
+            foreach (int playerId in playersIds)
+            {
+                Log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
+                UdpSendUtils.SendBattleFinishMessage(matchId, playerId);
+            }
+            Log.Warn($" Конец уведомления игроков про окончание матча");
+            throw new NotImplementedException();
         }
     }
 }

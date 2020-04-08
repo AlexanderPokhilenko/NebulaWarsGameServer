@@ -1,5 +1,9 @@
 ﻿zfc.exe -i "..\..\..\Assembly-CSharp.csproj" -o "ZeroFormatterGenerated.cs"
 
+Что делать с сообщениями об удалении боя?
+Ведь отправка rudp внутри матча.
+
+
 public bool ContainsIpEndPoint(int matchId, int playerId)
         {
             if (matches.ContainsKey(matchId))

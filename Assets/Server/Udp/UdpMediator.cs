@@ -7,10 +7,9 @@ using ZeroFormatter;
 
 namespace Server.Udp
 {
-    public class NetworkMediator
+    public class UdpMediator
     {
         private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
-        //TODO говно
         public static UdpConnectionFacade udpConnectionFacade { get; private set; }
         
         

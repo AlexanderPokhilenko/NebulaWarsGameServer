@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using System;
+using System.Collections.Generic;
+using log4net;
 
 namespace Server.GameEngine
 {
-    //TODO название не очень
     /// <summary>
     /// Создаёт и уничтожает матчи, которые были добавлены в соответствующие очереди. 
     /// </summary>
@@ -13,16 +14,19 @@ namespace Server.GameEngine
         private readonly MatchCreator matchCreator;
         private readonly MatchRemover matchRemover;
         
-        public MatchLifeCycleManager()
+        public MatchLifeCycleManager(MatchStorage matchStorage)
         {
-            matchCreator = new MatchCreator();
-            matchRemover = new MatchRemover();
+            matchRemover = new MatchRemover(matchStorage);
+            MatchFactory matchFactory = new MatchFactory(matchRemover);
+            matchCreator = new MatchCreator(matchFactory);
         }
 
         public void UpdateMatchesLifeStatus()
         {
-            matchCreator.CreateMatches();
+            //TODO сохранить матчи
+            List<Match> matches = matchCreator.CreateMatches();
             matchRemover.DeleteFinishedBattles();
+            throw new NotImplementedException();
         }
     }
 }
