@@ -37,3 +37,4 @@ MonoBehaviour:
   maxAngularVelocity: 180
   isNotDecelerating: 0
   maxHealthPoints: 175
+  ability: {fileID: 11400000, guid: 9077651e5c4619944b2310aa000c403c, type: 2}

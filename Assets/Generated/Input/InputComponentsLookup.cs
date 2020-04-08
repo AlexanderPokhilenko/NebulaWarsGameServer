@@ -12,20 +12,23 @@ public static class InputComponentsLookup {
     public const int Id = 1;
     public const int Movement = 2;
     public const int Player = 3;
+    public const int TryingToUseAbility = 4;
 
-    public const int TotalComponents = 4;
+    public const int TotalComponents = 5;
 
     public static readonly string[] componentNames = {
         "Attack",
         "Id",
         "Movement",
-        "Player"
+        "Player",
+        "TryingToUseAbility"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(AttackComponent),
         typeof(IdComponent),
         typeof(MovementComponent),
-        typeof(PlayerComponent)
+        typeof(PlayerComponent),
+        typeof(TryingToUseAbilityComponent)
     };
 }

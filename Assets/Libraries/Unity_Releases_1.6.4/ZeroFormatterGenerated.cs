@@ -2108,6 +2108,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
         readonly Formatter<TTypeResolver, float> formatter2;
         readonly Formatter<TTypeResolver, float> formatter3;
         readonly Formatter<TTypeResolver, float> formatter4;
+        readonly Formatter<TTypeResolver, bool> formatter5;
         
         public override bool NoUseDirtyTracker
         {
@@ -2118,6 +2119,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
                     && formatter2.NoUseDirtyTracker
                     && formatter3.NoUseDirtyTracker
                     && formatter4.NoUseDirtyTracker
+                    && formatter5.NoUseDirtyTracker
                 ;
             }
         }
@@ -2129,23 +2131,25 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
             formatter2 = Formatter<TTypeResolver, float>.Default;
             formatter3 = Formatter<TTypeResolver, float>.Default;
             formatter4 = Formatter<TTypeResolver, float>.Default;
+            formatter5 = Formatter<TTypeResolver, bool>.Default;
             
         }
 
         public override int? GetLength()
         {
-            return 20;
+            return 21;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 20);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 21);
             var startOffset = offset;
             offset += formatter0.Serialize(ref bytes, offset, value.TemporaryIdentifier);
             offset += formatter1.Serialize(ref bytes, offset, value.GameRoomNumber);
             offset += formatter2.Serialize(ref bytes, offset, value.X);
             offset += formatter3.Serialize(ref bytes, offset, value.Y);
             offset += formatter4.Serialize(ref bytes, offset, value.Angle);
+            offset += formatter5.Serialize(ref bytes, offset, value.UseAbility);
             return offset - startOffset;
         }
 
@@ -2168,8 +2172,11 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
             var item4 = formatter4.Deserialize(ref bytes, offset, tracker, out size);
             offset += size;
             byteSize += size;
+            var item5 = formatter5.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
             
-            return new global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage(item0, item1, item2, item3, item4);
+            return new global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage(item0, item1, item2, item3, item4, item5);
         }
     }
 

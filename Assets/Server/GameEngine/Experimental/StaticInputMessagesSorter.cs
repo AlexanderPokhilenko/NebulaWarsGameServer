@@ -12,13 +12,18 @@ namespace Server.GameEngine.Experimental
         private static readonly ConcurrentDictionary<int, float> AttackMessages =
             new ConcurrentDictionary<int, float>();
 
+        private static readonly ConcurrentDictionary<int, bool> AbilityMessages =
+            new ConcurrentDictionary<int, bool>();
+
         public static void Spread()
         {
             ActionForEachMessage(MovementMessages, (inputEntity, joystickPosition) => inputEntity.AddMovement(joystickPosition));
             ActionForEachMessage(AttackMessages, (inputEntity, attackAngle) => inputEntity.AddAttack(attackAngle));
+            ActionForEachMessage(AbilityMessages, (inputEntity, useAbility) => inputEntity.isTryingToUseAbility = useAbility);
 
             MovementMessages.Clear();
             AttackMessages.Clear();
+            AbilityMessages.Clear();
         }
 
         private static void ActionForEachMessage<T>(ConcurrentDictionary<int, T> messages, Action<InputEntity, T> action)
@@ -62,6 +67,11 @@ namespace Server.GameEngine.Experimental
         public static bool TryAddAttackMessage(int playerId, float angle)
         {
             return AttackMessages.TryAdd(playerId, angle);
+        }
+
+        public static bool TryAddAbilityMessage(int playerId, bool ability)
+        {
+            return AbilityMessages.TryAdd(playerId, ability);
         }
     }
 }

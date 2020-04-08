@@ -56,6 +56,7 @@ namespace Server.GameEngine
                     .Add(new MatchDataInitSystem(Contexts, matchDataArg))
                     .Add(new PlayerMovementHandlerSystem(Contexts))
                     .Add(new PlayerAttackHandlerSystem(Contexts))
+                    .Add(new PlayerAbilityHandlerSystem(Contexts))
                     .Add(new ParentsSystems(Contexts))
                     .Add(new AISystems(Contexts))
                     .Add(new MovementSystems(Contexts))

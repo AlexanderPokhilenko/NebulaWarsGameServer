@@ -11,13 +11,16 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
         [Index(2)] public float X;
         [Index(3)] public float Y;
         [Index(4)] public float Angle;
-        public PlayerInputMessage(int identifier, int gameRoomNumber, float x, float y, float angle)
+        [Index(5)] public bool UseAbility;
+
+        public PlayerInputMessage(int identifier, int gameRoomNumber, float x, float y, float angle, bool ability)
         {
             TemporaryIdentifier = identifier;
             GameRoomNumber = gameRoomNumber;
             X = x;
             Y = y;
             Angle = angle;
+            UseAbility = ability;
         }
 
         public MessageType GetMessageType() => MessageType.PlayerInput;
