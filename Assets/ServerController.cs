@@ -14,17 +14,14 @@ public class ServerController : MonoBehaviour
         gameServer = new GameServer();
         gameServer.Run();
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
+    
     private void OnDestroy()
     {
         foreach (var match in GameEngineTicker.MatchStorageFacade.GetAllMatches())
         {
             match.Finish();
         }
-        //Это нужно для того, чтобы после остановки unity проекта оно не писало в консоль.
+        //Это нужно для того, чтобы после остановки unity проекта потоки остановились и не писали в консоль.
         gameServer.StopListeningThreads();
     }
 }

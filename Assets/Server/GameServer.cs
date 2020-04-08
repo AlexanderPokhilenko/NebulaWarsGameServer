@@ -27,7 +27,10 @@ namespace Server
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
 
-            GameEngineTicker gameEngineTicker = new GameEngineTicker();
+            MatchStorage matchStorage = new MatchStorage();
+            MatchLifeCycleManager matchLifeCycleManager = new MatchLifeCycleManager();
+            
+            GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager);
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             chronometer.StartEndlessLoop();
         }

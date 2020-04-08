@@ -7,13 +7,13 @@ namespace Server.GameEngine
     /// </summary>
     public class GameEngineTicker
     {
-        private readonly MatchStorageFacade matchStorageFacade;
+        private readonly MatchStorage matchStorage;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
         
-        public GameEngineTicker()
+        public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager)
         {
-            matchStorageFacade = new MatchStorageFacade();
-            matchLifeCycleManager = new MatchLifeCycleManager();
+            this.matchStorage = matchStorage;
+            this.matchLifeCycleManager = matchLifeCycleManager;
         }
 
         public void Tick()
@@ -22,8 +22,8 @@ namespace Server.GameEngine
             StaticInputMessagesSorter.Spread();
             StaticExitMessageSorter.Spread();
             
-            //Обработка 
-            foreach (var match in matchStorageFacade.GetAllMatches())
+            //Перемещение игровых сущностей
+            foreach (var match in matchStorage.DichGetMatches())
             {
                 match.Execute();
                 match.Cleanup();

@@ -15,16 +15,15 @@ namespace Server.GameEngine
     public class MatchStorage
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchStorage));
-        private readonly MatchStorageFacade matchStorageFacade;
+        
         
         //MatchId Match
         private readonly ConcurrentDictionary<int, Match> matches;
         //accountId Match
         private readonly ConcurrentDictionary<int, Match> activePlayers;
 
-        public MatchStorage(MatchStorageFacade matchStorageFacade)
+        public MatchStorage()
         {
-            this.matchStorageFacade = matchStorageFacade;
             matches = new ConcurrentDictionary<int, Match>();
             activePlayers = new ConcurrentDictionary<int, Match>();
         }
@@ -54,12 +53,7 @@ namespace Server.GameEngine
             }
         }
 
-        //TODO кусок ебаного говна
-        /// <summary>
-        /// Возвращает список активных игроков из этого матча.
-        /// </summary>
-        /// <param name="matchId"></param>
-        /// <returns></returns>
+
         public List<int> GetActivePlayersIds(int matchId)
         {
             List<int> activePlayersIds = matches[matchId].matchData
