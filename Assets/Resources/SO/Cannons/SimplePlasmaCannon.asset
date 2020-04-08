@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SimplePlasmaCannon
   m_EditorClassIdentifier: 
   position: {x: 0.6, y: 0}
-  cooldown: 1
+  cooldown: 0.5
   bulletObject: {fileID: 11400000, guid: 10b5ec54a9da87c49803ebf1747d5ace, type: 2}
