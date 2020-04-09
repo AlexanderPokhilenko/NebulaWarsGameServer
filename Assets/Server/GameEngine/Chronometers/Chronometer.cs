@@ -11,7 +11,7 @@ namespace Server.GameEngine
     {
         private static float prevTickTime;
         public static float deltaTime;
-        private const float TickDeltaSeconds = 1f / 20;
+        private const float TickDeltaSeconds = 1f / 30;
         private Action action;
 
         public void SetAction(Action actionArg)

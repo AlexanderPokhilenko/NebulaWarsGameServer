@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using log4net;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+
+//TODO убрать ToArray()
 
 namespace Server.GameEngine
 {
@@ -37,14 +40,15 @@ namespace Server.GameEngine
             foreach ((int matchId, int playerId) in pairs)
             {
                 //messageId, data
-                var messagesForPlayer = byteArrayRudpStorage.GetMessages(matchId, playerId);
+                byte[][] messagesForPlayer = byteArrayRudpStorage.GetMessages(matchId, playerId);
                 
                 if (messagesForPlayer != null)
                 {
                     if(matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
                     {
-                        foreach (var data in messagesForPlayer.Values)
+                        for (int i = 0; i < messagesForPlayer.Length; i++)
                         {
+                            var data = messagesForPlayer[i];
                             UdpSendUtils.SendReadyMadeMessage(data, ipEndPoint);
                         }
                     }

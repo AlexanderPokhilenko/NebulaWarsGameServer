@@ -44,8 +44,8 @@ namespace Server.Udp.Storage
                 TryCreateMatchDictionary(matchId);
                 TryCreatePlayerDictionary(matchId, playerId);
                 unconfirmedMessages[matchId][playerId].Add(messageId, serializedMessage);
+                messageIdPlayerId.TryAdd(messageId, (matchId, playerId));
             }
-            messageIdPlayerId.TryAdd(messageId, (matchId, playerId));
         }
 
         public void RemoveMatchMessages(int matchId)
@@ -67,23 +67,24 @@ namespace Server.Udp.Storage
         
         public bool TryRemoveMessage(uint messageId)
         {
-            if(messageIdPlayerId.TryRemove(messageId, out var value))
+            lock (lockObj)
             {
-                lock (lockObj)
+                if(messageIdPlayerId.TryRemove(messageId, out var value))
                 {
-                    unconfirmedMessages[value.matchId][value.playerId].Remove(messageId);
-                    return true;
+                   
+                        unconfirmedMessages[value.matchId][value.playerId].Remove(messageId);
+                        return true;
                 }
-            }
-            else
-            {
-                //сообщение с messageId нет в структуре данных
-                return false;
+                else
+                {
+                    //сообщение с messageId нет в структуре данных
+                    return false;
+                }
             }
         }
 
         [CanBeNull]
-        public Dictionary<uint, byte[]> GetMessages(int matchId, int playerId)
+        public byte[][] GetMessages(int matchId, int playerId)
         {
             lock (lockObj)
             {
@@ -91,7 +92,7 @@ namespace Server.Udp.Storage
                 {
                     if (playerDict.ContainsKey(playerId))
                     {
-                        return playerDict[playerId];
+                        return playerDict[playerId].Select(pair=>pair.Value).ToArray();
                     }
                 }
                 return null;
@@ -100,25 +101,31 @@ namespace Server.Udp.Storage
         
         private void TryCreateMatchDictionary(int matchId)
         {
-            if (!unconfirmedMessages.ContainsKey(matchId))
+            lock (lockObj)
             {
-                if (unconfirmedMessages.TryAdd(matchId, new Dictionary<int, Dictionary<uint, byte[]>>()))
+                if (!unconfirmedMessages.ContainsKey(matchId))
                 {
-                    //структура данных для матча создана   
-                }
-                else
-                {
-                    throw new Exception($"Не удалось добавить ReliableUdp в словарь для {nameof(matchId)} {matchId}");
+                    if (unconfirmedMessages.TryAdd(matchId, new Dictionary<int, Dictionary<uint, byte[]>>()))
+                    {
+                        //структура данных для матча создана   
+                    }
+                    else
+                    {
+                        throw new Exception($"Не удалось добавить ReliableUdp в словарь для {nameof(matchId)} {matchId}");
+                    }
                 }
             }
         }
 
         private void TryCreatePlayerDictionary(int matchId, int playerId)
         {
-            if (!unconfirmedMessages[matchId].ContainsKey(playerId))
+            lock (lockObj)
             {
-                unconfirmedMessages[matchId].Add(playerId, new Dictionary<uint, byte[]>());
-                //структура данных для игрока в матче создана
+                if (!unconfirmedMessages[matchId].ContainsKey(playerId))
+                {
+                    unconfirmedMessages[matchId].Add(playerId, new Dictionary<uint, byte[]>());
+                    //структура данных для игрока в матче создана
+                }
             }
         }
     }

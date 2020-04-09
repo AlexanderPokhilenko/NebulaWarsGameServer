@@ -114,7 +114,10 @@ namespace Server.GameEngine
             }
             else
             {
-                throw new Exception(nameof(TryUpdateIpEndPoint));
+                //TODO разобраться с этим
+                return false;
+                //
+                // throw new Exception(nameof(TryUpdateIpEndPoint));
             }
         }
 
