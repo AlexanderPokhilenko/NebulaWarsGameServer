@@ -7,6 +7,7 @@
     <e p="C:\Users\Zenit\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Zenit\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_TikayServer01.295355446.00" t="ExcludeRecursive" />
     <e p="C:\Users\Zenit\Downloads\MultiplayerGameProgramming-master\MultiplayerGameProgramming-master\TikayServer01" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Generated" t="Include">
           <e p="Components" t="Include">
@@ -19,6 +20,8 @@
           <e p="Feature.cs" t="Include" />
           <e p="Game" t="Include">
             <e p="Components" t="Include">
+              <e p="GameAbilityComponent.cs" t="Include" />
+              <e p="GameAbilityCooldownComponent.cs" t="Include" />
               <e p="GameActionBonusComponent.cs" t="Include" />
               <e p="GameAngularVelocityComponent.cs" t="Include" />
               <e p="GameAuraComponent.cs" t="Include" />
@@ -97,6 +100,7 @@
               <e p="InputMovementComponent.cs" t="Include" />
               <e p="InputPlayerComponent.cs" t="Include" />
               <e p="InputPlayerExitComponent.cs" t="Include" />
+              <e p="InputTryingToUseAbilityComponent.cs" t="Include" />
             </e>
             <e p="InputAttribute.cs" t="Include" />
             <e p="InputComponentsLookup.cs" t="Include" />
@@ -105,7 +109,6 @@
             <e p="InputMatcher.cs" t="Include" />
           </e>
         </e>
-        <e p="Globals.cs" t="Include" />
         <e p="Libraries" t="Include">
           <e p="DesperateDevs" t="Include">
             <e p="Compile.cs" t="Include" />
@@ -176,7 +179,6 @@
           <e p="LoggingConfiguration.cs" t="Include" />
           <e p="UnityDebugAppender.cs" t="Include" />
         </e>
-        <e p="Main.asmdef" t="Include" />
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />
@@ -189,6 +191,11 @@
           <e p="PartObject.cs" t="Include" />
           <e p="ProbabilityObject.cs" t="Include" />
           <e p="ScriptableObjects" t="Include">
+            <e p="Abilities" t="Include">
+              <e p="AbilityInfo.cs" t="Include" />
+              <e p="ActiveAbility.cs" t="Include" />
+              <e p="ShootingAbility.cs" t="Include" />
+            </e>
             <e p="CannonInfo.cs" t="Include" />
             <e p="CollidableObjects" t="Include">
               <e p="AuraObject.cs" t="Include" />
@@ -270,6 +277,9 @@
               <e p="ByteArrayRudpStorage.cs" t="Include" />
               <e p="RudpMessagesSender.cs" t="Include" />
             </e>
+            <e p="Systems" t="Include">
+              <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
+            </e>
           </e>
           <e p="GameServer.cs" t="Include" />
           <e p="Http" t="Include">
@@ -278,6 +288,7 @@
             <e p="MatchDataMessageHandler.cs" t="Include" />
             <e p="MatchDataValidator.cs" t="Include" />
             <e p="MatchDeletingNotifier.cs" t="Include" />
+            <e p="NetworkGlobals.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
           </e>
@@ -335,6 +346,8 @@
               <e p="RoundComponent.cs" t="Include" />
             </e>
             <e p="EffectsComponents" t="Include">
+              <e p="AbilityComponent.cs" t="Include" />
+              <e p="AbilityCooldownComponent.cs" t="Include" />
               <e p="AuraComponent.cs" t="Include" />
               <e p="CircleScalingComponent.cs" t="Include" />
               <e p="DropComponent.cs" t="Include" />
@@ -371,6 +384,7 @@
               <e p="AttackComponent.cs" t="Include" />
               <e p="MovementComponent.cs" t="Include" />
               <e p="PlayerComponent.cs" t="Include" />
+              <e p="TryingToUseAbilityComponent.cs" t="Include" />
             </e>
             <e p="ShellsComponents" t="Include">
               <e p="CollapsesComponent.cs" t="Include" />
@@ -450,6 +464,7 @@
               <e p="CircleScalingSystem.cs" t="Include" />
               <e p="CircleTargetScalingCheckerSystem.cs" t="Include" />
               <e p="EffectsSystems.cs" t="Include" />
+              <e p="RemovingNegativeAbilityCooldownSystem.cs" t="Include" />
             </e>
             <e p="GlobalSystems" t="Include">
               <e p="GlobalTransformSystem.cs" t="Include" />
@@ -484,27 +499,17 @@
               <e p="ShootingSystems.cs" t="Include" />
             </e>
             <e p="TimeSystems" t="Include">
+              <e p="AbilityCooldownSubtractionSystem.cs" t="Include" />
               <e p="CannonCooldownSubtractionSystem.cs" t="Include" />
               <e p="LifetimeSubtractionSystem.cs" t="Include" />
               <e p="TimeSystems.cs" t="Include" />
             </e>
           </e>
         </e>
-        <e p="Tests" t="Include">
-          <e p="MatchTests.cs" t="Include" />
-          <e p="NewTestScript.cs" t="Include" />
-          <e p="readme.txt" t="Include" />
-          <e p="Rudp" t="Include">
-            <e p="RudpTests.cs" t="Include" />
-          </e>
-          <e p="Tests.asmdef" t="Include" />
-        </e>
       </e>
-      <e p="Main.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
-      <e p="Tests.csproj" t="IncludeRecursive" />
       <e p="TikayServer01.sln" t="IncludeFlat" />
     </e>
   </component>

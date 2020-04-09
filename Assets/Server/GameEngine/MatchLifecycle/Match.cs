@@ -51,6 +51,9 @@ namespace Server.GameEngine
                     // .Add(new TestEndMatchSystem2(Contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
                     .Add(new PlayerAttackHandlerSystem(contexts))
+                    
+                    .Add(new PlayerAbilityHandlerSystem(contexts))
+                    
                     .Add(new ParentsSystems(contexts))
                     .Add(new AISystems(contexts))
                     .Add(new MovementSystems(contexts))

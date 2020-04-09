@@ -55,7 +55,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 
         private void AddPlayerAbilityComponent(int playerId, bool ability)
         {
-            StaticInputMessagesSorter.TryAddAbilityMessage(playerId, ability);
+            inputEntitiesCreator.TryAddAbilityMessage(playerId, ability);
         }
     }
 }
