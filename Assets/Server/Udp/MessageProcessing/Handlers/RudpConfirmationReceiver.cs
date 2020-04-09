@@ -8,7 +8,8 @@ using ZeroFormatter;
 namespace Server.Udp.MessageProcessing.Handlers
 {
     /// <summary>
-    /// Обрабатывает подтверждение доставки.
+    /// Обрабатывает подтверждение доставки. Удаляет сообщение с этим номераом из памяти, чтобы его больше не
+    /// отправлять.
     /// </summary>
     public class RudpConfirmationReceiver:IMessageHandler
     {

@@ -11,6 +11,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
         [Index(2)] public float X;
         [Index(3)] public float Y;
         [Index(4)] public float Angle;
+        
         public PlayerInputMessage(int identifier, int gameRoomNumber, float x, float y, float angle)
         {
             TemporaryIdentifier = identifier;

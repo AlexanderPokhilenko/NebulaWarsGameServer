@@ -7,6 +7,9 @@ using ZeroFormatter;
 
 namespace Server.Udp.MessageProcessing.Handlers
 {
+    /// <summary>
+    /// Добавляет данные о вводе игрока в очередь.
+    /// </summary>
     public class InputMessageHandler:IMessageHandler
     {
         private readonly InputEntitiesCreator inputEntitiesCreator;
