@@ -1,4 +1,5 @@
 ﻿using Server.GameEngine.Experimental;
+using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -11,14 +12,17 @@ namespace Server.GameEngine
         private readonly MatchStorage matchStorage;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
         private readonly ExitEntitiesCreator exitEntitiesCreator;
-        
+        private readonly ByteArrayRudpStorage rudpStorage;
+
         public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
-            InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator)
+            InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
+            ByteArrayRudpStorage rudpStorage)
         {
             this.matchStorage = matchStorage;
             this.matchLifeCycleManager = matchLifeCycleManager;
             this.inputEntitiesCreator = inputEntitiesCreator;
             this.exitEntitiesCreator = exitEntitiesCreator;
+            this.rudpStorage = rudpStorage;
         }
 
         public void Tick()

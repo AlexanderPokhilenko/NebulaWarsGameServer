@@ -48,12 +48,7 @@ namespace Server.GameEngine
             TryEnableDebug();
             
             systems = new Entitas.Systems()
-                    // .Add(new ZoneInitSystem(Contexts, zoneObject))
-                    // .Add(new PlayersInitSystem(Contexts, matchDataArg))
-                    // .Add(new AsteroidsInitSystem(Contexts))
-                    // .Add(new SpaceStationsInitSystem(Contexts))
-                    // .Add(new BonusesInitSystem(Contexts))
-
+                    
                     .Add(new MapInitSystem(contexts, matchDataArg))
                     .Add(new MatchIdInitSystem(contexts, matchDataArg))
                     // .Add(new TestEndMatchSystem2(Contexts))
@@ -75,7 +70,6 @@ namespace Server.GameEngine
                     .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, matchStorageFacade))
                     
                     
-                    
                     .Add(new DestroySystems(contexts))
                     .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId))
                     .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId))
@@ -83,8 +77,6 @@ namespace Server.GameEngine
                     .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId))
                     .Add(new InputDeletingSystem(contexts))
                     .Add(new GameDeletingSystem(contexts))
-                
-                    .Add(new RudpSendingSystem(rudpMessagesStorage))
                 ;
 
             systems.ActivateReactiveSystems();
@@ -173,9 +165,7 @@ namespace Server.GameEngine
             log.Warn($" Конец уведомления игроков про окончание матча");
             throw new NotImplementedException();
         }
-        
-        
-        
+
         public bool HasIpEnpPoint(int playerId)
         {
             return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
@@ -195,7 +185,6 @@ namespace Server.GameEngine
         {
             return ipAddressesStorage.TryRemovePlayerIp(playerId);
         }
-        
 
         private void TryEnableDebug()
         {
@@ -215,78 +204,3 @@ namespace Server.GameEngine
         }
     }
 }
-
-
-/*
- 
- // private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
-  #region Rudp
-        
-        
-        private IRudpMessagesStorage rudpMessagesStorage;
-        private readonly ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
-        
-        public void AddReliableMessage(int playerId, uint messageId, byte[] serializedMessage)
-        {
-            byteArrayRudpStorage.AddMessage(playerId, messageId, serializedMessage);
-        }
-
-        public bool TryRemoveRemoveRudpMessage(uint messageIdToConfirm)
-        {
-            return byteArrayRudpStorage.TryRemoveMessage(messageIdToConfirm);
-        }
-
-        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
-        {
-            List<ReliableMessagesPack> result = new List<ReliableMessagesPack>();
-            
-            //Для всех игроков с известными ip достать их сообщения из словаря
-            foreach (var pair in ipAddressesStorage.GetPlayersRoutingData())
-            {
-                int playerId = pair.Key;
-                IPEndPoint ipEndPoint = pair.Value;
-                var messagePacks = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
-                result.Add(new ReliableMessagesPack(ipEndPoint, messagePacks));
-            }
-            return result;
-        }
-        
-        #endregion
-        
-          #region Ip
-
-        private readonly IpAddressesStorage ipAddressesStorage;
-
-        public Match(int matchId, MatchRemover matchRemover)
-        {
-            this.matchRemover = matchRemover;
-
-            ipAddressesStorage = new IpAddressesStorage(matchId);
-            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-        }
-
-        public bool HasIpEnpPoint(int playerId)
-        {
-            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
-        }
-
-        public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
-        {
-            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
-        }
-
-        public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
-        {
-            return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
-        }
-
-      public bool TryRemoveIpEndPoint(int playerId)
-        {
-            return ipAddressesStorage.TryRemovePlayerIp(playerId);
-        }
-
-        
-        #endregion
-
-
- */

@@ -24,6 +24,9 @@ namespace Server.GameEngine
             matches = new ConcurrentDictionary<int, Match>();
         }
 
+        /// <summary>
+        /// Просто удаление матча из коллекции
+        /// </summary>
         public void RemoveMatch(int matchId)
         {
             if (matches.ContainsKey(matchId))
@@ -45,11 +48,18 @@ namespace Server.GameEngine
             }
         }
 
+        /// <summary>
+        /// Перед созданием матча.
+        /// </summary>
         public bool HasPlayer(int playerId)
         {
+            //TODO  пробежаться по активным игрокам в каждом матче
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Перед созданием матча.
+        /// </summary>
         public bool HasMatch(int matchId)
         {
             return matches.ContainsKey(matchId);
@@ -60,11 +70,18 @@ namespace Server.GameEngine
             return matches.Values;
         }
         
+        /// <summary>
+        /// Получение матча для создания сущностей ввода.
+        /// </summary>
         public bool TryGetMatchByPlayerId(int playerId, out Match match)
         {
+            //TODO  пробежаться по активным игрокам в каждом матче
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Обновление ip адреса игрока.
+        /// </summary>
         public void PingTryAddIpEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
         {
             if (matches.TryGetValue(matchId, out var match))
@@ -77,12 +94,9 @@ namespace Server.GameEngine
             }
         }
 
-        public void RemoveRudpMessage(uint messageIdToConfirm)
-        {
-           throw new NotImplementedException();
-        }
-
-
+        /// <summary>
+        /// Получение ip адреса для отправки сообщения.
+        /// </summary>
         public bool TryGetIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {
             if (matches.TryGetValue(matchId, out var match))

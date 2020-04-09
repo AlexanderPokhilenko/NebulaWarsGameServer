@@ -9,18 +9,25 @@ using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
+using Server.GameEngine.Experimental;
+using Server.Udp.Storage;
 
 namespace Server.Udp.Sending
 {
+    /// <summary>
+    /// Содержит методы для отправки udp сообщений игрокам по их id.
+    /// </summary>
     public static class UdpSendUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(UdpSendUtils));
         
         private static MatchStorage matchStorage;
+        private static ByteArrayRudpStorage rudpStorage;
 
-        public static void Initialize(MatchStorage matchStorageArg)
+        public static void Initialize(MatchStorage matchStorageArg, ByteArrayRudpStorage rudpStorageArg)
         {
             matchStorage = matchStorageArg;
+            rudpStorage = rudpStorageArg;
         }
         
         private static bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
@@ -58,7 +65,7 @@ namespace Server.Udp.Sending
                     killData.VictimType);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
-                GameEngineTicker.MatchStorageFacade.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, 
+                rudpStorage.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, 
                     serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
@@ -75,10 +82,8 @@ namespace Server.Udp.Sending
             if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
-                // Log.Warning($"Отправка хп игрока {TargetPlayerId} {healthPoints}");
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
-                // ByteArrayRudpStorage.Instance.AddMessage(TargetPlayerId,  messageId, serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);   
             }
         }
@@ -90,7 +95,7 @@ namespace Server.Udp.Sending
                 MaxHealthPointsMessage healthPointsMessage = new MaxHealthPointsMessage(maxHealthPoints);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-                GameEngineTicker.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
+                rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -113,7 +118,7 @@ namespace Server.Udp.Sending
                 var healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
-                GameEngineTicker.MatchStorageFacade.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -126,7 +131,7 @@ namespace Server.Udp.Sending
                 Log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
-                GameEngineTicker.MatchStorageFacade.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
+                rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);    
             }
         }

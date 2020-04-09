@@ -229,7 +229,6 @@
             <e p="Experimental" t="Include">
               <e p="ContextsPool.cs" t="Include" />
               <e p="GameSessionGlobals.cs" t="Include" />
-              <e p="IRudpSender.cs" t="Include" />
               <e p="ReliableMessagesPack.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="Debug" t="Include">

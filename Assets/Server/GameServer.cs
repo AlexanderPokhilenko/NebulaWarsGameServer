@@ -6,6 +6,7 @@ using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
 using Server.Udp.Sending;
+using Server.Udp.Storage;
 
 //TODO добавить di контейнер, когда сервер станет стабильным
 
@@ -38,7 +39,8 @@ namespace Server
 
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
-            UdpSendUtils.Initialize(matchStorage);
+            ByteArrayRudpStorage rudpStorage = new ByteArrayRudpStorage();
+            UdpSendUtils.Initialize(matchStorage, rudpStorage);
             
             MatchRemover matchRemover = new MatchRemover(matchStorage);
             MatchFactory matchFactory = new MatchFactory(matchRemover);
@@ -49,7 +51,7 @@ namespace Server
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
 
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
-                inputEntitiesCreator, exitEntitiesCreator);
+                inputEntitiesCreator, exitEntitiesCreator, rudpStorage);
 
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             

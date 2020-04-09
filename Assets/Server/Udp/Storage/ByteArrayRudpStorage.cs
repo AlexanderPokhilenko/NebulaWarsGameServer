@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using log4net;
 
 //TODO убрать lock и выяснить в чём проблема
+//конкурентной коллекции должно быть достаточно 
 
 namespace Server.Udp.Storage
 {
@@ -29,7 +30,7 @@ namespace Server.Udp.Storage
             unconfirmedMessages = new ConcurrentDictionary<int, Dictionary<uint, byte[]>>();
         }
         
-        public void AddMessage(int playerId, uint messageId, byte[] serializedMessage) 
+        public void AddReliableMessage(int matchId, int playerId, uint messageId, byte[] serializedMessage) 
         {
             lock (lockObj)
             {
@@ -44,10 +45,8 @@ namespace Server.Udp.Storage
                         throw new Exception("Не удалось добавить словарь в ReliableUdp для игрока с PlayerId=" + playerId);
                     }
                 }
-
                 unconfirmedMessages[playerId].Add(messageId, serializedMessage);
             }
-
             messageIdPlayerId.TryAdd(messageId, playerId);
         }
 
@@ -87,11 +86,9 @@ namespace Server.Udp.Storage
             }
         }
 
-
         [CanBeNull]
         public Dictionary<uint, byte[]>.ValueCollection GetAllMessagesForPlayer(int playerId)
         {
-            //TODO тут бросает исключение
             lock (lockObj)
             {
                 if (unconfirmedMessages.ContainsKey(playerId))
@@ -103,16 +100,6 @@ namespace Server.Udp.Storage
                     return null;
                 }
             }
-        }
-        
-        public int GetCountOfMessages1()
-        {
-            return messageIdPlayerId.Count;
-        }
-
-        public int GetCountOfMessages2()
-        {
-            return unconfirmedMessages.Values.Sum(collection => collection.Count);
         }
     }
 }
