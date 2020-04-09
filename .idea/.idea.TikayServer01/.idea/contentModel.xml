@@ -492,6 +492,7 @@
         </e>
         <e p="Tests" t="Include">
           <e p="MatchTests.cs" t="Include" />
+          <e p="NewTestScript.cs" t="Include" />
           <e p="readme.txt" t="Include" />
           <e p="Rudp" t="Include">
             <e p="RudpTests.cs" t="Include" />
