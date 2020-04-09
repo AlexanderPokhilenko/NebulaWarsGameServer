@@ -8,25 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class InputEntity {
 
-    public PlayerExit playerExit { get { return (PlayerExit)GetComponent(2); } }
-    public bool hasPlayerExit { get { return HasComponent(2); } }
+    public PlayerExit playerExit { get { return (PlayerExit)GetComponent(InputComponentsLookup.PlayerExit); } }
+    public bool hasPlayerExit { get { return HasComponent(InputComponentsLookup.PlayerExit); } }
 
     public void AddPlayerExit(int newPlayerId) {
-        var index = 2;
+        var index = InputComponentsLookup.PlayerExit;
         var component = (PlayerExit)CreateComponent(index, typeof(PlayerExit));
         component.PlayerId = newPlayerId;
         AddComponent(index, component);
     }
 
     public void ReplacePlayerExit(int newPlayerId) {
-        var index = 2;
+        var index = InputComponentsLookup.PlayerExit;
         var component = (PlayerExit)CreateComponent(index, typeof(PlayerExit));
         component.PlayerId = newPlayerId;
         ReplaceComponent(index, component);
     }
 
     public void RemovePlayerExit() {
-        RemoveComponent(2);
+        RemoveComponent(InputComponentsLookup.PlayerExit);
     }
 }
 
@@ -45,7 +45,7 @@ public sealed partial class InputMatcher {
     public static Entitas.IMatcher<InputEntity> PlayerExit {
         get {
             if (_matcherPlayerExit == null) {
-                var matcher = (Entitas.Matcher<InputEntity>)Entitas.Matcher<InputEntity>.AllOf(2);
+                var matcher = (Entitas.Matcher<InputEntity>)Entitas.Matcher<InputEntity>.AllOf(InputComponentsLookup.PlayerExit);
                 matcher.componentNames = InputComponentsLookup.componentNames;
                 _matcherPlayerExit = matcher;
             }

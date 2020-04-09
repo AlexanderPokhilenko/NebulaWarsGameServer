@@ -44,7 +44,7 @@ public static class GameComponentsLookup {
     public const int KilledBy = 33;
     public const int Lifetime = 34;
     public const int Mass = 35;
-    public const int MatchData = 36;
+    public const int Match = 36;
     public const int MaxAngularVelocity = 37;
     public const int MaxHealthPoints = 38;
     public const int MaxVelocity = 39;
@@ -75,7 +75,7 @@ public static class GameComponentsLookup {
     public const int ViewType = 64;
     public const int Zone = 65;
 
-    public const int TotalComponents = 64;
+    public const int TotalComponents = 66;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -114,7 +114,7 @@ public static class GameComponentsLookup {
         "KilledBy",
         "Lifetime",
         "Mass",
-        "MatchData",
+        "Match",
         "MaxAngularVelocity",
         "MaxHealthPoints",
         "MaxVelocity",
@@ -147,6 +147,8 @@ public static class GameComponentsLookup {
     };
 
     public static readonly System.Type[] componentTypes = {
+        typeof(AbilityComponent),
+        typeof(AbilityCooldownComponent),
         typeof(ActionBonusComponent),
         typeof(AngularVelocityComponent),
         typeof(AuraComponent),
@@ -181,7 +183,7 @@ public static class GameComponentsLookup {
         typeof(KilledByComponent),
         typeof(LifetimeComponent),
         typeof(MassComponent),
-        // typeof(MatchData),
+        typeof(MatchComponent),
         typeof(MaxAngularVelocityComponent),
         typeof(MaxHealthPointsComponent),
         typeof(MaxVelocityComponent),

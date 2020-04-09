@@ -12,15 +12,17 @@ public static class InputComponentsLookup {
     public const int Id = 1;
     public const int Movement = 2;
     public const int Player = 3;
-    public const int TryingToUseAbility = 4;
+    public const int PlayerExit = 4;
+    public const int TryingToUseAbility = 5;
 
-    public const int TotalComponents = 5;
+    public const int TotalComponents = 6;
 
     public static readonly string[] componentNames = {
         "Attack",
         "Id",
         "Movement",
         "Player",
+        "PlayerExit",
         "TryingToUseAbility"
     };
 
@@ -29,6 +31,7 @@ public static class InputComponentsLookup {
         typeof(IdComponent),
         typeof(MovementComponent),
         typeof(PlayerComponent),
+        typeof(PlayerExit),
         typeof(TryingToUseAbilityComponent)
     };
 }
