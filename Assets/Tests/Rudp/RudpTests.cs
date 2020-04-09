@@ -28,7 +28,7 @@
 //             byteArrayRudpStorage.AddReliableMessage(playerId, messageId, message);
 //             
 //             //Assert
-//             var messagesForPlayer = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
+//             var messagesForPlayer = byteArrayRudpStorage.GetMessages(playerId);
 //             Assert.IsNotNull(messagesForPlayer);
 //             Assert.AreEqual(1, messagesForPlayer.Count);
 //             Assert.AreSame(message, messagesForPlayer.Single());
@@ -80,7 +80,7 @@
 //                 logs.Enqueue($"запуск ");
 //                 while (true)
 //                 {
-//                     var messages = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
+//                     var messages = byteArrayRudpStorage.GetMessages(playerId);
 //                     if(messages!=null)
 //                     {
 //                         logs.Enqueue($"{nameof(messages.Count)} {messages.Count}");

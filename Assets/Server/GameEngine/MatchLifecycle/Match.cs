@@ -8,13 +8,12 @@ using Server.GameEngine.Systems.Debug;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-//Ecs
-//Ip
-//управление состоянием
-
 namespace Server.GameEngine
 {
     //TODO нужно разбить
+    //Ecs
+    //Ip
+    //управление состоянием
     public class Match
     {
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
@@ -152,7 +151,12 @@ namespace Server.GameEngine
             gameOver = true;
             matchRemover.MarkMatchAsFinished(MatchId);
         }
-       
+
+        public List<int> GetActivePlayersIds()
+        {
+            return ipAddressesStorage.GetActivePlayersIds();
+        }
+        
         public void NotifyPlayersAboutMatchFinish()
         {
             log.Warn($" Старт уведомления игроков про окончание матча");

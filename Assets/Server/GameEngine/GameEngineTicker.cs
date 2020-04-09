@@ -22,7 +22,7 @@ namespace Server.GameEngine
             this.matchLifeCycleManager = matchLifeCycleManager;
             this.inputEntitiesCreator = inputEntitiesCreator;
             this.exitEntitiesCreator = exitEntitiesCreator;
-            rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage);
+            rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage);
         }
 
         public void Tick()
@@ -39,6 +39,7 @@ namespace Server.GameEngine
             //создание/удаление матчей
             matchLifeCycleManager.UpdateMatchesLifeStatus();
             
+            //отправка rudp
             rudpMessagesSender.SendAll();
         }
     }
