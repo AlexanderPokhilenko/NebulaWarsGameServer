@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Http;
@@ -27,6 +28,7 @@ namespace Server
         private Thread playerDeathNotifierThread;
         
         private MatchStorage matchStorage;
+        private MatchRemover matchRemover;
 
         public void Run()
         {
@@ -42,7 +44,8 @@ namespace Server
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
             UdpSendUtils.Initialize(matchStorage, byteArrayRudpStorage);
             
-            MatchRemover matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage);
+            
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage);
             MatchFactory matchFactory = new MatchFactory(matchRemover);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
@@ -108,7 +111,17 @@ namespace Server
 
         public void FinishAllMatches()
         {
-            throw new NotImplementedException();
+            //TODO возможно lock поможет от одновременного вызова систем
+            lock (matchRemover)
+            {
+                foreach (var match in matchStorage.GetAllMatches())
+                {
+                    matchRemover.MarkMatchAsFinished(match.MatchId);
+                }
+                matchRemover.DeleteFinishedMatches();    
+            }
+            //Жду, чтобы rudp о удалении матчей точно дошли до игроков
+            Task.Delay(1500).Wait();
         }
         
         public void StopAllThreads()
