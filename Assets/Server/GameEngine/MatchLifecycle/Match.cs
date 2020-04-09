@@ -28,7 +28,7 @@ namespace Server.GameEngine
         private readonly MatchRemover matchRemover;
 
         private IpAddressesStorage ipAddressesStorage;
-        
+
         public Match(int matchId, MatchRemover matchRemover)
         {
             MatchId = matchId;
@@ -156,7 +156,7 @@ namespace Server.GameEngine
         public void NotifyPlayersAboutMatchFinish()
         {
             log.Warn($" Старт уведомления игроков про окончание матча");
-            foreach (int playerId in ipAddressesStorage.get)
+            foreach (int playerId in ipAddressesStorage.GetActivePlayersIds())
             {
                 log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
                 UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);

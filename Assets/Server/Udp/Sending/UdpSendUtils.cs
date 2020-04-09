@@ -12,6 +12,11 @@ using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.Storage;
 
+//TODO запись rdup сообщений должна произвоиться даже, если ip адреса не были инициализированы
+//возможно, что отправляя в первых кадрах rudp они не будут добавлены в словарь
+//для того, чтобы бысто исправить это можно инициализировать ip адреса не null-ом, а рандомным ip
+//(при отправке rudp всегда берётся актуальный ip)
+
 namespace Server.Udp.Sending
 {
     /// <summary>
@@ -32,7 +37,13 @@ namespace Server.Udp.Sending
         
         private static bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {
-            return matchStorage.TryGetIpEndPoint(matchId, playerId, out ipEndPoint);
+            bool success = matchStorage.TryGetIpEndPoint(matchId, playerId, out ipEndPoint);
+            if (success && ipEndPoint == null)
+            {
+                //ip адрес был инициализирован null-ом?
+                return false;
+            }
+            return true;
         }
         
         public static void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
@@ -18,6 +20,9 @@ namespace Server.Udp.Storage
     ip адрес может быть null. При смерти игрока или при преждевременном выходе он навсегда
     исключается из хранилища ip адресов матча. 
  */
+
+//TODO чем инициализировать ip адрес? null или рандомное значение
+
     /// <summary>
     /// Содержит таблицу ip адресов для игроков.
     /// </summary>
@@ -35,7 +40,7 @@ namespace Server.Udp.Storage
             playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
             foreach (var playerInfo in matchData.GameUnitsForMatch.Players)
             {
-                AddPlayer(playerInfo.AccountId, null);
+                AddPlayer(playerInfo.AccountId, new IPEndPoint(11, 654));
             }
         }
 
@@ -97,6 +102,11 @@ namespace Server.Udp.Storage
             {
                 return false;
             }
+        }
+
+        public List<int> GetActivePlayersIds()
+        {
+            return playersIpAddresses.Keys.ToList();
         }
     }
 }
