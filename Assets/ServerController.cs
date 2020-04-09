@@ -19,6 +19,6 @@ public class ServerController : MonoBehaviour
         gameServer.FinishAllMatches();
         
         //Это нужно для того, чтобы после остановки unity проекта потоки остановились и не писали в консоль.
-        gameServer.StopListeningThreads();
+        gameServer.StopAllThreads();
     }
 }

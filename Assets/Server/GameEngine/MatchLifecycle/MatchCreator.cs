@@ -10,19 +10,22 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchCreator
     {
-        private readonly MatchFactory matchFactory;
-
         /// <summary>
         /// Очередь на создание.
         /// </summary>
         private readonly ConcurrentQueue<BattleRoyaleMatchData> matchesToCreate;
-
+        private readonly MatchFactory matchFactory;
+        
         public MatchCreator(MatchFactory matchFactory)
         {
             this.matchFactory = matchFactory;
             matchesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="battleRoyaleMatchData">Адекватные данные о матче.</param>
         public void AddMatchToCreationQueue(BattleRoyaleMatchData battleRoyaleMatchData)
         {
             matchesToCreate.Enqueue(battleRoyaleMatchData);
@@ -41,22 +44,6 @@ namespace Server.GameEngine
             }
 
             return result;
-        }
-    }
-
-    public class MatchFactory
-    {
-        private readonly MatchRemover matchRemover;
-
-        public MatchFactory(MatchRemover matchRemover)
-        {
-            this.matchRemover = matchRemover;
-        }
-        public Match Create(BattleRoyaleMatchData matchData)
-        {
-            Match match = new Match(matchData.MatchId, matchRemover);
-            match.ConfigureSystems(matchData);
-            return match;
         }
     }
 }

@@ -11,11 +11,13 @@ using log4net;
 //TODO это, конечно, дичь, но стабильность важнее
 
 //TODO при удалении матча почистить rudp хранилище
+//TODO протестировать это чудо
 
 namespace Server.Udp.Storage
 {
     /// <summary>
     /// Хранит сообщения, доставка которых не была подтверждена.
+    /// Способ хранения можно улучшить использую группировку.
     /// </summary>
     public class ByteArrayRudpStorage
     {
@@ -46,6 +48,22 @@ namespace Server.Udp.Storage
             messageIdPlayerId.TryAdd(messageId, (matchId, playerId));
         }
 
+        public void RemoveMatchMessages(int matchId)
+        {
+            lock (lockObj)
+            {
+                if(unconfirmedMessages.TryRemove(matchId, out var playersDict))
+                {
+                    foreach (var playerDict in playersDict)
+                    {
+                        foreach (var messageId in playerDict.Value.Keys)
+                        {
+                            messageIdPlayerId.TryRemove(messageId, out _);
+                        }
+                    }
+                }
+            }
+        }
         
         public bool TryRemoveMessage(uint messageId)
         {

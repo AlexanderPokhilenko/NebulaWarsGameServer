@@ -159,26 +159,15 @@ namespace Server.GameEngine
         
         public void NotifyPlayersAboutMatchFinish()
         {
-            log.Warn($" Старт уведомления игроков про окончание матча");
+            log.Warn(" Старт уведомления игроков про окончание матча");
             foreach (int playerId in ipAddressesStorage.GetActivePlayersIds())
             {
                 log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
                 UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
             }
-            log.Warn($" Конец уведомления игроков про окончание матча");
-            throw new NotImplementedException();
+            log.Warn(" Конец уведомления игроков про окончание матча");
         }
-
-        // public bool HasIpEnpPoint(int playerId)
-        // {
-        //     return ipAddressesStorage.ContainsIpEndPoint(playerId);
-        // }
-
-        // public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
-        // {
-        //     ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
-        // }
-
+        
         public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
         {
             return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);

@@ -16,7 +16,7 @@ namespace Server.GameEngine
     {
         private readonly ILog log = LogManager.GetLogger(typeof(MatchStorage));
         
-        //MatchId Match
+        //matchId match
         private readonly ConcurrentDictionary<int, Match> matches;
       
         public MatchStorage()
@@ -24,26 +24,34 @@ namespace Server.GameEngine
             matches = new ConcurrentDictionary<int, Match>();
         }
 
-        /// <summary>
-        /// Просто удаление матча из коллекции
-        /// </summary>
-        public void RemoveMatch(int matchId)
+        public void AddMatch(Match match)
         {
-            if (matches.ContainsKey(matchId))
+            if (matches.TryAdd(match.MatchId, match))
             {
-                if (matches.TryRemove(matchId, out _))
-                {
-                    //намана   
-                    log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
-                }
-                else
-                {
-                    //не намана
-                    throw new Exception($"Не удалось убрать матч из словаря {nameof(matchId)} {matchId}");
-                }
+                //намана
             }
             else
             {
+                //Возможно матч с таким id уже добавлен
+                //это фиаско
+                throw new Exception("Не удалось добавить матч в коллекцию.");
+            }
+        }
+        
+        /// <summary>
+        /// Просто удаление матча из коллекции
+        /// </summary>
+        public Match RemoveMatch(int matchId)
+        {
+            if (matches.TryRemove(matchId, out Match match))
+            {
+                //намана   
+                log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
+                return match;
+            }
+            else
+            {
+                //не намана
                 throw new Exception($"Попытка удалить матч, которого нет {nameof(matchId)} {matchId}");
             }
         }
@@ -53,8 +61,15 @@ namespace Server.GameEngine
         /// </summary>
         public bool HasPlayer(int playerId)
         {
-            //TODO  пробежаться по активным игрокам в каждом матче
-            throw new NotImplementedException();
+            foreach (Match match in matches.Values)
+            {
+                if (match.GetActivePlayersIds().Contains(playerId))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

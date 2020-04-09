@@ -42,22 +42,20 @@ namespace Server
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
             UdpSendUtils.Initialize(matchStorage, byteArrayRudpStorage);
             
-            MatchRemover matchRemover = new MatchRemover(matchStorage);
+            MatchRemover matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage);
             MatchFactory matchFactory = new MatchFactory(matchRemover);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
             InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
-
+            
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
                 inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage);
 
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             
             
-
-
 
 
 
@@ -81,14 +79,19 @@ namespace Server
         
         private Thread StartMatchmakerListening(int port, MatchCreator matchCreator, MatchStorage matchStorageArg)
         {
-            MatchDataMessageHandler matchDataMessageHandler = new MatchDataMessageHandler(matchCreator, matchStorageArg);
-            Thread thread = new Thread(() => { new HttpConnection(matchDataMessageHandler).StartListenHttp(port).Wait(); });
+            MatchDataMessageHandler matchDataMessageHandler = 
+                new MatchDataMessageHandler(matchCreator, matchStorageArg);
+            Thread thread = new Thread(() =>
+            {
+                new HttpConnection(matchDataMessageHandler).StartListenHttp(port).Wait();
+            });
             thread.Start();
             return thread;
         }
 
         private UdpConnectionFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
-            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, ByteArrayRudpStorage byteArrayRudpStorage)
+            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, 
+            ByteArrayRudpStorage byteArrayRudpStorage)
         {
             var udpBattleConnectionLocal = new UdpConnectionFacade();
 
@@ -108,7 +111,7 @@ namespace Server
             throw new NotImplementedException();
         }
         
-        public void StopListeningThreads()
+        public void StopAllThreads()
         {
             httpListeningThread.Interrupt();
             udpConnectionFacade.Stop();

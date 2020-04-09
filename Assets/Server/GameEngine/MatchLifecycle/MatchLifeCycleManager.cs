@@ -24,10 +24,12 @@ namespace Server.GameEngine
 
         public void UpdateMatchesLifeStatus()
         {
-            //TODO сохранить матчи
-            List<Match> matches = matchCreator.CreateMatches();
-            matchRemover.DeleteFinishedBattles();
-            throw new NotImplementedException();
+            List<Match> createdMatches = matchCreator.CreateMatches();
+            foreach (var match in createdMatches)
+            {
+                matchStorage.AddMatch(match);
+            }
+            matchRemover.DeleteFinishedMatches();
         }
     }
 }

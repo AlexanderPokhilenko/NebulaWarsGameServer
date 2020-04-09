@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using log4net;
 using Server.Http;
+using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -10,17 +10,19 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchRemover
     {
-        private readonly MatchStorage matchStorage;
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchRemover));
         
         /// <summary>
         /// Очередь на удаление матча.
         /// </summary>
         private readonly ConcurrentQueue<int> matchesToRemove;
+        private readonly MatchStorage matchStorage;
+        private readonly ByteArrayRudpStorage byteArrayRudpStorage;
 
-        public MatchRemover(MatchStorage matchStorage)
+        public MatchRemover(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
         {
             this.matchStorage = matchStorage;
+            this.byteArrayRudpStorage = byteArrayRudpStorage;
             matchesToRemove = new ConcurrentQueue<int>();
         }
         
@@ -29,7 +31,7 @@ namespace Server.GameEngine
             matchesToRemove.Enqueue(matchNumber);
         }
         
-        public void DeleteFinishedBattles()
+        public void DeleteFinishedMatches()
         {
             while (matchesToRemove.Count != 0)
             {
@@ -48,13 +50,11 @@ namespace Server.GameEngine
         private void DeleteMatch(int matchId)
         {
             Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
-            Match match=null;
+            Match match = matchStorage.RemoveMatch(matchId);
             match.NotifyPlayersAboutMatchFinish();
             match.TearDown();
-            matchStorage.RemoveMatch(matchId);
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
-            throw new NotImplementedException();
+            byteArrayRudpStorage.RemoveMatchMessages(matchId);
         }
-        
     }
 }

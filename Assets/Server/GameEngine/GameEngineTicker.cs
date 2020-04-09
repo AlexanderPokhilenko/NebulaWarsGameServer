@@ -8,9 +8,9 @@ namespace Server.GameEngine
     /// </summary>
     public class GameEngineTicker
     {
-        private readonly InputEntitiesCreator inputEntitiesCreator;
         private readonly MatchStorage matchStorage;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
+        private readonly InputEntitiesCreator inputEntitiesCreator;
         private readonly ExitEntitiesCreator exitEntitiesCreator;
         private readonly RudpMessagesSender rudpMessagesSender;
 
