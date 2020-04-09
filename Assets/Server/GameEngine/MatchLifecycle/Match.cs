@@ -2,17 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
-using Server.GameEngine.Experimental;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Debug;
 using Server.Udp.Sending;
-using Server.Udp.Storage;
 
-//TODO говно
-//разделить на подклассы
 //Ecs
 //Ip
 //RUDP
@@ -23,90 +18,46 @@ namespace Server.GameEngine
 {
     public class Match
     {
-        private readonly MatchRemover matchRemover;
-        private readonly IPlayerRemover playerRemover;
         private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
-        
-        #region Ip
 
-        private readonly IpAddressesStorage ipAddressesStorage;
+        public readonly int MatchId;
+        private bool gameOver;
+        private DateTime? gameStartTime;
+        private Entitas.Systems systems;
+        private readonly MatchRemover matchRemover;
+        public Contexts Contexts { get; private set; }
+        
 
         public Match(int matchId, MatchRemover matchRemover)
         {
             this.matchRemover = matchRemover;
-
-            ipAddressesStorage = new IpAddressesStorage(matchId);
-            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-        }
-
-        public bool ContainsIpEnpPointForPlayer(int playerId)
-        {
-            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
-        }
-
-        public void AddEndPoint(int playerId, IPEndPoint ipEndPoint)
-        {
-            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
-        }
-
-        public bool TryGetPlayerIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
-        {
-            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
-        }
-
-     
-        
-        #endregion
-
-        #region Rudp
-        
-        private readonly ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
-        
-        public void AddReliableMessage(int playerId, uint messageId, byte[] serializedMessage)
-        {
-            byteArrayRudpStorage.AddMessage(playerId, messageId, serializedMessage);
-        }
-
-        public bool TryRemoveRemoveRudpMessage(uint messageIdToConfirm)
-        {
-            return byteArrayRudpStorage.TryRemoveMessage(messageIdToConfirm);
-        }
-
-        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
-        {
-            List<ReliableMessagesPack> result = new List<ReliableMessagesPack>();
+            MatchId = matchId;
             
-            //Для всех игроков с известными ip достать их сообщения из словаря
-            foreach (var pair in ipAddressesStorage.GetPlayersRoutingData())
-            {
-                int playerId = pair.Key;
-                IPEndPoint ipEndPoint = pair.Value;
-                var messagePacks = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
-                result.Add(new ReliableMessagesPack(ipEndPoint, messagePacks));
-            }
-            return result;
         }
-        
-        #endregion
-        
-        #region Ecs
-        private Entitas.Systems systems;
-        public Contexts Contexts { get; private set; }
 
-
-        private IRudpMessagesStorage rudpMessagesStorage;
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
             Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
-
-            matchData = matchDataArg;
+            
+            var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             Contexts = ContextsPool.GetContexts();
             Contexts.SubscribeId();
+            
+            
+            
 #if UNITY_EDITOR
             CollidersDrawer.contextsList.Add(Contexts);
             // Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
 #endif
+            
+            
+            
+            
+            
             systems = new Entitas.Systems()
+            
+            
+                    
 #if USE_OLD_INIT_SYSTEMS
                     .Add(new ZoneInitSystem(Contexts, zoneObject))
                     .Add(new PlayersInitSystem(Contexts, matchDataArg))
@@ -116,6 +67,11 @@ namespace Server.GameEngine
 #else
                     .Add(new MapInitSystem(Contexts, matchDataArg))
 #endif
+                    
+                    
+                    
+                    
+                    
                     .Add(new MatchIdInitSystem(Contexts, matchDataArg))
                     
                     // .Add(new TestEndMatchSystem2(Contexts))
@@ -137,7 +93,6 @@ namespace Server.GameEngine
                     .Add(new FinishMatchSystem(Contexts, this))
                     .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo, matchDataArg.MatchId))
                     .Add(new PlayerExitSystem(Contexts, matchDataArg.MatchId, matchStorageFacade))
-                    
                     
                     
                     
@@ -181,21 +136,10 @@ namespace Server.GameEngine
             systems.ClearReactiveSystems();
             Contexts.UnsubscribeId();
             ContextsPool.RetrieveContexts(Contexts);
-            possibleKillersInfo.Clear();
+            // possibleKillersInfo.Clear();
         }
-        
-        #endregion
 
-        #region Dich
-        private DateTime? gameStartTime;
-        
-        public BattleRoyaleMatchData matchData { get; private set; }
-        private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
-        private bool gameOver;
-        #endregion
 
-      
-        
         private bool IsSessionTimedOut()
         {
             if (gameStartTime == null) return false;
@@ -206,24 +150,95 @@ namespace Server.GameEngine
         public void Finish()
         {
             gameOver = true;
-            matchRemover.MarkMatchAsFinished(matchData.MatchId);
+            matchRemover.MarkMatchAsFinished(MatchId);
         }
 
-        public bool TryRemovePlayerIpEndPoint(int playerId)
-        {
-            return ipAddressesStorage.TryRemovePlayerIp(playerId);
-        }
-
+       
         public void NotifyPlayersAboutMatchFinish()
         {
             Log.Warn($" Старт уведомления игроков про окончание матча");
             foreach (int playerId in playersIds)
             {
                 Log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
-                UdpSendUtils.SendBattleFinishMessage(matchId, playerId);
+                UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
             }
             Log.Warn($" Конец уведомления игроков про окончание матча");
             throw new NotImplementedException();
         }
     }
 }
+
+
+/*
+ 
+ // private readonly Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo;
+  #region Rudp
+        
+        
+        private IRudpMessagesStorage rudpMessagesStorage;
+        private readonly ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
+        
+        public void AddReliableMessage(int playerId, uint messageId, byte[] serializedMessage)
+        {
+            byteArrayRudpStorage.AddMessage(playerId, messageId, serializedMessage);
+        }
+
+        public bool TryRemoveRemoveRudpMessage(uint messageIdToConfirm)
+        {
+            return byteArrayRudpStorage.TryRemoveMessage(messageIdToConfirm);
+        }
+
+        public List<ReliableMessagesPack> GetActivePlayersRudpMessages()
+        {
+            List<ReliableMessagesPack> result = new List<ReliableMessagesPack>();
+            
+            //Для всех игроков с известными ip достать их сообщения из словаря
+            foreach (var pair in ipAddressesStorage.GetPlayersRoutingData())
+            {
+                int playerId = pair.Key;
+                IPEndPoint ipEndPoint = pair.Value;
+                var messagePacks = byteArrayRudpStorage.GetAllMessagesForPlayer(playerId);
+                result.Add(new ReliableMessagesPack(ipEndPoint, messagePacks));
+            }
+            return result;
+        }
+        
+        #endregion
+        
+          #region Ip
+
+        private readonly IpAddressesStorage ipAddressesStorage;
+
+        public Match(int matchId, MatchRemover matchRemover)
+        {
+            this.matchRemover = matchRemover;
+
+            ipAddressesStorage = new IpAddressesStorage(matchId);
+            possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+        }
+
+        public bool ContainsIpEnpPointForPlayer(int playerId)
+        {
+            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
+        }
+
+        public void AddEndPoint(int playerId, IPEndPoint ipEndPoint)
+        {
+            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
+        }
+
+        public bool TryGetPlayerIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
+        {
+            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+        }
+
+      public bool TryRemovePlayerIpEndPoint(int playerId)
+        {
+            return ipAddressesStorage.TryRemovePlayerIp(playerId);
+        }
+
+        
+        #endregion
+
+
+ */

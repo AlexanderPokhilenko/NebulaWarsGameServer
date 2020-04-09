@@ -33,19 +33,19 @@ namespace Server.GameEngine.Systems
         {
             int numberOfAlivePlayers = playersGroup.count;
             
-            Log.Warn($" {nameof(match.matchData.MatchId)} {match.matchData.MatchId} " +
+            Log.Warn($" {nameof(match.MatchId)} {match.MatchId} " +
                      $"Погибло игровых сущностей: {entities.Count}. " +
                      $"Текущее кол-во игровых сущностей: {numberOfAlivePlayers}");
             foreach (var gameEntity in entities)
             {
                 if (gameEntity.isBot)
                 {
-                    Log.Warn($"{nameof(match.matchData.MatchId)} {match.matchData.MatchId} " +
+                    Log.Warn($"{nameof(match.MatchId)} {match.MatchId} " +
                              $"Погиб бот {gameEntity.viewType.id}");
                 }
                 else if(gameEntity.hasPlayer)
                 {
-                    Log.Warn($"{nameof(match.matchData.MatchId)} {match.matchData.MatchId}" +
+                    Log.Warn($"{nameof(match.MatchId)} {match.MatchId}" +
                              $"  Погиб игрок {gameEntity.player.id}");
                 }
                 else

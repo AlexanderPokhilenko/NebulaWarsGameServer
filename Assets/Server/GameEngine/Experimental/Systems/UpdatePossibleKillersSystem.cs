@@ -8,7 +8,9 @@ namespace Server.GameEngine.Systems
         private readonly GameContext gameContext;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> ownersInfo;
 
-        public UpdatePossibleKillersSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> ownersInfos) : base(contexts.game)
+        public UpdatePossibleKillersSystem(Contexts contexts, 
+            Dictionary<int, (int playerId, ViewTypeId type)> ownersInfos) 
+            : base(contexts.game)
         {
             gameContext = contexts.game;
             ownersInfo = ownersInfos;
