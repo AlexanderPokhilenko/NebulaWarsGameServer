@@ -12,17 +12,17 @@ namespace Server.GameEngine
         private readonly MatchStorage matchStorage;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
         private readonly ExitEntitiesCreator exitEntitiesCreator;
-        private readonly ByteArrayRudpStorage rudpStorage;
+        private readonly RudpMessagesSender rudpMessagesSender;
 
         public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
             InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            ByteArrayRudpStorage rudpStorage)
+            ByteArrayRudpStorage byteArrayRudpStorage)
         {
             this.matchStorage = matchStorage;
             this.matchLifeCycleManager = matchLifeCycleManager;
             this.inputEntitiesCreator = inputEntitiesCreator;
             this.exitEntitiesCreator = exitEntitiesCreator;
-            this.rudpStorage = rudpStorage;
+            rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage);
         }
 
         public void Tick()
@@ -38,6 +38,8 @@ namespace Server.GameEngine
 
             //создание/удаление матчей
             matchLifeCycleManager.UpdateMatchesLifeStatus();
+            
+            rudpMessagesSender.SendAll();
         }
     }
 }

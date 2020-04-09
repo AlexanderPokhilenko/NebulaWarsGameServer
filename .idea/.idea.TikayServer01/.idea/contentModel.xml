@@ -265,6 +265,10 @@
               <e p="ExitEntitiesCreator.cs" t="Include" />
               <e p="InputEntitiesCreator.cs" t="Include" />
             </e>
+            <e p="Rudp" t="Include">
+              <e p="ByteArrayRudpStorage.cs" t="Include" />
+              <e p="RudpMessagesSender.cs" t="Include" />
+            </e>
           </e>
           <e p="GameServer.cs" t="Include" />
           <e p="Http" t="Include">
@@ -298,7 +302,6 @@
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">
-              <e p="ByteArrayRudpStorage.cs" t="Include" />
               <e p="IpAddressesStorage.cs" t="Include" />
             </e>
             <e p="UdpMediator.cs" t="Include" />

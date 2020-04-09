@@ -5,6 +5,7 @@ using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
+using Server.Udp.Storage;
 using ZeroFormatter;
 
 namespace Server.Udp
@@ -16,9 +17,10 @@ namespace Server.Udp
         private readonly MessageProcessor messageProcessor;
 
         public UdpMediator(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            MatchStorage matchStorage)
+            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
         {
-            messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage);
+            messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
+                byteArrayRudpStorage);
         }
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)

@@ -39,8 +39,8 @@ namespace Server
 
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
-            ByteArrayRudpStorage rudpStorage = new ByteArrayRudpStorage();
-            UdpSendUtils.Initialize(matchStorage, rudpStorage);
+            ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
+            UdpSendUtils.Initialize(matchStorage, byteArrayRudpStorage);
             
             MatchRemover matchRemover = new MatchRemover(matchStorage);
             MatchFactory matchFactory = new MatchFactory(matchRemover);
@@ -51,7 +51,7 @@ namespace Server
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
 
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
-                inputEntitiesCreator, exitEntitiesCreator, rudpStorage);
+                inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage);
 
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             
@@ -63,14 +63,11 @@ namespace Server
 
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator, matchStorage);
+            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator, 
+                matchStorage, byteArrayRudpStorage);
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
-            
-            
-            
-            
             
             
             
@@ -91,11 +88,12 @@ namespace Server
         }
 
         private UdpConnectionFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
-            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg)
+            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, ByteArrayRudpStorage byteArrayRudpStorage)
         {
             var udpBattleConnectionLocal = new UdpConnectionFacade();
 
-            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg);
+            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg,
+                byteArrayRudpStorage);
             mediator.SetUdpConnection(udpBattleConnectionLocal);
             
             udpBattleConnectionLocal

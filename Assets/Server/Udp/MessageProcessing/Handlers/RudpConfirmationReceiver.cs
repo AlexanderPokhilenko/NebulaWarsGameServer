@@ -16,12 +16,10 @@ namespace Server.Udp.MessageProcessing.Handlers
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationReceiver));
         
-        private readonly MatchStorage matchStorage;
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
 
-        public RudpConfirmationReceiver(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
+        public RudpConfirmationReceiver(ByteArrayRudpStorage byteArrayRudpStorage)
         {
-            this.matchStorage = matchStorage;
             this.byteArrayRudpStorage = byteArrayRudpStorage;
         }
         
