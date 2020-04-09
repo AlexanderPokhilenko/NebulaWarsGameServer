@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
+using Server.GameEngine.Experimental;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
 using ZeroFormatter;
@@ -9,14 +10,19 @@ namespace Server.Udp
 {
     public class UdpMediator
     {
-        private static readonly MessageProcessor MessageProcessor = new MessageProcessor();
         public static UdpConnectionFacade udpConnectionFacade { get; private set; }
-        
+
+        private readonly MessageProcessor messageProcessor;
+
+        public UdpMediator(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator)
+        {
+            messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator);
+        }
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(data);
-            MessageProcessor.Handle(messageWrapper, endPoint);
+            messageProcessor.Handle(messageWrapper, endPoint);
         }
 
         public void SetUdpConnection(UdpConnectionFacade udpConn)

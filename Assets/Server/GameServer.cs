@@ -6,7 +6,7 @@ using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
 
-//TODO добавить di контейнер
+//TODO добавить di контейнер, когда сервер станет стабильным
 
 namespace Server
 {
@@ -59,7 +59,7 @@ namespace Server
 
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpConnectionFacade = StartPlayersListening(UdpPort);
+            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator);
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
@@ -86,11 +86,12 @@ namespace Server
             return thread;
         }
 
-        private UdpConnectionFacade StartPlayersListening(int port)
+        private UdpConnectionFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
+            ExitEntitiesCreator exitEntitiesCreator)
         {
             var udpBattleConnectionLocal = new UdpConnectionFacade();
 
-            UdpMediator mediator = new UdpMediator();
+            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator);
             mediator.SetUdpConnection(udpBattleConnectionLocal);
             
             udpBattleConnectionLocal

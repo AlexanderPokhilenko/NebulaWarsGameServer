@@ -263,8 +263,8 @@
               <e p="MatchRemover.cs" t="Include" />
             </e>
             <e p="StaticMessageSorters" t="Include">
-              <e p="StaticExitMessageSorter.cs" t="Include" />
-              <e p="StaticInputMessagesSorter.cs" t="Include" />
+              <e p="ExitEntitiesCreator.cs" t="Include" />
+              <e p="InputEntitiesCreator.cs" t="Include" />
             </e>
           </e>
           <e p="GameServer.cs" t="Include" />

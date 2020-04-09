@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
+using Server.GameEngine.Experimental;
 using Server.Udp.MessageProcessing.Handlers;
 
 namespace Server.Udp.MessageProcessing
@@ -10,13 +11,19 @@ namespace Server.Udp.MessageProcessing
     /// </summary>
     internal class MessageProcessor
     {
-        private readonly InputMessageHandler inputMessageHandler = new InputMessageHandler();
+        private readonly InputMessageHandler inputMessageHandler;
+        private readonly PlayerExitMessageHandler exitMessageHandler;
+        
         private readonly PingMessageHandler pingMessageHandler = new PingMessageHandler();
         private readonly RudpConfirmationReceiver confirmationReceiver = new RudpConfirmationReceiver();
-        private readonly PlayerExitMessageHandler exitMessageHandler = new PlayerExitMessageHandler();
-        
         private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
 
+        public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator)
+        {
+            inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
+            exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);
+        }
+        
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             if (messageWrapper.NeedResponse)

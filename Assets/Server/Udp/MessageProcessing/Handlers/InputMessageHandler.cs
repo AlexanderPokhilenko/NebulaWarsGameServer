@@ -9,6 +9,13 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class InputMessageHandler:IMessageHandler
     {
+        private readonly InputEntitiesCreator inputEntitiesCreator;
+
+        public InputMessageHandler(InputEntitiesCreator inputEntitiesCreator)
+        {
+            this.inputEntitiesCreator = inputEntitiesCreator;
+        }
+        
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             PlayerInputMessage mes =
@@ -20,12 +27,26 @@ namespace Server.Udp.MessageProcessing.Handlers
 
         private void AddPlayerInputComponent(int playerId, Vector2 vector)
         {
-            InputEntitiesCreator.TryAddMovementMessage(playerId, vector);
+            if (inputEntitiesCreator.TryAddMovementMessage(playerId, vector))
+            {
+                //намана
+            }
+            else
+            {
+                //шо?
+            }
         }
 
         private void AddPlayerAttackComponent(int playerId, float angle)
         {
-            InputEntitiesCreator.TryAddAttackMessage(playerId, angle);
+            if (inputEntitiesCreator.TryAddAttackMessage(playerId, angle))
+            {
+                //намана
+            }
+            else
+            {
+                //шо?
+            }
         }
     }
 }
