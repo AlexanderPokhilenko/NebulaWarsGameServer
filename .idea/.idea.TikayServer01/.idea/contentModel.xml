@@ -271,8 +271,8 @@
           <e p="Http" t="Include">
             <e p="HttpConnection.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
-            <e p="HttpMatchDataReceiver.cs" t="Include" />
             <e p="MatchDataMessageHandler.cs" t="Include" />
+            <e p="MatchDataValidator.cs" t="Include" />
             <e p="MatchDeletingNotifier.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />

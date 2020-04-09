@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading;
 using Server.GameEngine;
+using Server.GameEngine.Experimental;
 using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
+
+//TODO добавить di контейнер
 
 namespace Server
 {
@@ -22,7 +25,7 @@ namespace Server
         private Thread playerDeathNotifierThread;
         
         private MatchStorage matchStorage;
-        
+
         public void Run()
         {
             //Чек
@@ -30,26 +33,55 @@ namespace Server
             {
                 throw new Exception("Сервер уже запущен");
             }
-            
+
+
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
-            MatchLifeCycleManager matchLifeCycleManager = new MatchLifeCycleManager(matchStorage);
-            GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager);
+            
+            MatchRemover matchRemover = new MatchRemover(matchStorage);
+            MatchFactory matchFactory = new MatchFactory(matchRemover);
+            MatchCreator matchCreator = new MatchCreator(matchFactory);
+            MatchLifeCycleManager matchLifeCycleManager = 
+                new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
+            InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
+            ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
+
+            GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
+                inputEntitiesCreator, exitEntitiesCreator);
+
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             
+            
+
+
+
+
+
             //Старт прослушки
-            httpListeningThread = StartMatchmakerListening(HttpPort);
+            httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
             udpConnectionFacade = StartPlayersListening(UdpPort);
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             //Старт обработки
             chronometer.StartEndlessLoop();
         }
         
-        private Thread StartMatchmakerListening(int port)
+        private Thread StartMatchmakerListening(int port, MatchCreator matchCreator, MatchStorage matchStorageArg)
         {
-            Thread thread = new Thread(() => { new HttpConnection().StartListenHttp(port).Wait(); });
+            MatchDataMessageHandler matchDataMessageHandler = new MatchDataMessageHandler(matchCreator, matchStorageArg);
+            Thread thread = new Thread(() => { new HttpConnection(matchDataMessageHandler).StartListenHttp(port).Wait(); });
             thread.Start();
             return thread;
         }

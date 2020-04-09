@@ -41,5 +41,16 @@ namespace Server.GameEngine
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Match> GetAllMatches()
+        {
+            throw new NotImplementedException();
+        }
+
+        //TODO можно заменить на контекст 
+        public bool TryGetMatchByPlayerId(int playerId, out Match match)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

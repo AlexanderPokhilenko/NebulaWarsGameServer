@@ -5,8 +5,6 @@ using log4net;
 using Server.Http;
 using Server.Udp.Sending;
 
-//TODO если игровые юниты умерли в один кадр, то им можно дать одинаковое место
-
 namespace Server.GameEngine.Systems
 {
     /// <summary>
@@ -15,11 +13,12 @@ namespace Server.GameEngine.Systems
     public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
+        
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
         private readonly int matchId;
-        readonly GameContext gameContext;
+        private readonly GameContext gameContext;
     
         public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, 
             int matchId)

@@ -24,7 +24,7 @@ namespace Server.Udp.MessageProcessing.Handlers
                 throw new ArgumentOutOfRangeException("exitMessage.PlayerId = "+exitMessage.PlayerId);
             }
             
-            StaticExitMessageSorter.AddExitMessage(exitMessage.PlayerId);
+            ExitEntitiesCreator.AddExitMessage(exitMessage.PlayerId);
         }
     }
 }

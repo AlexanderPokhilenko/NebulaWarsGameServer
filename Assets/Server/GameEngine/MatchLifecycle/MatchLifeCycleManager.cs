@@ -11,14 +11,15 @@ namespace Server.GameEngine
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchLifeCycleManager));
 
+        private readonly MatchStorage matchStorage;
         private readonly MatchCreator matchCreator;
         private readonly MatchRemover matchRemover;
         
-        public MatchLifeCycleManager(MatchStorage matchStorage)
+        public MatchLifeCycleManager(MatchStorage matchStorage, MatchCreator matchCreator, MatchRemover matchRemover)
         {
-            matchRemover = new MatchRemover(matchStorage);
-            MatchFactory matchFactory = new MatchFactory(matchRemover);
-            matchCreator = new MatchCreator(matchFactory);
+            this.matchStorage = matchStorage;
+            this.matchCreator = matchCreator;
+            this.matchRemover = matchRemover;
         }
 
         public void UpdateMatchesLifeStatus()

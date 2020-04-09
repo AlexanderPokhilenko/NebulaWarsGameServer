@@ -7,23 +7,27 @@ namespace Server.GameEngine
     /// </summary>
     public class GameEngineTicker
     {
+        private readonly InputEntitiesCreator inputEntitiesCreator;
         private readonly MatchStorage matchStorage;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
+        private readonly ExitEntitiesCreator exitEntitiesCreator;
         
-        public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager)
+        public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
+            InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator)
         {
             this.matchStorage = matchStorage;
             this.matchLifeCycleManager = matchLifeCycleManager;
+            this.inputEntitiesCreator = inputEntitiesCreator;
+            this.exitEntitiesCreator = exitEntitiesCreator;
         }
 
         public void Tick()
         {
-            //Создание сущностей ввода игроков
-            StaticInputMessagesSorter.Spread();
-            StaticExitMessageSorter.Spread();
+            inputEntitiesCreator.Create();
+            exitEntitiesCreator.Create();
             
             //Перемещение игровых сущностей
-            foreach (var match in matchStorage.GetAllMatches())
+            foreach (Match match in matchStorage.GetAllMatches())
             {
                 match.Execute();
                 match.Cleanup();
