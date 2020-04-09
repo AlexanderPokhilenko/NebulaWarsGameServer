@@ -82,15 +82,15 @@ namespace Server.GameEngine
         /// <summary>
         /// Обновление ip адреса игрока.
         /// </summary>
-        public void PingTryAddIpEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        public bool TryUpdateIpEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
         {
             if (matches.TryGetValue(matchId, out var match))
             {
-                match.PingTryAddIpEndPoint(playerId, ipEndPoint);
+                return match.TryUpdateIpEndPoint(playerId, ipEndPoint);
             }
             else
             {
-                
+                throw new Exception(nameof(TryUpdateIpEndPoint));
             }
         }
 

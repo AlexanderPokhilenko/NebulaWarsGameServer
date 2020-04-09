@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using log4net;
@@ -11,7 +10,6 @@ using Server.Udp.Storage;
 
 //Ecs
 //Ip
-//RUDP
 //управление состоянием
 
 namespace Server.GameEngine
@@ -29,13 +27,12 @@ namespace Server.GameEngine
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
 
-        private readonly IpAddressesStorage ipAddressesStorage;
+        private IpAddressesStorage ipAddressesStorage;
         
         public Match(int matchId, MatchRemover matchRemover)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
-            ipAddressesStorage = new IpAddressesStorage(matchId);
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
@@ -46,6 +43,8 @@ namespace Server.GameEngine
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
+            
+            ipAddressesStorage = new IpAddressesStorage(matchDataArg);
             
             systems = new Entitas.Systems()
                     
@@ -66,8 +65,8 @@ namespace Server.GameEngine
                     
                     
                     .Add(new FinishMatchSystem(contexts, this))
-                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId))
-                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, matchStorageFacade))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this))
+                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, this))
                     
                     
                     .Add(new DestroySystems(contexts))
@@ -157,7 +156,7 @@ namespace Server.GameEngine
         public void NotifyPlayersAboutMatchFinish()
         {
             log.Warn($" Старт уведомления игроков про окончание матча");
-            foreach (int playerId in playersIds)
+            foreach (int playerId in ipAddressesStorage.get)
             {
                 log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
                 UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
@@ -166,24 +165,24 @@ namespace Server.GameEngine
             throw new NotImplementedException();
         }
 
-        public bool HasIpEnpPoint(int playerId)
-        {
-            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
-        }
+        // public bool HasIpEnpPoint(int playerId)
+        // {
+        //     return ipAddressesStorage.ContainsIpEndPoint(playerId);
+        // }
 
-        public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
-        {
-            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
-        }
+        // public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
+        // {
+        //     ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
+        // }
 
         public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
         {
-            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+            return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
         }
 
         public bool TryRemoveIpEndPoint(int playerId)
         {
-            return ipAddressesStorage.TryRemovePlayerIp(playerId);
+            return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
         }
 
         private void TryEnableDebug()
@@ -194,13 +193,9 @@ namespace Server.GameEngine
 #endif
         }
 
-        public void PingTryAddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
+        public bool TryUpdateIpEndPoint(int playerId, IPEndPoint ipEndPoint)
         {
-            //этот игрок уже есть в таблице ip адресов?
-            //этот игрок есть в matchData?
-            //этого игрока не удаляли?
-            //добавить ip
-            throw new NotImplementedException();
+            return ipAddressesStorage.TryUpdateIpEndPoint(playerId, ipEndPoint);
         }
     }
 }

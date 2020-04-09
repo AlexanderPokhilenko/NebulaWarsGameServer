@@ -27,24 +27,12 @@ namespace Server.Udp.MessageProcessing.Handlers
             int playerId = mes.TemporaryId;
             int matchId = mes.GameRoomNumber;
 
-            TrySetUpIpAddress(sender,matchId, playerId);
+            TryUpdateIpEndPoint(sender,matchId, playerId);
         }
 
-        private void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
+        private void TryUpdateIpEndPoint(IPEndPoint ipEndPoint, int matchId, int playerId)
         {
-            matchStorage.PingTryAddIpEndPoint(matchId, playerId, ipEndPoint);
-            
-            // if (!GameEngineTicker.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
-            // {
-            //     if (GameEngineTicker.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
-            //     {
-            //        
-            //     }
-            // }
-            // else
-            // {
-            //     // Log.Info($"Такой Ip уже был {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
-            // }
+            bool successUpdate = matchStorage.TryUpdateIpEndPoint(matchId, playerId, ipEndPoint);
         }
     }
 }

@@ -14,18 +14,20 @@ namespace Server.GameEngine.Systems
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
         
+        private readonly int matchId;
+        private readonly Match match;
+        private readonly GameContext gameContext;
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
-        private readonly int matchId;
-        private readonly GameContext gameContext;
     
         public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, 
-            int matchId)
+            int matchId, Match match)
             : base(contexts.game)
         {
             killersInfo = killersInfos;
             this.matchId = matchId;
+            this.match = match;
             gameContext = contexts.game;
             alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
@@ -45,12 +47,7 @@ namespace Server.GameEngine.Systems
         {
             int countOfAlivePlayersAndBots = alivePlayersAndBots.count;
             int countOfKilledEntities = killedEntities.Count;
-
-            if (killedEntities.Count > 1)
-            {
-                Log.Warn($"killedEntities.Count = {killedEntities.Count}");
-            }
-        
+            
             foreach (var player in alivePlayers)
             {
                 for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
@@ -74,38 +71,34 @@ namespace Server.GameEngine.Systems
 
                     if (!killedEntity.isBot)
                     {
-                        int playerTmpId = killedEntity.player.id;
-                        if (!gameContext.hasMatch)
-                        {
-                            throw new Exception("gameContext do not have match data");
-                        }
-
-                    
+                        int playerId = killedEntity.player.id;
                         int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                             killedEntityIndex);
+                        
                         PlayerDeathData playerDeathData = new PlayerDeathData
                         {
-                            PlayerId = playerTmpId,
+                            PlayerId = playerId,
                             PlaceInBattle = placeInBattle,
                             MatchId = matchId 
                         };
+                        
                         PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                        UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);   
-                    
-                        //TODO это говнище
-                        if (GameEngineTicker.MatchStorageFacade.TryRemovePlayer(matchId, playerTmpId))
+                        UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
+
+
+                        bool success = match.TryRemoveIpEndPoint(playerId);
+                        if (!success)
                         { 
-                            Log.Warn("GameEngineTicker.MatchStorageFacade.TryRemovePlayer success");
-                        }
-                        else
-                        {
-                            Log.Error("GameEngineTicker.MatchStorageFacade.TryRemovePlayer fail");
+                            throw new Exception("Получив это сообщение, я буду пребывать в крайне скудном расположении духа.");
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Если за один кадр умерло больше двух игроков, то им выдадутся разные места в бою.
+        /// </summary>
         private int GetPlaceInBattle(int countOfAlivePlayersAndBots, int countOfKilledEntities, int killedEntityIndex)
         {
             return countOfAlivePlayersAndBots + 1 + (countOfKilledEntities - 1 - killedEntityIndex);
