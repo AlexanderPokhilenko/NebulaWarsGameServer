@@ -63,7 +63,7 @@ namespace Server.GameEngine
         {
             foreach (Match match in matches.Values)
             {
-                if (match.GetActivePlayersIds().Contains(playerId))
+                if (match.HasPlayer(playerId))
                 {
                     return true;
                 }
@@ -88,10 +88,19 @@ namespace Server.GameEngine
         /// <summary>
         /// Получение матча для создания сущностей ввода.
         /// </summary>
-        public bool TryGetMatchByPlayerId(int playerId, out Match match)
+        public bool TryGetMatchByPlayerId(int playerId, out Match matchArg)
         {
-            //TODO  пробежаться по активным игрокам в каждом матче
-            throw new NotImplementedException();
+            foreach (Match match in matches.Values)
+            {
+                if (match.HasPlayer(playerId))
+                {
+                    matchArg = match;
+                    return true;
+                }
+            }
+
+            matchArg = null;
+            return false;
         }
 
         /// <summary>

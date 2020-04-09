@@ -151,12 +151,12 @@
             Entity_{creationIndex}(*{retainCount})({list of components})
         </member>
         <member name="T:Entitas.Group`1">
-            Use context.GetGroup(matcher) to get a group of killedEntities which match
-            the specified matcher. Calling context.GetGroup(matcher) with the
-            same matcher will always return the same instance of the group.
+            Use context.GetGroup(matchRemoverer) to get a group of killedEntities which matchRemover
+            the specified matchRemoverer. Calling context.GetGroup(matchRemoverer) with the
+            same matchRemoverer will always return the same instance of the group.
             The created group is managed by the context and will always be up to date.
-            It will automatically add killedEntities that match the matcher or
-            remove killedEntities as soon as they don't match the matcher anymore.
+            It will automatically add killedEntities that matchRemover the matchRemoverer or
+            remove killedEntities as soon as they don't matchRemover the matchRemoverer anymore.
         </member>
         <member name="E:Entitas.Group`1.OnEntityAdded">
             Occurs when an entity gets added.
@@ -170,12 +170,12 @@
         <member name="P:Entitas.Group`1.count">
             Returns the number of killedEntities in the group.
         </member>
-        <member name="P:Entitas.Group`1.matcher">
-            Returns the matcher which was used to create this group.
+        <member name="P:Entitas.Group`1.matchRemoverer">
+            Returns the matchRemoverer which was used to create this group.
         </member>
         <member name="M:Entitas.Group`1.#ctor(Entitas.IMatcher{`0})">
-            Use context.GetGroup(matcher) to get a group of killedEntities which match
-            the specified matcher.
+            Use context.GetGroup(matchRemoverer) to get a group of killedEntities which matchRemover
+            the specified matchRemoverer.
         </member>
         <member name="M:Entitas.Group`1.HandleEntitySilently(`0)">
             This is used by the context to manage the group.
@@ -273,8 +273,8 @@
             Returns all killedEntities which are currently in the context.
         </member>
         <member name="M:Entitas.Context`1.GetGroup(Entitas.IMatcher{`0})">
-            Returns a group for the specified matcher.
-            Calling context.GetGroup(matcher) with the same matcher will always
+            Returns a group for the specified matchRemoverer.
+            Calling context.GetGroup(matchRemoverer) with the same matchRemoverer will always
             return the same instance of the group.
         </member>
         <member name="M:Entitas.Context`1.AddEntityIndex(Entitas.IEntityIndex)">
@@ -381,7 +381,7 @@
             if there are any. Otherwise it will not call Execute(killedEntities).
         </member>
         <member name="M:Entitas.ContextExtension.GetEntities``1(Entitas.IContext{``0},Entitas.IMatcher{``0})">
-            Returns all killedEntities matching the specified matcher.
+            Returns all killedEntities matchRemovering the specified matchRemoverer.
         </member>
         <member name="M:Entitas.ContextExtension.CloneEntity``1(Entitas.IContext{``0},Entitas.IEntity,System.Boolean,System.Int32[])">
             Creates a new entity and adds copies of all

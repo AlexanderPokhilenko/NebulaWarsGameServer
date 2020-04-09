@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using log4net;
 using Server.Http;
 using Server.Udp.Storage;
@@ -26,9 +27,9 @@ namespace Server.GameEngine
             matchesToRemove = new ConcurrentQueue<int>();
         }
         
-        public void MarkMatchAsFinished(int matchNumber)
+        public void MarkMatchAsFinished(int matchId)
         {
-            matchesToRemove.Enqueue(matchNumber);
+            matchesToRemove.Enqueue(matchId);
         }
         
         public void DeleteFinishedMatches()
@@ -54,7 +55,11 @@ namespace Server.GameEngine
             match.NotifyPlayersAboutMatchFinish();
             match.TearDown();
             MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
-            byteArrayRudpStorage.RemoveMatchMessages(matchId);
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                byteArrayRudpStorage.RemoveMatchMessages(matchId);
+            });
         }
     }
 }

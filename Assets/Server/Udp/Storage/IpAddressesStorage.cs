@@ -108,5 +108,10 @@ namespace Server.Udp.Storage
         {
             return playersIpAddresses.Keys.ToList();
         }
+
+        public bool HasPlayer(int playerId)
+        {
+            return playersIpAddresses.Keys.Contains(playerId);
+        }
     }
 }

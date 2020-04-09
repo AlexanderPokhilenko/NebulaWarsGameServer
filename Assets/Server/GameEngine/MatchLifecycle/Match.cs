@@ -20,7 +20,6 @@ namespace Server.GameEngine
 
         public readonly int MatchId;
         
-        private bool gameOver;
         private Contexts contexts;
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
@@ -63,7 +62,7 @@ namespace Server.GameEngine
                     .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))
                     
                     
-                    .Add(new FinishMatchSystem(contexts, this))
+                    .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
                     .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this))
                     .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, this))
                     
@@ -107,25 +106,13 @@ namespace Server.GameEngine
 
         public void Tick()
         {
-            //TODO опасно
-            Execute();
-            Cleanup();
-        }
-        
-        private void Execute()
-        {
-            if (gameOver) return;
             if (IsSessionTimedOut())
             {
-                Finish();
+                //Тик на матче больше не будет вызван.
+                matchRemover.MarkMatchAsFinished(MatchId);
                 return;
             }
             systems.Execute();
-        }
-
-        private void Cleanup()
-        {
-            if (gameOver) return;
             systems.Cleanup();
         }
 
@@ -143,13 +130,6 @@ namespace Server.GameEngine
             if (gameStartTime == null) return false;
             var gameDuration = DateTime.UtcNow - gameStartTime.Value;
             return gameDuration > GameSessionGlobals.GameDuration;
-        }
-
-        //TODO плохо
-        public void Finish()
-        {
-            gameOver = true;
-            matchRemover.MarkMatchAsFinished(MatchId);
         }
 
         public List<int> GetActivePlayersIds()
@@ -178,6 +158,11 @@ namespace Server.GameEngine
             return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
         }
 
+        public bool HasPlayer(int playerId)
+        {
+            return ipAddressesStorage.HasPlayer(playerId);
+        }
+        
         private void TryEnableDebug()
         {
 #if UNITY_EDITOR
