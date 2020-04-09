@@ -13,96 +13,71 @@ using Server.Udp.Sending;
 //RUDP
 //управление состоянием
 
-
 namespace Server.GameEngine
 {
     public class Match
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Match));
+        private readonly ILog log = LogManager.GetLogger(typeof(Match));
 
         public readonly int MatchId;
+        
         private bool gameOver;
+        private Contexts contexts;
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
-        public Contexts Contexts { get; private set; }
-        
 
         public Match(int matchId, MatchRemover matchRemover)
         {
             this.matchRemover = matchRemover;
             MatchId = matchId;
-            
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
-            Log.Info("Создание новой комнаты номер = "+matchDataArg.MatchId);
+            log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
-            Contexts = ContextsPool.GetContexts();
-            Contexts.SubscribeId();
-            
-            
-            
-#if UNITY_EDITOR
-            CollidersDrawer.contextsList.Add(Contexts);
-            // Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
-#endif
-            
-            
-            
-            
+            contexts = ContextsPool.GetContexts();
+            contexts.SubscribeId();
+            TryEnableDebug();
             
             systems = new Entitas.Systems()
-            
-            
-                    
-#if USE_OLD_INIT_SYSTEMS
-                    .Add(new ZoneInitSystem(Contexts, zoneObject))
-                    .Add(new PlayersInitSystem(Contexts, matchDataArg))
-                    .Add(new AsteroidsInitSystem(Contexts))
-                    .Add(new SpaceStationsInitSystem(Contexts))
-                    .Add(new BonusesInitSystem(Contexts))
-#else
-                    .Add(new MapInitSystem(Contexts, matchDataArg))
-#endif
-                    
-                    
-                    
-                    
-                    
-                    .Add(new MatchIdInitSystem(Contexts, matchDataArg))
-                    
+                    // .Add(new ZoneInitSystem(Contexts, zoneObject))
+                    // .Add(new PlayersInitSystem(Contexts, matchDataArg))
+                    // .Add(new AsteroidsInitSystem(Contexts))
+                    // .Add(new SpaceStationsInitSystem(Contexts))
+                    // .Add(new BonusesInitSystem(Contexts))
+
+                    .Add(new MapInitSystem(contexts, matchDataArg))
+                    .Add(new MatchIdInitSystem(contexts, matchDataArg))
                     // .Add(new TestEndMatchSystem2(Contexts))
+                    .Add(new PlayerMovementHandlerSystem(contexts))
+                    .Add(new PlayerAttackHandlerSystem(contexts))
+                    .Add(new ParentsSystems(contexts))
+                    .Add(new AISystems(contexts))
+                    .Add(new MovementSystems(contexts))
+                    .Add(new GlobalTransformSystem(contexts))
+                    .Add(new ShootingSystems(contexts))
+                    .Add(new CollisionSystems(contexts))
+                    .Add(new EffectsSystems(contexts))
+                    .Add(new TimeSystems(contexts))
+                    .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))
                     
                     
-                    .Add(new PlayerMovementHandlerSystem(Contexts))
-                    .Add(new PlayerAttackHandlerSystem(Contexts))
-                    .Add(new ParentsSystems(Contexts))
-                    .Add(new AISystems(Contexts))
-                    .Add(new MovementSystems(Contexts))
-                    .Add(new GlobalTransformSystem(Contexts))
-                    .Add(new ShootingSystems(Contexts))
-                    .Add(new CollisionSystems(Contexts))
-                    .Add(new EffectsSystems(Contexts))
-                    .Add(new TimeSystems(Contexts))
-                    .Add(new UpdatePossibleKillersSystem(Contexts, possibleKillersInfo))
-                    
-                    
-                    .Add(new FinishMatchSystem(Contexts, this))
-                    .Add(new NetworkKillsSenderSystem(Contexts, possibleKillersInfo, matchDataArg.MatchId))
-                    .Add(new PlayerExitSystem(Contexts, matchDataArg.MatchId, matchStorageFacade))
+                    .Add(new FinishMatchSystem(contexts, this))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId))
+                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, matchStorageFacade))
                     
                     
                     
-                    .Add(new DestroySystems(Contexts))
-                    .Add(new MatchDebugSenderSystem(Contexts, matchDataArg.MatchId))
-                    .Add(new NetworkSenderSystem(Contexts, matchDataArg.MatchId))
-                    .Add(new MaxHpUpdaterSystem(Contexts, matchDataArg.MatchId))
-                    .Add(new ShieldPointsUpdaterSystem(Contexts, matchDataArg.MatchId))
-                    .Add(new InputDeletingSystem(Contexts))
-                    .Add(new GameDeletingSystem(Contexts))
+                    .Add(new DestroySystems(contexts))
+                    .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId))
+                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId))
+                    .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new InputDeletingSystem(contexts))
+                    .Add(new GameDeletingSystem(contexts))
                 
                     .Add(new RudpSendingSystem(rudpMessagesStorage))
                 ;
@@ -111,8 +86,37 @@ namespace Server.GameEngine
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
+
+        public void AddPlayerExit(int playerId)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = contexts.input.CreateEntity();
+                inputEntity.AddPlayerExit(playerId);
+            }
+        }
         
-        public void Execute()
+        public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+                if (inputEntity == null)
+                {
+                    inputEntity = contexts.input.CreateEntity();
+                    inputEntity.AddPlayer(playerId);
+                }
+                action(inputEntity, value);
+            }
+        }
+
+        public void Tick()
+        {
+            systems.Execute();
+            systems.Cleanup();
+        }
+        
+        private void Execute()
         {
             if (gameOver) return;
             if (IsSessionTimedOut())
@@ -123,7 +127,7 @@ namespace Server.GameEngine
             systems.Execute();
         }
 
-        public void Cleanup()
+        private void Cleanup()
         {
             if (gameOver) return;
             systems.Cleanup();
@@ -134,8 +138,8 @@ namespace Server.GameEngine
             systems.DeactivateReactiveSystems();
             systems.TearDown();
             systems.ClearReactiveSystems();
-            Contexts.UnsubscribeId();
-            ContextsPool.RetrieveContexts(Contexts);
+            contexts.UnsubscribeId();
+            ContextsPool.RetrieveContexts(contexts);
             // possibleKillersInfo.Clear();
         }
 
@@ -147,6 +151,7 @@ namespace Server.GameEngine
             return gameDuration > GameSessionGlobals.GameDuration;
         }
 
+        //TODO плохо
         public void Finish()
         {
             gameOver = true;
@@ -156,15 +161,25 @@ namespace Server.GameEngine
        
         public void NotifyPlayersAboutMatchFinish()
         {
-            Log.Warn($" Старт уведомления игроков про окончание матча");
+            log.Warn($" Старт уведомления игроков про окончание матча");
             foreach (int playerId in playersIds)
             {
-                Log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
+                log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
                 UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
             }
-            Log.Warn($" Конец уведомления игроков про окончание матча");
+            log.Warn($" Конец уведомления игроков про окончание матча");
             throw new NotImplementedException();
         }
+        
+        private void TryEnableDebug()
+        {
+#if UNITY_EDITOR
+            CollidersDrawer.contextsList.Add(contexts);
+            // Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
+#endif
+        }
+
+     
     }
 }
 

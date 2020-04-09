@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Linq;
 using log4net;
 
@@ -38,19 +37,7 @@ namespace Server.GameEngine.Experimental
                 {
                     if (matchStorage.TryGetMatchByPlayerId(playerId, out var match))
                     {
-                        Contexts contexts = match.Contexts;
-
-                        if (contexts != null)
-                        {
-                            var inputEntity = contexts.input.CreateEntity();
-                            inputEntity.AddPlayerExit(playerId);
-                            log.Warn("Успешное добавление сущности");
-                        }
-                        else
-                        {
-                            throw new Exception("Пришло сообщение о выходе из матча от игрока, который не" +
-                                                " зарегистрирован");
-                        }
+                        match.AddPlayerExit(playerId);
                     }
                     else
                     {

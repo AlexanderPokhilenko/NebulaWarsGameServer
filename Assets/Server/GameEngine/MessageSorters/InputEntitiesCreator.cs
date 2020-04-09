@@ -52,23 +52,7 @@ namespace Server.GameEngine.Experimental
 
                 if (matchStorage.TryGetMatchByPlayerId(playerId, out Match match))
                 {
-                    Contexts contexts = match.Contexts;
-
-                    if (contexts != null)
-                    {
-                        var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
-                        if (inputEntity == null)
-                        {
-                            inputEntity = contexts.input.CreateEntity();
-                            inputEntity.AddPlayer(playerId);
-                        }
-
-                        action(inputEntity, value);
-                    }
-                    else
-                    {
-                        throw new Exception("Пришло сообщение с вводом от игрока, который не зарегистрирован");
-                    }
+                    match.AddInputEntity(playerId, action, value);
                 }
             }
         }

@@ -29,8 +29,7 @@ namespace Server.GameEngine
             //Перемещение игровых сущностей
             foreach (Match match in matchStorage.GetAllMatches())
             {
-                match.Execute();
-                match.Cleanup();
+                match.Tick();
             }
 
             //создание/удаление матчей
