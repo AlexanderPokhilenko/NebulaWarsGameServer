@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7b70f268384f145b23befb2a68a0b7, type: 3}
+  m_Name: NebulaBullet
+  m_EditorClassIdentifier: 
+  typeId: 10
+  colliderInfo: {fileID: 11400000, guid: d69acf0b9f3dc2c4bbeeebf1f7a597a4, type: 2}
+  mass: 0
+  cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 1
+  collisionDamage: 20
+  drop: {fileID: 0}
+  parts: []
+  maxVelocity: 3
+  maxAngularVelocity: 0
+  isNotDecelerating: 1
+  isCollapses: 0
+  lifetime: 5
+  detachable: 1
+  parentDependent: 0

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f57b6283d30af1b469ce378688514b6e, type: 3}
-  m_Name: SimplePlasmaCannon
+  m_Script: {fileID: 11500000, guid: a4522c148f159914fa8c25fa51ac5263, type: 3}
+  m_Name: NebulaShoot
   m_EditorClassIdentifier: 
-  position: {x: 0.6, y: 0}
-  cooldown: 0.5
-  bulletObject: {fileID: 11400000, guid: 10b5ec54a9da87c49803ebf1747d5ace, type: 2}
+  cooldown: 10
+  bullet: {fileID: 11400000, guid: 00456c8453a877b41a14d776468e61f5, type: 2}
+  usePositionVector: 0
+  positionVector: {x: 0, y: 0}

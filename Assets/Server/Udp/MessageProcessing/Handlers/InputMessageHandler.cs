@@ -26,6 +26,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             
             AddPlayerInputComponent(mes.TemporaryIdentifier, mes.GetVector2());
             AddPlayerAttackComponent(mes.TemporaryIdentifier, mes.Angle);
+            AddPlayerAbilityComponent(mes.TemporaryIdentifier, mes.UseAbility);
         }
 
         private void AddPlayerInputComponent(int playerId, Vector2 vector)
@@ -50,6 +51,11 @@ namespace Server.Udp.MessageProcessing.Handlers
             {
                 //шо?
             }
+        }
+
+        private void AddPlayerAbilityComponent(int playerId, bool ability)
+        {
+            StaticInputMessagesSorter.TryAddAbilityMessage(playerId, ability);
         }
     }
 }

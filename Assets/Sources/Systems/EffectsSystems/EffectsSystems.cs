@@ -2,6 +2,7 @@
 {
     public EffectsSystems(Contexts contexts) : base("Effects Systems")
     {
+        Add(new RemovingNegativeAbilityCooldownSystem(contexts));
         Add(new BonusApplyingSystem(contexts));
         Add(new BonusActingSystem(contexts));
         Add(new AuraDamageSystem(contexts));
