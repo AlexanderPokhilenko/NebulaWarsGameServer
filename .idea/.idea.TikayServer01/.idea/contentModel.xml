@@ -246,7 +246,6 @@
                 <e p="InputDeletingSystem.cs" t="Include" />
                 <e p="IRudpMessagesStorage.cs" t="Include" />
                 <e p="MapInitSystem.cs" t="Include" />
-                <e p="MatchIDInitSystem.cs" t="Include" />
                 <e p="MaxHpUpdaterSystem.cs" t="Include" />
                 <e p="NetworkKillsSenderSystem.cs" t="Include" />
                 <e p="NetworkSenderSystem.cs" t="Include" />

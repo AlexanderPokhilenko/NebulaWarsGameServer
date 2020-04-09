@@ -1,14 +1,6 @@
 ﻿using Entitas;
 using Entitas.CodeGeneration.Attributes;
 
-//TODO выбросить
-[Game, Unique]
-public sealed class MatchComponent : IComponent
-{
-    public int MatchId;
-}
-
-
 [Input]
 public sealed class PlayerExit : IComponent
 {
