@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
@@ -9,17 +10,22 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
 
-//TODO говно
-
 namespace Server.Udp.Sending
 {
     public static class UdpSendUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(UdpSendUtils));
+        
+        private static MatchStorage matchStorage;
 
+        public static void Initialize(MatchStorage matchStorageArg)
+        {
+            matchStorage = matchStorageArg;
+        }
+        
         private static bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {
-            return GameEngineTicker.MatchStorageFacade.TryGetPlayerIpEndPoint(matchId, playerId, out ipEndPoint);
+            return matchStorage.TryGetIpEndPoint(matchId, playerId, out ipEndPoint);
         }
         
         public static void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)

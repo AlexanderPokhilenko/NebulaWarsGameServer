@@ -10,7 +10,14 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpConnection));
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpConnection));
+        
+        private readonly MatchStorage matchStorage;
+
+        public PingMessageHandler(MatchStorage matchStorage)
+        {
+            this.matchStorage = matchStorage;
+        }
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
@@ -23,19 +30,21 @@ namespace Server.Udp.MessageProcessing.Handlers
             TrySetUpIpAddress(sender,matchId, playerId);
         }
 
-        private static void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
+        private void TrySetUpIpAddress(IPEndPoint ipEndPoint, int matchId, int playerId)
         {
-            if (!GameEngineTicker.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
-            {
-                if (GameEngineTicker.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
-                {
-                    Log.Info($"Ip нового игрока добавлен {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
-                }
-            }
-            else
-            {
-                // Log.Info($"Такой Ip уже был {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
-            }
+            matchStorage.PingTryAddIpEndPoint(matchId, playerId, ipEndPoint);
+            
+            // if (!GameEngineTicker.MatchStorageFacade.ContainsIpEndPoint(matchId, playerId))
+            // {
+            //     if (GameEngineTicker.MatchStorageFacade.TryAddEndPoint(matchId, playerId, ipEndPoint))
+            //     {
+            //        
+            //     }
+            // }
+            // else
+            // {
+            //     // Log.Info($"Такой Ip уже был {ipEndPoint.Address} {ipEndPoint.Port} {ipEndPoint.AddressFamily}");
+            // }
         }
     }
 }

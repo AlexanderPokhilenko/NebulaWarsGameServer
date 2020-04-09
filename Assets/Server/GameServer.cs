@@ -5,6 +5,7 @@ using Server.GameEngine.Experimental;
 using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
+using Server.Udp.Sending;
 
 //TODO добавить di контейнер, когда сервер станет стабильным
 
@@ -37,6 +38,7 @@ namespace Server
 
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
+            UdpSendUtils.Initialize(matchStorage);
             
             MatchRemover matchRemover = new MatchRemover(matchStorage);
             MatchFactory matchFactory = new MatchFactory(matchRemover);
@@ -59,7 +61,7 @@ namespace Server
 
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator);
+            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator, matchStorage);
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
@@ -87,11 +89,11 @@ namespace Server
         }
 
         private UdpConnectionFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
-            ExitEntitiesCreator exitEntitiesCreator)
+            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg)
         {
             var udpBattleConnectionLocal = new UdpConnectionFacade();
 
-            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator);
+            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg);
             mediator.SetUdpConnection(udpBattleConnectionLocal);
             
             udpBattleConnectionLocal

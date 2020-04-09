@@ -1,12 +1,13 @@
-﻿// #define USE_OLD_INIT_SYSTEMS
-
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Debug;
 using Server.Udp.Sending;
+using Server.Udp.Storage;
 
 //Ecs
 //Ip
@@ -15,6 +16,7 @@ using Server.Udp.Sending;
 
 namespace Server.GameEngine
 {
+    //TODO нужно разбить
     public class Match
     {
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
@@ -27,10 +29,13 @@ namespace Server.GameEngine
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
 
+        private readonly IpAddressesStorage ipAddressesStorage;
+        
         public Match(int matchId, MatchRemover matchRemover)
         {
-            this.matchRemover = matchRemover;
             MatchId = matchId;
+            this.matchRemover = matchRemover;
+            ipAddressesStorage = new IpAddressesStorage(matchId);
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
@@ -87,7 +92,7 @@ namespace Server.GameEngine
             gameStartTime = DateTime.UtcNow;
         }
 
-        public void AddPlayerExit(int playerId)
+        public void AddPlayerExitEntity(int playerId)
         {
             if (contexts != null)
             {
@@ -112,8 +117,9 @@ namespace Server.GameEngine
 
         public void Tick()
         {
-            systems.Execute();
-            systems.Cleanup();
+            //TODO опасно
+            Execute();
+            Cleanup();
         }
         
         private void Execute()
@@ -140,9 +146,7 @@ namespace Server.GameEngine
             systems.ClearReactiveSystems();
             contexts.UnsubscribeId();
             ContextsPool.RetrieveContexts(contexts);
-            // possibleKillersInfo.Clear();
         }
-
 
         private bool IsSessionTimedOut()
         {
@@ -157,7 +161,6 @@ namespace Server.GameEngine
             gameOver = true;
             matchRemover.MarkMatchAsFinished(MatchId);
         }
-
        
         public void NotifyPlayersAboutMatchFinish()
         {
@@ -171,6 +174,29 @@ namespace Server.GameEngine
             throw new NotImplementedException();
         }
         
+        
+        
+        public bool HasIpEnpPoint(int playerId)
+        {
+            return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
+        }
+
+        public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
+        {
+            ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
+        }
+
+        public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
+        {
+            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+        }
+
+        public bool TryRemoveIpEndPoint(int playerId)
+        {
+            return ipAddressesStorage.TryRemovePlayerIp(playerId);
+        }
+        
+
         private void TryEnableDebug()
         {
 #if UNITY_EDITOR
@@ -179,7 +205,14 @@ namespace Server.GameEngine
 #endif
         }
 
-     
+        public void PingTryAddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
+        {
+            //этот игрок уже есть в таблице ip адресов?
+            //этот игрок есть в matchData?
+            //этого игрока не удаляли?
+            //добавить ip
+            throw new NotImplementedException();
+        }
     }
 }
 
@@ -232,22 +265,22 @@ namespace Server.GameEngine
             possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
         }
 
-        public bool ContainsIpEnpPointForPlayer(int playerId)
+        public bool HasIpEnpPoint(int playerId)
         {
             return ipAddressesStorage.ContainsPlayerIpEndPoint(playerId);
         }
 
-        public void AddEndPoint(int playerId, IPEndPoint ipEndPoint)
+        public void AddIpEndPoint(int playerId, IPEndPoint ipEndPoint)
         {
             ipAddressesStorage.AddPlayer(playerId, ipEndPoint);
         }
 
-        public bool TryGetPlayerIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
+        public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
         {
-            return ipAddressesStorage.TryGetPlayerIpEndPoint(playerId, out ipEndPoint);
+            return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
         }
 
-      public bool TryRemovePlayerIpEndPoint(int playerId)
+      public bool TryRemoveIpEndPoint(int playerId)
         {
             return ipAddressesStorage.TryRemovePlayerIp(playerId);
         }

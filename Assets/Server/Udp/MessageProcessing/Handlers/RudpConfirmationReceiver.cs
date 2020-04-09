@@ -15,12 +15,19 @@ namespace Server.Udp.MessageProcessing.Handlers
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationReceiver));
         
+        private readonly MatchStorage matchStorage;
+
+        public RudpConfirmationReceiver(MatchStorage matchStorage)
+        {
+            this.matchStorage = matchStorage;
+        }
+        
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-            GameEngineTicker.MatchStorageFacade.RemoveRudpMessage(messageIdToConfirm);
+            matchStorage.RemoveRudpMessage(messageIdToConfirm);
         }
     }
 }

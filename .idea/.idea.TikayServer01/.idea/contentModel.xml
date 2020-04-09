@@ -230,7 +230,6 @@
               <e p="ContextsPool.cs" t="Include" />
               <e p="GameSessionGlobals.cs" t="Include" />
               <e p="IRudpSender.cs" t="Include" />
-              <e p="MatchStorage.cs" t="Include" />
               <e p="ReliableMessagesPack.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="Debug" t="Include">
@@ -261,8 +260,9 @@
               <e p="MatchCreator.cs" t="Include" />
               <e p="MatchLifeCycleManager.cs" t="Include" />
               <e p="MatchRemover.cs" t="Include" />
+              <e p="MatchStorage.cs" t="Include" />
             </e>
-            <e p="StaticMessageSorters" t="Include">
+            <e p="MessageSorters" t="Include">
               <e p="ExitEntitiesCreator.cs" t="Include" />
               <e p="InputEntitiesCreator.cs" t="Include" />
             </e>

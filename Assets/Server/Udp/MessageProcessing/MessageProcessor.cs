@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
+using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.MessageProcessing.Handlers;
 
@@ -14,21 +15,24 @@ namespace Server.Udp.MessageProcessing
         private readonly InputMessageHandler inputMessageHandler;
         private readonly PlayerExitMessageHandler exitMessageHandler;
         
-        private readonly PingMessageHandler pingMessageHandler = new PingMessageHandler();
-        private readonly RudpConfirmationReceiver confirmationReceiver = new RudpConfirmationReceiver();
-        private readonly RudpConfirmationSender confirmationSender = new RudpConfirmationSender();
+        private readonly PingMessageHandler pingMessageHandler;
+        private readonly RudpConfirmationReceiver rudpConfirmationHandler;
+        private readonly RudpConfirmationSender rudpConfirmationSender = new RudpConfirmationSender();
 
-        public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator)
+        public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
+            MatchStorage matchStorage)
         {
             inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
             exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);
+            pingMessageHandler = new PingMessageHandler(matchStorage);
+            rudpConfirmationHandler = new RudpConfirmationReceiver(matchStorage);
         }
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             if (messageWrapper.NeedResponse)
             {
-                confirmationSender.Handle(messageWrapper, sender);
+                rudpConfirmationSender.Handle(messageWrapper, sender);
             }
             
             switch (messageWrapper.MessageType)
@@ -40,7 +44,7 @@ namespace Server.Udp.MessageProcessing
                     pingMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.DeliveryConfirmation:
-                    confirmationReceiver.Handle(messageWrapper, sender);
+                    rudpConfirmationHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.PlayerExit:
                     exitMessageHandler.Handle(messageWrapper, sender);

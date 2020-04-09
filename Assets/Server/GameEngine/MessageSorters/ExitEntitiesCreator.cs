@@ -37,7 +37,7 @@ namespace Server.GameEngine.Experimental
                 {
                     if (matchStorage.TryGetMatchByPlayerId(playerId, out var match))
                     {
-                        match.AddPlayerExit(playerId);
+                        match.AddPlayerExitEntity(playerId);
                     }
                     else
                     {
