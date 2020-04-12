@@ -73,6 +73,8 @@ namespace Server.GameEngine
                     .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId))
                     .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId))
                     .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId))
                     .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId))
                     .Add(new InputDeletingSystem(contexts))
                     .Add(new GameDeletingSystem(contexts))

@@ -3,17 +3,18 @@ using Server.Udp.Sending;
 
 namespace Server.GameEngine.Systems
 {
+    //TODO отправлять сообщения только при изменении
     public class MaxHpUpdaterSystem : IExecuteSystem
     {
         private readonly int matchId;
-        readonly IGroup<GameEntity> playersWithHpGroup;
+        private readonly IGroup<GameEntity> playersWithHpGroup;
         
         public MaxHpUpdaterSystem(Contexts contexts, int matchId)
         {
             this.matchId = matchId;
             playersWithHpGroup = contexts.game
                 .GetGroup(GameMatcher
-                    .AllOf(GameMatcher.Player, GameMatcher.HealthPoints, GameMatcher.MaxHealthPoints)
+                    .AllOf(GameMatcher.Player, GameMatcher.MaxHealthPoints)
                     .NoneOf(GameMatcher.Bot));
         }
 

@@ -16,6 +16,7 @@ using Server.Udp.Storage;
 //возможно, что отправляя в первых кадрах rudp они не будут добавлены в словарь
 //для того, чтобы бысто исправить это можно инициализировать ip адреса не null-ом, а рандомным ip
 //(при отправке rudp всегда берётся актуальный ip)
+//TODO попробовать уменьшить дублирование кода
 
 namespace Server.Udp.Sending
 {
@@ -107,6 +108,30 @@ namespace Server.Udp.Sending
                 var serializedMessage =
                     MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
+                UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
+            }
+        }
+
+        public static void SendCooldowns(int matchId, int targetPlayerId, float ability, float[] weapons)
+        {
+            int playerId = targetPlayerId;
+            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            {
+                var msg = new CooldownsMessage(ability, weapons);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(msg, false, out uint messageId);
+                UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
+            }
+        }
+
+        public static void SendCooldownsInfos(int matchId, int playerId, float abilityCooldown, WeaponInfo[] weaponsInfos)
+        {
+            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            {
+                var msg = new CooldownsInfosMessage(abilityCooldown, weaponsInfos);
+                var serializedMessage =
+                    MessageFactory.GetSerializedMessage(msg, true, out uint messageId);
+                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 UdpMediator.udpConnectionFacade.Send(serializedMessage, ipEndPoint);
             }
         }

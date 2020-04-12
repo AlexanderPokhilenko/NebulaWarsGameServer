@@ -12,7 +12,7 @@ namespace Server.GameEngine.Experimental
         private readonly MatchStorage matchStorage;
         private readonly ConcurrentDictionary<int, Vector2> movementMessages = new ConcurrentDictionary<int, Vector2>();
         private readonly ConcurrentDictionary<int, float> attackMessages = new ConcurrentDictionary<int, float>();
-        private readonly ConcurrentDictionary<int, bool> abilityMessages =new ConcurrentDictionary<int, bool>();
+        private readonly ConcurrentDictionary<int, bool> abilityMessages = new ConcurrentDictionary<int, bool>();
 
         public InputEntitiesCreator(MatchStorage matchStorage)
         {
@@ -28,7 +28,12 @@ namespace Server.GameEngine.Experimental
         {
             return attackMessages.TryAdd(playerId, angle);
         }
-        
+
+        public bool TryAddAbilityMessage(int playerId, bool ability)
+        {
+            return abilityMessages.TryAdd(playerId, ability);
+        }
+
         public void Create()
         {
             ActionForEachMessage(movementMessages, (inputEntity, joystickPosition) =>
@@ -49,12 +54,6 @@ namespace Server.GameEngine.Experimental
             abilityMessages.Clear();
         }
 
-        
-        public  bool TryAddAbilityMessage(int playerId, bool ability)
-        {
-            return abilityMessages.TryAdd(playerId, ability);
-            
-        }
         private void ActionForEachMessage<T>(ConcurrentDictionary<int, T> messages, Action<InputEntity, T> action)
         {
             foreach (var pair in messages)
