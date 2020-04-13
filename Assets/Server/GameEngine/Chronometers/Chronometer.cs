@@ -9,20 +9,24 @@ namespace Server.GameEngine
     /// </summary>
     public class Chronometer: MonoBehaviour
     {
-        private static float prevTickTime;
-        public static float deltaTime;
-        private const float TickDeltaSeconds = 1f / 30;
-        private Action action;
+        private Action callback;
+        private const float MaxDelay = 1f/30;
 
-        public void SetAction(Action actionArg)
+        //TODO говно
+        public static float GetMagicDich()
         {
-            if (action != null)
+            return 1f/20;
+        }
+        
+        public void SetCallback(Action actionArg)
+        {
+            if (callback != null)
             {
                 throw new Exception("Повторная инициализация таймера.");
             }
             else
             {
-                action = actionArg;
+                callback = actionArg;
             }
         }
         
@@ -30,18 +34,19 @@ namespace Server.GameEngine
         {
             while (true)
             {
-                var currentTime = Time.time;
-                deltaTime = currentTime - prevTickTime;
-                action.Invoke();
-                prevTickTime = currentTime;
-                yield return new WaitForSeconds(TickDeltaSeconds);
+                float executionStartTime = Time.time;
+                callback.Invoke();
+                float sleepDelay = MaxDelay - (Time.time - executionStartTime);
+                if (sleepDelay > 0)
+                {
+                    yield return new WaitForSeconds(sleepDelay);
+                }
             }
             // ReSharper disable once IteratorNeverReturns
         }
 
         public void StartEndlessLoop()
         {
-            prevTickTime = Time.time - TickDeltaSeconds;
             StartCoroutine(nameof(MakeTicks));
         }
     }

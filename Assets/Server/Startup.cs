@@ -17,7 +17,7 @@ namespace Server
     /// Запускает все потоки при старте и убивает их при остановке.
     /// Устанавливает зависимости.
     /// </summary>
-    public class GameServer
+    public class Startup
     {
         private const int HttpPort = 14065;
         private const int UdpPort = 48956;

@@ -6,19 +6,19 @@ using UnityEngine;
 /// </summary>
 public class ServerController : MonoBehaviour
 {
-    private GameServer gameServer;
+    private Startup startup;
     
     private void Start()
     {
-        gameServer = new GameServer();
-        gameServer.Run();
+        startup = new Startup();
+        startup.Run();
     }
     
     private void OnDestroy()
     {
-        gameServer.FinishAllMatches();
+        startup.FinishAllMatches();
         
         //Это нужно для того, чтобы после остановки unity проекта потоки остановились и не писали в консоль.
-        gameServer.StopAllThreads();
+        startup.StopAllThreads();
     }
 }
