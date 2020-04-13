@@ -47,16 +47,16 @@ namespace Server.GameEngine
         /// <summary>
         /// Удаляет матч из памяти. Уведомляет игроков и матчмейкер о конце матча.
         /// </summary>
-        /// <param name="matchId"></param>
         private void DeleteMatch(int matchId)
         {
             Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
             Match match = matchStorage.RemoveMatch(matchId);
             match.NotifyPlayersAboutMatchFinish();
             match.TearDown();
-            MatchDeletingNotifier.SendMatchDeletingMessage(matchId);
+            MatchDeletingNotifier.SendMessage(matchId);
             Task.Run(async () =>
             {
+                //задержка нужна для того, чтобы последние udp сообщения дошли до игроков
                 await Task.Delay(1000);
                 byteArrayRudpStorage.RemoveMatchMessages(matchId);
             });

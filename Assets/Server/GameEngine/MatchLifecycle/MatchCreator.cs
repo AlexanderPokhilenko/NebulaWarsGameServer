@@ -22,10 +22,6 @@ namespace Server.GameEngine
             matchesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="battleRoyaleMatchData">Адекватные данные о матче.</param>
         public void AddMatchToCreationQueue(BattleRoyaleMatchData battleRoyaleMatchData)
         {
             matchesToCreate.Enqueue(battleRoyaleMatchData);

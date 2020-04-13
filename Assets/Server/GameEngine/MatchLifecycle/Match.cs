@@ -10,6 +10,7 @@ using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
+    //TODO говно
     //TODO нужно разбить
     //Ecs
     //Ip
@@ -37,7 +38,9 @@ namespace Server.GameEngine
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
+            //TODO что это за говно?
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+            
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
@@ -133,7 +136,7 @@ namespace Server.GameEngine
         {
             if (gameStartTime == null) return false;
             var gameDuration = DateTime.UtcNow - gameStartTime.Value;
-            return gameDuration > GameSessionGlobals.GameDuration;
+            return gameDuration > GameSessionGlobals.MaxGameDuration;
         }
 
         public List<int> GetActivePlayersIds()
@@ -143,13 +146,21 @@ namespace Server.GameEngine
         
         public void NotifyPlayersAboutMatchFinish()
         {
-            log.Warn(" Старт уведомления игроков про окончание матча");
-            foreach (int playerId in ipAddressesStorage.GetActivePlayersIds())
+            var activePlayersIds = ipAddressesStorage.GetActivePlayersIds();
+            if (activePlayersIds.Count == 0)
             {
-                log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
-                UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
+                log.Info("Список активных игроков пуст. Некого уведомлять о окончании матча.");
             }
-            log.Warn(" Конец уведомления игроков про окончание матча");
+            else
+            {
+                log.Warn(" Старт уведомления игроков про окончание матча");
+                foreach (int playerId in activePlayersIds)
+                {
+                    log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
+                    UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
+                }
+                log.Warn(" Конец уведомления игроков про окончание матча");
+            }
         }
         
         public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
