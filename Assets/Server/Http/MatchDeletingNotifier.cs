@@ -68,10 +68,13 @@ namespace Server.Http
                 {
                     var response = await client.DeleteAsync(url);
                     if (response.IsSuccessStatusCode)
+                    {
                         Log.Info("Удалении комнаты: успешно.");
+                    }
                     else
+                    {
                         throw new Exception("Не удалось отправить сообщение о удалении комнаты");
-                    
+                    }
                 }
                 catch (Exception e)
                 {

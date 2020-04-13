@@ -9,12 +9,14 @@ namespace Server.GameEngine.Systems
     public class CooldownInfoUpdaterSystem : IExecuteSystem
     {
         private readonly int matchId;
+        private readonly UdpSendUtils udpSendUtils;
         private readonly GameContext gameContext;
         private readonly IGroup<GameEntity> playersGroup;
         
-        public CooldownInfoUpdaterSystem(Contexts contexts, int matchId)
+        public CooldownInfoUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
+            this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         }
@@ -30,7 +32,7 @@ namespace Server.GameEngine.Systems
                 var weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
                     .Select(e => new WeaponInfo(e.cannon.bullet.typeId, e.cannon.cooldown)).ToArray();
 
-                UdpSendUtils.SendCooldownsInfos(matchId, playerId, abilityCooldown, weaponInfos);
+                udpSendUtils.SendCooldownInfo(matchId, playerId, abilityCooldown, weaponInfos);
             }    
         }
     }

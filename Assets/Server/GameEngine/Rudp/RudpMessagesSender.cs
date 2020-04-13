@@ -15,11 +15,14 @@ namespace Server.GameEngine
         
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly MatchStorage matchStorage;
+        private readonly UdpSendUtils udpSendUtils;
 
-        public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage)
+        public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage, 
+            UdpSendUtils udpSendUtils)
         {
             this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchStorage = matchStorage;
+            this.udpSendUtils = udpSendUtils;
         }
         
         public void SendAll()
@@ -49,7 +52,7 @@ namespace Server.GameEngine
                         for (int i = 0; i < messagesForPlayer.Length; i++)
                         {
                             var data = messagesForPlayer[i];
-                            UdpSendUtils.SendReadyMadeMessage(data, ipEndPoint);
+                            udpSendUtils.SendReadyMadeMessage(data, ipEndPoint);
                         }
                     }
                     else

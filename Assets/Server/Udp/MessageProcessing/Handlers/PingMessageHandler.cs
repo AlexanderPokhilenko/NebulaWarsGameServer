@@ -10,7 +10,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(UdpConnection));
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpListener));
         
         private readonly MatchStorage matchStorage;
 

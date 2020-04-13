@@ -5,6 +5,7 @@ using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
+using Server.Udp.Sending;
 using Server.Udp.Storage;
 using ZeroFormatter;
 
@@ -12,15 +13,15 @@ namespace Server.Udp
 {
     public class UdpMediator
     {
-        public static UdpConnectionFacade udpConnectionFacade { get; private set; }
+        public static UdpListenerFacade udpListenerFacade { get; private set; }
 
         private readonly MessageProcessor messageProcessor;
 
         public UdpMediator(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
+            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
         {
             messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
-                byteArrayRudpStorage);
+                byteArrayRudpStorage, udpSendUtils);
         }
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
@@ -29,12 +30,12 @@ namespace Server.Udp
             messageProcessor.Handle(messageWrapper, endPoint);
         }
 
-        public void SetUdpConnection(UdpConnectionFacade udpConn)
+        public void SetUdpConnection(UdpListenerFacade udpConn)
         {
-            if (udpConnectionFacade == null)
+            if (udpListenerFacade == null)
             {
-                udpConnectionFacade = udpConn;
-                udpConnectionFacade.SetMediator(this);
+                udpListenerFacade = udpConn;
+                udpListenerFacade.SetMediator(this);
             }
             else
             {

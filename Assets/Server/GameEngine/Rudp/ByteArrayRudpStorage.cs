@@ -10,7 +10,6 @@ using log4net;
 
 //TODO это, конечно, дичь, но стабильность важнее
 
-//TODO при удалении матча почистить rudp хранилище
 //TODO протестировать это чудо
 
 namespace Server.Udp.Storage
@@ -25,7 +24,7 @@ namespace Server.Udp.Storage
         
         private readonly object lockObj = new object();
         
-        //messageId PlayerId
+        //messageId matchId playerId
         private readonly ConcurrentDictionary<uint, (int matchId, int playerId)> messageIdPlayerId;
         
         //matchId playerId messageId message
@@ -50,6 +49,7 @@ namespace Server.Udp.Storage
 
         public void RemoveMatchMessages(int matchId)
         {
+            log.Warn($"Удаление сообщений для матча {nameof(matchId)} {matchId}.");
             lock (lockObj)
             {
                 if(unconfirmedMessages.TryRemove(matchId, out var playersDict))
@@ -71,9 +71,8 @@ namespace Server.Udp.Storage
             {
                 if(messageIdPlayerId.TryRemove(messageId, out var value))
                 {
-                   
-                        unconfirmedMessages[value.matchId][value.playerId].Remove(messageId);
-                        return true;
+                    unconfirmedMessages[value.matchId][value.playerId].Remove(messageId);
+                    return true;
                 }
                 else
                 {

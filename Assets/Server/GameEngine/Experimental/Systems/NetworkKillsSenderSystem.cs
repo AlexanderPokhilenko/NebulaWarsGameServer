@@ -16,18 +16,23 @@ namespace Server.GameEngine.Systems
         
         private readonly int matchId;
         private readonly Match match;
+
+        private readonly UdpSendUtils udpSendUtils;
+
         // private readonly GameContext gameContext;
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     
         public NetworkKillsSenderSystem(Contexts contexts, 
-            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, Match match)
+            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, Match match,
+            UdpSendUtils udpSendUtils)
             : base(contexts.game)
         {
             killersInfo = killersInfos;
             this.matchId = matchId;
             this.match = match;
+            this.udpSendUtils = udpSendUtils;
             var gameContext = contexts.game;
             alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
@@ -67,7 +72,7 @@ namespace Server.GameEngine.Systems
                         VictimId = killedEntity.player.id
                     };
                 
-                    UdpSendUtils.SendKill(matchId, killData);
+                    udpSendUtils.SendKill(matchId, killData);
 
                     if (!killedEntity.isBot)
                     {
@@ -83,7 +88,7 @@ namespace Server.GameEngine.Systems
                         };
                         
                         PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                        UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
+                        udpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
 
 
                         bool success = match.TryRemoveIpEndPoint(playerId);

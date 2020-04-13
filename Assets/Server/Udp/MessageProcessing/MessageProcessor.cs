@@ -4,6 +4,7 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.MessageProcessing.Handlers;
+using Server.Udp.Sending;
 using Server.Udp.Storage;
 
 namespace Server.Udp.MessageProcessing
@@ -18,15 +19,16 @@ namespace Server.Udp.MessageProcessing
         
         private readonly PingMessageHandler pingMessageHandler;
         private readonly RudpConfirmationReceiver rudpConfirmationHandler;
-        private readonly RudpConfirmationSender rudpConfirmationSender = new RudpConfirmationSender();
+        private readonly RudpConfirmationSender rudpConfirmationSender;
 
         public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
+            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
         {
             inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
             exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);
             pingMessageHandler = new PingMessageHandler(matchStorage);
             rudpConfirmationHandler = new RudpConfirmationReceiver(byteArrayRudpStorage);
+            rudpConfirmationSender = new RudpConfirmationSender(udpSendUtils);
         }
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)

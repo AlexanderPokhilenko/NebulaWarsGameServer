@@ -41,7 +41,7 @@ namespace Server.GameEngine
         /// <summary>
         /// Удаляет матч ищ коллекции.
         /// </summary>
-        public Match RemoveMatch(int matchId)
+        public Match DequeueMatch(int matchId)
         {
             if (matches.TryRemove(matchId, out Match match))
             {

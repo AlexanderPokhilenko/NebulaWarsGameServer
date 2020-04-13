@@ -6,11 +6,13 @@ namespace Server.GameEngine.Systems.Debug
     public class MatchDebugSenderSystem:IExecuteSystem
     {
         private readonly int matchId;
+        private readonly UdpSendUtils udpSendUtils;
         readonly IGroup<GameEntity> playersGroup;
         
-        public MatchDebugSenderSystem(Contexts contexts, int matchId)
+        public MatchDebugSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
+            this.udpSendUtils = udpSendUtils;
             playersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         }
         
@@ -18,7 +20,7 @@ namespace Server.GameEngine.Systems.Debug
         {
             foreach (var playerGameEntity in playersGroup)
             {
-                UdpSendUtils.SendMatchId(matchId, playerGameEntity .player.id);
+                udpSendUtils.SendMatchId(matchId, playerGameEntity .player.id);
             }
         }
     }

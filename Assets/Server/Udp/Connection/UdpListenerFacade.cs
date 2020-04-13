@@ -6,7 +6,7 @@ namespace Server.Udp.Connection
     /// <summary>
     /// Принимает все udp сообщения от игроков.
     /// </summary>
-    public class UdpConnectionFacade:UdpConnection
+    public class UdpListenerFacade:UdpListener
     {
         private UdpMediator mediator;
         

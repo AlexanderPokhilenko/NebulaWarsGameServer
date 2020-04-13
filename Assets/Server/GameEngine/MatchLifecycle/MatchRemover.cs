@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using log4net;
 using Server.Http;
 using Server.Udp.Storage;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -50,7 +51,7 @@ namespace Server.GameEngine
         private void DeleteMatch(int matchId)
         {
             Log.Warn($"{nameof(DeleteMatch)} {nameof(matchId)} {matchId}");
-            Match match = matchStorage.RemoveMatch(matchId);
+            Match match = matchStorage.DequeueMatch(matchId);
             match.NotifyPlayersAboutMatchFinish();
             match.TearDown();
             MatchDeletingNotifier.SendMessage(matchId);

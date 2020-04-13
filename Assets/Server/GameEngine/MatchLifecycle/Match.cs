@@ -25,13 +25,15 @@ namespace Server.GameEngine
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
+        private readonly UdpSendUtils udpSendUtils;
 
         private IpAddressesStorage ipAddressesStorage;
 
-        public Match(int matchId, MatchRemover matchRemover)
+        public Match(int matchId, MatchRemover matchRemover, UdpSendUtils udpSendUtils)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
+            this.udpSendUtils = udpSendUtils;
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
@@ -68,17 +70,17 @@ namespace Server.GameEngine
                     
                     
                     .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
-                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this, udpSendUtils))
                     .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, this))
                     
                     
                     .Add(new DestroySystems(contexts))
-                    .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId))
-                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId))
-                    .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new InputDeletingSystem(contexts))
                     .Add(new GameDeletingSystem(contexts))
                 ;
@@ -156,8 +158,8 @@ namespace Server.GameEngine
                 log.Warn(" Старт уведомления игроков про окончание матча");
                 foreach (int playerId in activePlayersIds)
                 {
-                    log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
-                    UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
+                    log.Warn($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
+                    udpSendUtils.SendBattleFinishMessage(MatchId, playerId);
                 }
                 log.Warn(" Конец уведомления игроков про окончание матча");
             }

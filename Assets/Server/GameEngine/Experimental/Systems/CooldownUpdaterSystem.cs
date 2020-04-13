@@ -8,12 +8,14 @@ namespace Server.GameEngine.Systems
     public class CooldownUpdaterSystem : IExecuteSystem
     {
         private readonly int matchId;
+        private readonly UdpSendUtils udpSendUtils;
         private readonly GameContext gameContext;
         private readonly IGroup<GameEntity> playersGroup;
         
-        public CooldownUpdaterSystem(Contexts contexts, int matchId)
+        public CooldownUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
+            this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
         }
@@ -29,7 +31,7 @@ namespace Server.GameEngine.Systems
                 var weaponCooldowns = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
                     .Select(e => e.hasCannonCooldown ? e.cannonCooldown.value : 0f).ToArray();
 
-                UdpSendUtils.SendCooldowns(matchId, playerId, abilityCooldown, weaponCooldowns);
+                udpSendUtils.SendCooldown(matchId, playerId, abilityCooldown, weaponCooldowns);
             }    
         }
     }

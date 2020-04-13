@@ -7,11 +7,13 @@ namespace Server.GameEngine.Systems
     public class MaxHpUpdaterSystem : IExecuteSystem
     {
         private readonly int matchId;
+        private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> playersWithHpGroup;
         
-        public MaxHpUpdaterSystem(Contexts contexts, int matchId)
+        public MaxHpUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
+            this.udpSendUtils = udpSendUtils;
             playersWithHpGroup = contexts.game
                 .GetGroup(GameMatcher
                     .AllOf(GameMatcher.Player, GameMatcher.MaxHealthPoints)
@@ -23,7 +25,7 @@ namespace Server.GameEngine.Systems
             foreach (var gameEntity in playersWithHpGroup)
             {
                 int playerId = gameEntity.player.id;
-                UdpSendUtils.SendMaxHealthPoints(matchId, playerId, gameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, playerId, gameEntity.maxHealthPoints.value);
             }    
         }
     }
