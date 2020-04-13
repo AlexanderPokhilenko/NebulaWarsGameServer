@@ -60,8 +60,6 @@ namespace Server
             
             
 
-
-
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
             udpListenerFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
@@ -69,10 +67,6 @@ namespace Server
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
-            
-            
-            
-            
             
             
             
@@ -96,12 +90,11 @@ namespace Server
             ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, 
             ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
         {
-            var udpBattleConnectionLocal = new UdpListenerFacade();
 
             UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg,
                 byteArrayRudpStorage, udpSendUtils);
-            mediator.SetUdpConnection(udpBattleConnectionLocal);
             
+            var udpBattleConnectionLocal = new UdpListenerFacade(mediator);
             udpBattleConnectionLocal
                 .SetUpConnection(port)
                 .StartReceiveThread();

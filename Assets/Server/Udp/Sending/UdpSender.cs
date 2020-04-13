@@ -30,7 +30,6 @@ namespace Server.Udp.Sending
             {
                 Log.Warn("Отправляемые данные пусты");
             }
-            
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Server.GameEngine.Systems
         
         public void Initialize()
         {
-            Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
+            // Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);

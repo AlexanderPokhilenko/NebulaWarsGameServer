@@ -8,20 +8,13 @@ namespace Server.Udp.Connection
     /// </summary>
     public class UdpListenerFacade:UdpListener
     {
-        private UdpMediator mediator;
-        
-        public void SetMediator(UdpMediator mediatorArg)
+        private readonly UdpMediator mediator;
+
+        public UdpListenerFacade(UdpMediator mediator)
         {
-            if (mediator != null)
-            {
-                throw new Exception("Повторная инициализация.");
-            }
-            else
-            {
-                mediator = mediatorArg;
-            }
+            this.mediator = mediator;
         }
-        
+
         protected override void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             base.HandleBytes(data, endPoint);

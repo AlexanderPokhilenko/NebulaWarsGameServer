@@ -27,6 +27,8 @@ namespace Server.Udp.MessageProcessing.Handlers
             int playerId = mes.TemporaryId;
             int matchId = mes.GameRoomNumber;
 
+            
+            // log.Error($"{sender.Address} {sender.Port} {sender.AddressFamily}");
             TryUpdateIpEndPoint(sender,matchId, playerId);
         }
 

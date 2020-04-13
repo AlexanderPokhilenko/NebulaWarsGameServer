@@ -42,6 +42,7 @@ namespace Server.Udp.Sending
         private bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
         {
             bool success = matchStorage.TryGetIpEndPoint(matchId, playerId, out ipEndPoint);
+            // log.Warn($"{nameof(TryGetPlayerIpEndPoint)} {nameof(playerId)} {playerId} success = {success}");
             return success && ipEndPoint != null;
         }
         

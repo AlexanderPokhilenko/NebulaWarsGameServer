@@ -70,17 +70,21 @@ namespace Server.Udp.Storage
 
         public bool TryUpdateIpEndPoint(int playerId, IPEndPoint newIpEndPoint)
         {
+            // log.Info("Обновление ip");
             //игрок есть в списке активных игроков?
             if (playersIpAddresses.TryGetValue(playerId, out IPEndPoint ipEndPoint))
             {
+                // log.Info("Такой уже есть");
                 //ip игрока поменялся?
                 //например с null на настоящий
                 //или если у мобильного оператора поменялись вышки
+                // log.Info($"текущий адрес  {ipEndPoint.Port}");
                 if (!Equals(newIpEndPoint, ipEndPoint))
                 {
                     //заменить устаревший адрес на актуальный
                     if (playersIpAddresses.TryUpdate(playerId, newIpEndPoint, ipEndPoint))
                     {
+                        // log.Info($"адрес нормально заменился {newIpEndPoint.Port}");
                         //адрес нормально заменился
                         return true;
                     }

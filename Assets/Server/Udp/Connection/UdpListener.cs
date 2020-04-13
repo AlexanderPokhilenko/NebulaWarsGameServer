@@ -76,8 +76,6 @@ namespace Server.Udp.Connection
             }
         }
 
-        
-     
         public void Stop()
         {
             Log.Info("Остановка udp клиента");
