@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Server.GameEngine;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -13,7 +9,12 @@ namespace Tests
         [Test]
         public void NewTestScriptSimplePasses()
         {
-            
+            //Arrange
+            MatchStorage matchStorage = new MatchStorage();
+            //Act
+            bool success = matchStorage.HasMatch(15651);
+            //Assert
+            Assert.IsFalse(success);
         }
     }
 }
