@@ -7,7 +7,6 @@
     <e p="C:\Users\Zenit\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Zenit\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_TikayServer01.295355446.00" t="ExcludeRecursive" />
     <e p="C:\Users\Zenit\Downloads\MultiplayerGameProgramming-master\MultiplayerGameProgramming-master\TikayServer01" t="IncludeRecursive">
-      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Generated" t="Include">
           <e p="Components" t="Include">
@@ -290,7 +289,7 @@
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="MatchDataMessageHandler.cs" t="Include" />
             <e p="MatchDataValidator.cs" t="Include" />
-            <e p="MatchDeletingNotifier.cs" t="Include" />
+            <e p="MatchmakerMatchFinishNotifier.cs" t="Include" />
             <e p="NetworkGlobals.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
@@ -324,6 +323,7 @@
             <e p="UdpMediator.cs" t="Include" />
           </e>
         </e>
+        <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
         <e p="Sources" t="Include">
           <e p="Components" t="Include">
@@ -511,10 +511,16 @@
             </e>
           </e>
         </e>
+        <e p="Tests" t="Include">
+          <e p="NewTestScript.cs" t="Include" />
+          <e p="Tests.asmdef" t="Include" />
+        </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
+      <e p="Server.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Tests.csproj" t="IncludeRecursive" />
       <e p="TikayServer01.sln" t="IncludeFlat" />
     </e>
   </component>

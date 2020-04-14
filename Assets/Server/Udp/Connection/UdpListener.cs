@@ -71,7 +71,7 @@ namespace Server.Udp.Connection
                 }
                 catch (Exception e)
                 {
-                    Log.Info("Error receiving data from udp client: " + e.Message);
+                    Log.Info("Error receiving data from udp client: " + e.Message+" "+e.StackTrace);
                 }
             }
         }
