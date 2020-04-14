@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Entitas;
 using log4net;
 using Server.Http;
@@ -8,7 +7,7 @@ using Server.Udp.Sending;
 namespace Server.GameEngine.Systems
 {
     /// <summary>
-    /// Отвечает за отправку сообщения об смертях, которые произошли за этот кадр.
+    /// Отвечает за отправку сообщения о смертях, которые произошли за этот кадр.
     /// </summary>
     public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     {
@@ -18,8 +17,7 @@ namespace Server.GameEngine.Systems
         private readonly Match match;
 
         private readonly UdpSendUtils udpSendUtils;
-
-        // private readonly GameContext gameContext;
+        
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
@@ -88,13 +86,13 @@ namespace Server.GameEngine.Systems
                         };
                         
                         PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                        udpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
+                        udpSendUtils.SendMatchFinishMessage(matchId, killedEntity.player.id);
 
 
                         bool success = match.TryRemoveIpEndPoint(playerId);
                         if (!success)
                         { 
-                            //Возможно ip игрока не был добавлен или уже был удалён
+                            //ip игрока не был добавлен или уже был удалён
                             Log.Info($"Не удалось удалить ip-адрес игрока с {nameof(playerId)} {playerId} {nameof(matchId)} {matchId}");
                         }
                     }
@@ -103,7 +101,7 @@ namespace Server.GameEngine.Systems
         }
 
         /// <summary>
-        /// Если за один кадр умерло больше двух игроков, то им выдадутся разные места в бою.
+        /// Если за один кадр умерло больше одного игрока, то им выдадутся разные места в бою.
         /// </summary>
         private int GetPlaceInBattle(int countOfAlivePlayersAndBots, int countOfKilledEntities, int killedEntityIndex)
         {

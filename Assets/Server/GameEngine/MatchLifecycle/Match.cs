@@ -14,7 +14,6 @@ namespace Server.GameEngine
     //TODO нужно разбить
     //Ecs
     //Ip
-    //управление состоянием
     public class Match
     {
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
@@ -25,18 +24,17 @@ namespace Server.GameEngine
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
-        private readonly UdpSendUtils udpSendUtils;
-
+        
         private IpAddressesStorage ipAddressesStorage;
 
-        public Match(int matchId, MatchRemover matchRemover, UdpSendUtils udpSendUtils)
+        public Match(int matchId, MatchRemover matchRemover)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
-            this.udpSendUtils = udpSendUtils;
         }
 
-        public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
+        //ECS
+        public void ConfigureSystems(BattleRoyaleMatchData matchDataArg, UdpSendUtils udpSendUtils)
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
@@ -90,6 +88,7 @@ namespace Server.GameEngine
             gameStartTime = DateTime.UtcNow;
         }
 
+        //ECS
         public void AddPlayerExitEntity(int playerId)
         {
             if (contexts != null)
@@ -99,6 +98,7 @@ namespace Server.GameEngine
             }
         }
         
+        //ECS
         public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
         {
             if (contexts != null)
@@ -113,6 +113,7 @@ namespace Server.GameEngine
             }
         }
 
+        //ECS
         public void Tick()
         {
             if (IsSessionTimedOut())
@@ -125,6 +126,7 @@ namespace Server.GameEngine
             systems.Cleanup();
         }
 
+        //ECS
         public void TearDown()
         {
             systems.DeactivateReactiveSystems();
@@ -141,45 +143,31 @@ namespace Server.GameEngine
             return gameDuration > GameSessionGlobals.MaxGameDuration;
         }
 
+        //Ip
         public List<int> GetActivePlayersIds()
         {
             return ipAddressesStorage.GetActivePlayersIds();
         }
-        
-        public void NotifyPlayersAboutMatchFinish()
-        {
-            var activePlayersIds = ipAddressesStorage.GetActivePlayersIds();
-            if (activePlayersIds.Count == 0)
-            {
-                log.Info("Список активных игроков пуст. Некого уведомлять о окончании матча.");
-            }
-            else
-            {
-                log.Warn(" Старт уведомления игроков про окончание матча");
-                foreach (int playerId in activePlayersIds)
-                {
-                    log.Warn($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
-                    udpSendUtils.SendBattleFinishMessage(MatchId, playerId);
-                }
-                log.Warn(" Конец уведомления игроков про окончание матча");
-            }
-        }
-        
+
+        //Ip
         public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
         {
             return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
         }
-
+        
+        //Ip
         public bool TryRemoveIpEndPoint(int playerId)
         {
             return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
         }
 
+        //Ip
         public bool HasPlayer(int playerId)
         {
             return ipAddressesStorage.HasPlayer(playerId);
         }
         
+        //ECS
         private void TryEnableDebug()
         {
 #if UNITY_EDITOR
@@ -188,6 +176,7 @@ namespace Server.GameEngine
 #endif
         }
 
+        //Ip
         public bool TryUpdateIpEndPoint(int playerId, IPEndPoint ipEndPoint)
         {
             return ipAddressesStorage.TryUpdateIpEndPoint(playerId, ipEndPoint);

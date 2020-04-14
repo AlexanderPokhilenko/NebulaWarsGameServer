@@ -16,8 +16,8 @@ namespace Server.GameEngine
         
         public Match Create(BattleRoyaleMatchData matchData)
         {
-            Match match = new Match(matchData.MatchId, matchRemover, udpSendUtils);
-            match.ConfigureSystems(matchData);
+            Match match = new Match(matchData.MatchId, matchRemover);
+            match.ConfigureSystems(matchData, udpSendUtils);
             return match;
         }
     }

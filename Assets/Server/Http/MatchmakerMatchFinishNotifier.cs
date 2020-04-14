@@ -11,10 +11,10 @@ namespace Server.Http
     /// <summary>
     /// Отправляет матчмейкеру уведомление об окончании боя.
     /// </summary>
-    public static class MatchDeletingNotifier
+    public static class MatchmakerMatchFinishNotifier
     {
         private static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDeletingNotifier));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchmakerMatchFinishNotifier));
 
         public static void SendMessage(int matchId)
         {

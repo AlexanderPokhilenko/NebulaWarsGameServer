@@ -45,7 +45,7 @@ namespace Server
             UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage);
             
             
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage);
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
@@ -64,7 +64,7 @@ namespace Server
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
             udpListenerFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
                 matchStorage, byteArrayRudpStorage, udpSendUtils);
-            matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
+            matchDeletingNotifierThread = MatchmakerMatchFinishNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
             

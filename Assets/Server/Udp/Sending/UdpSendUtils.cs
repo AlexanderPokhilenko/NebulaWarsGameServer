@@ -158,7 +158,7 @@ namespace Server.Udp.Sending
             }
         }
 
-        public void SendBattleFinishMessage(int matchId, int playerId)
+        public void SendMatchFinishMessage(int matchId, int playerId)
         {
             if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
