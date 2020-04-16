@@ -15,18 +15,17 @@ namespace Server.GameEngine.Systems
     public class PlayerExitSystem:ReactiveSystem<InputEntity>
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitSystem));
-    
+
+        private readonly GameContext gameContext;
         private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
-        private readonly IGroup<InputEntity> playerExitGroup;
         private readonly int matchId;
         private readonly Match match;
         
         public PlayerExitSystem(Contexts contexts, int matchId, Match match)
             :base(contexts.input)
         {
-            var gameContext = contexts.game;
+            gameContext = contexts.game;
             alivePlayerAndBotsGroup = gameContext.GetGroup(GameMatcher.Player);
-            playerExitGroup = contexts.input.GetGroup(InputMatcher.LeftTheGame);
             this.matchId = matchId;
             this.match = match;
         }
@@ -48,7 +47,8 @@ namespace Server.GameEngine.Systems
             {
                 var playerId = inputEntity.player.id;
                 Log.Warn($"преждевременное удаление игрока из матча {nameof(playerId)} {playerId}");
-                //TODO Пометить сущность игрока для передачи управления в AI системы.
+                var playerEntity = gameContext.GetEntityWithPlayer(playerId);
+                if(playerEntity != null) Match.MakeBot(playerEntity);
                 RemoveFromActivePlayers(playerId);
                 SendPlayerDeathMessageToMatchmaker(playerId);
             }

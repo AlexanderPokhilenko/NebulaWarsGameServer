@@ -84,6 +84,13 @@ namespace Server.GameEngine
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
+
+        public static void MakeBot(GameEntity entity)
+        {
+            entity.AddTargetingParameters(false, 13f, false);
+            entity.isTargetChanging = true;
+            entity.isBot = true;
+        }
         
         public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
         {

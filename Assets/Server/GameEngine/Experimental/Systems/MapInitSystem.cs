@@ -84,12 +84,7 @@ namespace Server.GameEngine.Systems
                 // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
-                if (gameUnit.IsBot)
-                {
-                    gameEntity.AddTargetingParameters(false, 13f, false);
-                    gameEntity.isTargetChanging = true;
-                    gameEntity.isBot = true;
-                }
+                if (gameUnit.IsBot) Match.MakeBot(gameEntity);
 
                 var wallAngle = angle + halfStep;
                 var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);
