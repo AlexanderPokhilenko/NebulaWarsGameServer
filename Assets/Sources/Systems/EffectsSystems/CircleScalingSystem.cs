@@ -18,7 +18,7 @@ public sealed class CircleScalingSystem : IExecuteSystem
     {
         foreach (var e in scalingGroup)
         {
-            var delta = e.circleScaling.speed * Chronometer.GetMagicDich();
+            var delta = e.circleScaling.speed * Chronometer.DeltaTime;
             e.ReplaceCircleCollider(e.circleCollider.radius + delta);
         }
     }

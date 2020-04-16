@@ -17,7 +17,7 @@ public sealed class CannonCooldownSubtractionSystem : IExecuteSystem
     {
         foreach (var e in cooldownGroup)
         {
-            e.ReplaceCannonCooldown(e.cannonCooldown.value - Chronometer.GetMagicDich());
+            e.ReplaceCannonCooldown(e.cannonCooldown.value - Chronometer.DeltaTime);
         }
     }
 }

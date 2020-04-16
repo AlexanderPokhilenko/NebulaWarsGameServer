@@ -6,6 +6,8 @@ using UnityEngine;
 public sealed class BotsFrameMovingControlSystem : ReactiveSystem<GameEntity>
 {
     private readonly GameContext gameContext;
+    private const float framesCountMultiplier = 1.25f;
+
     public BotsFrameMovingControlSystem(Contexts contexts) : base(contexts.game)
     {
         gameContext = contexts.game;
@@ -33,8 +35,8 @@ public sealed class BotsFrameMovingControlSystem : ReactiveSystem<GameEntity>
 
             var pathVector = e.targetMovingPoint.position - e.GetGlobalPositionVector2(gameContext);
             var maxVelocity = e.maxVelocity.value;
-            var perFrameMovement = Chronometer.GetMagicDich() * maxVelocity;
-            var framesCount = Mathf.FloorToInt(Mathf.Sqrt(1.25f * pathVector.sqrMagnitude / (perFrameMovement * perFrameMovement)));
+            var perFrameMovement = Chronometer.DeltaTime * maxVelocity;
+            var framesCount = Mathf.FloorToInt(framesCountMultiplier * Mathf.Sqrt(pathVector.sqrMagnitude / (perFrameMovement * perFrameMovement)));
 
             if (e.hasMovementFrames)
             {

@@ -14,7 +14,7 @@ public sealed class AbilityCooldownSubtractionSystem : IExecuteSystem
     {
         foreach (var e in cooldownGroup)
         {
-            e.ReplaceAbilityCooldown(e.abilityCooldown.value - Chronometer.GetMagicDich());
+            e.ReplaceAbilityCooldown(e.abilityCooldown.value - Chronometer.DeltaTime);
         }
     }
 }
