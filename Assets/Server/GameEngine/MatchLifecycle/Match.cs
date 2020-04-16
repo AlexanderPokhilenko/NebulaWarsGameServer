@@ -84,15 +84,6 @@ namespace Server.GameEngine
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
-
-        public void AddPlayerExitEntity(int playerId)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = contexts.input.CreateEntity();
-                inputEntity.AddPlayerExit(playerId);
-            }
-        }
         
         public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
         {
@@ -105,6 +96,20 @@ namespace Server.GameEngine
                     inputEntity.AddPlayer(playerId);
                 }
                 action(inputEntity, value);
+            }
+        }
+
+        public void AddInputEntity(int playerId, Action<InputEntity> action)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+                if (inputEntity == null)
+                {
+                    inputEntity = contexts.input.CreateEntity();
+                    inputEntity.AddPlayer(playerId);
+                }
+                action(inputEntity);
             }
         }
 

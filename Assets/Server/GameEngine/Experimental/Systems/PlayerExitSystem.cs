@@ -12,7 +12,7 @@ namespace Server.GameEngine.Systems
     /// 2) удалит ip игрока из этого матча, чтобы он мог начать новый матч на этом сервере
     /// 3) передаст бренное тело игрока под управления AI 
     /// </summary>
-    public class PlayerExitSystem:ReactiveSystem<InputEntity>, ICleanupSystem
+    public class PlayerExitSystem:ReactiveSystem<InputEntity>
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitSystem));
     
@@ -26,19 +26,19 @@ namespace Server.GameEngine.Systems
         {
             var gameContext = contexts.game;
             alivePlayerAndBotsGroup = gameContext.GetGroup(GameMatcher.Player);
-            playerExitGroup = contexts.input.GetGroup(InputMatcher.PlayerExit);
+            playerExitGroup = contexts.input.GetGroup(InputMatcher.LeftTheGame);
             this.matchId = matchId;
             this.match = match;
         }
 
         protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
         {
-            return context.CreateCollector(InputMatcher.PlayerExit.Added());
+            return context.CreateCollector(InputMatcher.LeftTheGame.Added());
         }
 
         protected override bool Filter(InputEntity entity)
         {
-            return entity.hasPlayerExit;
+            return entity.isLeftTheGame && entity.hasPlayer;
         }
 
         protected override void Execute(List<InputEntity> entities)
@@ -46,7 +46,7 @@ namespace Server.GameEngine.Systems
             Log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)
             {
-                int playerId = inputEntity.playerExit.PlayerId;
+                var playerId = inputEntity.player.id;
                 Log.Warn($"преждевременное удаление игрока из матча {nameof(playerId)} {playerId}");
                 //TODO Пометить сущность игрока для передачи управления в AI системы.
                 RemoveFromActivePlayers(playerId);
@@ -73,18 +73,6 @@ namespace Server.GameEngine.Systems
                 MatchId = matchId 
             };
             PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-        }
-
-        public void Cleanup()
-        {
-            foreach (var inputEntity in playerExitGroup.GetEntities())
-            {
-                //TODO это нормальная очистка?
-                if (inputEntity.hasPlayerExit)
-                {
-                    inputEntity.RemovePlayerExit();
-                }
-            }
         }
     }
 }

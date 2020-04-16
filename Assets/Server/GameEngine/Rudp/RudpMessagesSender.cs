@@ -5,8 +5,6 @@ using log4net;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-//TODO убрать ToArray()
-
 namespace Server.GameEngine
 {
     public class RudpMessagesSender

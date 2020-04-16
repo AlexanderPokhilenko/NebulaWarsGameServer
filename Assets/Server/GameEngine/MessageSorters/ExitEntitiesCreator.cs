@@ -33,11 +33,11 @@ namespace Server.GameEngine.Experimental
         {
             while (!concurrentBag.IsEmpty)
             {
-                if (concurrentBag.TryTake(out int playerId))
+                if (concurrentBag.TryTake(out var playerId))
                 {
                     if (matchStorage.TryGetMatchByPlayerId(playerId, out var match))
                     {
-                        match.AddPlayerExitEntity(playerId);
+                        match.AddInputEntity(playerId, e => e.isLeftTheGame = true);
                     }
                     else
                     {

@@ -29,7 +29,6 @@ public sealed class BotsMovingSystem : IExecuteSystem
 
     public void Execute()
     {
-        //TODO: посмотреть, можно ли как-то добавлять без использования массива
         foreach (var e in botsGroup.GetEntities(buffer))
         {
             var zone = gameContext.zone.GetZone(gameContext);
