@@ -17,13 +17,13 @@ namespace Server
     /// Запускает все потоки при старте и убивает их при остановке.
     /// Устанавливает зависимости.
     /// </summary>
-    public class GameServer
+    public class Startup
     {
         private const int HttpPort = 14065;
-        private const int UdpPort = 48956;
+        private const int UdpListeningPort = 48956;
         
         private Thread httpListeningThread;
-        private UdpConnectionFacade udpConnectionFacade;
+        private UdpListenerFacade udpListenerFacade;
         private Thread matchDeletingNotifierThread;
         private Thread playerDeathNotifierThread;
         
@@ -42,11 +42,11 @@ namespace Server
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
-            UdpSendUtils.Initialize(matchStorage, byteArrayRudpStorage);
+            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage);
             
             
             matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage);
-            MatchFactory matchFactory = new MatchFactory(matchRemover);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
@@ -54,25 +54,19 @@ namespace Server
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
             
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
-                inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage);
+                inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage, udpSendUtils);
 
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             
             
 
-
-
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpConnectionFacade = StartPlayersListening(UdpPort, inputEntitiesCreator, exitEntitiesCreator, 
-                matchStorage, byteArrayRudpStorage);
+            udpListenerFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
+                matchStorage, byteArrayRudpStorage, udpSendUtils);
             matchDeletingNotifierThread = MatchDeletingNotifier.StartThread();
             playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
            
-            
-            
-            
-            
             
             
             
@@ -92,16 +86,15 @@ namespace Server
             return thread;
         }
 
-        private UdpConnectionFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
+        private UdpListenerFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
             ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, 
-            ByteArrayRudpStorage byteArrayRudpStorage)
+            ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
         {
-            var udpBattleConnectionLocal = new UdpConnectionFacade();
 
             UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg,
-                byteArrayRudpStorage);
-            mediator.SetUdpConnection(udpBattleConnectionLocal);
+                byteArrayRudpStorage, udpSendUtils);
             
+            var udpBattleConnectionLocal = new UdpListenerFacade(mediator);
             udpBattleConnectionLocal
                 .SetUpConnection(port)
                 .StartReceiveThread();
@@ -127,7 +120,7 @@ namespace Server
         public void StopAllThreads()
         {
             httpListeningThread.Interrupt();
-            udpConnectionFacade.Stop();
+            udpListenerFacade.Stop();
             matchDeletingNotifierThread.Interrupt();
             playerDeathNotifierThread.Interrupt();
         }

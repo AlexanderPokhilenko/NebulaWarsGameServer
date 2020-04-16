@@ -11,7 +11,13 @@ namespace Server.Udp.MessageProcessing.Handlers
     /// </summary>
     public class RudpConfirmationSender:IMessageHandler
     {
+        private readonly UdpSendUtils udpSendUtils;
         private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationSender));
+
+        public RudpConfirmationSender(UdpSendUtils udpSendUtils)
+        {
+            this.udpSendUtils = udpSendUtils;
+        }
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
             Log.Info("пришло rudp");
@@ -19,7 +25,7 @@ namespace Server.Udp.MessageProcessing.Handlers
             {
                 MessageNumberThatConfirms = messageWrapper.MessageId
             };
-            UdpDich.SendDeliveryConfirmationMessage(mes, sender);
+            udpSendUtils.SendDeliveryConfirmationMessage(mes, sender);
         }
     }
 }

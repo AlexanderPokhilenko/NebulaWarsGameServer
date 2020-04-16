@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
+using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
-using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
+using Server.Udp.Sending;
 using Server.Udp.Storage;
 using ZeroFormatter;
 
@@ -12,34 +12,22 @@ namespace Server.Udp
 {
     public class UdpMediator
     {
-        public static UdpConnectionFacade udpConnectionFacade { get; private set; }
-
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpMediator));
+        
         private readonly MessageProcessor messageProcessor;
 
         public UdpMediator(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage)
+            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
         {
             messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
-                byteArrayRudpStorage);
+                byteArrayRudpStorage, udpSendUtils);
         }
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(data);
+            // log.Info(messageWrapper.MessageType.ToString());
             messageProcessor.Handle(messageWrapper, endPoint);
-        }
-
-        public void SetUdpConnection(UdpConnectionFacade udpConn)
-        {
-            if (udpConnectionFacade == null)
-            {
-                udpConnectionFacade = udpConn;
-                udpConnectionFacade.SetMediator(this);
-            }
-            else
-            {
-                throw new Exception("Медиатор уже содержит ссылку на udp соединение");
-            }
         }
     }
 }

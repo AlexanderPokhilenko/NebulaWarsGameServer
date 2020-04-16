@@ -16,7 +16,7 @@ namespace Server.Http
         private static readonly ConcurrentQueue<int> MatchIdsToDelete = new ConcurrentQueue<int>();
         private static readonly ILog Log = LogManager.GetLogger(typeof(MatchDeletingNotifier));
 
-        public static void SendMatchDeletingMessage(int matchId)
+        public static void SendMessage(int matchId)
         {
             MatchIdsToDelete.Enqueue(matchId);
         }
@@ -68,10 +68,13 @@ namespace Server.Http
                 {
                     var response = await client.DeleteAsync(url);
                     if (response.IsSuccessStatusCode)
+                    {
                         Log.Info("Удалении комнаты: успешно.");
+                    }
                     else
+                    {
                         throw new Exception("Не удалось отправить сообщение о удалении комнаты");
-                    
+                    }
                 }
                 catch (Exception e)
                 {

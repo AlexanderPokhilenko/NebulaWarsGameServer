@@ -56,7 +56,6 @@
               <e p="GameKilledByComponent.cs" t="Include" />
               <e p="GameLifetimeComponent.cs" t="Include" />
               <e p="GameMassComponent.cs" t="Include" />
-              <e p="GameMatchComponent.cs" t="Include" />
               <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
               <e p="GameMaxHealthPointsComponent.cs" t="Include" />
               <e p="GameMaxVelocityComponent.cs" t="Include" />
@@ -146,6 +145,10 @@
                   <e p="PlayerTrackingMessage.cs" t="Include" />
                   <e p="PointTrackingMessage.cs" t="Include" />
                   <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
+                </e>
+                <e p="Cooldown" t="Include">
+                  <e p="CooldownsMessage.cs" t="Include" />
+                  <e p="MaxCooldownsMessage.cs" t="Include" />
                 </e>
                 <e p="Debug" t="Include">
                   <e p="DebugIdMessage.cs" t="Include" />
@@ -238,6 +241,8 @@
               <e p="GameSessionGlobals.cs" t="Include" />
               <e p="ReliableMessagesPack.cs" t="Include" />
               <e p="Systems" t="Include">
+                <e p="CooldownInfoUpdaterSystem.cs" t="Include" />
+                <e p="CooldownUpdaterSystem.cs" t="Include" />
                 <e p="Debug" t="Include">
                   <e p="MatchDebugSenderSystem.cs" t="Include" />
                 </e>
@@ -280,7 +285,6 @@
               <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
             </e>
           </e>
-          <e p="GameServer.cs" t="Include" />
           <e p="Http" t="Include">
             <e p="HttpConnection.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
@@ -291,10 +295,11 @@
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathNotifier.cs" t="Include" />
           </e>
+          <e p="Startup.cs" t="Include" />
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
-              <e p="UdpConnection.cs" t="Include" />
-              <e p="UdpConnectionFacade.cs" t="Include" />
+              <e p="UdpListener.cs" t="Include" />
+              <e p="UdpListenerFacade.cs" t="Include" />
             </e>
             <e p="MessageProcessing" t="Include">
               <e p="Handlers" t="Include">
@@ -310,6 +315,7 @@
             <e p="Sending" t="Include">
               <e p="KillData.cs" t="Include" />
               <e p="UdpDich.cs" t="Include" />
+              <e p="UdpSender.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">

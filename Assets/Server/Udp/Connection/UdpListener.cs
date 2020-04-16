@@ -7,15 +7,15 @@ using log4net;
 
 namespace Server.Udp.Connection
 {
-    public class UdpConnection
+    public class UdpListener
     {
         private Thread receiveThread;
         private UdpClient udpClient;
         private bool isThreadRunning;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpConnection));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpListener));
         
-        public UdpConnection SetUpConnection(int listenPort)
+        public UdpListener SetUpConnection(int listenPort)
         {
             try
             {
@@ -76,27 +76,6 @@ namespace Server.Udp.Connection
             }
         }
 
-        public void Send(byte[] data, IPEndPoint endPoint)
-        {
-            // Log.Info($"Отправка сообщения на {endPoint.Address} {endPoint.Port} размером в {data.Length} байтов");
-            if (data != null)
-            {
-                try
-                { 
-                    udpClient.Send(data, data.Length, endPoint);
-                }
-                catch (SocketException)
-                {
-                    //ignore   
-                }    
-            }
-            else
-            {
-                Log.Warn("Отправляемые данные пусты");
-            }
-            
-        }
-     
         public void Stop()
         {
             Log.Info("Остановка udp клиента");

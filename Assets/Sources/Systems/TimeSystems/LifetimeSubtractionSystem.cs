@@ -17,7 +17,7 @@ public sealed class LifetimeSubtractionSystem : IExecuteSystem
     {
         foreach (var e in lifetimeGroup)
         {
-            e.ReplaceLifetime(e.lifetime.value - Chronometer.deltaTime);
+            e.ReplaceLifetime(e.lifetime.value - Chronometer.GetMagicDich());
         }
     }
 }

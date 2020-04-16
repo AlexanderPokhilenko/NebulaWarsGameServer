@@ -13,12 +13,12 @@ namespace Server.GameEngine.Systems
         
         private readonly MatchRemover matchRemover;
         private readonly int matchId;
-        private readonly IGroup<GameEntity> playersGroup;
+        private readonly IGroup<GameEntity> alivePlayersGroup;
         
         public FinishMatchSystem(Contexts contexts, MatchRemover matchRemover, int matchId) 
             : base(contexts.game)
         {
-            playersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
+            alivePlayersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
             this.matchRemover = matchRemover;
             this.matchId = matchId;
         }
@@ -35,7 +35,7 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            int numberOfAlivePlayers = playersGroup.count;
+            int numberOfAlivePlayers = alivePlayersGroup.count;
             LogKilledEntities(entities, numberOfAlivePlayers);
 
             switch (numberOfAlivePlayers)

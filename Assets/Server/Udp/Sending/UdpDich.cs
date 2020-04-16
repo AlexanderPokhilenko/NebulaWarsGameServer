@@ -7,17 +7,6 @@ namespace Server.Udp.Sending
 {
     public static class UdpDich
     {
-        public static void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint address)
-        {
-            if (address != null)
-            {
-                var data = MessageFactory.GetSerializedMessage(message, false, out uint messageId);
-                UdpMediator.udpConnectionFacade.Send(data, address);
-            }
-            else
-            {
-                throw new Exception("SendDeliveryConfirmationMessage address == null");
-            }
-        }
+      
     }
 }

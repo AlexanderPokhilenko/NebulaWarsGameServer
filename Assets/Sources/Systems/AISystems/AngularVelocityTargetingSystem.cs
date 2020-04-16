@@ -35,7 +35,7 @@ public sealed class AngularVelocityTargetingSystem : IExecuteSystem
                 rotatingDelta += 360f;
             }
 
-            var angularVelocity = rotatingDelta / Chronometer.deltaTime;
+            var angularVelocity = rotatingDelta / Chronometer.GetMagicDich();
             //TODO: возможно, стоит учитывать глобальную угловую скорость
             if (e.hasAngularVelocity)
             {

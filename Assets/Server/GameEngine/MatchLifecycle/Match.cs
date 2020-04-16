@@ -10,6 +10,7 @@ using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
+    //TODO говно
     //TODO нужно разбить
     //Ecs
     //Ip
@@ -24,20 +25,24 @@ namespace Server.GameEngine
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
+        private readonly UdpSendUtils udpSendUtils;
 
         private IpAddressesStorage ipAddressesStorage;
 
-        public Match(int matchId, MatchRemover matchRemover)
+        public Match(int matchId, MatchRemover matchRemover, UdpSendUtils udpSendUtils)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
+            this.udpSendUtils = udpSendUtils;
         }
 
         public void ConfigureSystems(BattleRoyaleMatchData matchDataArg)
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
+            //TODO что это за говно?
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+            
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
@@ -65,17 +70,17 @@ namespace Server.GameEngine
                     
                     
                     .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
-                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this, udpSendUtils))
                     .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, this))
                     
                     
                     .Add(new DestroySystems(contexts))
-                    .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId))
-                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId))
-                    .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId))
-                    .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId))
+                    .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new ShieldPointsUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new InputDeletingSystem(contexts))
                     .Add(new GameDeletingSystem(contexts))
                 ;
@@ -145,7 +150,7 @@ namespace Server.GameEngine
         {
             if (gameStartTime == null) return false;
             var gameDuration = DateTime.UtcNow - gameStartTime.Value;
-            return gameDuration > GameSessionGlobals.GameDuration;
+            return gameDuration > GameSessionGlobals.MaxGameDuration;
         }
 
         public List<int> GetActivePlayersIds()
@@ -155,13 +160,21 @@ namespace Server.GameEngine
         
         public void NotifyPlayersAboutMatchFinish()
         {
-            log.Warn(" Старт уведомления игроков про окончание матча");
-            foreach (int playerId in ipAddressesStorage.GetActivePlayersIds())
+            var activePlayersIds = ipAddressesStorage.GetActivePlayersIds();
+            if (activePlayersIds.Count == 0)
             {
-                log.Warn($"Отправка уведомления о завуршении боя игроку {nameof(playerId)} {playerId}");
-                UdpSendUtils.SendBattleFinishMessage(MatchId, playerId);
+                log.Info("Список активных игроков пуст. Некого уведомлять о окончании матча.");
             }
-            log.Warn(" Конец уведомления игроков про окончание матча");
+            else
+            {
+                log.Warn(" Старт уведомления игроков про окончание матча");
+                foreach (int playerId in activePlayersIds)
+                {
+                    log.Warn($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
+                    udpSendUtils.SendBattleFinishMessage(MatchId, playerId);
+                }
+                log.Warn(" Конец уведомления игроков про окончание матча");
+            }
         }
         
         public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)

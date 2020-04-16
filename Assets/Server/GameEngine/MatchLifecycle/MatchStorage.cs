@@ -39,19 +39,17 @@ namespace Server.GameEngine
         }
         
         /// <summary>
-        /// Просто удаление матча из коллекции
+        /// Удаляет матч ищ коллекции.
         /// </summary>
-        public Match RemoveMatch(int matchId)
+        public Match DequeueMatch(int matchId)
         {
             if (matches.TryRemove(matchId, out Match match))
             {
-                //намана   
                 log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
                 return match;
             }
             else
             {
-                //не намана
                 throw new Exception($"Попытка удалить матч, которого нет {nameof(matchId)} {matchId}");
             }
         }

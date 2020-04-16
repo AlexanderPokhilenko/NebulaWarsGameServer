@@ -72,7 +72,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             BonusPickerPart = null;
             HasBonusPickerPart = !IsPassingThrough && entity.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out BonusPickerPart);
             HasDamage = entity.hasDamage;
-            Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Chronometer.deltaTime : entity.damage.value) : 0f;
+            Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Chronometer.GetMagicDich() : entity.damage.value) : 0f;
             GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : id;
             GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : id;
             var hasTarget = entity.hasTarget;

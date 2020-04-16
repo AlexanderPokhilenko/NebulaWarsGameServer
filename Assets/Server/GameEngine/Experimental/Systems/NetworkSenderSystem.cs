@@ -11,6 +11,7 @@ namespace Server.GameEngine.Systems
     public class NetworkSenderSystem:IExecuteSystem,IInitializeSystem
     {
         private readonly int matchId;
+        private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> players;
         private readonly IGroup<GameEntity> playersWithHp;
         private readonly IGroup<GameEntity> grandObjects;
@@ -21,9 +22,10 @@ namespace Server.GameEngine.Systems
         private const float visibleAreaRadius = 15;
         //private const float sqrVisibleAreaRadius = visibleAreaRadius * visibleAreaRadius;
 
-        public NetworkSenderSystem(Contexts contexts, int matchId)
+        public NetworkSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
+            this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             playersWithHp = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints).NoneOf(GameMatcher.Bot));
@@ -46,7 +48,7 @@ namespace Server.GameEngine.Systems
                 foreach (var player in players)
                 {
                     var playerVisibleObjects = GetVisibleObjects(player);
-                    UdpSendUtils.SendPositions(matchId, player.player.id, playerVisibleObjects);
+                    udpSendUtils.SendPositions(matchId, player.player.id, playerVisibleObjects);
                 }
             }
             else
@@ -54,13 +56,13 @@ namespace Server.GameEngine.Systems
                 var enumerableVisibleObjects = visibleObjects.GetEntities(visibleObjectsBuffer);
                 foreach (var player in players)
                 {
-                    UdpSendUtils.SendPositions(matchId, player.player.id, enumerableVisibleObjects);
+                    udpSendUtils.SendPositions(matchId, player.player.id, enumerableVisibleObjects);
                 }
             }
 
             foreach (var playerWithHp in playersWithHp)
             {
-                UdpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
+                udpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
             }
         }
         

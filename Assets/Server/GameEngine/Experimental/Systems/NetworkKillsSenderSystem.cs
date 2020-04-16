@@ -8,7 +8,7 @@ using Server.Udp.Sending;
 namespace Server.GameEngine.Systems
 {
     /// <summary>
-    /// Отвечает за отправку сообщения об убийствах.
+    /// Отвечает за отправку сообщения об смертях, которые произошли за этот кадр.
     /// </summary>
     public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     {
@@ -16,19 +16,24 @@ namespace Server.GameEngine.Systems
         
         private readonly int matchId;
         private readonly Match match;
-        private readonly GameContext gameContext;
+
+        private readonly UdpSendUtils udpSendUtils;
+
+        // private readonly GameContext gameContext;
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     
-        public NetworkKillsSenderSystem(Contexts contexts, Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, 
-            int matchId, Match match)
+        public NetworkKillsSenderSystem(Contexts contexts, 
+            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, Match match,
+            UdpSendUtils udpSendUtils)
             : base(contexts.game)
         {
             killersInfo = killersInfos;
             this.matchId = matchId;
             this.match = match;
-            gameContext = contexts.game;
+            this.udpSendUtils = udpSendUtils;
+            var gameContext = contexts.game;
             alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
         }
@@ -48,7 +53,7 @@ namespace Server.GameEngine.Systems
             int countOfAlivePlayersAndBots = alivePlayersAndBots.count;
             int countOfKilledEntities = killedEntities.Count;
             
-            foreach (var player in alivePlayers)
+            foreach (var alivePlayer in alivePlayers)
             {
                 for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
                 {
@@ -60,14 +65,14 @@ namespace Server.GameEngine.Systems
 
                     KillData killData = new KillData
                     {
-                        TargetPlayerId = player.player.id,
+                        TargetPlayerId = alivePlayer.player.id,
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
                         VictimType = killedEntity.viewType.id,
                         VictimId = killedEntity.player.id
                     };
                 
-                    UdpSendUtils.SendKill(matchId, killData);
+                    udpSendUtils.SendKill(matchId, killData);
 
                     if (!killedEntity.isBot)
                     {
@@ -83,13 +88,14 @@ namespace Server.GameEngine.Systems
                         };
                         
                         PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                        UdpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
+                        udpSendUtils.SendBattleFinishMessage(matchId, killedEntity.player.id);
 
 
                         bool success = match.TryRemoveIpEndPoint(playerId);
                         if (!success)
                         { 
-                            throw new Exception("Получив это сообщение, я буду пребывать в крайне скудном расположении духа.");
+                            //Возможно ip игрока не был добавлен или уже был удалён
+                            Log.Info($"Не удалось удалить ip-адрес игрока с {nameof(playerId)} {playerId} {nameof(matchId)} {matchId}");
                         }
                     }
                 }

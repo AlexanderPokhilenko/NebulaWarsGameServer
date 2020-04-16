@@ -50,7 +50,7 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
                     {
                         addableBonus.isNonstandardRadius = true;
                         addableBonus.AddTargetScaling(targetRadius);
-                        var scalingTime = Mathf.Min(1f, Mathf.Max(0.05f * e.bonusAdder.duration, Chronometer.deltaTime));
+                        var scalingTime = Mathf.Min(1f, Mathf.Max(0.05f * e.bonusAdder.duration, Chronometer.GetMagicDich()));
                         var scalingSpeed = (targetRadius - addableBonus.circleCollider.radius) / scalingTime;
                         addableBonus.AddCircleScaling(scalingSpeed);
                     }

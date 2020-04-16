@@ -10,7 +10,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(UdpConnection));
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpListener));
         
         private readonly MatchStorage matchStorage;
 
@@ -27,6 +27,8 @@ namespace Server.Udp.MessageProcessing.Handlers
             int playerId = mes.TemporaryId;
             int matchId = mes.GameRoomNumber;
 
+            
+            // log.Error($"{sender.Address} {sender.Port} {sender.AddressFamily}");
             TryUpdateIpEndPoint(sender,matchId, playerId);
         }
 

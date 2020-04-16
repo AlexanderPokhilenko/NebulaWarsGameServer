@@ -12,7 +12,7 @@ namespace Server.GameEngine
         {
             var go = new GameObject("Chronometer");
             var clock = go.AddComponent<Chronometer>();
-            clock.SetAction(action);
+            clock.SetCallback(action);
             return clock;
         }
     }
