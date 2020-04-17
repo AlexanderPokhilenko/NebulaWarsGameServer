@@ -62,6 +62,8 @@ namespace Server.GameEngine
             playersMatchFinishNotifier.Notify(match);
             match.TearDown();
             matchmakerMatchStatusNotifier.MarkMatchAsFinished(matchId);
+            
+            log.Info($"Перед удалением сообщений для матча {nameof(matchId)} {matchId}.");
             Task.Run(async () =>
             {
                 //задержка нужна для того, чтобы последние udp сообщения дошли до игроков

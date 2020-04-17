@@ -13,8 +13,6 @@ namespace Server.GameEngine
 {
     //TODO говно
     //TODO нужно разбить
-    //Ecs
-    //Ip
     public class Match
     {
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
@@ -43,13 +41,12 @@ namespace Server.GameEngine
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
-            //TODO что это за говно?
+            //TODO это нужно убрать в отдельный класс
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
-            // throw new NotImplementedException();
             
             ipAddressesStorage = new IpAddressesStorage(matchDataArg);
             playerDeathHandler = new PlayerDeathHandler(ipAddressesStorage, matchmakerMatchStatusNotifier, udpSendUtils);
@@ -60,9 +57,7 @@ namespace Server.GameEngine
                     // .Add(new TestEndMatchSystem2(Contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
                     .Add(new PlayerAttackHandlerSystem(contexts))
-                    
                     .Add(new PlayerAbilityHandlerSystem(contexts))
-                    
                     .Add(new ParentsSystems(contexts))
                     .Add(new AISystems(contexts))
                     .Add(new MovementSystems(contexts))
@@ -73,11 +68,9 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(contexts))
                     .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))
                     
-                    
+                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, playerDeathHandler))
                     .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
                     .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, playerDeathHandler, udpSendUtils))
-                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, playerDeathHandler))
-                    
                     
                     .Add(new DestroySystems(contexts))
                     .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
@@ -94,17 +87,8 @@ namespace Server.GameEngine
             systems.Initialize();
             gameStartTime = DateTime.UtcNow;
         }
-
-        //ECS
-        public void AddPlayerExitEntity(int playerId)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = contexts.input.CreateEntity();
-                // inputEntity.AddPlayerExit(playerId);
-            }
-        }
         
+        //TODO убрать отсюда
         public static void MakeBot(GameEntity entity)
         {
             entity.AddTargetingParameters(false, 13f, false);
@@ -181,13 +165,7 @@ namespace Server.GameEngine
         {
             return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
         }
-        
-        //Ip
-        // public bool TryRemoveIpEndPoint(int playerId)
-        // {
-        //     return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
-        // }
-
+     
         //Ip
         public bool HasPlayer(int playerId)
         {

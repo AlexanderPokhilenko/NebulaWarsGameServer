@@ -26,13 +26,13 @@ namespace Server.GameEngine
             }
             else
             {
-                log.Error(" Старт уведомления игроков про окончание матча");
+                log.Info(" Старт уведомления игроков про окончание матча");
                 foreach (int playerId in activePlayersIds)
                 {
-                    log.Error($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
+                    log.Info($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
                     udpSendUtils.SendShowAchievementsMessage(match.MatchId, playerId);
                 }
-                log.Error(" Конец уведомления игроков про окончание матча");
+                log.Info(" Конец уведомления игроков про окончание матча");
             }
         }
     }

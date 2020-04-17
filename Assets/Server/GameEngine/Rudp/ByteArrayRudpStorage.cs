@@ -49,7 +49,7 @@ namespace Server.Udp.Storage
 
         public void RemoveMatchMessages(int matchId)
         {
-            log.Warn($"Удаление сообщений для матча {nameof(matchId)} {matchId}.");
+            log.Info($"Удаление сообщений для матча {nameof(matchId)} {matchId}.");
             lock (lockObj)
             {
                 if(unconfirmedMessages.TryRemove(matchId, out var playersDict))
