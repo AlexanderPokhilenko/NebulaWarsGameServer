@@ -27,7 +27,7 @@ public sealed class AuraDamageSystem : IExecuteSystem
             var fullRadius = e.circleCollider.radius + e.aura.outerRadius;
             var colliderSqrRadius = e.circleCollider.radius * e.circleCollider.radius;
             var fullSqrRadius = fullRadius * fullRadius;
-            var currentDamage = e.aura.damage * Chronometer.GetMagicDich();
+            var currentDamage = e.aura.damage * Chronometer.DeltaTime;
             foreach (var damagable in damagableGroup)
             {
                 var damagableGlobalPosition = damagable.GetGlobalPositionVector2(gameContext);

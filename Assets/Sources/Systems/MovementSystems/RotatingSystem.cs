@@ -18,7 +18,7 @@ public sealed class RotatingSystem : IExecuteSystem
     {
         foreach (var e in rotatableGroup)
         {
-            var newAngle = e.direction.angle + e.angularVelocity.value * Chronometer.GetMagicDich();
+            var newAngle = e.direction.angle + e.angularVelocity.value * Chronometer.DeltaTime;
             while (newAngle >= 360) newAngle -= 360;
             while (newAngle <= 0) newAngle += 360;
             // Возможно, стоит делать угол от -180 до 180, а не от 0 до 360

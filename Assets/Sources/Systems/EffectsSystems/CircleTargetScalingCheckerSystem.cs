@@ -34,7 +34,7 @@ public sealed class CircleTargetScalingCheckerSystem : ReactiveSystem<GameEntity
                 || (scalingSpeed < 0 && currentRadius <= targetRadius))
             {
                 var deltaRadius = targetRadius - currentRadius;
-                if (Mathf.Abs(scalingSpeed) * Chronometer.GetMagicDich() >= Mathf.Abs(deltaRadius))
+                if (Mathf.Abs(scalingSpeed) * Chronometer.DeltaTime >= Mathf.Abs(deltaRadius))
                 {
                     e.circleCollider.radius = e.targetScaling.radius;
                     e.RemoveTargetScaling();
