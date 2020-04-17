@@ -5,6 +5,7 @@ using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Debug;
+using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
@@ -24,13 +25,17 @@ namespace Server.GameEngine
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
-        
-        private IpAddressesStorage ipAddressesStorage;
+        private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
 
-        public Match(int matchId, MatchRemover matchRemover)
+        private IpAddressesStorage ipAddressesStorage;
+        private PlayerDeathHandler playerDeathHandler; 
+
+        public Match(int matchId, MatchRemover matchRemover,
+            MatchmakerMatchStatusNotifier  matchmakerMatchStatusNotifier)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
+            this.matchmakerMatchStatusNotifier = matchmakerMatchStatusNotifier;
         }
 
         //ECS
@@ -44,8 +49,10 @@ namespace Server.GameEngine
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
+            // throw new NotImplementedException();
             
             ipAddressesStorage = new IpAddressesStorage(matchDataArg);
+            playerDeathHandler = new PlayerDeathHandler(ipAddressesStorage, matchmakerMatchStatusNotifier, udpSendUtils);
             
             systems = new Entitas.Systems()
                     
@@ -68,8 +75,8 @@ namespace Server.GameEngine
                     
                     
                     .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
-                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, this, udpSendUtils))
-                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, this))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, playerDeathHandler, udpSendUtils))
+                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, playerDeathHandler))
                     
                     
                     .Add(new DestroySystems(contexts))
@@ -94,11 +101,17 @@ namespace Server.GameEngine
             if (contexts != null)
             {
                 var inputEntity = contexts.input.CreateEntity();
-                inputEntity.AddPlayerExit(playerId);
+                // inputEntity.AddPlayerExit(playerId);
             }
         }
         
-        //ECS
+        public static void MakeBot(GameEntity entity)
+        {
+            entity.AddTargetingParameters(false, 13f, false);
+            entity.isTargetChanging = true;
+            entity.isBot = true;
+        }
+        
         public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
         {
             if (contexts != null)
@@ -110,6 +123,20 @@ namespace Server.GameEngine
                     inputEntity.AddPlayer(playerId);
                 }
                 action(inputEntity, value);
+            }
+        }
+
+        public void AddInputEntity(int playerId, Action<InputEntity> action)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+                if (inputEntity == null)
+                {
+                    inputEntity = contexts.input.CreateEntity();
+                    inputEntity.AddPlayer(playerId);
+                }
+                action(inputEntity);
             }
         }
 
@@ -156,10 +183,10 @@ namespace Server.GameEngine
         }
         
         //Ip
-        public bool TryRemoveIpEndPoint(int playerId)
-        {
-            return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
-        }
+        // public bool TryRemoveIpEndPoint(int playerId)
+        // {
+        //     return ipAddressesStorage.TryRemoveIpEndPoint(playerId);
+        // }
 
         //Ip
         public bool HasPlayer(int playerId)

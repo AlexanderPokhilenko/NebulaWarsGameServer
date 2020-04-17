@@ -14,7 +14,7 @@ namespace Server.GameEngine.Systems
         private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
         
         private readonly int matchId;
-        private readonly Match match;
+        private readonly PlayerDeathHandler playerDeathHandler;
 
         private readonly UdpSendUtils udpSendUtils;
         
@@ -23,13 +23,13 @@ namespace Server.GameEngine.Systems
         private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
     
         public NetworkKillsSenderSystem(Contexts contexts, 
-            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, Match match,
-            UdpSendUtils udpSendUtils)
+            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, 
+            PlayerDeathHandler playerDeathHandler,  UdpSendUtils udpSendUtils)
             : base(contexts.game)
         {
             killersInfo = killersInfos;
             this.matchId = matchId;
-            this.match = match;
+            this.playerDeathHandler = playerDeathHandler;
             this.udpSendUtils = udpSendUtils;
             var gameContext = contexts.game;
             alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
@@ -85,16 +85,7 @@ namespace Server.GameEngine.Systems
                             MatchId = matchId 
                         };
                         
-                        PlayerDeathNotifier.KilledPlayers.Enqueue(playerDeathData);
-                        udpSendUtils.SendMatchFinishMessage(matchId, killedEntity.player.id);
-
-
-                        bool success = match.TryRemoveIpEndPoint(playerId);
-                        if (!success)
-                        { 
-                            //ip игрока не был добавлен или уже был удалён
-                            Log.Info($"Не удалось удалить ip-адрес игрока с {nameof(playerId)} {playerId} {nameof(matchId)} {matchId}");
-                        }
+                        playerDeathHandler.PlayerDeath(playerDeathData, false);
                     }
                 }
             }

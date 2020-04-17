@@ -158,8 +158,10 @@ namespace Server.Udp.Sending
             }
         }
 
-        public void SendMatchFinishMessage(int matchId, int playerId)
+        public void SendShowAchievementsMessage(int matchId, int playerId)
         {
+            log.Warn($"Отправка команды показать окно оезультатов боя {nameof(matchId)} {matchId} " +
+                     $"{nameof(playerId)} {playerId}");
             if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage(matchId);

@@ -5,20 +5,28 @@ using log4net;
 namespace Server.GameEngine.Systems
 {
     /// <summary>
-    /// Вызывает удаление матча, когда остаётся 0 или 1 игрок
+    /// Вызывает удаление матча, когда остаётся мало игроков
     /// </summary>
     public class FinishMatchSystem:ReactiveSystem<GameEntity>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FinishMatchSystem));
+        private readonly ILog log = LogManager.GetLogger(typeof(FinishMatchSystem));
         
-        private readonly MatchRemover matchRemover;
         private readonly int matchId;
+        private readonly MatchRemover matchRemover;
         private readonly IGroup<GameEntity> alivePlayersGroup;
+        private readonly IGroup<GameEntity> alivePlayersAndBotsGroup;
         
         public FinishMatchSystem(Contexts contexts, MatchRemover matchRemover, int matchId) 
             : base(contexts.game)
         {
-            alivePlayersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
+            alivePlayersGroup = contexts.game.GetGroup(
+                GameMatcher.AllOf(GameMatcher.Player).
+                    NoneOf(GameMatcher.KilledBy, GameMatcher.Bot));
+            
+            alivePlayersAndBotsGroup = contexts.game.GetGroup(
+                GameMatcher.AllOf(GameMatcher.Player).
+                    NoneOf(GameMatcher.KilledBy));
+            
             this.matchRemover = matchRemover;
             this.matchId = matchId;
         }
@@ -35,10 +43,9 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            int numberOfAlivePlayers = alivePlayersGroup.count;
-            LogKilledEntities(entities, numberOfAlivePlayers);
+            LogKilledEntities(entities);
 
-            switch (numberOfAlivePlayers)
+            switch (alivePlayersAndBotsGroup.count)
             {
                 case 0:
                     //последние игроки сдохли в одном кадре
@@ -49,26 +56,33 @@ namespace Server.GameEngine.Systems
                     matchRemover.MarkMatchAsFinished(matchId);
                     break;
             }
+
+            if (alivePlayersGroup.count == 0)
+            {
+                //живых игроков не осталось. остались только боты
+                //чем закончится драка ботов неинтересно матч можно завершать
+                log.Warn("Живые игроки в матче кончились.");
+                matchRemover.MarkMatchAsFinished(matchId);
+            }
         }
 
-        private void LogKilledEntities(List<GameEntity> entities, int numberOfAlivePlayers)
+        private void LogKilledEntities(List<GameEntity> entities)
         {
-            Log.Warn($" {nameof(matchId)} {matchId} " +
-                     $"Погибло игровых сущностей: {entities.Count}. " +
-                     $"Текущее кол-во игровых сущностей: {numberOfAlivePlayers}");
+            log.Warn($" {nameof(matchId)} {matchId} " +
+                     $"Погибло игровых сущностей: {entities.Count}. ");
             foreach (var gameEntity in entities)
             {
                 if (gameEntity.isBot)
                 {
-                    Log.Warn($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.id}");
+                    log.Warn($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.id}");
                 }
                 else if(gameEntity.hasPlayer)
                 {
-                    Log.Warn($"{nameof(matchId)} {matchId} Погиб игрок {gameEntity.player.id}");
+                    log.Warn($"{nameof(matchId)} {matchId} Погиб игрок {gameEntity.player.id}");
                 }
                 else
                 {
-                    Log.Warn("Было убито хер знает что");
+                    log.Warn("Было убито хер знает что");
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace Server.Http
 {
-    public struct PlayerDeathData
+    public class PlayerDeathData
     {
         public int PlayerId;
         public int PlaceInBattle;

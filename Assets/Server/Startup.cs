@@ -24,8 +24,7 @@ namespace Server
         
         private Thread httpListeningThread;
         private UdpListenerFacade udpListenerFacade;
-        private Thread matchDeletingNotifierThread;
-        private Thread playerDeathNotifierThread;
+        private Thread matchmakerNotifierThread;
         
         private MatchStorage matchStorage;
         private MatchRemover matchRemover;
@@ -38,39 +37,32 @@ namespace Server
                 throw new Exception("Сервер уже запущен");
             }
 
-
+            //Старт уведомления матчмейкера о смертях игроков и окончании матчей
+            MatchmakerMatchStatusNotifier matchStatusNotifier = new MatchmakerMatchStatusNotifier();
+            matchmakerNotifierThread = matchStatusNotifier.StartThread();
+            
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
             UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage);
-            
-            
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils);
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, matchStatusNotifier);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, matchStatusNotifier);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
             InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
-            
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
                 inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage, udpSendUtils);
-
-            Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
-            
-            
 
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
             udpListenerFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
                 matchStorage, byteArrayRudpStorage, udpSendUtils);
-            matchDeletingNotifierThread = MatchmakerMatchFinishNotifier.StartThread();
-            playerDeathNotifierThread = PlayerDeathNotifier.StartThread();
-           
             
-            
-            
+
             //Старт обработки
+            Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             chronometer.StartEndlessLoop();
         }
         
@@ -121,8 +113,7 @@ namespace Server
         {
             httpListeningThread.Interrupt();
             udpListenerFacade.Stop();
-            matchDeletingNotifierThread.Interrupt();
-            playerDeathNotifierThread.Interrupt();
+            matchmakerNotifierThread.Interrupt();
         }
     }
 }
