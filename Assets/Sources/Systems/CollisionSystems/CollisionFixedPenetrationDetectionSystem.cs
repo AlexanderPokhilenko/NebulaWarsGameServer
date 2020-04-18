@@ -26,7 +26,6 @@ public class CollisionFixedPenetrationDetectionSystem : ReactiveSystem<GameEntit
     {
         foreach (var e in entities)
         {
-            //TODO: учитывать массу и импульс
             if (e.TryGetFirstGameEntity(gameContext, part => !part.isUnmovable, out var parentPart))
             {
                 if (parentPart.hasCollisionVector)

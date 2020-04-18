@@ -52,7 +52,12 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             var id = entity.id.value;
             Entity = entity;
             Radius = entity.circleCollider.radius;
-            if (entity.hasMass)
+            if (entity.isUnmovable && !entity.hasParent)
+            {
+                HasMass = true;
+                Mass = float.MaxValue / 2f;
+            }
+            else if (entity.hasMass)
             {
                 HasMass = true;
                 Mass = entity.mass.value;
@@ -155,7 +160,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             current.IsCollided = true;
                             other.IsCollided = true;
 
-                            if (current.HasMass && other.HasMass)
+                            if (current.HasMass || other.HasMass)
                             {
                                 var totalMass = current.Mass + other.Mass;
                                 current.CollisionVector += penetration * other.Mass / totalMass;

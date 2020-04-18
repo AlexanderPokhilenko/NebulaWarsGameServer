@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewUpgradeBonus", menuName = "BaseObjects/Bonuses/UpgradeBonus", order = 53)]
 public class UpgradeBonusObject : ActionBonusObject
@@ -17,5 +18,14 @@ public class UpgradeBonusObject : ActionBonusObject
 
         entity.ReplaceHealthPoints(entity.healthPoints.value + deltaHealth);
         entity.ReplaceMaxHealthPoints(entity.maxHealthPoints.value + deltaHealth);
+
+        if (!entity.hasUpgrades)
+        {
+            entity.AddUpgrades(new Dictionary<ActionBonusObject, byte>());
+        }
+
+        var bonusesDictionary = entity.upgrades.bonuses;
+        bonusesDictionary.TryGetValue(this, out var count);
+        bonusesDictionary[this] = ++count; // count + 1 => int; ++count => byte
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using Entitas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Entitas;
 using UnityEngine;
 
-public sealed class BotsMovingSystem : IExecuteSystem
+public sealed class BotsMovingSystem : IInitializeSystem, IExecuteSystem
 {
     private readonly System.Random random;
     private readonly List<GameEntity> buffer;
@@ -14,7 +12,9 @@ public sealed class BotsMovingSystem : IExecuteSystem
     private readonly IGroup<GameEntity> botsGroup;
     private readonly IGroup<GameEntity> withCannonGroup;
     private readonly IGroup<GameEntity> withDamageGroup;
+    private readonly IGroup<GameEntity> withBonusGroup;
     private const float zoneWarningDistance = 5f;
+    private GameEntity zone;
 
     public BotsMovingSystem(Contexts contexts)
     {
@@ -25,13 +25,28 @@ public sealed class BotsMovingSystem : IExecuteSystem
         botsGroup = gameContext.GetGroup(matcher);
         withCannonGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Cannon, GameMatcher.Position, GameMatcher.Direction));
         withDamageGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Damage, GameMatcher.Position, GameMatcher.Direction));
+        withBonusGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Position, GameMatcher.ViewType).AnyOf(GameMatcher.BonusAdder, GameMatcher.ActionBonus));
+    }
+
+    public void Initialize()
+    {
+#if UNITY_EDITOR // Нужно для дебага, иначе будет падать
+        if (!gameContext.hasZone)
+        {
+            zone = gameContext.CreateEntity();
+            zone.AddPosition(Vector2.zero);
+            zone.AddDirection(0f);
+            zone.AddCircleCollider(float.PositiveInfinity);
+            gameContext.SetZone(zone.id.value);
+        }
+#endif
+        zone = gameContext.zone.GetZone(gameContext);
     }
 
     public void Execute()
     {
         foreach (var e in botsGroup.GetEntities(buffer))
         {
-            var zone = gameContext.zone.GetZone(gameContext);
             var currentPosition = e.GetGlobalPositionVector2(gameContext);
             var zonePosition = zone.GetGlobalPositionVector2(gameContext);
             var zoneRadius = zone.circleCollider.radius;
@@ -71,6 +86,13 @@ public sealed class BotsMovingSystem : IExecuteSystem
 
                 dangerAvoidanceVector +=
                     GetAvoidanceVector(withDamageGroup, cE => GetEntityDamagePower(cE) / fullHp);
+
+                if (e.isBonusPickable && healthPercentage < 1f)
+                {
+                    //TODO: учитывать мощность бонуса
+                    var healthLackPercentage = 1f - healthPercentage;
+                    dangerAvoidanceVector -= GetAvoidanceVector(withBonusGroup, cE => healthLackPercentage);
+                }
 
                 if (dangerAvoidanceVector.sqrMagnitude > sqrMaxRadius)
                 {

@@ -9,6 +9,7 @@
         Add(new ParentLinkDeletingSystem(contexts));
         Add(new TargetLinkDeletingSystem(contexts));
         Add(new DropSystem(contexts));
+        Add(new UpgradesDropSystem(contexts));
         Add(new DeleteSystem(contexts));
     }
 }
