@@ -173,18 +173,18 @@ namespace Server.Udp.Sending
             }
         }
 
-        public void SendMatchId(int matchId, int playerId)
-        {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
-            {
-                // Log.Warn($"Отправка сообщения о завершении боя игроку с id {PlayerId}.");
-                DebugIdMessage debugIdMessage = new DebugIdMessage(matchId, playerId);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(debugIdMessage, false, out uint messageId);
-                udpSender.Send(serializedMessage, ipEndPoint);
-            }
-        }
-        
+        // public void SendMatchId(int matchId, int playerId)
+        // {
+        //     if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+        //     {
+        //         // Log.Warn($"Отправка сообщения о завершении боя игроку с id {PlayerId}.");
+        //         DebugIdMessage debugIdMessage = new DebugIdMessage(matchId, playerId);
+        //         var serializedMessage =
+        //             MessageFactory.GetSerializedMessage(debugIdMessage, false, out uint messageId);
+        //         udpSender.Send(serializedMessage, ipEndPoint);
+        //     }
+        // }
+        //
         public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint address)
         {
             if (address != null)

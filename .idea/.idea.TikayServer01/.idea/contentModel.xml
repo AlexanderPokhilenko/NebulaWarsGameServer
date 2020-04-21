@@ -81,6 +81,7 @@
               <e p="GameTargetScalingComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameUnmovableComponent.cs" t="Include" />
+              <e p="GameUpgradesComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
               <e p="GameViewTypeComponent.cs" t="Include" />
               <e p="GameZoneComponent.cs" t="Include" />
@@ -339,6 +340,7 @@
               <e p="BonusPickableComponent.cs" t="Include" />
               <e p="BonusTargetComponent.cs" t="Include" />
               <e p="ParasiteComponent.cs" t="Include" />
+              <e p="UpgradesComponent.cs" t="Include" />
             </e>
             <e p="CollisionComponents" t="Include">
               <e p="CircleColliderComponent.cs" t="Include" />
@@ -467,6 +469,7 @@
               <e p="ParentDependentDeletingSystem.cs" t="Include" />
               <e p="ParentLinkDeletingSystem.cs" t="Include" />
               <e p="TargetLinkDeletingSystem.cs" t="Include" />
+              <e p="UpgradesDropSystem.cs" t="Include" />
             </e>
             <e p="EffectsSystems" t="Include">
               <e p="AuraDamageSystem.cs" t="Include" />
