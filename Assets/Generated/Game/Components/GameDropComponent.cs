@@ -11,17 +11,17 @@ public partial class GameEntity {
     public DropComponent drop { get { return (DropComponent)GetComponent(GameComponentsLookup.Drop); } }
     public bool hasDrop { get { return HasComponent(GameComponentsLookup.Drop); } }
 
-    public void AddDrop(EntityCreatorObject newValue) {
+    public void AddDrop(System.Collections.Generic.List<EntityCreatorObject> newObjects) {
         var index = GameComponentsLookup.Drop;
         var component = (DropComponent)CreateComponent(index, typeof(DropComponent));
-        component.value = newValue;
+        component.objects = newObjects;
         AddComponent(index, component);
     }
 
-    public void ReplaceDrop(EntityCreatorObject newValue) {
+    public void ReplaceDrop(System.Collections.Generic.List<EntityCreatorObject> newObjects) {
         var index = GameComponentsLookup.Drop;
         var component = (DropComponent)CreateComponent(index, typeof(DropComponent));
-        component.value = newValue;
+        component.objects = newObjects;
         ReplaceComponent(index, component);
     }
 

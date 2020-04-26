@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBaseObject", menuName = "BaseObjects/BaseObject", order = 51)]
 public class BaseObject : EntityCreatorObject
@@ -12,7 +14,7 @@ public class BaseObject : EntityCreatorObject
     public bool isPassingThrough;
     [Min(0)]
     public float collisionDamage;
-    public EntityCreatorObject drop;
+    public List<EntityCreatorObject> dropObjects;
     public PartObject[] parts;
 
     public override GameEntity CreateEntity(GameContext context)
@@ -33,7 +35,7 @@ public class BaseObject : EntityCreatorObject
         entity.isPassingThrough = isPassingThrough;
         if(collisionDamage > 0) entity.AddDamage(collisionDamage);
 
-        if(drop != null) entity.AddDrop(drop);
+        if(dropObjects != null && dropObjects.Any()) entity.AddDrop(new List<EntityCreatorObject>(dropObjects));
 
         if (parts != null)
         {

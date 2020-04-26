@@ -19,6 +19,8 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
-  drop: {fileID: 0}
+  dropObjects:
+  - {fileID: 11400000, guid: 4aaaef1e53139bf47adf170014a179cb, type: 2}
+  - {fileID: 11400000, guid: 4aaaef1e53139bf47adf170014a179cb, type: 2}
   parts: []
   maxHealthPoints: 300

@@ -108,7 +108,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 var other = collidables[j];
                 var otherEntity = other.Entity;
 
-                if (other.GrandOwnerId == current.GrandOwnerId) continue;
+                if ((current.HasDamage || other.HasDamage) && other.GrandOwnerId == current.GrandOwnerId) continue; // чтобы снаряды не попадали по нам
                 if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
                     && current.GrandParentId == other.GrandParentId) continue;
 

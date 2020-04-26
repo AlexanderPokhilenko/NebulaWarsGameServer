@@ -19,13 +19,12 @@ public class UpgradeBonusObject : ActionBonusObject
         entity.ReplaceHealthPoints(entity.healthPoints.value + deltaHealth);
         entity.ReplaceMaxHealthPoints(entity.maxHealthPoints.value + deltaHealth);
 
-        if (!entity.hasUpgrades)
+        if (!entity.hasDrop)
         {
-            entity.AddUpgrades(new Dictionary<ActionBonusObject, byte>());
+            entity.AddDrop(new List<EntityCreatorObject>());
         }
 
-        var bonusesDictionary = entity.upgrades.bonuses;
-        bonusesDictionary.TryGetValue(this, out var count);
-        bonusesDictionary[this] = ++count; // count + 1 => int; ++count => byte
+        var drops = entity.drop.objects;
+        drops.Add(this);
     }
 }

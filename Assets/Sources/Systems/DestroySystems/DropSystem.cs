@@ -18,36 +18,40 @@ public class DropSystem : IExecuteSystem
         {
             e.ToGlobal(gameContext, out var position, out var angle, out _, out var velocity, out var angularVelocity);
 
-            var drop = e.drop.value;
-            var dropEntity = drop.CreateEntity(gameContext, position, angle);
-            if ((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider)
+            var drops = e.drop.objects;
+            foreach (var drop in drops)
             {
-                dropEntity.ReplaceDirection(angle = 0f);
-            }
-            else
-            {
-                dropEntity.AddVelocity(velocity);
-                dropEntity.AddAngularVelocity(angularVelocity);
-            }
-
-            var grandOwnerId = e.GetGrandOwnerId(gameContext);
-            dropEntity.AddOwner(grandOwnerId);
-            dropEntity.AddGrandOwner(grandOwnerId);
-
-            if (dropEntity.hasChaser)
-            {
-                if (e.hasTargetingParameters && !dropEntity.hasTargetingParameters)
+                var dropEntity = drop.CreateEntity(gameContext, position, angle);
+                dropEntity.AddGlobalTransform(position, angle);
+                if ((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider)
                 {
-                    dropEntity.AddTargetingParameters(e.targetingParameters.angularTargeting, e.targetingParameters.radius, e.targetingParameters.onlyPlayerTargeting);
+                    dropEntity.ReplaceDirection(0f);
+                    dropEntity.ReplaceGlobalTransform(position, 0f);
+                }
+                else
+                {
+                    dropEntity.AddVelocity(velocity);
+                    dropEntity.AddAngularVelocity(angularVelocity);
                 }
 
-                if (e.hasTarget && dropEntity.hasTargetingParameters)
+                var grandOwnerId = e.GetGrandOwnerId(gameContext);
+                dropEntity.AddOwner(grandOwnerId);
+                dropEntity.AddGrandOwner(grandOwnerId);
+
+                if (dropEntity.hasChaser)
                 {
-                    dropEntity.AddTarget(e.target.id);
+                    if (e.hasTargetingParameters && !dropEntity.hasTargetingParameters)
+                    {
+                        dropEntity.AddTargetingParameters(e.targetingParameters.angularTargeting,
+                            e.targetingParameters.radius, e.targetingParameters.onlyPlayerTargeting);
+                    }
+
+                    if (e.hasTarget && dropEntity.hasTargetingParameters)
+                    {
+                        dropEntity.AddTarget(e.target.id);
+                    }
                 }
             }
-
-            dropEntity.AddGlobalTransform(position, angle);
         }
     }
 }

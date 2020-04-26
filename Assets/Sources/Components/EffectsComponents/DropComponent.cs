@@ -1,8 +1,9 @@
-﻿using Entitas;
+﻿using System.Collections.Generic;
+using Entitas;
 
 
 [Game]
 public sealed class DropComponent : IComponent
 {
-    public EntityCreatorObject value;
+    public List<EntityCreatorObject> objects;
 }
