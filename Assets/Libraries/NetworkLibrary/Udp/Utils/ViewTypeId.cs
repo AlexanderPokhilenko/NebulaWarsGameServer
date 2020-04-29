@@ -31,5 +31,8 @@
     SmallRepairBonus,
     SmallUpgradeBonus,
     ScarabBoss,
-    MediumUpgradeBonus
+    MediumUpgradeBonus,
+    GatlingExplosion,
+    PlasmaExplosion,
+    MediumExplosion
 }

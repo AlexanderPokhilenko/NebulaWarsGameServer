@@ -19,7 +19,8 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 1
   collisionDamage: 5
-  drop: {fileID: 0}
+  dropObjects:
+  - {fileID: 11400000, guid: 86b22da2235e3bd4fbb4b45bc4a73afb, type: 2}
   parts: []
   maxVelocity: 7
   maxAngularVelocity: 0
