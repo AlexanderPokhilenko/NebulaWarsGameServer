@@ -17,9 +17,9 @@ MonoBehaviour:
   mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
-  isPassingThrough: 0
+  isPassingThrough: 1
   collisionDamage: 0
-  drop: {fileID: 0}
+  dropObjects: []
   parts: []
   bonusObject: {fileID: 11400000, guid: 3c6e78135eb8e2e40941c79198dc34ab, type: 2}
   duration: 10

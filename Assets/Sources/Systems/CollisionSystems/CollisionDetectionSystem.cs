@@ -10,7 +10,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
     private readonly IGroup<GameEntity> collidableGroup;
     private readonly List<GameEntity> buffer;
     private readonly List<CollisionInfo> collidables;
-    private const int predictedCapacity = 350;
+    private const int predictedCapacity = 512;
 
     public CollisionDetectionSystem(Contexts contexts)
     {
@@ -192,8 +192,8 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
                         {
                             if (currentEntity.hasBonusTarget) break;
-                            if(currentEntity.hasBonusAdder && otherEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
-                            if(currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherEntity)) continue;
+                            if (currentEntity.hasBonusAdder && otherEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                            if (currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherEntity)) continue;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                             break;

@@ -17,8 +17,8 @@ MonoBehaviour:
   mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
-  isPassingThrough: 0
+  isPassingThrough: 1
   collisionDamage: 0
-  drop: {fileID: 0}
+  dropObjects: []
   parts: []
   percentage: 0.1
