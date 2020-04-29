@@ -192,8 +192,9 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
                         {
                             if (currentEntity.hasBonusTarget) break;
-                            if (currentEntity.hasBonusAdder && otherEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
-                            if (currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherEntity)) continue;
+                            var otherBonusPicker = other.BonusPickerPart;
+                            if (currentEntity.hasBonusAdder && otherBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                            if (currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherBonusPicker)) continue;
                             current.IsCollided = true;
                             currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
                             break;
@@ -201,8 +202,9 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                         else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
                         {
                             if (otherEntity.hasBonusTarget) continue;
-                            if (otherEntity.hasBonusAdder && currentEntity.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == otherEntity.bonusAdder.bonusObject.typeId).Any()) continue;
-                            if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentEntity)) continue;
+                            var currentBonusPicker = current.BonusPickerPart;
+                            if (otherEntity.hasBonusAdder && currentBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == otherEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                            if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentBonusPicker)) continue;
                             other.IsCollided = true;
                             otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
                         }
