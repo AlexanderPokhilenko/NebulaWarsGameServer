@@ -15,18 +15,16 @@ namespace Server.GameEngine
     //TODO нужно разбить
     public class Match
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(Match));
-
-        public readonly int MatchId;
-        
         private Contexts contexts;
+        public readonly int MatchId;
         private DateTime? gameStartTime;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
-        private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
-
         private IpAddressesStorage ipAddressesStorage;
         private PlayerDeathHandler playerDeathHandler; 
+        private readonly ILog log = LogManager.GetLogger(typeof(Match));
+        private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
+
 
         public Match(int matchId, MatchRemover matchRemover,
             MatchmakerMatchStatusNotifier  matchmakerMatchStatusNotifier)

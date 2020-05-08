@@ -550,7 +550,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: 
+    1: SUBSTANCE_PLUGIN_ENABLED
     7: 
     13: 
     19: 
