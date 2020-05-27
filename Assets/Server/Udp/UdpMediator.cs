@@ -26,7 +26,6 @@ namespace Server.Udp
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(data);
-            // log.Info(messageWrapper.MessageType.ToString());
             messageProcessor.Handle(messageWrapper, endPoint);
         }
     }

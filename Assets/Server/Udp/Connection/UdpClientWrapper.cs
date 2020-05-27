@@ -7,15 +7,17 @@ using log4net;
 
 namespace Server.Udp.Connection
 {
-    public class UdpListener
+    /// <summary>
+    /// Прослушивает указанный порт. При получении сообщения вызывает свой метод HandleBytes
+    /// </summary>
+    public class UdpClientWrapper
     {
-        private Thread receiveThread;
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpClientWrapper));
         private UdpClient udpClient;
+        private Thread receiveThread;
         private bool isThreadRunning;
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(UdpListener));
         
-        public UdpListener SetUpConnection(int listenPort)
+        public UdpClientWrapper SetupConnection(int listenPort)
         {
             try
             {
@@ -30,10 +32,10 @@ namespace Server.Udp.Connection
             }
             catch (Exception e)
             {
-                Log.Info("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
+                log.Info("Failed to listen for UDP at port " + listenPort + ": " + e.Message);
             }
             
-            Log.Info("Создан udp клиент на порте " + listenPort);
+            log.Info("Создан udp клиент на порте " + listenPort);
             return this;
         }
      
@@ -43,7 +45,7 @@ namespace Server.Udp.Connection
             {
                 receiveThread = new Thread(async () => await StartEndlessLoop(udpClient));
                 isThreadRunning = true;
-                receiveThread.Start();    
+                receiveThread.Start();
             }
             else
             {
@@ -59,7 +61,7 @@ namespace Server.Udp.Connection
                 {
                     if (client != null)
                     {
-                        var result = await client.ReceiveAsync();
+                        UdpReceiveResult result = await client.ReceiveAsync();
                         byte[] data = result.Buffer;
                         HandleBytes(data, result.RemoteEndPoint);   
                     }
@@ -71,14 +73,19 @@ namespace Server.Udp.Connection
                 }
                 catch (Exception e)
                 {
-                    Log.Info("Error receiving data from udp client: " + e.Message+" "+e.StackTrace);
+                    log.Info("Error receiving data from udp client: " + e.Message+" "+e.StackTrace);
                 }
             }
         }
 
+        public void Send(byte[] data, IPEndPoint endPoint)
+        {
+            udpClient.Send(data, data.Length, endPoint);
+        }
+        
         public void Stop()
         {
-            Log.Info("Остановка udp клиента");
+            log.Info("Остановка udp клиента");
             isThreadRunning = false;
             udpClient.Close();
             receiveThread.Interrupt();

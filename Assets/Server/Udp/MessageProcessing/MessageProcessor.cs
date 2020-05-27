@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
+using Libraries.NetworkLibrary.Udp.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Udp.MessageProcessing.Handlers;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using UnityEngine;
+using ZeroFormatter;
 
 namespace Server.Udp.MessageProcessing
 {
@@ -37,7 +41,7 @@ namespace Server.Udp.MessageProcessing
             {
                 rudpConfirmationSender.Handle(messageWrapper, sender);
             }
-            
+
             switch (messageWrapper.MessageType)
             {
                 case MessageType.PlayerInput:
@@ -52,6 +56,13 @@ namespace Server.Udp.MessageProcessing
                 case MessageType.PlayerExit:
                     exitMessageHandler.Handle(messageWrapper, sender);
                     break;
+                case MessageType.Debug:
+                    break;
+                //     UdpClient udpClient = new UdpClient();
+                //     DebugMessage debugMessage = new DebugMessage();
+                //     byte[] data = ZeroFormatterSerializer.Serialize(debugMessage);
+                //     udpClient.Send(data, data.Length, sender);
+                //     return;
                 default:
                     throw new Exception("Неожиданный тип сообщения "+messageWrapper.MessageType);
             }

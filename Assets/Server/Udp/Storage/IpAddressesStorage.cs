@@ -21,18 +21,15 @@ namespace Server.Udp.Storage
     исключается из хранилища ip адресов матча. 
  */
 
-//TODO чем инициализировать ip адрес? null или рандомное значение
-
     /// <summary>
     /// Содержит таблицу ip адресов для игроков.
     /// </summary>
     public class IpAddressesStorage
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(IpAddressesStorage));
-        
-        //PlayerId , ip 
         private readonly int matchId;
+        //PlayerId , ip 
         private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
+        private readonly ILog log = LogManager.GetLogger(typeof(IpAddressesStorage));
 
         public IpAddressesStorage(BattleRoyaleMatchData matchData)
         {
@@ -70,22 +67,16 @@ namespace Server.Udp.Storage
 
         public bool TryUpdateIpEndPoint(int playerId, IPEndPoint newIpEndPoint)
         {
-            // log.Info("Обновление ip");
+            // log.Info("Обновление ip для игрока "+playerId);
             //игрок есть в списке активных игроков?
             if (playersIpAddresses.TryGetValue(playerId, out IPEndPoint ipEndPoint))
             {
-                // log.Info("Такой уже есть");
-                //ip игрока поменялся?
-                //например с null на настоящий
-                //или если у мобильного оператора поменялись вышки
-                // log.Info($"текущий адрес  {ipEndPoint.Port}");
                 if (!Equals(newIpEndPoint, ipEndPoint))
                 {
                     //заменить устаревший адрес на актуальный
                     if (playersIpAddresses.TryUpdate(playerId, newIpEndPoint, ipEndPoint))
                     {
-                        // log.Info($"адрес нормально заменился {newIpEndPoint.Port}");
-                        //адрес нормально заменился
+                        log.Info($"адрес нормально заменился {newIpEndPoint.Address} {newIpEndPoint.AddressFamily} {newIpEndPoint.Port}");
                         return true;
                     }
                     else

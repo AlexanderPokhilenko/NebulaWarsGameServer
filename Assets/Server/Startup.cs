@@ -23,7 +23,7 @@ namespace Server
         private const int UdpListeningPort = 48956;
         
         private Thread httpListeningThread;
-        private UdpListenerFacade udpListenerFacade;
+        private UdpClientWrapperFacade udpClientWrapperFacade;
         private Thread matchmakerNotifierThread;
         
         private MatchStorage matchStorage;
@@ -44,7 +44,11 @@ namespace Server
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
-            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage);
+            
+            //TODO говно
+            UdpClientWrapperFacade udpBattleConnectionLocal = new UdpClientWrapperFacade();
+            
+            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, udpBattleConnectionLocal);
             matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, matchStatusNotifier);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, matchStatusNotifier);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
@@ -57,9 +61,8 @@ namespace Server
 
             //Старт прослушки
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpListenerFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
-                matchStorage, byteArrayRudpStorage, udpSendUtils);
-            
+            udpClientWrapperFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
+                matchStorage, byteArrayRudpStorage, udpSendUtils, udpBattleConnectionLocal);
 
             //Старт обработки
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
@@ -78,19 +81,19 @@ namespace Server
             return thread;
         }
 
-        private UdpListenerFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
+        private UdpClientWrapperFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
             ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, 
-            ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
+            ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils, UdpClientWrapperFacade udpBattleConnectionLocal)
         {
-
             UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg,
                 byteArrayRudpStorage, udpSendUtils);
             
-            var udpBattleConnectionLocal = new UdpListenerFacade(mediator);
+            udpBattleConnectionLocal.SetMediator(mediator);
+                
             udpBattleConnectionLocal
-                .SetUpConnection(port)
+                .SetupConnection(port)
                 .StartReceiveThread();
-            
+
             return udpBattleConnectionLocal;
         }
 
@@ -112,7 +115,7 @@ namespace Server
         public void StopAllThreads()
         {
             httpListeningThread.Interrupt();
-            udpListenerFacade.Stop();
+            udpClientWrapperFacade.Stop();
             matchmakerNotifierThread.Interrupt();
         }
     }

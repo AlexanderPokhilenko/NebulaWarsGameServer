@@ -304,8 +304,8 @@
           <e p="Startup.cs" t="Include" />
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
-              <e p="UdpListener.cs" t="Include" />
-              <e p="UdpListenerFacade.cs" t="Include" />
+              <e p="UdpClientWrapper.cs" t="Include" />
+              <e p="UdpClientWrapperFacade.cs" t="Include" />
             </e>
             <e p="MessageProcessing" t="Include">
               <e p="Handlers" t="Include">
@@ -320,8 +320,6 @@
             </e>
             <e p="Sending" t="Include">
               <e p="KillData.cs" t="Include" />
-              <e p="UdpDich.cs" t="Include" />
-              <e p="UdpSender.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">

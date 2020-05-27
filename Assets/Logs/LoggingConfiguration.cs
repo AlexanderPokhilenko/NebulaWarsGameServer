@@ -19,3 +19,4 @@ public static class LoggingConfiguration
         XmlConfigurator.Configure(new MemoryStream(xml));
     }
 }
+    
