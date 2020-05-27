@@ -304,8 +304,8 @@
           <e p="Startup.cs" t="Include" />
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
+              <e p="ShittyUdpDistributor.cs" t="Include" />
               <e p="UdpClientWrapper.cs" t="Include" />
-              <e p="UdpClientWrapperFacade.cs" t="Include" />
             </e>
             <e p="MessageProcessing" t="Include">
               <e p="Handlers" t="Include">
@@ -325,7 +325,6 @@
             <e p="Storage" t="Include">
               <e p="IpAddressesStorage.cs" t="Include" />
             </e>
-            <e p="UdpMediator.cs" t="Include" />
           </e>
         </e>
         <e p="Server.asmdef" t="Include" />

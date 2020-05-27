@@ -36,7 +36,7 @@ namespace Server.GameEngine
         }
         
         /// <summary>
-        /// Удаляет матч ищ коллекции.
+        /// Удаляет матч из коллекции.
         /// </summary>
         public Match DequeueMatch(int matchId)
         {

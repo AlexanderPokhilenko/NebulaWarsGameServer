@@ -13,24 +13,17 @@ using Server.GameEngine;
 using Server.Udp.Connection;
 using Server.Udp.Storage;
 
-//TODO запись rdup сообщений должна произвоиться даже, если ip адреса не были инициализированы
-//возможно, что отправляя в первых кадрах rudp они не будут добавлены в словарь
-//для того, чтобы бысто исправить это можно инициализировать ip адреса не null-ом, а рандомным ip
-//(при отправке rudp всегда берётся актуальный ip)
-//TODO попробовать уменьшить дублирование кода
-
 namespace Server.Udp.Sending
 {
     /// <summary>
-    /// Содержит методы для отправки udp сообщений игрокам по их id.
+    /// Отправляет сообщение игроку по его id.
     /// </summary>
     public class UdpSendUtils
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(UdpSendUtils));
-        
         private readonly MatchStorage matchStorage;
         private readonly ByteArrayRudpStorage rudpStorage;
         private readonly UdpClientWrapper udpClientWrapper;
+        private readonly ILog log = LogManager.GetLogger(typeof(UdpSendUtils));
 
         public UdpSendUtils(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             UdpClientWrapper udpClientWrapper)
@@ -39,20 +32,10 @@ namespace Server.Udp.Sending
             rudpStorage = byteArrayRudpStorage;
             this.udpClientWrapper = udpClientWrapper;
         }
-
-        private bool TryGetPlayerIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
-        {
-            bool success = matchStorage.TryGetIpEndPoint(matchId, playerId, out ipEndPoint);
-            if (!success && ipEndPoint == null)
-            {
-                log.Warn($"{nameof(TryGetPlayerIpEndPoint)} {nameof(playerId)} {playerId}");
-            }
-            return success && ipEndPoint != null;
-        }
         
         public void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)
         {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var gameEntities = withPosition.ToList();
                 var message = new PositionsMessage
@@ -79,7 +62,7 @@ namespace Server.Udp.Sending
         public void SendKill(int matchId, KillData killData)
         {
             int playerId = killData.TargetPlayerId;
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var killMessage = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, 
                     killData.VictimType);
@@ -99,7 +82,7 @@ namespace Server.Udp.Sending
         public void SendHealthPoints(int matchId, int targetPlayerId, float healthPoints)
         {
             int playerId = targetPlayerId;
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
                 var serializedMessage =
@@ -110,7 +93,7 @@ namespace Server.Udp.Sending
         
         public void SendMaxHealthPoints(int matchId, int playerId, float maxHealthPoints)
         {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 MaxHealthPointsMessage healthPointsMessage = new MaxHealthPointsMessage(maxHealthPoints);
                 var serializedMessage =
@@ -123,7 +106,7 @@ namespace Server.Udp.Sending
         public void SendCooldown(int matchId, int targetPlayerId, float ability, float[] weapons)
         {
             int playerId = targetPlayerId;
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var msg = new CooldownsMessage(ability, weapons);
                 var serializedMessage =
@@ -134,7 +117,7 @@ namespace Server.Udp.Sending
 
         public void SendCooldownInfo(int matchId, int playerId, float abilityCooldown, WeaponInfo[] weaponsInfos)
         {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var msg = new CooldownsInfosMessage(abilityCooldown, weaponsInfos);
                 var serializedMessage =
@@ -146,7 +129,7 @@ namespace Server.Udp.Sending
 
         public void SendShieldPoints(int matchId, int playerId, float shieldPoints)
         {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var healthPointsMessage = new ShieldPointsMessage(shieldPoints);
                 var serializedMessage =
@@ -157,7 +140,7 @@ namespace Server.Udp.Sending
 
         public void SendMaxShieldPoints(int matchId, int playerId, float maxShieldPoints)
         {
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 var healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
                 var serializedMessage =
@@ -171,7 +154,7 @@ namespace Server.Udp.Sending
         {
             log.Warn($"Отправка команды показать окно оезультатов боя {nameof(matchId)} {matchId} " +
                      $"{nameof(playerId)} {playerId}");
-            if (TryGetPlayerIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage(matchId);
                 log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");

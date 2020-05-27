@@ -37,6 +37,7 @@ namespace Server.Udp.Storage
             playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
             foreach (var playerInfo in matchData.GameUnitsForMatch.Players)
             {
+                //рандомный ip для того, чтобы rudp записывались для игроков, которые ещё не подключились
                 AddPlayer(playerInfo.AccountId, new IPEndPoint(11, 654));
             }
         }

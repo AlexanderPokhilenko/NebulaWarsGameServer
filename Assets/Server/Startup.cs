@@ -6,6 +6,7 @@ using Server.GameEngine.Experimental;
 using Server.Http;
 using Server.Udp;
 using Server.Udp.Connection;
+using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
@@ -20,10 +21,10 @@ namespace Server
     public class Startup
     {
         private const int HttpPort = 14065;
-        private const int UdpListeningPort = 48956;
+        private const int UdpPort = 48956;
         
         private Thread httpListeningThread;
-        private UdpClientWrapperFacade udpClientWrapperFacade;
+        private ShittyUdpDistributor shittyUdpDistributor;
         private Thread matchmakerNotifierThread;
         
         private MatchStorage matchStorage;
@@ -43,28 +44,37 @@ namespace Server
             
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
+            InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
+            ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
+            
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
+
+            shittyUdpDistributor = new ShittyUdpDistributor();
+            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, shittyUdpDistributor);
+            MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
+                byteArrayRudpStorage, udpSendUtils);
             
-            //TODO говно
-            UdpClientWrapperFacade udpBattleConnectionLocal = new UdpClientWrapperFacade();
+            shittyUdpDistributor.SetProcessor(messageProcessor);
             
-            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, udpBattleConnectionLocal);
             matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, matchStatusNotifier);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, matchStatusNotifier);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
-            InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
-            ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
+            
+            
+            //Старт прослушки матчмейкера
+            httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
+
+            //Старт прослушки игроков
+            shittyUdpDistributor
+                .SetupConnection(UdpPort)
+                .StartReceiveThread();
+
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
                 inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage, udpSendUtils);
-
-            //Старт прослушки
-            httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-            udpClientWrapperFacade = StartPlayersListening(UdpListeningPort, inputEntitiesCreator, exitEntitiesCreator, 
-                matchStorage, byteArrayRudpStorage, udpSendUtils, udpBattleConnectionLocal);
-
-            //Старт обработки
+            
+            //Старт тиков
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
             chronometer.StartEndlessLoop();
         }
@@ -81,21 +91,7 @@ namespace Server
             return thread;
         }
 
-        private UdpClientWrapperFacade StartPlayersListening(int port, InputEntitiesCreator inputEntitiesCreator, 
-            ExitEntitiesCreator exitEntitiesCreator, MatchStorage matchStorageArg, 
-            ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils, UdpClientWrapperFacade udpBattleConnectionLocal)
-        {
-            UdpMediator mediator = new UdpMediator(inputEntitiesCreator, exitEntitiesCreator, matchStorageArg,
-                byteArrayRudpStorage, udpSendUtils);
-            
-            udpBattleConnectionLocal.SetMediator(mediator);
-                
-            udpBattleConnectionLocal
-                .SetupConnection(port)
-                .StartReceiveThread();
-
-            return udpBattleConnectionLocal;
-        }
+        
 
         public void FinishAllMatches()
         {
@@ -115,7 +111,7 @@ namespace Server
         public void StopAllThreads()
         {
             httpListeningThread.Interrupt();
-            udpClientWrapperFacade.Stop();
+            shittyUdpDistributor.Stop();
             matchmakerNotifierThread.Interrupt();
         }
     }

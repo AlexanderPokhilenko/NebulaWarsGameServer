@@ -16,7 +16,7 @@ namespace Server.Udp.MessageProcessing
     /// <summary>
     /// Перенаправляет все сообщения от игроков по обработчикам.
     /// </summary>
-    internal class MessageProcessor
+    public class MessageProcessor
     {
         private readonly InputMessageHandler inputMessageHandler;
         private readonly PlayerExitMessageHandler exitMessageHandler;

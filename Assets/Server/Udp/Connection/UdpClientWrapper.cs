@@ -8,9 +8,10 @@ using log4net;
 namespace Server.Udp.Connection
 {
     /// <summary>
-    /// Прослушивает указанный порт. При получении сообщения вызывает свой метод HandleBytes
+    /// Прослушивает указанный порт. При получении сообщения вызывает свой метод HandleBytes.
+    /// Может отправлять дейтаграммы.
     /// </summary>
-    public class UdpClientWrapper
+    public abstract class UdpClientWrapper
     {
         private readonly ILog log = LogManager.GetLogger(typeof(UdpClientWrapper));
         private UdpClient udpClient;
@@ -77,6 +78,10 @@ namespace Server.Udp.Connection
                 }
             }
         }
+        
+        protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
+        {
+        }
 
         public void Send(byte[] data, IPEndPoint endPoint)
         {
@@ -89,11 +94,7 @@ namespace Server.Udp.Connection
             isThreadRunning = false;
             udpClient.Close();
             receiveThread.Interrupt();
-        }
-        
-        protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
-        {
-            // Log.Info($"Пришло сообщение размером в {data.Length} байт");
+            receiveThread.Join();
         }
     }
 }
