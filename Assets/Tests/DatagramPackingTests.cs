@@ -11,7 +11,7 @@ namespace Tests
         public DatagramPackingTests()
         {
             //Нужно, чтобы сообщения сериализовались в массивы байт
-            ZeroFormatterInitializer.Register();
+            // ZeroFormatterInitializer.Register();
         }
         
         [Test]

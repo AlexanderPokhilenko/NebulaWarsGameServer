@@ -1,4 +1,7 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿using System.Collections.Generic;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
+using System.Collections.Generic;
+         using System.Linq;
+         using UnityEngine;
 using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
@@ -6,29 +9,35 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
     [ZeroFormattable]
     public class PositionsMessage : ITypedMessage
     {
-        [Index(0)] public virtual Dictionary<int, ViewTransform> EntitiesInfo { get; set; }
+        [Index(0)] public virtual Dictionary<ushort, ViewTransform> EntitiesInfo { get; set; }
         //TODO: перенести в UDP с подтверждением
-        [Index(1)] public virtual int PlayerEntityId { get; set; }
+        [Index(1)] public virtual ushort PlayerEntityId { get; set; }
+        [Index(2)] public virtual Dictionary<ushort, ushort> RadiusInfo { get; set; }
 
-        [Index(2)] public virtual Dictionary<int, float> RadiusInfo { get; set; }
-
+        [IgnoreFormat]
+        public virtual Dictionary<ushort, float> FloatRadiusInfo =>
+            RadiusInfo.ToDictionary(pair => pair.Key, pair => Mathf.HalfToFloat(pair.Value));
+        
         public PositionsMessage()
         {
-            //EntitiesInfo = new Dictionary<int, ViewTransform>();
         }
 
         public MessageType GetMessageType() => MessageType.Positions;
     }
+    
     [ZeroFormattable]
     public struct Vector2
     {
-        [Index(0)] public float X;
-        [Index(1)] public float Y;
+        [Index(0)] public ushort x;
+        [Index(1)] public ushort y;
+        
+        [IgnoreFormat] public float X => Mathf.HalfToFloat(x);
+        [IgnoreFormat] public float Y => Mathf.HalfToFloat(y);
 
         public Vector2(float x, float y)
         {
-            X = x;
-            Y = y;
+            this.x = Mathf.FloatToHalf(x);
+            this.y = Mathf.FloatToHalf(y);
         }
 
         public override string ToString()
@@ -42,60 +51,67 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
 #endif
     }
     
+    /// <summary>
+    /// 7 байтов
+    /// </summary>
     [ZeroFormattable]
     public struct ViewTransform
     {
-        [Index(0)] public float x;
-        [Index(1)] public float y;
-        [Index(2)] public float angle;
+        [Index(0)] public ushort x;
+        [Index(1)] public ushort y;
+        [Index(2)] public ushort angle;
         [Index(3)] public ViewTypeId typeId;
+
+        [IgnoreFormat] public float X => Mathf.HalfToFloat(x);
+        [IgnoreFormat] public float Y => Mathf.HalfToFloat(y);
+        [IgnoreFormat] public float Angle
+        {
+            get => Mathf.HalfToFloat(angle);
+            set => Mathf.FloatToHalf(value);
+        }
 
         public ViewTransform(float x, float y, float angle, ViewTypeId typeId)
         {
-            this.x = x;
-            this.y = y;
-            this.angle = angle;
+            this.x = Mathf.FloatToHalf(x);
+            this.y = Mathf.FloatToHalf(y);
+            this.angle = Mathf.FloatToHalf(angle);
             this.typeId = typeId;
         }
 
-        public ViewTransform(float x, float y, ViewTypeId typeId)
+        public ViewTransform(float x, float y, ViewTypeId typeId) : this(x, y, 0f, typeId)
+        { }
+
+        public ViewTransform(Vector2 position, ViewTypeId typeId) : this(position.X, position.Y, typeId)
+        { }
+
+        public ViewTransform(Vector2 position, float angle, ViewTypeId typeId) : this(position.X, position.Y, angle, typeId)
+        { }
+
+        public Vector2 GetPosition() => new Vector2(X, Y);
+
+        public static ViewTransform operator +(ViewTransform t1, ViewTransform t2)
         {
-            this.x = x;
-            this.y = y;
-            this.angle = 0f;
-            this.typeId = typeId;
+            if(t1.typeId != t2.typeId) throw new NotSupportedException(nameof(typeId) + " не совпали!");
+            return new ViewTransform(t1.X + t2.X, t1.Y + t2.Y, t1.Angle + t2.Angle, t2.typeId);
         }
 
-        public ViewTransform(Vector2 position, ViewTypeId typeId)
+        public static ViewTransform operator -(ViewTransform t1, ViewTransform t2)
         {
-            this.x = position.X;
-            this.y = position.Y;
-            this.angle = 0f;
-            this.typeId = typeId;
+            if (t1.typeId != t2.typeId) throw new NotSupportedException(nameof(typeId) + " не совпали!");
+            return new ViewTransform(t1.X - t2.X, t1.Y - t2.Y, t1.Angle - t2.Angle, t2.typeId);
         }
 
-        public ViewTransform(Vector2 position, float angle, ViewTypeId typeId)
+        public static ViewTransform operator *(ViewTransform t, float k)
         {
-            this.x = position.X;
-            this.y = position.Y;
-            this.angle = angle;
-            this.typeId = typeId;
+            return new ViewTransform(t.X * k, t.Y * k, t.Angle * k, t.typeId);
         }
 
-        public Vector2 GetPosition() => new Vector2(x, y);
-    }
-    
-    [ZeroFormattable]
-    public struct DebugMessage:ITypedMessage
-    {
-        [Index(0)] public uint MessageNumberThatConfirms;
+        public static ViewTransform operator *(float k, ViewTransform t) => t * k;
 
-        public DebugMessage(uint messageNumberThatConfirms)
+        public static ViewTransform operator /(ViewTransform t, float k)
         {
-            MessageNumberThatConfirms = messageNumberThatConfirms;
+            return new ViewTransform(t.X / k, t.Y / k, t.Angle / k, t.typeId);
         }
-        
-        public MessageType GetMessageType() => MessageType.Debug;
     }
     
     [ZeroFormattable]
@@ -119,5 +135,4 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
             SomeNumber = someNumber;
         }
     }
-    
 }

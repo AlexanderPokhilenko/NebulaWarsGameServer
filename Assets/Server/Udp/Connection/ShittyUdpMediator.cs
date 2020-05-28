@@ -12,7 +12,7 @@ namespace Server.Udp.Connection
     /// Принимает все udp сообщения от игроков.
     /// </summary>
     /// //TODO говно
-    public class ShittyUdpDistributor:UdpClientWrapper
+    public class ShittyUdpMediator:UdpClientWrapper
     {
         private MessageProcessor messageProcessor;
 

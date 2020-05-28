@@ -74,7 +74,8 @@ namespace Server.GameEngine.Systems
             
             for (var i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
             {
-                var gameUnit = matchData.GameUnitsForMatch[i];
+                GameUnit gameUnit = matchData.GameUnitsForMatch[i];
+                // UnityEngine.Debug.LogWarning($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId} {nameof(gameUnit.IsBot)} {gameUnit.IsBot}");
                 
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;

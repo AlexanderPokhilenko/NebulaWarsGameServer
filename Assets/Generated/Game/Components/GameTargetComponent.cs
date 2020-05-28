@@ -11,14 +11,14 @@ public partial class GameEntity {
     public TargetComponent target { get { return (TargetComponent)GetComponent(GameComponentsLookup.Target); } }
     public bool hasTarget { get { return HasComponent(GameComponentsLookup.Target); } }
 
-    public void AddTarget(int newId) {
+    public void AddTarget(ushort newId) {
         var index = GameComponentsLookup.Target;
         var component = (TargetComponent)CreateComponent(index, typeof(TargetComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceTarget(int newId) {
+    public void ReplaceTarget(ushort newId) {
         var index = GameComponentsLookup.Target;
         var component = (TargetComponent)CreateComponent(index, typeof(TargetComponent));
         component.id = newId;

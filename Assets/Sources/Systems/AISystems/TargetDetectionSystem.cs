@@ -26,16 +26,16 @@ public sealed class TargetDetectionSystem : IExecuteSystem
 
     private class Target
     {
-        public readonly int Id;
+        public readonly ushort Id;
         public readonly float Radius;
         public readonly float SqrRadius;
-        public readonly int GrandOwnerId;
+        public readonly ushort GrandOwnerId;
         public readonly Vector2 GlobalPosition;
         public readonly float NegativeAngleSin;
         public readonly float NegativeAngleCos;
         public readonly bool IsPlayer;
         public readonly float[] SqrChildrenTargetingRadiuses;
-        public readonly int[] ChildrenGrandTargetIds;
+        public readonly ushort[] ChildrenGrandTargetIds;
         public readonly int DirectionTargetingChildrenCount;
 
         public Target(GameEntity entity, GameContext gameContext)
@@ -81,7 +81,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             var grandParent = e.GetGrandParent(gameContext);
             var currentGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.GetGrandOwnerId(gameContext);
             var minVal = float.PositiveInfinity;
-            var targetId = 0;
+            ushort targetId = 0;
             var targetFound = false;
             foreach (var target in targets)
             {

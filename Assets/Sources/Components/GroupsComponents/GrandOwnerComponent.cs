@@ -12,5 +12,5 @@ using UnityEngine;
 public sealed class GrandOwnerComponent : IComponent
 {
     [EntityIndex]
-    public int id;
+    public ushort id;
 }

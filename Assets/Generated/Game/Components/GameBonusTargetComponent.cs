@@ -11,14 +11,14 @@ public partial class GameEntity {
     public BonusTargetComponent bonusTarget { get { return (BonusTargetComponent)GetComponent(GameComponentsLookup.BonusTarget); } }
     public bool hasBonusTarget { get { return HasComponent(GameComponentsLookup.BonusTarget); } }
 
-    public void AddBonusTarget(int newId) {
+    public void AddBonusTarget(ushort newId) {
         var index = GameComponentsLookup.BonusTarget;
         var component = (BonusTargetComponent)CreateComponent(index, typeof(BonusTargetComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceBonusTarget(int newId) {
+    public void ReplaceBonusTarget(ushort newId) {
         var index = GameComponentsLookup.BonusTarget;
         var component = (BonusTargetComponent)CreateComponent(index, typeof(BonusTargetComponent));
         component.id = newId;

@@ -28,6 +28,6 @@ public static class ContextsIdExtensions
 
     public static void AddId(IContext context, IEntity entity)
     {
-        (entity as IIdEntity).ReplaceId(entity.creationIndex);
+        (entity as IIdEntity).ReplaceId((ushort)entity.creationIndex);
     }
 }

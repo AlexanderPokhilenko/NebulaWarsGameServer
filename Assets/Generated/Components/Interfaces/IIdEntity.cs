@@ -11,7 +11,7 @@ public partial interface IIdEntity {
     IdComponent id { get; }
     bool hasId { get; }
 
-    void AddId(int newValue);
-    void ReplaceId(int newValue);
+    void AddId(ushort newValue);
+    void ReplaceId(ushort newValue);
     void RemoveId();
 }

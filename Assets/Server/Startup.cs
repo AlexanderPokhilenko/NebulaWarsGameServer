@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
 using Server.Http;
-using Server.Udp;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
@@ -24,7 +23,7 @@ namespace Server
         private const int UdpPort = 48956;
         
         private Thread httpListeningThread;
-        private ShittyUdpDistributor shittyUdpDistributor;
+        private ShittyUdpMediator shittyUdpMediator;
         private Thread matchmakerNotifierThread;
         
         private MatchStorage matchStorage;
@@ -49,12 +48,15 @@ namespace Server
             
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
 
-            shittyUdpDistributor = new ShittyUdpDistributor();
-            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, shittyUdpDistributor);
+            shittyUdpMediator = new ShittyUdpMediator();
+            
+            ShittyDatagramPacker shittyDatagramPacker = new ShittyDatagramPacker(1500, shittyUdpMediator);
+            OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(shittyDatagramPacker);
+            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, outgoingMessagesStorage);
             MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
                 byteArrayRudpStorage, udpSendUtils);
             
-            shittyUdpDistributor.SetProcessor(messageProcessor);
+            shittyUdpMediator.SetProcessor(messageProcessor);
             
             matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, matchStatusNotifier);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, matchStatusNotifier);
@@ -67,12 +69,13 @@ namespace Server
             httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
 
             //Старт прослушки игроков
-            shittyUdpDistributor
+            shittyUdpMediator
                 .SetupConnection(UdpPort)
                 .StartReceiveThread();
 
+            RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage, udpSendUtils);
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
-                inputEntitiesCreator, exitEntitiesCreator, byteArrayRudpStorage, udpSendUtils);
+                inputEntitiesCreator, exitEntitiesCreator, rudpMessagesSender, outgoingMessagesStorage);
             
             //Старт тиков
             Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
@@ -90,8 +93,6 @@ namespace Server
             thread.Start();
             return thread;
         }
-
-        
 
         public void FinishAllMatches()
         {
@@ -111,7 +112,7 @@ namespace Server
         public void StopAllThreads()
         {
             httpListeningThread.Interrupt();
-            shittyUdpDistributor.Stop();
+            shittyUdpMediator.Stop();
             matchmakerNotifierThread.Interrupt();
         }
     }

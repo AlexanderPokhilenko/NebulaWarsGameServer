@@ -1,5 +1,8 @@
-﻿using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+﻿using System;
+using System.Collections.Generic;
+using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using NUnit.Framework;
+using UnityEngine;
 using ZeroFormatter;
 
 namespace Tests
@@ -8,7 +11,7 @@ namespace Tests
     {
         public ZeroFormatterTests()
         { 
-            ZeroFormatterInitializer.Register();
+            // ZeroFormatterInitializer.Register();
         }
 
         [Test]
@@ -45,6 +48,71 @@ namespace Tests
             
             //Assert
             Assert.AreEqual(4, serialized.Length);
+        }
+        
+        [Test]
+        public void Test3()
+        {
+            //Arrange
+            PositionsMessage testMessageClass1 = new PositionsMessage
+            {
+                PlayerEntityId = 54,
+                RadiusInfo = new Dictionary<ushort, ushort>()
+                {
+                    {1,1}
+                },
+                EntitiesInfo = new Dictionary<ushort, ViewTransform>()
+                {
+                    {5, new ViewTransform()}
+                }
+            };
+            
+            //Act
+            byte[] serialized = ZeroFormatterSerializer.Serialize(testMessageClass1);
+            
+            //Assert
+            Assert.AreEqual(32, serialized.Length);
+        }  
+        
+        [Test]
+        public void Test4()
+        {
+            //Arrange
+            ViewTransform viewTransform = new ViewTransform();
+            //Act
+            byte[] serialized = ZeroFormatterSerializer.Serialize(viewTransform);
+            
+            //Assert
+            Assert.AreEqual(13, serialized.Length);
+        }
+        
+        [Test]
+        public void Test5()
+        {
+            //Arrange
+            ViewTransform viewTransform = new ViewTransform();
+            //Act
+            byte[] serialized = ZeroFormatterSerializer.Serialize(viewTransform);
+            
+            //Assert
+            Assert.AreEqual(13, serialized.Length);
+        }
+        
+        [Test]
+        public void Test6()
+        {
+            //Arrange
+            float pi = Mathf.PI;
+            
+            //Act
+            ushort half = Mathf.FloatToHalf(pi);
+            float restoredPi = Mathf.HalfToFloat(half);
+
+            Console.WriteLine(pi);
+            Console.WriteLine(restoredPi);
+            
+            //Assert
+            Assert.IsTrue(Mathf.Abs(pi-restoredPi)<0.2);
         }
     }
 }

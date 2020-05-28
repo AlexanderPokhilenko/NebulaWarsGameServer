@@ -11,14 +11,14 @@ public partial class GameEntity {
     public ParentComponent parent { get { return (ParentComponent)GetComponent(GameComponentsLookup.Parent); } }
     public bool hasParent { get { return HasComponent(GameComponentsLookup.Parent); } }
 
-    public void AddParent(int newId) {
+    public void AddParent(ushort newId) {
         var index = GameComponentsLookup.Parent;
         var component = (ParentComponent)CreateComponent(index, typeof(ParentComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceParent(int newId) {
+    public void ReplaceParent(ushort newId) {
         var index = GameComponentsLookup.Parent;
         var component = (ParentComponent)CreateComponent(index, typeof(ParentComponent));
         component.id = newId;

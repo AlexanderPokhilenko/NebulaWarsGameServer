@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿﻿﻿using ZeroFormatter;
 
 // ReSharper disable once CheckNamespace
 namespace NetworkLibrary.NetworkLibrary.Udp

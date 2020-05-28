@@ -11,14 +11,14 @@ public partial class GameEntity {
     public GrandOwnerComponent grandOwner { get { return (GrandOwnerComponent)GetComponent(GameComponentsLookup.GrandOwner); } }
     public bool hasGrandOwner { get { return HasComponent(GameComponentsLookup.GrandOwner); } }
 
-    public void AddGrandOwner(int newId) {
+    public void AddGrandOwner(ushort newId) {
         var index = GameComponentsLookup.GrandOwner;
         var component = (GrandOwnerComponent)CreateComponent(index, typeof(GrandOwnerComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceGrandOwner(int newId) {
+    public void ReplaceGrandOwner(ushort newId) {
         var index = GameComponentsLookup.GrandOwner;
         var component = (GrandOwnerComponent)CreateComponent(index, typeof(GrandOwnerComponent));
         component.id = newId;

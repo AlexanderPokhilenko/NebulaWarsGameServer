@@ -12,7 +12,7 @@ public partial class GameContext {
     public ZoneComponent zone { get { return zoneEntity.zone; } }
     public bool hasZone { get { return zoneEntity != null; } }
 
-    public GameEntity SetZone(int newId) {
+    public GameEntity SetZone(ushort newId) {
         if (hasZone) {
             throw new Entitas.EntitasException("Could not set Zone!\n" + this + " already has an entity with ZoneComponent!",
                 "You should check if the context already has a zoneEntity before setting it or use context.ReplaceZone().");
@@ -22,7 +22,7 @@ public partial class GameContext {
         return entity;
     }
 
-    public void ReplaceZone(int newId) {
+    public void ReplaceZone(ushort newId) {
         var entity = zoneEntity;
         if (entity == null) {
             entity = SetZone(newId);
@@ -49,14 +49,14 @@ public partial class GameEntity {
     public ZoneComponent zone { get { return (ZoneComponent)GetComponent(GameComponentsLookup.Zone); } }
     public bool hasZone { get { return HasComponent(GameComponentsLookup.Zone); } }
 
-    public void AddZone(int newId) {
+    public void AddZone(ushort newId) {
         var index = GameComponentsLookup.Zone;
         var component = (ZoneComponent)CreateComponent(index, typeof(ZoneComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceZone(int newId) {
+    public void ReplaceZone(ushort newId) {
         var index = GameComponentsLookup.Zone;
         var component = (ZoneComponent)CreateComponent(index, typeof(ZoneComponent));
         component.id = newId;

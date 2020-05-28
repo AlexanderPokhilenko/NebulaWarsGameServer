@@ -6,5 +6,5 @@ using Entitas.CodeGeneration.Attributes;
 public sealed class IdComponent : IComponent
 {
     [PrimaryEntityIndex]
-    public int value;
+    public ushort value;
 }

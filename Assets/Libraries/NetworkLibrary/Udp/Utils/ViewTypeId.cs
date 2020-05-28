@@ -1,6 +1,6 @@
-﻿public enum ViewTypeId
+﻿﻿﻿public enum ViewTypeId:byte
 {
-    Invisible,
+    Invisible=0,
     CircleUfo,
     Square,
     TriangleShip,

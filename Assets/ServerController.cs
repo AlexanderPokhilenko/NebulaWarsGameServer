@@ -14,8 +14,16 @@ public class ServerController : MonoBehaviour
 
     private void Start()
     {
-        TestMessageClass1 test =new TestMessageClass1();
-        ZeroFormatterSerializer.Serialize(test);
+        // //Arrange
+        // float pi = 45.128f;
+        //     
+        // //Act
+        // ushort half = Mathf.FloatToHalf(pi);
+        // float restoredPi = Mathf.HalfToFloat(half);
+        //
+        // Debug.LogWarning(pi);
+        // Debug.LogWarning(restoredPi);
+
         
         startup = new Startup();
         startup.Run();

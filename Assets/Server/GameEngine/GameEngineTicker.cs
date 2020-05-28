@@ -1,9 +1,44 @@
-﻿using Server.GameEngine.Experimental;
+﻿using System.Collections.Generic;
+using System.Net;
+using Server.GameEngine.Experimental;
 using Server.Udp.Sending;
-using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
+    public class OutgoingMessagesStorage
+    {
+        private readonly ShittyDatagramPacker shittyDatagramPacker;
+
+        private readonly Dictionary<IPEndPoint, List<byte[]>> messages = new Dictionary<IPEndPoint, List<byte[]>>();
+        
+        public OutgoingMessagesStorage(ShittyDatagramPacker shittyDatagramPacker)
+        {
+            this.shittyDatagramPacker = shittyDatagramPacker;
+        }
+        
+        public void AddMessage(byte[] data, IPEndPoint ipEndPoint)
+        {
+            if (messages.TryGetValue(ipEndPoint, out var playerMessages))
+            {
+                playerMessages.Add(data);
+            }
+            else
+            {
+                //TODO сколько сообщений отправляется игроку за кадр в среднем?
+                messages.Add(ipEndPoint, new List<byte[]>(5){data} );
+            }
+        }
+        
+        public void SendAllMessages()
+        {
+            foreach (var pair in messages)
+            {
+                shittyDatagramPacker.Send(pair.Key, pair.Value);
+            }
+            
+            messages.Clear();
+        }
+    }
     /// <summary>
     /// Отвечает за правильный вызов подпрограмм во время тика.
     /// </summary>
@@ -14,16 +49,18 @@ namespace Server.GameEngine
         private readonly InputEntitiesCreator inputEntitiesCreator;
         private readonly ExitEntitiesCreator exitEntitiesCreator;
         private readonly RudpMessagesSender rudpMessagesSender;
+        private readonly OutgoingMessagesStorage outgoingMessagesStorage;
 
         public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
             InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
+            RudpMessagesSender rudpMessagesSender, OutgoingMessagesStorage outgoingMessagesStorage)
         {
             this.matchStorage = matchStorage;
             this.matchLifeCycleManager = matchLifeCycleManager;
             this.inputEntitiesCreator = inputEntitiesCreator;
             this.exitEntitiesCreator = exitEntitiesCreator;
-            rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage, udpSendUtils);
+            this.rudpMessagesSender = rudpMessagesSender;
+            this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
 
         public void Tick()
@@ -41,7 +78,8 @@ namespace Server.GameEngine
             rudpMessagesSender.SendAll();
             
             //Отправка созданных сообщений игрокам
-
+            outgoingMessagesStorage.SendAllMessages();
+            
             //создание/удаление матчей
             matchLifeCycleManager.UpdateMatchesLifeStatus();
         }

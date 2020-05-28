@@ -8,5 +8,5 @@ using Entitas;
 [Game]
 public sealed class BonusTargetComponent : IComponent
 {
-    public int id;
+    public ushort id;
 }

@@ -10,5 +10,5 @@ using UnityEngine;
 [Game]
 public sealed class TargetComponent : IComponent
 {
-    public int id;
+    public ushort id;
 }

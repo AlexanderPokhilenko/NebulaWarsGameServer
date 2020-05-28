@@ -27,16 +27,15 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<InputEntity> entities)
         {
-            foreach (var inputEntity in entities)
+            foreach (InputEntity inputEntity in entities)
             {
                 var playerJoystickInput = inputEntity.movement.value;
                 var playerId = inputEntity.player.id;
-
                 var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
-
                 if (gamePlayer == null)
                 {
-                    Log.Warn("Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются.");
+                    Log.Warn($"Пришло сообщение о движении от игрока, которого (уже) нет в комнате. " +
+                             $"Данные игнорируются. {nameof(playerId)} {playerId}");
                     return;
                 }
 
