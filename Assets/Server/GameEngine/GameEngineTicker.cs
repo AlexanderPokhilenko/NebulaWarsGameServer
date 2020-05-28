@@ -31,17 +31,19 @@ namespace Server.GameEngine
             inputEntitiesCreator.Create();
             exitEntitiesCreator.Create();
             
-            //Перемещение игровых сущностей
+            //Перемещение игровых сущностей и создание сообщений с новым состоянием игрового мира
             foreach (Match match in matchStorage.GetAllMatches())
             {
                 match.Tick();
             }
 
+            //добавление rudp к списку того, что нужно отправить
+            rudpMessagesSender.SendAll();
+            
+            //Отправка созданных сообщений игрокам
+
             //создание/удаление матчей
             matchLifeCycleManager.UpdateMatchesLifeStatus();
-            
-            //отправка rudp
-            rudpMessagesSender.SendAll();
         }
     }
 }

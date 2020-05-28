@@ -25,7 +25,6 @@ namespace Server.GameEngine
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
         private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
 
-
         public Match(int matchId, MatchRemover matchRemover,
             MatchmakerMatchStatusNotifier  matchmakerMatchStatusNotifier)
         {

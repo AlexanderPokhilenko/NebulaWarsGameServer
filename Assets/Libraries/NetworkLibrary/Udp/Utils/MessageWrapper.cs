@@ -17,6 +17,11 @@ namespace NetworkLibrary.NetworkLibrary.Udp
             MessageId = messageId;
             NeedResponse = needResponse;
         }
+
+        public int GetSize()
+        {
+            return 1 + SerializedMessage.Length + 4 + 1;
+        }
     }
 
     public interface ITypedMessage

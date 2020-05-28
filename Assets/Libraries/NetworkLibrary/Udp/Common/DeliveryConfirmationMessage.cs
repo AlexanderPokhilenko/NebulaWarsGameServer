@@ -15,17 +15,4 @@ namespace Libraries.NetworkLibrary.Udp.Common
             MessageNumberThatConfirms = messageNumberThatConfirms;
         }
     }
-    
-    [ZeroFormattable]
-    public struct DebugMessage:ITypedMessage
-    {
-        [Index(0)] public uint MessageNumberThatConfirms;
-
-        public DebugMessage(uint messageNumberThatConfirms)
-        {
-            MessageNumberThatConfirms = messageNumberThatConfirms;
-        }
-        
-        public MessageType GetMessageType() => MessageType.Debug;
-    }
 }

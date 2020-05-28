@@ -1,5 +1,9 @@
-﻿using Server;
+﻿using Libraries.NetworkLibrary.Udp.Common;
+using NetworkLibrary.NetworkLibrary.Udp;
+using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Server;
 using UnityEngine;
+using ZeroFormatter;
 
 /// <summary>
 /// Точка входа в проект.
@@ -7,9 +11,12 @@ using UnityEngine;
 public class ServerController : MonoBehaviour
 {
     private Startup startup;
-    
+
     private void Start()
     {
+        TestMessageClass1 test =new TestMessageClass1();
+        ZeroFormatterSerializer.Serialize(test);
+        
         startup = new Startup();
         startup.Run();
     }

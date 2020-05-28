@@ -12,6 +12,7 @@ using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
 using Server.Udp.Connection;
 using Server.Udp.Storage;
+using ZeroFormatter;
 
 namespace Server.Udp.Sending
 {
@@ -37,21 +38,17 @@ namespace Server.Udp.Sending
         {
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var gameEntities = withPosition.ToList();
-                var message = new PositionsMessage
+                List<GameEntity> gameEntities = withPosition.ToList();
+                PositionsMessage message = new PositionsMessage
                 {
                     //TODO что это за ужас?
-                    EntitiesInfo = gameEntities.ToDictionary(e => e.id.value,
-                        e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
+                    EntitiesInfo = gameEntities.ToDictionary(e => e.id.value, e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
                     //TODO: перенести установление в UDP с подтверждением
-                    PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == playerId)
-                        .id.value,
-                    RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius).ToDictionary(e => e.id.value,
-                        e => e.circleCollider.radius)
+                    PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == playerId).id.value,
+                    RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius).ToDictionary(e => e.id.value, e => e.circleCollider.radius)
                 };
-                var data = MessageFactory.GetSerializedMessage(message, false, out uint messageId); 
+                byte[] data = MessageFactory.GetSerializedMessage(message, false, out uint messageId); 
                 udpClientWrapper.Send(data, ipEndPoint);
-                // log.Info("Отправка позиций успешно. Размер "+data.Length);
             }
             else
             {
@@ -64,12 +61,9 @@ namespace Server.Udp.Sending
             int playerId = killData.TargetPlayerId;
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var killMessage = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, 
-                    killData.VictimType);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
-                rudpStorage.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, 
-                    serializedMessage);
+                KillMessage killMessage = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, killData.VictimType);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
+                rudpStorage.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, serializedMessage);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -85,8 +79,7 @@ namespace Server.Udp.Sending
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 HealthPointsMessage healthPointsMessage = new HealthPointsMessage(healthPoints);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);   
             }
         }
@@ -96,8 +89,7 @@ namespace Server.Udp.Sending
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 MaxHealthPointsMessage healthPointsMessage = new MaxHealthPointsMessage(maxHealthPoints);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
@@ -108,9 +100,8 @@ namespace Server.Udp.Sending
             int playerId = targetPlayerId;
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var msg = new CooldownsMessage(ability, weapons);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(msg, false, out uint messageId);
+                CooldownsMessage msg = new CooldownsMessage(ability, weapons);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(msg, false, out uint messageId);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -119,9 +110,8 @@ namespace Server.Udp.Sending
         {
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var msg = new CooldownsInfosMessage(abilityCooldown, weaponsInfos);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(msg, true, out uint messageId);
+                CooldownsInfosMessage msg = new CooldownsInfosMessage(abilityCooldown, weaponsInfos);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(msg, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
@@ -131,9 +121,8 @@ namespace Server.Udp.Sending
         {
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var healthPointsMessage = new ShieldPointsMessage(shieldPoints);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
+                ShieldPointsMessage healthPointsMessage = new ShieldPointsMessage(shieldPoints);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(healthPointsMessage, false, out uint messageId);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
         }
@@ -142,9 +131,8 @@ namespace Server.Udp.Sending
         {
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
-                var healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
+                MaxShieldPointsMessage healthPointsMessage = new MaxShieldPointsMessage(maxShieldPoints);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(healthPointsMessage, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);
             }
@@ -158,23 +146,22 @@ namespace Server.Udp.Sending
             {
                 ShowPlayerAchievementsMessage showPlayerAchievementsMessage = new ShowPlayerAchievementsMessage(matchId);
                 log.Warn($"Отправка сообщения о завершении боя игроку с id {playerId}.");
-                var serializedMessage =
-                    MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
+                byte[] serializedMessage = MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 udpClientWrapper.Send(serializedMessage, ipEndPoint);    
             }
         }
         
-        public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint address)
+        public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint playerAddress)
         {
-            if (address != null)
+            if (playerAddress != null)
             {
-                var data = MessageFactory.GetSerializedMessage(message, false, out uint messageId);
-                udpClientWrapper.Send(data, address);
+                byte[] data = MessageFactory.GetSerializedMessage(message, false, out uint messageId);
+                udpClientWrapper.Send(data, playerAddress);
             }
             else
             {
-                throw new Exception("SendDeliveryConfirmationMessage address == null");
+                throw new Exception("SendDeliveryConfirmationMessage playerAddress == null");
             }
         }
     }

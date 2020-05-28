@@ -1,14 +1,11 @@
-﻿﻿﻿﻿﻿﻿using ZeroFormatter;
+﻿﻿﻿﻿﻿﻿using System.Collections.Generic;
+     using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
     [ZeroFormattable]
-    public struct MessagesContainer
+    public class MessagesContainer
     {
-        [Index(0)] public MessageWrapper[] Messages;
-        public MessagesContainer(MessageWrapper[] messages)
-        {
-            Messages = messages;
-        }
+        [Index(0)] public virtual byte[][] Messages { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
+using Server.Udp.Sending;
 
 namespace Server.Udp.Connection
 {
@@ -11,7 +12,7 @@ namespace Server.Udp.Connection
     /// Прослушивает указанный порт. При получении сообщения вызывает свой метод HandleBytes.
     /// Может отправлять дейтаграммы.
     /// </summary>
-    public abstract class UdpClientWrapper
+    public abstract class UdpClientWrapper:IUdpSender
     {
         private readonly ILog log = LogManager.GetLogger(typeof(UdpClientWrapper));
         private UdpClient udpClient;
@@ -85,7 +86,11 @@ namespace Server.Udp.Connection
 
         public void Send(byte[] data, IPEndPoint endPoint)
         {
-            udpClient.Send(data, data.Length, endPoint);
+            int lengthOfTheSentDatagram = udpClient.Send(data, data.Length, endPoint);
+            if (lengthOfTheSentDatagram != data.Length)
+            {
+                log.Warn("Ошибка длины сообщения.");
+            }
         }
         
         public void Stop()

@@ -131,6 +131,7 @@
             </e>
             <e p="Udp" t="Include">
               <e p="Common" t="Include">
+                <e p="DebugMessage.cs" t="Include" />
                 <e p="DeliveryConfirmationMessage.cs" t="Include" />
               </e>
               <e p="PlayerToServer" t="Include">
@@ -158,7 +159,6 @@
                 </e>
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
-                  <e p="ViewTransform.cs" t="Include" />
                 </e>
                 <e p="Shield" t="Include">
                   <e p="MaxShieldPointsMessage.cs" t="Include" />
@@ -169,6 +169,8 @@
                 <e p="MessageFactory.cs" t="Include" />
                 <e p="MessagesContainer.cs" t="Include" />
                 <e p="MessageWrapper.cs" t="Include" />
+                <e p="TestMessageClass1.cs" t="Include" />
+                <e p="TestMessageStruct1.cs" t="Include" />
                 <e p="ViewTypeId.cs" t="Include" />
               </e>
             </e>
@@ -319,7 +321,10 @@
               <e p="MessageProcessor.cs" t="Include" />
             </e>
             <e p="Sending" t="Include">
+              <e p="IUdpSender.cs" t="Include" />
               <e p="KillData.cs" t="Include" />
+              <e p="MockUdpSender.cs" t="Include" />
+              <e p="ShittyDatagramPacker.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">
@@ -516,9 +521,12 @@
           </e>
         </e>
         <e p="Tests" t="Include">
-          <e p="NewTestScript.cs" t="Include" />
+          <e p="DatagramPackingTests.cs" t="Include" />
           <e p="readme.txt" t="Include" />
           <e p="Tests.asmdef" t="Include" />
+          <e p="ZeroFormatterMessagesSizeTests" t="Include">
+            <e p="ZeroFormatterTests.cs" t="Include" />
+          </e>
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
