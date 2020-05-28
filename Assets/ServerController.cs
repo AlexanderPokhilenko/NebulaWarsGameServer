@@ -14,15 +14,16 @@ public class ServerController : MonoBehaviour
 
     private void Start()
     {
-        // //Arrange
-        // float pi = 45.128f;
-        //     
-        // //Act
-        // ushort half = Mathf.FloatToHalf(pi);
-        // float restoredPi = Mathf.HalfToFloat(half);
-        //
-        // Debug.LogWarning(pi);
-        // Debug.LogWarning(restoredPi);
+        //Arrange
+        ViewTransform viewTransform = new ViewTransform(45.25f, -4.3f, 180f, ViewTypeId.Asteroid100);
+            
+        //Act
+        var data = ZeroFormatterSerializer.Serialize(viewTransform);
+        var viewTransform2 = ZeroFormatterSerializer.Deserialize<ViewTransform>(data);
+
+        Debug.LogWarning(viewTransform2.X);
+        Debug.LogWarning(viewTransform2.Y);
+        Debug.LogWarning(viewTransform2.Angle);
 
         
         startup = new Startup();

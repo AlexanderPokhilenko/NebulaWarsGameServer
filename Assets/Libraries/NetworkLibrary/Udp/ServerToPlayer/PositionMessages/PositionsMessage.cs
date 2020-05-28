@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
          using System.Linq;
          using UnityEngine;
@@ -28,16 +28,16 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
     [ZeroFormattable]
     public struct Vector2
     {
-        [Index(0)] public ushort x;
-        [Index(1)] public ushort y;
+        [Index(0)] public ushort __x;
+        [Index(1)] public ushort __y;
         
-        [IgnoreFormat] public float X => Mathf.HalfToFloat(x);
-        [IgnoreFormat] public float Y => Mathf.HalfToFloat(y);
+        [IgnoreFormat] public float X => Mathf.HalfToFloat(__x);
+        [IgnoreFormat] public float Y => Mathf.HalfToFloat(__y);
 
         public Vector2(float x, float y)
         {
-            this.x = Mathf.FloatToHalf(x);
-            this.y = Mathf.FloatToHalf(y);
+            __x = Mathf.FloatToHalf(x);
+            __y = Mathf.FloatToHalf(y);
         }
 
         public override string ToString()
@@ -57,24 +57,32 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
     [ZeroFormattable]
     public struct ViewTransform
     {
-        [Index(0)] public ushort x;
-        [Index(1)] public ushort y;
-        [Index(2)] public ushort angle;
+        [Index(0)] public ushort __x;
+        [Index(1)] public ushort __y;
+        [Index(2)] public ushort __angle;
         [Index(3)] public ViewTypeId typeId;
 
-        [IgnoreFormat] public float X => Mathf.HalfToFloat(x);
-        [IgnoreFormat] public float Y => Mathf.HalfToFloat(y);
+        [IgnoreFormat] public float X => Mathf.HalfToFloat(__x);
+        [IgnoreFormat] public float Y => Mathf.HalfToFloat(__y);
         [IgnoreFormat] public float Angle
         {
-            get => Mathf.HalfToFloat(angle);
-            set => Mathf.FloatToHalf(value);
+            get => Mathf.HalfToFloat(__angle);
+            set => __angle = Mathf.FloatToHalf(value);
         }
 
+        public ViewTransform(ushort x, ushort y, ushort angle, ViewTypeId typeId)
+        {
+            __x = x;
+            __y = y;
+            __angle = angle;
+            this.typeId = typeId;
+        }
+        
         public ViewTransform(float x, float y, float angle, ViewTypeId typeId)
         {
-            this.x = Mathf.FloatToHalf(x);
-            this.y = Mathf.FloatToHalf(y);
-            this.angle = Mathf.FloatToHalf(angle);
+            __x = Mathf.FloatToHalf(x);
+            __y = Mathf.FloatToHalf(y);
+            __angle = Mathf.FloatToHalf(angle);
             this.typeId = typeId;
         }
 

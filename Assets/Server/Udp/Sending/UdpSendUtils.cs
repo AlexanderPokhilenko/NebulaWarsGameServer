@@ -42,12 +42,20 @@ namespace Server.Udp.Sending
                 List<GameEntity> gameEntities = withPosition.ToList();
                 PositionsMessage message = new PositionsMessage
                 {
-                    //TODO что это за ужас?
-                    EntitiesInfo = gameEntities.ToDictionary(e => e.id.value, e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
+                    EntitiesInfo = gameEntities.ToDictionary(e => e.id.value, 
+                        e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
                     //TODO: перенести установление в UDP с подтверждением
                     PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == playerId).id.value,
-                    RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius).ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius))
+                    RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius)
+                        .ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius))
                 };
+                foreach (var viewTransform in message.EntitiesInfo)
+                {
+                    if(Mathf.Abs(viewTransform.Value.X)>500||Mathf.Abs(viewTransform.Value.Y)>500)
+                    {
+                        throw new Exception("Недопустимые отправляемые данные");
+                    }
+                }
                 byte[] serializedMessage = MessageFactory.GetSerializedMessage(message, false, out uint messageId); 
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
             }

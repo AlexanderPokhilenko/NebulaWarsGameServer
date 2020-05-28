@@ -2,7 +2,6 @@
 using System.Net;
 using NUnit.Framework;
 using Server.Udp.Sending;
-using ZeroFormatter;
 
 namespace Tests
 {

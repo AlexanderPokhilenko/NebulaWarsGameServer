@@ -114,5 +114,22 @@ namespace Tests
             //Assert
             Assert.IsTrue(Mathf.Abs(pi-restoredPi)<0.2);
         }
+        
+        [Test]
+        public void Test7()
+        {
+            //Arrange
+            ViewTransform viewTransform = new ViewTransform(45.25f, -4.3f, 180f, ViewTypeId.Asteroid100);
+            
+            //Act
+            var data = ZeroFormatterSerializer.Serialize(viewTransform);
+            var viewTransform2 = ZeroFormatterSerializer.Deserialize<ViewTransform>(data);
+            
+            Console.WriteLine(viewTransform2.X);
+            Console.WriteLine(viewTransform2.Y);
+            Console.WriteLine(viewTransform2.Angle);
+            //Assert
+            
+        }
     }
 }
