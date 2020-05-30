@@ -33,7 +33,13 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
         
         [IgnoreFormat] public float X => Mathf.HalfToFloat(__x);
         [IgnoreFormat] public float Y => Mathf.HalfToFloat(__y);
-
+        
+        public Vector2(ushort x, ushort y)
+        {
+            __x = x;
+            __y = y;
+        }
+        
         public Vector2(float x, float y)
         {
             __x = Mathf.FloatToHalf(x);

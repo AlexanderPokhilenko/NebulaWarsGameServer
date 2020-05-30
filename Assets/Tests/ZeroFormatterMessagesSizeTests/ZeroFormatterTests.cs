@@ -4,6 +4,7 @@ using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using NUnit.Framework;
 using UnityEngine;
 using ZeroFormatter;
+using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace Tests
 {
@@ -125,11 +126,62 @@ namespace Tests
             var data = ZeroFormatterSerializer.Serialize(viewTransform);
             var viewTransform2 = ZeroFormatterSerializer.Deserialize<ViewTransform>(data);
             
-            Console.WriteLine(viewTransform2.X);
-            Console.WriteLine(viewTransform2.Y);
-            Console.WriteLine(viewTransform2.Angle);
+            Debug.LogWarning(viewTransform2.X);
+            Debug.LogWarning(viewTransform2.Y);
+            Debug.LogWarning(viewTransform2.Angle);
             //Assert
             
+        }
+        
+        [Test]
+        public void Test8()
+        {
+            //Arrange
+            PositionsMessage positionsMessage = new PositionsMessage()
+            {
+                EntitiesInfo = new Dictionary<ushort, ViewTransform>()
+                {
+                    {5, new ViewTransform()},
+                    {3, new ViewTransform()},
+                    {6, new ViewTransform()},
+                    {8, new ViewTransform()},
+                    {9, new ViewTransform()},
+                },
+                RadiusInfo = new Dictionary<ushort, ushort>()
+                {
+                    {1, 45},
+                    {2, 45},
+                    {3, 45},
+                    {4, 45},
+                    {5, 45}
+                },
+                PlayerEntityId = 54
+            };
+            
+            //Act
+            var data = ZeroFormatterSerializer.Serialize(positionsMessage);
+            
+            Debug.LogWarning(data.Length);
+            var viewTransform2 = ZeroFormatterSerializer.Deserialize<PositionsMessage>(data);
+            
+            
+            //Assert
+            
+        }
+        
+        [Test]
+        public void Test9()
+        {
+            //Arrange
+            Vector2 vector2 = new Vector2(55f,66f);
+            
+            //Act
+            var data = ZeroFormatterSerializer.Serialize(vector2);
+            var restoredVector2 = ZeroFormatterSerializer.Deserialize<Vector2>(data);
+
+            //Assert
+            Assert.AreEqual(vector2.X, restoredVector2.X);
+            Assert.AreEqual(vector2.Y, restoredVector2.Y);
         }
     }
 }
