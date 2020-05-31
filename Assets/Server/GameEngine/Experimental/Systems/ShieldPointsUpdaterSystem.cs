@@ -29,6 +29,7 @@ namespace Server.GameEngine.Systems
             foreach (var player in players)
             {
                 playerMaxShieldPoints.Add(player.player.id, 0f);
+                udpSendUtils.SendMaxShieldPoints(matchId, player.player.id, 0f);
             }
         }
 
@@ -40,7 +41,7 @@ namespace Server.GameEngine.Systems
                 int playerId = e.player.id;
                 if (shield == null)
                 {
-                    if (playerMaxShieldPoints[playerId] >= 0f)
+                    if (playerMaxShieldPoints[playerId] > 0f)
                     {
                         playerMaxShieldPoints[playerId] = 0f;
                         udpSendUtils.SendMaxShieldPoints(matchId, playerId, 0f);
