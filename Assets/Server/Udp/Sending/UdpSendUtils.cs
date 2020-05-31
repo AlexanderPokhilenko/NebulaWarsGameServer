@@ -49,13 +49,6 @@ namespace Server.Udp.Sending
                     RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius)
                         .ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius))
                 };
-                foreach (var viewTransform in message.EntitiesInfo)
-                {
-                    if(Mathf.Abs(viewTransform.Value.X)>500||Mathf.Abs(viewTransform.Value.Y)>500)
-                    {
-                        throw new Exception("Недопустимые отправляемые данные");
-                    }
-                }
                 byte[] serializedMessage = MessageFactory.GetSerializedMessage(message, false, out uint messageId); 
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
             }
@@ -149,7 +142,7 @@ namespace Server.Udp.Sending
 
         public void SendShowAchievementsMessage(int matchId, int playerId)
         {
-            log.Warn($"Отправка команды показать окно оезультатов боя {nameof(matchId)} {matchId} " +
+            log.Warn($"Отправка команды показать окно результатов боя {nameof(matchId)} {matchId} " +
                      $"{nameof(playerId)} {playerId}");
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
