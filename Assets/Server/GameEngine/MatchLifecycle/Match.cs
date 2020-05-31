@@ -23,14 +23,14 @@ namespace Server.GameEngine
         private IpAddressesStorage ipAddressesStorage;
         private PlayerDeathHandler playerDeathHandler; 
         private readonly ILog log = LogManager.GetLogger(typeof(Match));
-        private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
+        private readonly MatchmakerNotifier matchmakerNotifier;
 
         public Match(int matchId, MatchRemover matchRemover,
-            MatchmakerMatchStatusNotifier  matchmakerMatchStatusNotifier)
+            MatchmakerNotifier  matchmakerNotifier)
         {
             MatchId = matchId;
             this.matchRemover = matchRemover;
-            this.matchmakerMatchStatusNotifier = matchmakerMatchStatusNotifier;
+            this.matchmakerNotifier = matchmakerNotifier;
         }
 
         //ECS
@@ -46,7 +46,7 @@ namespace Server.GameEngine
             TryEnableDebug();
             
             ipAddressesStorage = new IpAddressesStorage(matchDataArg);
-            playerDeathHandler = new PlayerDeathHandler(ipAddressesStorage, matchmakerMatchStatusNotifier, udpSendUtils);
+            playerDeathHandler = new PlayerDeathHandler(ipAddressesStorage, matchmakerNotifier, udpSendUtils);
             
             systems = new Entitas.Systems()
                     

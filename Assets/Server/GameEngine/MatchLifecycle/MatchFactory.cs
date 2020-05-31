@@ -9,19 +9,19 @@ namespace Server.GameEngine
     {
         private readonly MatchRemover matchRemover;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier;
+        private readonly MatchmakerNotifier matchmakerNotifier;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
-            MatchmakerMatchStatusNotifier matchmakerMatchStatusNotifier)
+            MatchmakerNotifier matchmakerNotifier)
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
-            this.matchmakerMatchStatusNotifier = matchmakerMatchStatusNotifier;
+            this.matchmakerNotifier = matchmakerNotifier;
         }
         
         public Match Create(BattleRoyaleMatchData matchData)
         {
-            Match match = new Match(matchData.MatchId, matchRemover, matchmakerMatchStatusNotifier);
+            Match match = new Match(matchData.MatchId, matchRemover, matchmakerNotifier);
             match.ConfigureSystems(matchData, udpSendUtils);
             return match;
         }

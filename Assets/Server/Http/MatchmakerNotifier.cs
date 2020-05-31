@@ -9,9 +9,9 @@ namespace Server.Http
     /// Уведомляет матчмейкер о смертях игроков и окончании матчей.
     /// Если сообщение не отправилось, то попробует заново.
     /// </summary>
-    public class MatchmakerMatchStatusNotifier
+    public class MatchmakerNotifier
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchmakerMatchStatusNotifier));
+        private readonly ILog log = LogManager.GetLogger(typeof(MatchmakerNotifier));
         
         private readonly ConcurrentQueue<int> finishedMatches = new ConcurrentQueue<int>();
         private readonly ConcurrentQueue<PlayerDeathData> killedPlayers = new ConcurrentQueue<PlayerDeathData>();
@@ -20,7 +20,7 @@ namespace Server.Http
         private readonly  PlayerDeathMessageValidator playerDeathMessageValidator;
         private readonly MatchmakerPlayerDeathNotifierService matchmakerPlayerDeathNotifierService;
         
-        public MatchmakerMatchStatusNotifier()
+        public MatchmakerNotifier()
         {
             HttpWrapper httpWrapper = new HttpWrapper();
             httpMatchFinishNotifierService = new HttpMatchFinishNotifierService(httpWrapper);

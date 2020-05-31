@@ -284,7 +284,9 @@
             </e>
             <e p="Rudp" t="Include">
               <e p="ByteArrayRudpStorage.cs" t="Include" />
+              <e p="PlayerInfo.cs" t="Include" />
               <e p="RudpMessagesSender.cs" t="Include" />
+              <e p="UnconfirmedMatchMessages.cs" t="Include" />
             </e>
             <e p="Systems" t="Include">
               <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
@@ -297,7 +299,7 @@
             <e p="HttpWrapper.cs" t="Include" />
             <e p="MatchDataMessageHandler.cs" t="Include" />
             <e p="MatchDataValidator.cs" t="Include" />
-            <e p="MatchmakerMatchStatusNotifier.cs" t="Include" />
+            <e p="MatchmakerNotifier.cs" t="Include" />
             <e p="MatchmakerPlayerDeathNotifierService.cs" t="Include" />
             <e p="NetworkGlobals.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
@@ -524,6 +526,7 @@
         <e p="Tests" t="Include">
           <e p="DatagramPackingTests.cs" t="Include" />
           <e p="readme.txt" t="Include" />
+          <e p="RudpTests.cs" t="Include" />
           <e p="Tests.asmdef" t="Include" />
           <e p="ZeroFormatterMessagesSizeTests" t="Include">
             <e p="ZeroFormatterTests.cs" t="Include" />

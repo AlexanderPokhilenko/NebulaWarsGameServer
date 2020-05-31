@@ -63,7 +63,9 @@ namespace Server.Udp.Storage
 
         public bool TryRemoveIpEndPoint(int playerId)
         {
-            return playersIpAddresses.TryRemove(playerId, out var ipEndPoint);
+            bool success = playersIpAddresses.TryRemove(playerId, out var ipEndPoint);
+            log.Warn($"Удаление ip для игрока {nameof(playerId)} {playerId} {nameof(success)} {success}" );
+            return success;
         }
 
         public bool TryUpdateIpEndPoint(int playerId, IPEndPoint newIpEndPoint)

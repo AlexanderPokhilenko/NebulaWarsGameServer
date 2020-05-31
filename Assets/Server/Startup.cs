@@ -38,8 +38,8 @@ namespace Server
             }
 
             //Старт уведомления матчмейкера о смертях игроков и окончании матчей
-            MatchmakerMatchStatusNotifier matchStatusNotifier = new MatchmakerMatchStatusNotifier();
-            matchmakerNotifierThread = matchStatusNotifier.StartThread();
+            MatchmakerNotifier notifier = new MatchmakerNotifier();
+            matchmakerNotifierThread = notifier.StartThread();
             
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
@@ -58,8 +58,8 @@ namespace Server
             
             shittyUdpMediator.SetProcessor(messageProcessor);
             
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, matchStatusNotifier);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, matchStatusNotifier);
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);

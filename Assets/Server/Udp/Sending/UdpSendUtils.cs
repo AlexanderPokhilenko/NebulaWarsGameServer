@@ -149,7 +149,7 @@ namespace Server.Udp.Sending
 
         public void SendShowAchievementsMessage(int matchId, int playerId)
         {
-            log.Warn($"Отправка команды показать окно оезультатов боя {nameof(matchId)} {matchId} " +
+            log.Warn($"Отправка команды показать окно результатов боя {nameof(matchId)} {matchId} " +
                      $"{nameof(playerId)} {playerId}");
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
@@ -158,6 +158,10 @@ namespace Server.Udp.Sending
                 byte[] serializedMessage = MessageFactory.GetSerializedMessage(showPlayerAchievementsMessage, true, out uint messageId);
                 rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);    
+            }
+            else
+            {
+                log.Error($"Отправка уведомления про окончание боя. Не найден ip игрока { nameof(matchId)} {matchId} {nameof(playerId)} {playerId}");
             }
         }
         
