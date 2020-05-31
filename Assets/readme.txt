@@ -5,6 +5,10 @@ zfc.exe -i "..\..\..\Assembly-CSharp.csproj" -o "ZeroFormatterGenerated.cs"
 2) Для всех сообщений в которыъ есть ushort нужно добавлять конструкторы с ushort. 
 Иначе ushort может кастится к float и значение будет испорчено.
 
+3) Для того, чтобы в структуре можно было использовать словарь нужно в конструкторе форматтера для этой
+структуры зарегистрировать нужные типы. Например:
+Formatter.RegisterDictionary<DefaultResolver, ushort, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.ViewTransform>();
+Formatter.RegisterDictionary<DefaultResolver, ushort, ushort>();
 
 //TODO можно не отправлять номер игрока и комнаты в сообщении о вводе, елси есть пинг сообщение
 //иначе можно удалить пинг сообщения

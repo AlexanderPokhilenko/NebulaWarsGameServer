@@ -176,6 +176,7 @@
             </e>
           </e>
           <e p="Unity_Releases_1.6.4" t="Include">
+            <e p="TestPositionsMessageFormatter.cs" t="Include" />
             <e p="ZeroFormatterGenerated.cs" t="Include" />
           </e>
         </e>
@@ -262,7 +263,7 @@
                 <e p="PlayersInitSystem.cs" t="Include" />
                 <e p="RudpSendingSystem.cs" t="Include" />
                 <e p="ShieldPointsUpdaterSystem.cs" t="Include" />
-                <e p="TestEndMatchSystem2.cs" t="Include" />
+                <e p="TestEndMatchSystem.cs" t="Include" />
                 <e p="UpdatePossibleKillersSystem.cs" t="Include" />
               </e>
             </e>

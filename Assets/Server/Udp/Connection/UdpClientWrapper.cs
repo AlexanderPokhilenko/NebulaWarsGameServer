@@ -71,11 +71,11 @@ namespace Server.Udp.Connection
                 catch (SocketException)
                 {
                     // 10004 thrown when socket is closed
-                    // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving data from udp client: " + e.MessageWrapper);
+                    // if (e.ErrorCode != 10004) Log.Info("Socket exception while receiving serializedContainer from udp client: " + e.MessageWrapper);
                 }
                 catch (Exception e)
                 {
-                    log.Info("Error receiving data from udp client: " + e.Message+" "+e.StackTrace);
+                    log.Info("Error receiving serializedContainer from udp client: " + e.Message+" "+e.StackTrace);
                 }
             }
         }
@@ -84,10 +84,10 @@ namespace Server.Udp.Connection
         {
         }
 
-        public void Send(byte[] data, IPEndPoint endPoint)
+        public void Send(byte[] serializedContainer, IPEndPoint endPoint)
         {
-            int lengthOfTheSentDatagram = udpClient.Send(data, data.Length, endPoint);
-            if (lengthOfTheSentDatagram != data.Length)
+            int lengthOfTheSentDatagram = udpClient.Send(serializedContainer, serializedContainer.Length, endPoint);
+            if (lengthOfTheSentDatagram != serializedContainer.Length)
             {
                 log.Warn("Ошибка длины сообщения.");
             }
