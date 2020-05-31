@@ -1,17 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Entitas;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using Server.Udp.Sending;
 
 namespace Server.GameEngine.Systems
 {
-    //TODO отправлять сообщения только при изменении
-    public class CooldownInfoUpdaterSystem : IExecuteSystem
+    public class CooldownInfoUpdaterSystem : IExecuteSystem, IInitializeSystem
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
         private readonly GameContext gameContext;
         private readonly IGroup<GameEntity> playersGroup;
+        private readonly Dictionary<int, WeaponInfo[]> lastWeaponInfos;
         
         public CooldownInfoUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
@@ -19,6 +20,15 @@ namespace Server.GameEngine.Systems
             this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+            lastWeaponInfos = new Dictionary<int, WeaponInfo[]>(10);
+        }
+
+        public void Initialize()
+        {
+            foreach (var player in playersGroup)
+            {
+                lastWeaponInfos.Add(player.player.id, new WeaponInfo[0]);
+            }
         }
 
         public void Execute()
@@ -32,6 +42,9 @@ namespace Server.GameEngine.Systems
                 var weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
                     .Select(e => new WeaponInfo(e.cannon.bullet.typeId, e.cannon.cooldown)).ToArray();
 
+                if (weaponInfos.SequenceEqual(lastWeaponInfos[playerId])) continue;
+
+                lastWeaponInfos[playerId] = weaponInfos;
                 udpSendUtils.SendCooldownInfo(matchId, playerId, abilityCooldown, weaponInfos);
             }    
         }

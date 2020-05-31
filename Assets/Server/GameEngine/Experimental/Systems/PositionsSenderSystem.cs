@@ -8,12 +8,11 @@ namespace Server.GameEngine.Systems
     /// <summary>
     /// Каждый кадр (или реже) отправляет всем игрокам дельту (или нет) состояния мира
     /// </summary>
-    public class NetworkSenderSystem:IExecuteSystem,IInitializeSystem
+    public class PositionsSenderSystem : IExecuteSystem, IInitializeSystem
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> players;
-        private readonly IGroup<GameEntity> playersWithHp;
         private readonly IGroup<GameEntity> grandObjects;
         private readonly IGroup<GameEntity> visibleObjects;
         private GameEntity zone;
@@ -22,13 +21,12 @@ namespace Server.GameEngine.Systems
         private const float visibleAreaRadius = 15;
         //private const float sqrVisibleAreaRadius = visibleAreaRadius * visibleAreaRadius;
 
-        public NetworkSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
+        public PositionsSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            playersWithHp = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player, GameMatcher.HealthPoints).NoneOf(GameMatcher.Bot));
             var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
             grandObjects = gameContext.GetGroup(grandMatcher);
             var visibleMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform, GameMatcher.ViewType);
@@ -59,19 +57,12 @@ namespace Server.GameEngine.Systems
                     udpSendUtils.SendPositions(matchId, player.player.id, enumerableVisibleObjects);
                 }
             }
-
-            foreach (var playerWithHp in playersWithHp)
-            {
-                udpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
-            }
         }
         
-        private HashSet<GameEntity> GetVisibleObjects(GameEntity currentPlayer)
+        private IEnumerable<GameEntity> GetVisibleObjects(GameEntity currentPlayer)
         {
             HashSet<GameEntity> result = new HashSet<GameEntity>();
             Vector2 currentPlayerPosition = currentPlayer.globalTransform.position;
-            
-            // if (currentPlayer.player.id == 888_777) Log.Info("current position = " + position.x + " " + position.y);
             
             foreach (var withView in grandObjects)
             {

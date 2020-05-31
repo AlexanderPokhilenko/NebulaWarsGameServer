@@ -49,13 +49,6 @@ namespace Server.Udp.Sending
                     RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius)
                         .ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius))
                 };
-                foreach (var viewTransform in message.EntitiesInfo)
-                {
-                    if(Mathf.Abs(viewTransform.Value.X)>500||Mathf.Abs(viewTransform.Value.Y)>500)
-                    {
-                        throw new Exception("Недопустимые отправляемые данные");
-                    }
-                }
                 byte[] serializedMessage = MessageFactory.GetSerializedMessage(message, false, out uint messageId); 
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
             }

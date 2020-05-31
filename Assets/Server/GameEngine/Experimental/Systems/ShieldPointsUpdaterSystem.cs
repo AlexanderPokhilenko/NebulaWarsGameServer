@@ -42,7 +42,7 @@ namespace Server.GameEngine.Systems
                 {
                     if (playerMaxShieldPoints[playerId] >= 0f)
                     {
-                        playerMaxShieldPoints[playerId] = 0;
+                        playerMaxShieldPoints[playerId] = 0f;
                         udpSendUtils.SendMaxShieldPoints(matchId, playerId, 0f);
                     }
                     continue;
@@ -51,7 +51,7 @@ namespace Server.GameEngine.Systems
                 udpSendUtils.SendShieldPoints(matchId, playerId, shield.healthPoints.value);
 
                 var maxPoints = shield.maxHealthPoints.value;
-                if (Math.Abs(maxPoints - playerMaxShieldPoints[playerId]) > 0.001)
+                if (Math.Abs(maxPoints - playerMaxShieldPoints[playerId]) > 0.5f)
                 {
                     playerMaxShieldPoints[playerId] = maxPoints;
                     udpSendUtils.SendMaxShieldPoints(matchId, playerId, maxPoints);
