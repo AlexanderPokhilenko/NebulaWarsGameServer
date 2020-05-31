@@ -71,7 +71,8 @@ namespace Server.GameEngine
                     
                     .Add(new DestroySystems(contexts))
                     // .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
-                    .Add(new NetworkSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new PositionsSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new HealthUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new MaxHpUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new CooldownInfoUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new CooldownUpdaterSystem(contexts, matchDataArg.MatchId, udpSendUtils))
