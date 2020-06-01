@@ -163,6 +163,10 @@ namespace Server.Udp.Sending
                 rudpStorage.AddReliableMessage(matchId, playerId,  messageId, serializedMessage);
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);    
             }
+            else
+            {
+                log.Error($"Отправка уведомления про окончание боя. Не найден ip игрока { nameof(matchId)} {matchId} {nameof(playerId)} {playerId}");
+            }
         }
         
         public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint playerAddress)

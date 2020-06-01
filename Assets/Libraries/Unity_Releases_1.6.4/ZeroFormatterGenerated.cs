@@ -103,6 +103,11 @@ namespace ZeroFormatter
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2>(structFormatter));
             }
             {
+                var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessageFormatter<ZeroFormatter.Formatters.DefaultResolver>();
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage>.Register(structFormatter);
+                ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage>(structFormatter));
+            }
+            {
                 var structFormatter = new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestMessageStruct1Formatter<ZeroFormatter.Formatters.DefaultResolver>();
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestMessageStruct1>.Register(structFormatter);
                 ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestMessageStruct1?>.Register(new global::ZeroFormatter.Formatters.NullableStructFormatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestMessageStruct1>(structFormatter));
@@ -2720,6 +2725,57 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
         }
     }
 
+    public class TestPositionsMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage>
+        where TTypeResolver : ITypeResolver, new()
+    {
+        readonly Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<ushort, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.ViewTransform>> formatter0;
+        readonly Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<ushort, ushort>> formatter1;
+        
+        public override bool NoUseDirtyTracker
+        {
+            get
+            {
+                return formatter0.NoUseDirtyTracker
+                    && formatter1.NoUseDirtyTracker
+                ;
+            }
+        }
+
+        public TestPositionsMessageFormatter()
+        {
+            formatter0 = Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<ushort, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.ViewTransform>>.Default;
+            formatter1 = Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<ushort, ushort>>.Default;
+            
+        }
+
+        public override int? GetLength()
+        {
+            return null;
+        }
+
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage value)
+        {
+            var startOffset = offset;
+            offset += formatter0.Serialize(ref bytes, offset, value.EntitiesInfo);
+            offset += formatter1.Serialize(ref bytes, offset, value.__RadiusInfo);
+            return offset - startOffset;
+        }
+
+        public override global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        {
+            byteSize = 0;
+            int size;
+            var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
+            
+            return new global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestPositionsMessage(item0, item1);
+        }
+    }
+
     public class TestMessageStruct1Formatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.TestMessageStruct1>
         where TTypeResolver : ITypeResolver, new()
     {
@@ -3619,13 +3675,13 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
 
         public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.MessageType value)
         {
-            return BinaryUtil.WriteSByte(ref bytes, offset, (SByte)value);
+            return BinaryUtil.WriteByte(ref bytes, offset, (Byte)value);
         }
 
         public override global::NetworkLibrary.NetworkLibrary.Udp.MessageType Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
         {
             byteSize = 1;
-            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadSByte(ref bytes, offset);
+            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadByte(ref bytes, offset);
         }
     }
 
@@ -3643,7 +3699,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
             BinaryUtil.WriteBoolean(ref bytes, offset, value.HasValue);
             if (value.HasValue)
             {
-                BinaryUtil.WriteSByte(ref bytes, offset + 1, (SByte)value.Value);
+                BinaryUtil.WriteByte(ref bytes, offset + 1, (Byte)value.Value);
             }
             else
             {
@@ -3659,7 +3715,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
             var hasValue = BinaryUtil.ReadBoolean(ref bytes, offset);
             if (!hasValue) return null;
 
-            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadSByte(ref bytes, offset + 1);
+            return (global::NetworkLibrary.NetworkLibrary.Udp.MessageType)BinaryUtil.ReadByte(ref bytes, offset + 1);
         }
     }
 
@@ -3669,12 +3725,12 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp
     {
         public bool Equals(global::NetworkLibrary.NetworkLibrary.Udp.MessageType x, global::NetworkLibrary.NetworkLibrary.Udp.MessageType y)
         {
-            return (SByte)x == (SByte)y;
+            return (Byte)x == (Byte)y;
         }
 
         public int GetHashCode(global::NetworkLibrary.NetworkLibrary.Udp.MessageType x)
         {
-             return (int)(SByte)x ^ (int)(SByte)x << 8; 
+            return (int)(Byte)x;
         }
     }
 

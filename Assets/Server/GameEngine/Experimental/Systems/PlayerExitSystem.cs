@@ -68,7 +68,7 @@ namespace Server.GameEngine.Systems
                 MatchId = matchId 
             };
                 
-            playerDeathHandler.PlayerDeath(playerDeathData, true);
+            playerDeathHandler.PlayerDeath(playerDeathData, false);
         }
     }
 }

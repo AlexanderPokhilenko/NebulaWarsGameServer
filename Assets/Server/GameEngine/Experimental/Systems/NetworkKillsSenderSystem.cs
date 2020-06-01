@@ -11,7 +11,7 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
+        private readonly ILog log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
         
         private readonly int matchId;
         private readonly PlayerDeathHandler playerDeathHandler;
@@ -85,7 +85,7 @@ namespace Server.GameEngine.Systems
                             MatchId = matchId 
                         };
                         
-                        playerDeathHandler.PlayerDeath(playerDeathData, false);
+                        playerDeathHandler.PlayerDeath(playerDeathData, true);
                     }
                 }
             }

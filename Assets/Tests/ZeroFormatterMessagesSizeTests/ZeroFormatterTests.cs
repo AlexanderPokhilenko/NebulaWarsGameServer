@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using NUnit.Framework;
 using UnityEngine;
@@ -8,11 +9,14 @@ using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessage
 
 namespace Tests
 {
+    /// <summary>
+    /// Проверка размера сообщений после сериализации
+    /// </summary>
     public class ZeroFormatterTests
     {
         public ZeroFormatterTests()
         { 
-            // ZeroFormatterInitializer.Register();
+            ZeroFormatterInitializer.Register();
         }
 
         [Test]
@@ -54,27 +58,36 @@ namespace Tests
         [Test]
         public void Test3()
         {
+            /*
+             *
+             * [byteSize:int(4)][length:int(4)][elementOffset...:int(4 * length)][elements:T...]
+             */
             //Arrange
             PositionsMessage testMessageClass1 = new PositionsMessage
             {
+                //28 байт на индекс
+                //2 байта
                 PlayerEntityId = 54,
-                RadiusInfo = new Dictionary<ushort, ushort>()
+                RadiusInfo = new Dictionary<ushort, ushort>
                 {
-                    {1,1}
-                },
-                EntitiesInfo = new Dictionary<ushort, ViewTransform>()
-                {
-                    {5, new ViewTransform()}
+                    //2+2 байта на элемент
+                    {1,1},
+                    {2,1}
                 }
+                // EntitiesInfo = new Dictionary<ushort, ViewTransform>
+                // {
+                //     //2+7 байт на элемент
+                //     {5, new ViewTransform()}
+                // }
             };
             
             //Act
             byte[] serialized = ZeroFormatterSerializer.Serialize(testMessageClass1);
             
             //Assert
-            Assert.AreEqual(32, serialized.Length);
+            Assert.AreEqual(30+4+4, serialized.Length);
         }  
-        
+      
         [Test]
         public void Test4()
         {
@@ -84,21 +97,10 @@ namespace Tests
             byte[] serialized = ZeroFormatterSerializer.Serialize(viewTransform);
             
             //Assert
-            Assert.AreEqual(13, serialized.Length);
+            Assert.AreEqual(7, serialized.Length);
         }
         
-        [Test]
-        public void Test5()
-        {
-            //Arrange
-            ViewTransform viewTransform = new ViewTransform();
-            //Act
-            byte[] serialized = ZeroFormatterSerializer.Serialize(viewTransform);
-            
-            //Assert
-            Assert.AreEqual(13, serialized.Length);
-        }
-        
+      
         [Test]
         public void Test6()
         {
