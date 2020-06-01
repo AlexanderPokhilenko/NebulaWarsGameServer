@@ -29,7 +29,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         MessageType GetMessageType();
     }
 
-    public enum MessageType:sbyte
+    public enum MessageType : sbyte
     {
         PlayerInput = 3,
         PlayerPing = 5,
@@ -46,6 +46,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         MaxShieldPoints = 18,
         Debug = 19,
         Cooldowns = 20,
-        CooldownsInfos = 21
+        CooldownsInfos = 21,
+        PlayerInfo = 22
     }
 }

@@ -34,7 +34,18 @@ namespace Server.Udp.Sending
             rudpStorage = byteArrayRudpStorage;
             this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
-        
+
+        public void SendPlayerInfo(int matchId, int playerId, ushort entityId)
+        {
+            var message = new PlayerInfoMessage(entityId);
+            var serializedMessage = MessageFactory.GetSerializedMessage(message, true, out uint messageId);
+            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            {
+                outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
+            }
+            rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+        }
+
         public void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)
         {
             if (matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
@@ -65,7 +76,7 @@ namespace Server.Udp.Sending
             {
                 KillMessage killMessage = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, killData.VictimType);
                 byte[] serializedMessage = MessageFactory.GetSerializedMessage(killMessage, true, out uint messageId);
-                rudpStorage.AddReliableMessage(matchId, killData.TargetPlayerId, messageId, serializedMessage);
+                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
             }
         }

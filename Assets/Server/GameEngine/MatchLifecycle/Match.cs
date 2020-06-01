@@ -50,7 +50,7 @@ namespace Server.GameEngine
             
             systems = new Entitas.Systems()
                     
-                    .Add(new MapInitSystem(contexts, matchDataArg))
+                    .Add(new MapInitSystem(contexts, matchDataArg, udpSendUtils))
                     // .Add(new TestEndMatchSystem2(Contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
                     .Add(new PlayerAttackHandlerSystem(contexts))

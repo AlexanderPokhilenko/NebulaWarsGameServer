@@ -4,6 +4,7 @@ using System.Linq;
 using Entitas;
 using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
+using Server.Udp.Sending;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -19,6 +20,7 @@ namespace Server.GameEngine.Systems
         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private readonly GameContext gameContext;
         private readonly BattleRoyaleMatchData matchData;
+        private readonly UdpSendUtils udpSendUtils;
         
         private static readonly ILog Log = LogManager.GetLogger(typeof(MapInitSystem));
 
@@ -54,10 +56,11 @@ namespace Server.GameEngine.Systems
                 throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
         }
 
-        public MapInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
+        public MapInitSystem(Contexts contexts, BattleRoyaleMatchData matchData, UdpSendUtils udpSendUtils)
         {
             gameContext = contexts.game;
             this.matchData = matchData;
+            this.udpSendUtils = udpSendUtils;
         }
         
         public void Initialize()
@@ -85,7 +88,14 @@ namespace Server.GameEngine.Systems
                 // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
-                if (gameUnit.IsBot) Match.MakeBot(gameEntity);
+                if (gameUnit.IsBot)
+                {
+                    Match.MakeBot(gameEntity);
+                }
+                else
+                {
+                    udpSendUtils.SendPlayerInfo(matchData.MatchId, gameUnit.TemporaryId, gameEntity.id.value);
+                }
 
                 var wallAngle = angle + halfStep;
                 var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);

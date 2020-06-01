@@ -123,14 +123,7 @@ namespace Server.GameEngine
         {
             if (matches.TryGetValue(matchId, out var match))
             {
-                if (match.TryGetIpEndPoint(playerId, out ipEndPoint))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return match.TryGetIpEndPoint(playerId, out ipEndPoint);
             }
             else
             {
