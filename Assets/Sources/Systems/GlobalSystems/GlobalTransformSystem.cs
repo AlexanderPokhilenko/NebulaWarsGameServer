@@ -49,6 +49,8 @@ public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
             {
                 position.Rotate(parentAngle);
                 angle += parentAngle;
+                // Кажется, одного отнимания будет достаточно
+                if (angle >= 360f) angle -= 360f;
             }
 
             position += parent.globalTransform.position;
