@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using DefaultNamespace.Libraries.NetworkLibrary.Udp.ServerToPlayer.Debug;
+using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
-using Server.Udp.Connection;
 using Server.Udp.Storage;
 using UnityEngine;
-using ZeroFormatter;
 
 namespace Server.Udp.Sending
 {
@@ -25,7 +22,7 @@ namespace Server.Udp.Sending
         private readonly MatchStorage matchStorage;
         private readonly ByteArrayRudpStorage rudpStorage;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
-        private readonly ILog log = LogManager.GetLogger(typeof(UdpSendUtils));
+        private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
 
         public UdpSendUtils(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             OutgoingMessagesStorage outgoingMessagesStorage)

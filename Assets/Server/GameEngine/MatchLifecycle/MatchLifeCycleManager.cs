@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using log4net;
+﻿using System.Collections.Generic;
+using Code.Common;
 
 
 namespace Server.GameEngine
@@ -10,7 +9,7 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchLifeCycleManager
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MatchLifeCycleManager));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchLifeCycleManager));
 
         private readonly MatchStorage matchStorage;
         private readonly MatchCreator matchCreator;

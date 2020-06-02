@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping;
 using Server.GameEngine;
@@ -10,7 +10,8 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PingMessageHandler:IMessageHandler
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(UdpClientWrapper));
+        private readonly 
+            ILog log = LogManager.CreateLogger(typeof(UdpClientWrapper));
         
         private readonly MatchStorage matchStorage;
 

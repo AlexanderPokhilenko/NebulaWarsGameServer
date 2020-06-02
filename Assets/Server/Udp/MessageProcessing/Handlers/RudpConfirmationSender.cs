@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.Sending;
 
@@ -12,7 +12,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     public class RudpConfirmationSender:IMessageHandler
     {
         private readonly UdpSendUtils udpSendUtils;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationSender));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(RudpConfirmationSender));
 
         public RudpConfirmationSender(UdpSendUtils udpSendUtils)
         {

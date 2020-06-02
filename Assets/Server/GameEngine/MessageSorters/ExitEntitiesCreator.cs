@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
-using log4net;
+using Code.Common;
 
 namespace Server.GameEngine.Experimental
 {
@@ -9,7 +9,7 @@ namespace Server.GameEngine.Experimental
     /// </summary>
     public class ExitEntitiesCreator
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(ExitEntitiesCreator));
+        private readonly ILog log = LogManager.CreateLogger(typeof(ExitEntitiesCreator));
         
         private readonly ConcurrentBag<int> concurrentBag = new ConcurrentBag<int>();
         private readonly MatchStorage matchStorage;

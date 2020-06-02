@@ -1,15 +1,14 @@
 ﻿using System;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine;
-using UnityEditor;
 
 namespace Server.Http
 {
     //TODO говно
     public class MatchDataMessageHandler
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchDataMessageHandler));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchDataMessageHandler));
         
         private readonly MatchDataValidator matchDataValidator;
         private readonly MatchCreator matchCreator;

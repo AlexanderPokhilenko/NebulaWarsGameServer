@@ -2,8 +2,7 @@
 using System;
 using Entitas;
 using System.Collections.Generic;
-using log4net;
-using UnityEditor;
+using Code.Common;
 using UnityEngine;
 
 //Внимание: сомнительное качество кода!
@@ -24,7 +23,7 @@ public sealed class CollidersDrawer : MonoBehaviour
     private IGroup<GameEntity> collidableGroup;
     private IMatcher<GameEntity> matcher = GameMatcher.AllOf(GameMatcher.Position).AnyOf(GameMatcher.CircleCollider, GameMatcher.PathCollider, GameMatcher.NoncollinearAxises, GameMatcher.Cannon, GameMatcher.TargetingParameters, GameMatcher.Target);
 
-    private static readonly ILog Log = LogManager.GetLogger(typeof(CollidersDrawer));
+    private static readonly ILog Log = LogManager.CreateLogger(typeof(CollidersDrawer));
 
     public bool ChangeContext(GameContext gameContext)
     {

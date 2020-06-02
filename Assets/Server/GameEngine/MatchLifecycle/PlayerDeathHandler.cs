@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Code.Common;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
@@ -13,7 +13,7 @@ namespace Server.GameEngine
     /// </summary>
     public class PlayerDeathHandler
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(PlayerDeathHandler));
+        private readonly ILog log = LogManager.CreateLogger(typeof(PlayerDeathHandler));
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly UdpSendUtils udpSendUtils;

@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
-using log4net;
+using Code.Common;
 
 namespace Server.GameEngine
 {
@@ -11,7 +11,7 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchStorage
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchStorage));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchStorage));
         
         //matchId match
         private readonly ConcurrentDictionary<int, Match> matches;

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 
 namespace Server.GameEngine.Systems
 {
     public class PlayerAttackHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerAttackHandlerSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerAttackHandlerSystem));
         
         public PlayerAttackHandlerSystem(Contexts contexts) : base(contexts.input)
         {

@@ -3,9 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
-using UnityEngine;
 
 namespace Server.Udp.Storage
 {
@@ -29,7 +28,7 @@ namespace Server.Udp.Storage
         private readonly int matchId;
         //PlayerId , ip 
         private readonly ConcurrentDictionary<int, IPEndPoint> playersIpAddresses;
-        private readonly ILog log = LogManager.GetLogger(typeof(IpAddressesStorage));
+        private readonly ILog log = LogManager.CreateLogger(typeof(IpAddressesStorage));
 
         public IpAddressesStorage(BattleRoyaleMatchData matchData)
         {

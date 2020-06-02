@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine;
 
@@ -12,7 +12,7 @@ namespace Server.Http
     public class MatchDataValidator
     {
         private readonly MatchStorage matchStorage;
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchDataMessageHandler));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchDataMessageHandler));
 
         public MatchDataValidator(MatchStorage matchStorage)
         {

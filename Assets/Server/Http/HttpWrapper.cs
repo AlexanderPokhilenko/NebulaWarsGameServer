@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Code.Common;
 using DefaultNamespace;
-using log4net;
 
 namespace Server.Http
 {
     public class HttpWrapper
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(HttpWrapper));
+        private readonly ILog log = LogManager.CreateLogger(typeof(HttpWrapper));
         private readonly HttpClient client;
 
         public HttpWrapper()

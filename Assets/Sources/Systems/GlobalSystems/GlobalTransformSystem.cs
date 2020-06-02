@@ -1,12 +1,12 @@
 ﻿using System;
+using Code.Common;
 using Entitas;
-using log4net;
 
 public sealed class GlobalTransformSystem : IExecuteSystem, ICleanupSystem
 {
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> positionedGroup;
-    private static readonly ILog Log = LogManager.GetLogger(typeof(GlobalTransformSystem));
+    private static readonly ILog Log = LogManager.CreateLogger(typeof(GlobalTransformSystem));
 
     public GlobalTransformSystem(Contexts contexts)
     {

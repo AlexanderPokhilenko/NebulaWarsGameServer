@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using log4net;
+using Code.Common;
 
 namespace Server.Http
 {
     public class HttpMatchFinishNotifierService
     {
         private readonly HttpWrapper httpWrapper;
-        private readonly ILog log = LogManager.GetLogger(typeof(HttpMatchFinishNotifierService));
+        private readonly ILog log = LogManager.CreateLogger(typeof(HttpMatchFinishNotifierService));
 
         public HttpMatchFinishNotifierService(HttpWrapper httpWrapper)
         {

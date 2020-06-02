@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
-using UnityEngine;
 
 namespace Server.GameEngine.Systems
 {
     public class PlayerAbilityHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerAbilityHandlerSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerAbilityHandlerSystem));
         
         public PlayerAbilityHandlerSystem(Contexts contexts) : base(contexts.input)
         {

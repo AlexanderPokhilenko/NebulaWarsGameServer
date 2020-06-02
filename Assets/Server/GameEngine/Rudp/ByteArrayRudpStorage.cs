@@ -2,8 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Common;
 using JetBrains.Annotations;
-using log4net;
 
 //TODO убрать lock и выяснить в чём проблема
 //конкурентной коллекции должно быть достаточно 
@@ -16,7 +16,7 @@ namespace Server.Udp.Storage
     /// </summary>
     public class ByteArrayRudpStorage
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(ByteArrayRudpStorage));
+        private readonly ILog log = LogManager.CreateLogger(typeof(ByteArrayRudpStorage));
         
         private readonly object lockObj = new object();
         

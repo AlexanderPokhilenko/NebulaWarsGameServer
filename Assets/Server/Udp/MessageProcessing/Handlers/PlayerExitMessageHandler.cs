@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
+using Code.Common;
 using Libraries.NetworkLibrary.Udp.PlayerToServer;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine.Experimental;
 using ZeroFormatter;
@@ -13,7 +13,7 @@ namespace Server.Udp.MessageProcessing.Handlers
 {
     public class PlayerExitMessageHandler:IMessageHandler
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitMessageHandler));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerExitMessageHandler));
         
         private readonly ExitEntitiesCreator exitEntitiesCreator;
 

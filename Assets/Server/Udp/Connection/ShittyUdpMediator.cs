@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.Udp.MessageProcessing;
 using ZeroFormatter;
