@@ -62,13 +62,15 @@ namespace Server.Udp.Sending
             var message = new PositionsMessage
             {
                 EntitiesInfo = gameEntities.ToDictionary(e => e.id.value,
-                    e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id)),
-                //TODO: перенести установление в UDP с подтверждением
-                PlayerEntityId = gameEntities.First(entity => entity.hasPlayer && entity.player.id == playerId).id.value,
-                RadiusInfo = gameEntities.Where(e => e.isNonstandardRadius)
-                    .ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius))
+                    e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id))
             };
             SendUdp(matchId, playerId, message);
+        }
+
+        public void SendRadiuses(int matchId, int playerId, Dictionary<ushort, ushort> radiuses, bool rudp = false)
+        {
+            var message = new RadiusesMessage(radiuses);
+            SendUdp(matchId, playerId, message, rudp);
         }
 
         public void SendKill(int matchId, KillData killData)
