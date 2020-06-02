@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using log4net;
+using Code.Common;
 
 namespace Server.Http
 {
@@ -11,7 +11,7 @@ namespace Server.Http
     /// </summary>
     public class MatchmakerNotifier
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchmakerNotifier));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchmakerNotifier));
         
         private readonly ConcurrentQueue<int> finishedMatches = new ConcurrentQueue<int>();
         private readonly ConcurrentQueue<PlayerDeathData> killedPlayers = new ConcurrentQueue<PlayerDeathData>();

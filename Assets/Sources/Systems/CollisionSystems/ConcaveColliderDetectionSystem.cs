@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 
 public class ConcaveColliderDetectionSystem : ReactiveSystem<GameEntity>
 {
-    private static readonly ILog Log = LogManager.GetLogger(typeof(ConcaveColliderDetectionSystem));
+    private static readonly ILog Log = LogManager.CreateLogger(typeof(ConcaveColliderDetectionSystem));
     
     public ConcaveColliderDetectionSystem(Contexts contexts) : base(contexts.game)
     {

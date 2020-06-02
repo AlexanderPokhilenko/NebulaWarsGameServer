@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
-using Server.GameEngine.Systems.Debug;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
@@ -22,7 +21,7 @@ namespace Server.GameEngine
         private readonly MatchRemover matchRemover;
         private IpAddressesStorage ipAddressesStorage;
         private PlayerDeathHandler playerDeathHandler; 
-        private readonly ILog log = LogManager.GetLogger(typeof(Match));
+        private readonly ILog log = LogManager.CreateLogger(typeof(Match));
         private readonly MatchmakerNotifier matchmakerNotifier;
 
         public Match(int matchId, MatchRemover matchRemover,

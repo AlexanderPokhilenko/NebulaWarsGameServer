@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 
 public sealed class DeleteSystem : IExecuteSystem
 {
     private readonly List<GameEntity> buffer;
     private readonly IGroup<GameEntity> deletingGroup;
-    private static readonly ILog Log = LogManager.GetLogger(typeof(DeleteSystem));
+    private static readonly ILog Log = LogManager.CreateLogger(typeof(DeleteSystem));
     
     public DeleteSystem(Contexts contexts)
     {

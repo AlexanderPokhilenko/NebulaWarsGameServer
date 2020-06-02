@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using log4net;
+using Code.Common;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
@@ -11,7 +11,7 @@ namespace Server.GameEngine
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly MatchStorage matchStorage;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly ILog log = LogManager.GetLogger(typeof(RudpMessagesSender));
+        private readonly ILog log = LogManager.CreateLogger(typeof(RudpMessagesSender));
 
         public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage, 
             UdpSendUtils udpSendUtils)

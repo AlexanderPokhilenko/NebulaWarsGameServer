@@ -1,11 +1,11 @@
 ﻿using System.Net;
-using log4net;
+using Code.Common;
 
 namespace Server.Http
 {
     public static class HttpListenerFactory
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpListenerFactory));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(HttpListenerFactory));
         
         public static HttpListener CreateAndRunHttpListener(int port)
         {

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
-using UnityEngine;
 
 public class ParentsRecursionPreventionSystem : ReactiveSystem<GameEntity>
 {
     private readonly GameContext gameContext;
-    private static readonly ILog Log = LogManager.GetLogger(typeof(ParentsRecursionPreventionSystem));
+    private static readonly ILog Log = LogManager.CreateLogger(typeof(ParentsRecursionPreventionSystem));
     
 
     public ParentsRecursionPreventionSystem(Contexts contexts) : base(contexts.game)

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using log4net;
+using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
 using ZeroFormatter;
 
@@ -10,7 +10,7 @@ namespace Server.Http
 {
     public sealed class HttpConnection
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(HttpConnection));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(HttpConnection));
         
         private HttpListener listener;
         private readonly MatchDataMessageHandler matchDataMessageHandler;

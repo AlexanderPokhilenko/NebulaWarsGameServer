@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 using Server.Http;
 using Server.Udp.Sending;
 
@@ -11,7 +11,7 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(NetworkKillsSenderSystem));
+        private readonly ILog log = LogManager.CreateLogger(typeof(NetworkKillsSenderSystem));
         
         private readonly int matchId;
         private readonly PlayerDeathHandler playerDeathHandler;

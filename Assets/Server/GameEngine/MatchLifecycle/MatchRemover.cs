@@ -1,10 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using log4net;
+using Code.Common;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
-using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -13,7 +12,7 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchRemover
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(MatchRemover));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchRemover));
         
         /// <summary>
         /// Очередь на удаление матча.

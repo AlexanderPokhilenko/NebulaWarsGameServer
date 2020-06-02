@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using log4net;
+using Code.Common;
 using Server.Udp.Sending;
 
 namespace Server.GameEngine
@@ -10,7 +10,7 @@ namespace Server.GameEngine
     public class PlayersMatchFinishNotifier
     {
         private readonly UdpSendUtils udpSendUtils;
-        private readonly ILog log = LogManager.GetLogger(typeof(PlayersMatchFinishNotifier));
+        private readonly ILog log = LogManager.CreateLogger(typeof(PlayersMatchFinishNotifier));
 
         public PlayersMatchFinishNotifier(UdpSendUtils udpSendUtils)
         {

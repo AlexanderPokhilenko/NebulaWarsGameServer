@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 using Server.Http;
 
 namespace Server.GameEngine.Systems
@@ -13,7 +13,7 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class PlayerExitSystem:ReactiveSystem<InputEntity>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerExitSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerExitSystem));
     
         private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
         private readonly IGroup<InputEntity> playerExitGroup;

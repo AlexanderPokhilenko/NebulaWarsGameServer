@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 
 namespace Server.GameEngine.Systems
 {
@@ -9,7 +9,7 @@ namespace Server.GameEngine.Systems
     /// </summary>
     public class FinishMatchSystem:ReactiveSystem<GameEntity>
     {
-        private readonly ILog log = LogManager.GetLogger(typeof(FinishMatchSystem));
+        private readonly ILog log = LogManager.CreateLogger(typeof(FinishMatchSystem));
         
         private readonly int matchId;
         private readonly MatchRemover matchRemover;

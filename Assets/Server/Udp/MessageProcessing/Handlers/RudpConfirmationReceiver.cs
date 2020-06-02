@@ -1,8 +1,7 @@
 ﻿using System.Net;
+using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Udp;
-using Server.GameEngine;
 using Server.Udp.Storage;
 using ZeroFormatter;
 
@@ -14,7 +13,7 @@ namespace Server.Udp.MessageProcessing.Handlers
     /// </summary>
     public class RudpConfirmationReceiver:IMessageHandler
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RudpConfirmationReceiver));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(RudpConfirmationReceiver));
         
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
 

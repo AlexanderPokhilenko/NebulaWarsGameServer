@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Common;
 using Entitas;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Udp.Sending;
 using UnityEngine;
@@ -22,7 +22,7 @@ namespace Server.GameEngine.Systems
         private readonly BattleRoyaleMatchData matchData;
         private readonly UdpSendUtils udpSendUtils;
         
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MapInitSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(MapInitSystem));
 
         static MapInitSystem()
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Code.Common;
 using Entitas;
-using log4net;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -8,7 +8,7 @@ namespace Server.GameEngine.Systems
     public class PlayerMovementHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayerMovementHandlerSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerMovementHandlerSystem));
 
         public PlayerMovementHandlerSystem(Contexts contexts) : base(contexts.input)
         {

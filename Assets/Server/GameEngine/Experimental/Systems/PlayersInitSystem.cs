@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Common;
 using Entitas;
-using log4net;
 using NetworkLibrary.NetworkLibrary.Http;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ namespace Server.GameEngine.Systems
         private readonly BattleRoyaleMatchData matchData;
         private const float Radius = 40f;
         
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PlayersInitSystem));
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayersInitSystem));
 
         static PlayersInitSystem()
         {
