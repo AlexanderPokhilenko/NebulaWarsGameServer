@@ -55,7 +55,7 @@ namespace Server.GameEngine.Systems
         private void TurnIntoBot(int playerId)
         {
             var playerEntity = gameContext.GetEntityWithPlayer(playerId);
-            if(playerEntity != null) Match.MakeBot(playerEntity);
+            if(playerEntity != null && !playerEntity.isBot) Match.MakeBot(playerEntity);
         }
 
         private void SendDeathMessage(int playerId)
