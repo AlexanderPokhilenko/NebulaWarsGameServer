@@ -6,10 +6,7 @@ using UnityEngine;
 
 namespace Server.GameEngine.Systems
 {
-    /// <summary>
-    /// Каждый кадр (или реже) отправляет всем игрокам дельту (или нет) состояния мира
-    /// </summary>
-    public class PositionsSenderSystem : IExecuteSystem, IInitializeSystem
+    public class RadiusesSenderSystem : IExecuteSystem, IInitializeSystem
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
@@ -22,7 +19,7 @@ namespace Server.GameEngine.Systems
         private const float visibleAreaRadius = 15;
         //private const float sqrVisibleAreaRadius = visibleAreaRadius * visibleAreaRadius;
 
-        public PositionsSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
+        public RadiusesSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;

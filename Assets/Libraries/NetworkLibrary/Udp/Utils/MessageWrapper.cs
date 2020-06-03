@@ -42,6 +42,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         Debug = 19,
         Cooldowns = 20,
         CooldownsInfos = 21,
-        PlayerInfo = 22
+        PlayerInfo = 22,
+        Radiuses = 23
     }
 }
