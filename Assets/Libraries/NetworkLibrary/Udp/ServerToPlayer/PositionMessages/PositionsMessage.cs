@@ -7,17 +7,20 @@ using ZeroFormatter;
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
 {
     [ZeroFormattable]
-    public struct TestPositionsMessage 
+    public struct RadiusesMessage : ITypedMessage
     {
-        [Index(0)] public Dictionary<ushort, ViewTransform>EntitiesInfo { get; set; }
-        [Index(1)] public Dictionary<ushort, ushort>__RadiusInfo { get; set; }
-        
-        public TestPositionsMessage(Dictionary<ushort, ViewTransform>entitiesInfo,
-            Dictionary<ushort, ushort> radiusInfo)
+        [Index(0)] public Dictionary<ushort, ushort> RadiusInfo { get; set; }
+
+        [IgnoreFormat]
+        public Dictionary<ushort, float> FloatRadiusInfo =>
+            RadiusInfo.ToDictionary(pair => pair.Key, pair => Mathf.HalfToFloat(pair.Value));
+
+        public RadiusesMessage(Dictionary<ushort, ushort> radiusInfo)
         {
-            EntitiesInfo = entitiesInfo;
-            __RadiusInfo = radiusInfo;
+            RadiusInfo = radiusInfo;
         }
+
+        public MessageType GetMessageType() => MessageType.Radiuses;
     }
 
     [ZeroFormattable]
