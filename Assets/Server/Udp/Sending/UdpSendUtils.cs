@@ -19,15 +19,15 @@ namespace Server.Udp.Sending
     /// </summary>
     public class UdpSendUtils
     {
-        private readonly MatchStorage matchStorage;
+        private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage rudpStorage;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
 
-        public UdpSendUtils(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
+        public UdpSendUtils(IpAddressesStorage ipAddressesStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             OutgoingMessagesStorage outgoingMessagesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.ipAddressesStorage = ipAddressesStorage;
             rudpStorage = byteArrayRudpStorage;
             this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
@@ -40,11 +40,15 @@ namespace Server.Udp.Sending
         private void SendUdp<T>(int matchId, int playerId, T message, bool rudp = false) where T : ITypedMessage
         {
             var serializedMessage = MessageFactory.GetSerializedMessage(message, rudp, out var messageId);
-            if (matchStorage.TryGetIpEndPoint(matchId, playerId, out var ipEndPoint))
+            if (ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
             {
                 outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
             }
-            if(rudp) rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+
+            if (rudp)
+            {
+                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
+            }
         }
 
         public void SendPlayerInfo(int matchId, int playerId, ushort entityId)

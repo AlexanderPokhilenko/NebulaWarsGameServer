@@ -6,11 +6,13 @@ namespace Libraries.NetworkLibrary.Udp.PlayerToServer
     [ZeroFormattable]
     public struct BattleExitMessage:ITypedMessage
     {
-        [Index(0)] public int PlayerId;
+        [Index(0)] public int MatchId { get; }
+        [Index(1)] public int TemporaryId { get; }
 
-        public BattleExitMessage(int playerId)
+        public BattleExitMessage(int matchId, int temporaryId)
         {
-            PlayerId = playerId;
+            MatchId = matchId;
+            TemporaryId = temporaryId;
         }
 
         public MessageType GetMessageType() => MessageType.PlayerExit;

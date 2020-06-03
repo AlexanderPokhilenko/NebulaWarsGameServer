@@ -1,17 +1,17 @@
 ﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using ZeroFormatter;
-
-   namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
+           
+namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
 {
     [ZeroFormattable]
     public struct PlayerPingMessage : ITypedMessage
     {
-        [Index(0)] public int TemporaryId;
-        [Index(1)] public int GameRoomNumber;
+        [Index(0)] public int TemporaryId { get; }
+        [Index(1)] public int MatchId { get; }
 
-        public PlayerPingMessage(int temporaryId, int gameRoomNumber)
+        public PlayerPingMessage(int temporaryId, int matchId)
         {
             TemporaryId = temporaryId;
-            GameRoomNumber = gameRoomNumber;
+            MatchId = matchId;
         }
 
         public MessageType GetMessageType() => MessageType.PlayerPing;

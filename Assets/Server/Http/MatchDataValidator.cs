@@ -7,7 +7,7 @@ using Server.GameEngine;
 namespace Server.Http
 {
     /// <summary>
-    /// Проверяет содержимое объекта с информацие про матч, который нужно создать. 
+    /// Проверяет содержимое объекта с информацией про матч, который нужно создать. 
     /// </summary>
     public class MatchDataValidator
     {

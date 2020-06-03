@@ -50,16 +50,17 @@ namespace Server
 
             shittyUdpMediator = new ShittyUdpMediator();
             
+            IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
             ShittyDatagramPacker shittyDatagramPacker = new ShittyDatagramPacker(1500, shittyUdpMediator);
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(shittyDatagramPacker);
-            UdpSendUtils udpSendUtils = new UdpSendUtils(matchStorage, byteArrayRudpStorage, outgoingMessagesStorage);
-            MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, matchStorage,
-                byteArrayRudpStorage, udpSendUtils);
+            UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage);
+            MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, 
+                byteArrayRudpStorage, udpSendUtils, ipAddressesStorage);
             
             shittyUdpMediator.SetProcessor(messageProcessor);
             
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier);
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
@@ -73,7 +74,7 @@ namespace Server
                 .SetupConnection(UdpPort)
                 .StartReceiveThread();
 
-            RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage, udpSendUtils);
+            RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage, udpSendUtils, ipAddressesStorage);
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
                 inputEntitiesCreator, exitEntitiesCreator, rudpMessagesSender, outgoingMessagesStorage);
             

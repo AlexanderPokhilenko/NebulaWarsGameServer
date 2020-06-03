@@ -6,17 +6,17 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
     [ZeroFormattable]
     public struct PlayerInputMessage : ITypedMessage
     {
-        [Index(0)] public int TemporaryIdentifier;
-        [Index(1)] public int GameRoomNumber;
-        [Index(2)] public float X;
-        [Index(3)] public float Y;
-        [Index(4)] public float Angle;
-        [Index(5)] public bool UseAbility;
+        [Index(0)] public int TemporaryId { get; }
+        [Index(1)] public int MatchId { get; }
+        [Index(2)] public float X { get; }
+        [Index(3)] public float Y { get; }
+        [Index(4)] public float Angle { get; }
+        [Index(5)] public bool UseAbility { get; }
 
-        public PlayerInputMessage(int identifier, int gameRoomNumber, float x, float y, float angle, bool ability)
+        public PlayerInputMessage(int temporaryId, int matchId, float x, float y, float angle, bool ability)
         {
-            TemporaryIdentifier = identifier;
-            GameRoomNumber = gameRoomNumber;
+            TemporaryId = temporaryId;
+            MatchId = matchId;
             X = x;
             Y = y;
             Angle = angle;

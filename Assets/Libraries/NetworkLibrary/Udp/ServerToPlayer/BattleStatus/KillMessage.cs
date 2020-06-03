@@ -24,4 +24,20 @@ namespace Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus
             return MessageType.Kill;
         }
     }
+    
+    [ZeroFormattable]
+    public struct PlayerInfoMessage : ITypedMessage
+    {
+        [Index(0)] public readonly ushort EntityId;
+
+        public PlayerInfoMessage(ushort entityId)
+        {
+            EntityId = entityId;
+        }
+
+        public MessageType GetMessageType()
+        {
+            return MessageType.PlayerInfo;
+        }
+    }
 }

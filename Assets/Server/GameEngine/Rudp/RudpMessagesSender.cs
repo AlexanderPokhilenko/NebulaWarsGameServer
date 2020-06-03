@@ -11,14 +11,16 @@ namespace Server.GameEngine
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly MatchStorage matchStorage;
         private readonly UdpSendUtils udpSendUtils;
+        private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(RudpMessagesSender));
 
         public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage, 
-            UdpSendUtils udpSendUtils)
+            UdpSendUtils udpSendUtils, IpAddressesStorage ipAddressesStorage)
         {
             this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchStorage = matchStorage;
             this.udpSendUtils = udpSendUtils;
+            this.ipAddressesStorage = ipAddressesStorage;
         }
         
         public void SendAll()
@@ -29,9 +31,13 @@ namespace Server.GameEngine
             foreach (Match match in matchStorage.GetAllMatches())
             {
                 int matchId = match.MatchId;
-                foreach (var playersId in match.GetActivePlayersIds())
+                List<int> players = ipAddressesStorage.GetActivePlayersIds(matchId);
+                if (players != null)
                 {
-                    pairs.Add((matchId, playersId));
+                    foreach (var playersId in players)
+                    {
+                        pairs.Add((matchId, playersId));
+                    }
                 }
             }
             
@@ -43,7 +49,7 @@ namespace Server.GameEngine
                 
                 if (messagesForPlayer != null)
                 {
-                    if(matchStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+                    if(ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
                     {
                         for (int i = 0; i < messagesForPlayer.Length; i++)
                         {

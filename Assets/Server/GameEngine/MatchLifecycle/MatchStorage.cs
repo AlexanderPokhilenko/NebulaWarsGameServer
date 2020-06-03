@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net;
 using Code.Common;
+using JetBrains.Annotations;
 
 namespace Server.GameEngine
 {
     /// <summary>
-    /// Хранит таблицу текущих матчей и игроков
+    /// Хранит таблицу текущих матчей.
     /// </summary>
     public class MatchStorage
     {
@@ -25,12 +25,10 @@ namespace Server.GameEngine
         {
             if (matches.TryAdd(match.MatchId, match))
             {
-                //намана
+                //ignore
             }
             else
             {
-                //Возможно матч с таким id уже добавлен
-                //это фиаско
                 throw new Exception("Не удалось добавить матч в коллекцию.");
             }
         }
@@ -79,57 +77,10 @@ namespace Server.GameEngine
         {
             return matches.Values;
         }
-        
-        /// <summary>
-        /// Получение матча для создания сущностей ввода.
-        /// </summary>
-        public bool TryGetMatchByPlayerId(int playerId, out Match matchArg)
-        {
-            foreach (Match match in matches.Values)
-            {
-                if (match.HasPlayer(playerId))
-                {
-                    matchArg = match;
-                    return true;
-                }
-            }
 
-            matchArg = null;
-            return false;
-        }
-
-        /// <summary>
-        /// Обновление ip адреса игрока.
-        /// </summary>
-        public bool TryUpdateIpEndPoint(int matchId, int playerId, IPEndPoint ipEndPoint)
+        public bool TryGetMatch(int matchId, out Match match)
         {
-            if (matches.TryGetValue(matchId, out var match))
-            {
-                return match.TryUpdateIpEndPoint(playerId, ipEndPoint);
-            }
-            else
-            {
-                //TODO разобраться с этим
-                return false;
-                //
-                // throw new Exception(nameof(TryUpdateIpEndPoint));
-            }
-        }
-
-        /// <summary>
-        /// Получение ip адреса для отправки сообщения.
-        /// </summary>
-        public bool TryGetIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
-        {
-            if (matches.TryGetValue(matchId, out var match))
-            {
-                return match.TryGetIpEndPoint(playerId, out ipEndPoint);
-            }
-            else
-            {
-                ipEndPoint = null;
-                return false;
-            }
+            return matches.TryGetValue(matchId, out match);
         }
     }
 }

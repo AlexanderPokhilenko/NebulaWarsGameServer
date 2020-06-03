@@ -10,6 +10,7 @@ namespace Server.GameEngine
     /// </summary>
     public class MatchCreator
     {
+        //TODO говно
         /// <summary>
         /// Очередь на создание.
         /// </summary>
@@ -34,7 +35,7 @@ namespace Server.GameEngine
             {
                 if (matchesToCreate.TryDequeue(out BattleRoyaleMatchData matchData))
                 {
-                    var match = matchFactory.Create(matchData);
+                    Match match = matchFactory.Create(matchData);
                     result.Add(match);
                 }
             }

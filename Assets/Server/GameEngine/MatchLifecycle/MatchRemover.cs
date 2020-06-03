@@ -24,13 +24,13 @@ namespace Server.GameEngine
         private readonly PlayersMatchFinishNotifier playersMatchFinishNotifier;
 
         public MatchRemover(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
-            UdpSendUtils udpSendUtils, MatchmakerNotifier matchmakerNotifier)
+            UdpSendUtils udpSendUtils, MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage)
         {
             this.matchStorage = matchStorage;
             this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             matchesToRemove = new ConcurrentQueue<int>();
-            playersMatchFinishNotifier = new PlayersMatchFinishNotifier(udpSendUtils);
+            playersMatchFinishNotifier = new PlayersMatchFinishNotifier(udpSendUtils, ipAddressesStorage);
         }
         
         public void MarkMatchAsFinished(int matchId)

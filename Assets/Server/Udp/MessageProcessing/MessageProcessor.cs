@@ -26,11 +26,11 @@ namespace Server.Udp.MessageProcessing
         private readonly RudpConfirmationSender rudpConfirmationSender;
 
         public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
-            MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils)
+             ByteArrayRudpStorage byteArrayRudpStorage, UdpSendUtils udpSendUtils, IpAddressesStorage ipAddressesStorage)
         {
             inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
             exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);
-            pingMessageHandler = new PingMessageHandler(matchStorage);
+            pingMessageHandler = new PingMessageHandler(ipAddressesStorage);
             rudpConfirmationHandler = new RudpConfirmationReceiver(byteArrayRudpStorage);
             rudpConfirmationSender = new RudpConfirmationSender(udpSendUtils);
         }
@@ -56,13 +56,6 @@ namespace Server.Udp.MessageProcessing
                 case MessageType.PlayerExit:
                     exitMessageHandler.Handle(messageWrapper, sender);
                     break;
-                case MessageType.Debug:
-                    break;
-                //     UdpClient udpClient = new UdpClient();
-                //     DebugMessage debugMessage = new DebugMessage();
-                //     byte[] data = ZeroFormatterSerializer.Serialize(debugMessage);
-                //     udpClient.Send(data, data.Length, sender);
-                //     return;
                 default:
                     throw new Exception("Неожиданный тип сообщения "+messageWrapper.MessageType);
             }

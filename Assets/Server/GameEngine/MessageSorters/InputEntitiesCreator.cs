@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using UnityEngine;
 using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace Server.GameEngine.Experimental
@@ -10,36 +12,37 @@ namespace Server.GameEngine.Experimental
     public class InputEntitiesCreator
     {
         private readonly MatchStorage matchStorage;
-        private readonly ConcurrentDictionary<int, Vector2> movementMessages = new ConcurrentDictionary<int, Vector2>();
-        private readonly ConcurrentDictionary<int, float> attackMessages = new ConcurrentDictionary<int, float>();
-        private readonly ConcurrentDictionary<int, bool> abilityMessages = new ConcurrentDictionary<int, bool>();
+        
+        //playerId matchId value
+        private readonly ConcurrentDictionary<int, Tuple<int, Vector2>>  movementMessages = new ConcurrentDictionary<int, Tuple<int, Vector2>>();
+        //playerId, matchId value
+        private readonly ConcurrentDictionary<int, Tuple<int, float>> attackMessages = new ConcurrentDictionary<int, Tuple<int, float>>();
+        //playerId, matchId value
+        private readonly ConcurrentDictionary<int, Tuple<int,bool>> abilityMessages = new ConcurrentDictionary<int, Tuple<int, bool>>();
 
         public InputEntitiesCreator(MatchStorage matchStorage)
         {
             this.matchStorage = matchStorage;
         }
         
-        public bool TryAddMovementMessage(int playerId, Vector2 vector)
+        public bool TryAddMovementMessage(int matchId, int playerId, Vector2 vector)
         {
-            return movementMessages.TryAdd(playerId, vector);
+            return movementMessages.TryAdd(playerId, new Tuple<int, Vector2>(matchId, vector));
         }
 
-        public bool TryAddAttackMessage(int playerId, float angle)
+        public bool TryAddAttackMessage(int matchId, int playerId, float angle)
         {
-            return attackMessages.TryAdd(playerId, angle);
+            return attackMessages.TryAdd(playerId, new Tuple<int, float>(matchId, angle));
         }
 
-        public bool TryAddAbilityMessage(int playerId, bool ability)
+        public bool TryAddAbilityMessage(int matchId, int playerId, bool ability)
         {
-            return abilityMessages.TryAdd(playerId, ability);
+            return abilityMessages.TryAdd(playerId, new Tuple<int, bool>(matchId, ability));
         }
 
         public void Create()
         {
-            ActionForEachMessage(movementMessages, (inputEntity, joystickPosition) =>
-            {
-                inputEntity.AddMovement(joystickPosition);
-            });
+            ActionForEachMessage(movementMessages, MovementAction);
             ActionForEachMessage(attackMessages, (inputEntity, attackAngle) =>
             {
                 inputEntity.AddAttack(attackAngle);
@@ -54,16 +57,22 @@ namespace Server.GameEngine.Experimental
             abilityMessages.Clear();
         }
 
-        private void ActionForEachMessage<T>(ConcurrentDictionary<int, T> messages, Action<InputEntity, T> action)
+        private void MovementAction(InputEntity inputEntity, Vector2 vector2)
         {
-            foreach (var pair in messages)
-            {
-                var playerId = pair.Key;
-                var value = pair.Value;
+            inputEntity.AddMovement(vector2);
+        }
 
-                if (matchStorage.TryGetMatchByPlayerId(playerId, out Match match))
+        private void ActionForEachMessage<T>(ConcurrentDictionary<int, Tuple<int, T>> messages, Action<InputEntity, T> action)
+        {
+            foreach (KeyValuePair<int, Tuple<int, T>> pair in messages)
+            {
+                int matchId = pair.Value.Item1;
+                int playerId = pair.Key;
+                T value = pair.Value.Item2;
+
+                if (matchStorage.TryGetMatch(matchId, out Match match))
                 {
-                    match.AddInputEntity(playerId, action, value);
+                    match.AddInputEntity(playerId, action, value);    
                 }
             }
         }

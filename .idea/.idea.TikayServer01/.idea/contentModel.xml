@@ -138,7 +138,6 @@
             </e>
             <e p="Udp" t="Include">
               <e p="Common" t="Include">
-                <e p="DebugMessage.cs" t="Include" />
                 <e p="DeliveryConfirmationMessage.cs" t="Include" />
               </e>
               <e p="PlayerToServer" t="Include">
@@ -149,7 +148,6 @@
               <e p="ServerToPlayer" t="Include">
                 <e p="BattleStatus" t="Include">
                   <e p="KillMessage.cs" t="Include" />
-                  <e p="PlayerInfoMessage.cs" t="Include" />
                   <e p="PlayerTrackingMessage.cs" t="Include" />
                   <e p="PointTrackingMessage.cs" t="Include" />
                   <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
@@ -533,6 +531,7 @@
         </e>
         <e p="Tests" t="Include">
           <e p="DatagramPackingTests.cs" t="Include" />
+          <e p="IpAddressesStorageTests.cs" t="Include" />
           <e p="readme.txt" t="Include" />
           <e p="RudpTests.cs" t="Include" />
           <e p="Tests.asmdef" t="Include" />

@@ -8,6 +8,7 @@ using ZeroFormatter;
 
 //TODO это очень опасно. злоумышленник может исключить всех игроков из списка активных игроков и им перестанет
 //отправляться инфа про матч
+//TODO нужно добавить секрет для защиты
 
 namespace Server.Udp.MessageProcessing.Handlers
 {
@@ -28,12 +29,12 @@ namespace Server.Udp.MessageProcessing.Handlers
             BattleExitMessage exitMessage =
                 ZeroFormatterSerializer.Deserialize<BattleExitMessage>(messageWrapper.SerializedMessage);
 
-            if (exitMessage.PlayerId == 0)
+            if (exitMessage.TemporaryId == 0)
             {
-                throw new ArgumentOutOfRangeException("exitMessage.PlayerId = "+exitMessage.PlayerId);
+                throw new ArgumentOutOfRangeException("exitMessage.TemporaryId = "+exitMessage.TemporaryId);
             }
             
-            exitEntitiesCreator.AddExitMessage(exitMessage.PlayerId);
+            exitEntitiesCreator.AddExitMessage(exitMessage.MatchId, exitMessage.TemporaryId);
         }
     }
 }

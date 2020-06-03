@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
 using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.Systems;
 using Server.Http;
 using Server.Udp.Sending;
-using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -17,12 +16,12 @@ namespace Server.GameEngine
         private Contexts contexts;
         public readonly int MatchId;
         private DateTime? gameStartTime;
+        private HashSet<int> playersIds;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
-        private IpAddressesStorage ipAddressesStorage;
         private PlayerDeathHandler playerDeathHandler; 
-        private readonly ILog log = LogManager.CreateLogger(typeof(Match));
         private readonly MatchmakerNotifier matchmakerNotifier;
+        private readonly ILog log = LogManager.CreateLogger(typeof(Match));
 
         public Match(int matchId, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier)
@@ -40,17 +39,19 @@ namespace Server.GameEngine
             //TODO это нужно убрать в отдельный класс
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             
+            playersIds = new HashSet<int>(matchDataArg.GameUnitsForMatch
+                .Select(gu=>(int)gu.TemporaryId));
+            
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
             
-            ipAddressesStorage = new IpAddressesStorage(matchDataArg);
-            playerDeathHandler = new PlayerDeathHandler(ipAddressesStorage, matchmakerNotifier, udpSendUtils);
+            playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils);
             
             systems = new Entitas.Systems()
                     
                     .Add(new MapInitSystem(contexts, matchDataArg, udpSendUtils))
-                    // .Add(new TestEndMatchSystem2(Contexts))
+                    // .Add(new TestEndMatchSystem(contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
                     .Add(new PlayerAttackHandlerSystem(contexts))
                     .Add(new PlayerAbilityHandlerSystem(contexts))
@@ -150,24 +151,6 @@ namespace Server.GameEngine
             var gameDuration = DateTime.UtcNow - gameStartTime.Value;
             return gameDuration > GameSessionGlobals.MaxGameDuration;
         }
-
-        //Ip
-        public List<int> GetActivePlayersIds()
-        {
-            return ipAddressesStorage.GetActivePlayersIds();
-        }
-
-        //Ip
-        public bool TryGetIpEndPoint(int playerId, out IPEndPoint ipEndPoint)
-        {
-            return ipAddressesStorage.TryGetIpEndPoint(playerId, out ipEndPoint);
-        }
-     
-        //Ip
-        public bool HasPlayer(int playerId)
-        {
-            return ipAddressesStorage.HasPlayer(playerId);
-        }
         
         //ECS
         private void TryEnableDebug()
@@ -178,10 +161,9 @@ namespace Server.GameEngine
 #endif
         }
 
-        //Ip
-        public bool TryUpdateIpEndPoint(int playerId, IPEndPoint ipEndPoint)
+        public bool HasPlayer(int playerId)
         {
-            return ipAddressesStorage.TryUpdateIpEndPoint(playerId, ipEndPoint);
+            return playersIds.Contains(playerId);
         }
     }
 }

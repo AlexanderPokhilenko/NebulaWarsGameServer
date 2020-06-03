@@ -1,17 +1,18 @@
 ﻿using System.Collections.Concurrent;
-using System.Linq;
+using System.Collections.Generic;
 using Code.Common;
 
 namespace Server.GameEngine.Experimental
 {
     /// <summary>
-    /// Создаёт сущности о преждевременном покидании боя в контекстах.
+    /// Создаёт сообщения о преждевременном покидании боя в контекстах.
     /// </summary>
     public class ExitEntitiesCreator
     {
         private readonly ILog log = LogManager.CreateLogger(typeof(ExitEntitiesCreator));
         
-        private readonly ConcurrentBag<int> concurrentBag = new ConcurrentBag<int>();
+        //matchId, playerId
+        private readonly ConcurrentDictionary<int, int> dictionary = new ConcurrentDictionary<int, int>();
         private readonly MatchStorage matchStorage;
         
         public ExitEntitiesCreator(MatchStorage matchStorage)
@@ -19,32 +20,30 @@ namespace Server.GameEngine.Experimental
             this.matchStorage = matchStorage;
         }
         
-        public void AddExitMessage(int playerId)
+        public void AddExitMessage(int matchId, int playerId)
         {
-            log.Warn(nameof(AddExitMessage));
-            if (!concurrentBag.Contains(playerId))
+            log.Info(nameof(AddExitMessage));
+            if (!dictionary.ContainsKey(matchId))
             {
-                log.Warn(nameof(AddExitMessage)+" добавление в список");
-                concurrentBag.Add(playerId);
+                dictionary.TryAdd(matchId, playerId);
             }
         }
 
         public void Create()
         {
-            while (!concurrentBag.IsEmpty)
+            foreach (KeyValuePair<int, int> pair in dictionary)
             {
-                if (concurrentBag.TryTake(out int playerId))
+                int matchId = pair.Key;
+                int playerId = pair.Value;
+
+
+                if (matchStorage.TryGetMatch(matchId, out Match match))
                 {
-                    if (matchStorage.TryGetMatchByPlayerId(playerId, out var match))
-                    {
-                        match.AddInputEntity(playerId, inputEntity => inputEntity.isLeftTheGame = true);
-                    }
-                    else
-                    {
-                        log.Error($"Не удалось найти матч для игрока {nameof(playerId)} {playerId}");
-                    }
-                }
+                    match.AddInputEntity(playerId, inputEntity => inputEntity.isLeftTheGame = true);
+                } 
             }   
+            
+            dictionary.Clear();
         }
     }
 }

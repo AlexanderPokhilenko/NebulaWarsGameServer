@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Code.Common;
 using Server.Udp.Sending;
+using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -10,17 +11,19 @@ namespace Server.GameEngine
     public class PlayersMatchFinishNotifier
     {
         private readonly UdpSendUtils udpSendUtils;
+        private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(PlayersMatchFinishNotifier));
 
-        public PlayersMatchFinishNotifier(UdpSendUtils udpSendUtils)
+        public PlayersMatchFinishNotifier(UdpSendUtils udpSendUtils, IpAddressesStorage ipAddressesStorage)
         {
             this.udpSendUtils = udpSendUtils;
+            this.ipAddressesStorage = ipAddressesStorage;
         }
         
         public void Notify(Match match)
         {
-            List<int> activePlayersIds = match.GetActivePlayersIds();
-            if (activePlayersIds.Count == 0)
+            List<int> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
+            if (activePlayersIds == null || activePlayersIds.Count == 0)
             {
                 log.Error("Список активных игроков пуст. Некого уведомлять о окончании матча.");
             }

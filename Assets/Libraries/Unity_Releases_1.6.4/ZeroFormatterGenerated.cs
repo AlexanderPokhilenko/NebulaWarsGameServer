@@ -2906,12 +2906,14 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
         where TTypeResolver : ITypeResolver, new()
     {
         readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, int> formatter1;
         
         public override bool NoUseDirtyTracker
         {
             get
             {
                 return formatter0.NoUseDirtyTracker
+                    && formatter1.NoUseDirtyTracker
                 ;
             }
         }
@@ -2919,19 +2921,21 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
         public BattleExitMessageFormatter()
         {
             formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter1 = Formatter<TTypeResolver, int>.Default;
             
         }
 
         public override int? GetLength()
         {
-            return 4;
+            return 8;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 4);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
             var startOffset = offset;
-            offset += formatter0.Serialize(ref bytes, offset, value.PlayerId);
+            offset += formatter0.Serialize(ref bytes, offset, value.MatchId);
+            offset += formatter1.Serialize(ref bytes, offset, value.TemporaryId);
             return offset - startOffset;
         }
 
@@ -2942,8 +2946,11 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
             var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
             offset += size;
             byteSize += size;
+            var item1 = formatter1.Deserialize(ref bytes, offset, tracker, out size);
+            offset += size;
+            byteSize += size;
             
-            return new global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage(item0);
+            return new global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage(item0, item1);
         }
     }
 
@@ -3009,8 +3016,8 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
         {
             BinaryUtil.EnsureCapacity(ref bytes, offset, 21);
             var startOffset = offset;
-            offset += formatter0.Serialize(ref bytes, offset, value.TemporaryIdentifier);
-            offset += formatter1.Serialize(ref bytes, offset, value.GameRoomNumber);
+            offset += formatter0.Serialize(ref bytes, offset, value.TemporaryId);
+            offset += formatter1.Serialize(ref bytes, offset, value.MatchId);
             offset += formatter2.Serialize(ref bytes, offset, value.X);
             offset += formatter3.Serialize(ref bytes, offset, value.Y);
             offset += formatter4.Serialize(ref bytes, offset, value.Angle);
@@ -3096,7 +3103,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
             BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
             var startOffset = offset;
             offset += formatter0.Serialize(ref bytes, offset, value.TemporaryId);
-            offset += formatter1.Serialize(ref bytes, offset, value.GameRoomNumber);
+            offset += formatter1.Serialize(ref bytes, offset, value.MatchId);
             return offset - startOffset;
         }
 

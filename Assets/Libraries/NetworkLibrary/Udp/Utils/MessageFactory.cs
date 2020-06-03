@@ -1,6 +1,5 @@
 ﻿﻿﻿﻿﻿﻿﻿using ZeroFormatter;
 
-// ReSharper disable once CheckNamespace
 namespace NetworkLibrary.NetworkLibrary.Udp
 {
     public static class MessageFactory
@@ -18,7 +17,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         {
             return ZeroFormatterSerializer.Serialize(GetMessage(message, rudpEnabled, out messageId));
         }
-
+    
         public static byte[] GetSerializedMessage(MessageWrapper messageWrapper)
         {
             return ZeroFormatterSerializer.Serialize(messageWrapper);
@@ -27,7 +26,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
 
     public static class MessageIdGenerator
     {
-        private static uint lastMessageId;
+        private static uint lastMessageId=1;
         public static uint GetMessageId()
         {
             return lastMessageId++;

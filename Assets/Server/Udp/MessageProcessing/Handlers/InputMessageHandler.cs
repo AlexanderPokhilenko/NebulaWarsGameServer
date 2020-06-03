@@ -1,9 +1,10 @@
 ﻿using System.Net;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine.Experimental;
+using UnityEngine;
 using ZeroFormatter;
+using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace Server.Udp.MessageProcessing.Handlers
 {
@@ -21,41 +22,12 @@ namespace Server.Udp.MessageProcessing.Handlers
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            PlayerInputMessage mes =
+            PlayerInputMessage message =
                 ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(messageWrapper.SerializedMessage);
-            
-            AddPlayerInputComponent(mes.TemporaryIdentifier, mes.GetVector2());
-            AddPlayerAttackComponent(mes.TemporaryIdentifier, mes.Angle);
-            AddPlayerAbilityComponent(mes.TemporaryIdentifier, mes.UseAbility);
-        }
-
-        private void AddPlayerInputComponent(int playerId, Vector2 vector)
-        {
-            if (inputEntitiesCreator.TryAddMovementMessage(playerId, vector))
-            {
-                //намана
-            }
-            else
-            {
-                //шо?
-            }
-        }
-
-        private void AddPlayerAttackComponent(int playerId, float angle)
-        {
-            if (inputEntitiesCreator.TryAddAttackMessage(playerId, angle))
-            {
-                //намана
-            }
-            else
-            {
-                //шо?
-            }
-        }
-
-        private void AddPlayerAbilityComponent(int playerId, bool ability)
-        {
-            inputEntitiesCreator.TryAddAbilityMessage(playerId, ability);
+            int matchId = message.MatchId;
+            inputEntitiesCreator.TryAddMovementMessage(matchId, message.TemporaryId, message.GetVector2());
+            inputEntitiesCreator.TryAddAttackMessage(matchId, message.TemporaryId, message.Angle);
+            inputEntitiesCreator.TryAddAbilityMessage(matchId, message.TemporaryId, message.UseAbility);
         }
     }
 }
