@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Entitas;
+﻿using Entitas;
 using Server.Udp.Sending;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -28,9 +27,9 @@ namespace Server.GameEngine.Systems
             this.udpSendUtils = udpSendUtils;
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
+            var grandMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction).NoneOf(GameMatcher.Parent);
             grandObjects = gameContext.GetGroup(grandMatcher);
-            var visibleMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform, GameMatcher.ViewType);
+            var visibleMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction, GameMatcher.ViewType);
             visibleObjects = gameContext.GetGroup(visibleMatcher);
             visibleObjectsBuffer = new List<GameEntity>();
         }

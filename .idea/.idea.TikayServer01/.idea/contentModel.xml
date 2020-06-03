@@ -165,6 +165,7 @@
                 </e>
                 <e p="PositionMessages" t="Include">
                   <e p="PositionsMessage.cs" t="Include" />
+                  <e p="RadiusesMessage.cs" t="Include" />
                 </e>
                 <e p="Shield" t="Include">
                   <e p="MaxShieldPointsMessage.cs" t="Include" />
@@ -182,7 +183,7 @@
             </e>
           </e>
           <e p="Unity_Releases_1.6.4" t="Include">
-            <e p="TestPositionsMessageFormatter.cs" t="Include" />
+            <e p="MyZeroFormatterInitializer.cs" t="Include" />
             <e p="ZeroFormatterGenerated.cs" t="Include" />
           </e>
           <e p="UnityThread.cs" t="Include" />
@@ -256,6 +257,7 @@
                 <e p="Debug" t="Include">
                   <e p="MatchDebugSenderSystem.cs" t="Include" />
                 </e>
+                <e p="FinalRadiusesSystem.cs" t="Include" />
                 <e p="FinishMatchSystem.cs" t="Include" />
                 <e p="GameDeletingSystem.cs" t="Include" />
                 <e p="HealthUpdaterSystem.cs" t="Include" />
@@ -264,11 +266,15 @@
                 <e p="MapInitSystem.cs" t="Include" />
                 <e p="MaxHpUpdaterSystem.cs" t="Include" />
                 <e p="NetworkKillsSenderSystem.cs" t="Include" />
+                <e p="NetworkSenderSystems.cs" t="Include" />
                 <e p="PlayerAttackHandlerSystem.cs" t="Include" />
                 <e p="PlayerExitSystem.cs" t="Include" />
                 <e p="PlayerMovementHandlerSystem.cs" t="Include" />
                 <e p="PlayersInitSystem.cs" t="Include" />
                 <e p="PositionsSenderSystem.cs" t="Include" />
+                <e p="RadiusesSenderSystem.cs" t="Include" />
+                <e p="RadiusesUpdaterSystem.cs" t="Include" />
+                <e p="ReactivePlayersVisionSystem.cs" t="Include" />
                 <e p="RudpSendingSystem.cs" t="Include" />
                 <e p="ShieldPointsUpdaterSystem.cs" t="Include" />
                 <e p="TestEndMatchSystem.cs" t="Include" />

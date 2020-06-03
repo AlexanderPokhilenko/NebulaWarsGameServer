@@ -43,6 +43,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         Cooldowns = 20,
         CooldownsInfos = 21,
         PlayerInfo = 22,
-        Radiuses = 23
+        Radiuses = 23,
+        Parents = 24,
+        Detaches = 25
     }
 }

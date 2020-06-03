@@ -1,11 +1,25 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+         using UnityEngine;
 using ZeroFormatter;
-
+         
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
 {
+    [ZeroFormattable]
+    public struct TestPositionsMessage 
+    {
+        [Index(0)] public Dictionary<ushort, ViewTransform>EntitiesInfo { get; set; }
+        [Index(1)] public Dictionary<ushort, ushort>__RadiusInfo { get; set; }
+        
+        public TestPositionsMessage(Dictionary<ushort, ViewTransform>entitiesInfo,
+            Dictionary<ushort, ushort> radiusInfo)
+        {
+            EntitiesInfo = entitiesInfo;
+            __RadiusInfo = radiusInfo;
+        }
+    }
+
     [ZeroFormattable]
     public struct RadiusesMessage : ITypedMessage
     {
@@ -21,6 +35,33 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
         }
 
         public MessageType GetMessageType() => MessageType.Radiuses;
+    }
+
+    [ZeroFormattable]
+    public struct DetachesMessage : ITypedMessage
+    {
+        [Index(0)] public ushort[] DetachedIds { get; set; }
+
+        public DetachesMessage(ushort[] detachedIds)
+        {
+            DetachedIds = detachedIds;
+        }
+
+
+        public MessageType GetMessageType() => MessageType.Detaches;
+    }
+
+    [ZeroFormattable]
+    public struct ParentsMessage : ITypedMessage
+    {
+        [Index(0)] public Dictionary<ushort, ushort> ParentInfo { get; set; }
+
+        public ParentsMessage(Dictionary<ushort, ushort> parentInfo)
+        {
+            ParentInfo = parentInfo;
+        }
+
+        public MessageType GetMessageType() => MessageType.Parents;
     }
 
     [ZeroFormattable]

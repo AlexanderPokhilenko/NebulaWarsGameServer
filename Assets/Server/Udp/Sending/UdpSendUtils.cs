@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Code.Common;
+using Libraries.NetworkLibrary.Udp;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
@@ -63,7 +64,7 @@ namespace Server.Udp.Sending
             var message = new PositionsMessage
             {
                 EntitiesInfo = gameEntities.ToDictionary(e => e.id.value,
-                    e => new ViewTransform(e.globalTransform.position, e.globalTransform.angle, e.viewType.id))
+                    e => new ViewTransform(e.position.value, e.direction.angle, e.viewType.id))
             };
             SendUdp(matchId, playerId, message);
         }
@@ -72,6 +73,18 @@ namespace Server.Udp.Sending
         {
             var message = new RadiusesMessage(radiuses);
             SendUdp(matchId, playerId, message, rudp);
+        }
+
+        public void SendParents(int matchId, int playerId, Dictionary<ushort, ushort> parents)
+        {
+            var message = new ParentsMessage(parents);
+            SendUdp(matchId, playerId, message, true);
+        }
+
+        public void SendDetaches(int matchId, int playerId, ushort[] detachedIds)
+        {
+            var message = new DetachesMessage(detachedIds);
+            SendUdp(matchId, playerId, message, true);
         }
 
         public void SendKill(int matchId, KillData killData)
