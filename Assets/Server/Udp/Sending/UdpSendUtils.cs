@@ -58,13 +58,17 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
 
-        public void SendPositions(int matchId, int playerId, IEnumerable<GameEntity> withPosition)
+        public void SendHides(int matchId, int playerId, ushort[] hiddenIds)
         {
-            var gameEntities = withPosition.ToList();
+            var message = new HidesMessage(hiddenIds);
+            SendUdp(matchId, playerId, message, true);
+        }
+
+        public void SendPositions(int matchId, int playerId, Dictionary<ushort, ViewTransform> entitiesInfo)
+        {
             var message = new PositionsMessage
             {
-                EntitiesInfo = gameEntities.ToDictionary(e => e.id.value,
-                    e => new ViewTransform(e.position.value, e.direction.angle, e.viewType.id))
+                EntitiesInfo = entitiesInfo
             };
             SendUdp(matchId, playerId, message);
         }
@@ -84,6 +88,12 @@ namespace Server.Udp.Sending
         public void SendDetaches(int matchId, int playerId, ushort[] detachedIds)
         {
             var message = new DetachesMessage(detachedIds);
+            SendUdp(matchId, playerId, message, true);
+        }
+
+        public void SendDestroys(int matchId, int playerId, ushort[] destroyedIds)
+        {
+            var message = new DestroysMessage(destroyedIds);
             SendUdp(matchId, playerId, message, true);
         }
 

@@ -45,6 +45,8 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         PlayerInfo = 22,
         Radiuses = 23,
         Parents = 24,
-        Detaches = 25
+        Detaches = 25,
+        Destroys = 26,
+        Hides = 27
     }
 }

@@ -1,10 +1,13 @@
 ﻿using Entitas;
 using Server.Udp.Sending;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Vector2 = UnityEngine.Vector2;
 
 namespace Server.GameEngine.Systems
 {
+    //TODO: Переписать!
     /// <summary>
     /// Каждый кадр (или реже) отправляет всем игрокам дельту (или нет) состояния мира
     /// </summary>
@@ -15,11 +18,14 @@ namespace Server.GameEngine.Systems
         private readonly IGroup<GameEntity> players;
         private readonly IGroup<GameEntity> grandObjects;
         private readonly IGroup<GameEntity> visibleObjects;
+        private readonly IGroup<GameEntity> removedObjects;
         private GameEntity zone;
         private readonly GameContext gameContext;
         private readonly List<GameEntity> visibleObjectsBuffer;
+        private readonly List<GameEntity> removedObjectsBuffer;
         private const float visibleAreaRadius = 15;
         //private const float sqrVisibleAreaRadius = visibleAreaRadius * visibleAreaRadius;
+        private readonly Dictionary<int, HashSet<ushort>> lastVisible;
 
         public PositionsSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
@@ -32,44 +38,65 @@ namespace Server.GameEngine.Systems
             var visibleMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Direction, GameMatcher.ViewType);
             visibleObjects = gameContext.GetGroup(visibleMatcher);
             visibleObjectsBuffer = new List<GameEntity>();
+            removedObjects = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Destroyed, GameMatcher.Position, GameMatcher.Direction, GameMatcher.ViewType));
+            removedObjectsBuffer = new List<GameEntity>();
+            lastVisible = new Dictionary<int, HashSet<ushort>>(10);
         }
         
         public void Initialize()
         {
             zone = gameContext.zone.GetZone(gameContext);
+            foreach (var player in players)
+            {
+                lastVisible.Add(player.player.id, new HashSet<ushort>());
+            }
         }
         
         public void Execute()
         {
             if (zone.circleCollider.radius > visibleAreaRadius)
             {
+                removedObjects.GetEntities(removedObjectsBuffer);
                 foreach (var player in players)
                 {
-                    var playerVisibleObjects = GetVisibleObjects(player);
-                    udpSendUtils.SendPositions(matchId, player.player.id, playerVisibleObjects);
+                    var playerId = player.player.id;
+                    var playerVisible = GetVisible(player);
+                    udpSendUtils.SendPositions(matchId, playerId, playerVisible);
+
+                    var last = lastVisible[playerId];
+                    last.ExceptWith(playerVisible.Keys);
+                    udpSendUtils.SendHides(matchId, playerId, last.ToArray());
+                    last.Clear();
+                    last.UnionWith(playerVisible.Keys);
+                    foreach (var visible in removedObjectsBuffer)
+                    {
+                        last.Remove(visible.id.value);
+                    }
                 }
             }
             else
             {
-                var enumerableVisibleObjects = visibleObjects.GetEntities(visibleObjectsBuffer);
+                var visibleDict = visibleObjects.GetEntities(visibleObjectsBuffer)
+                    .ToDictionary(e => e.id.value,
+                        e => new ViewTransform(e.position.value,
+                            e.direction.angle,
+                            e.viewType.id));
                 foreach (var player in players)
                 {
-                    udpSendUtils.SendPositions(matchId, player.player.id, enumerableVisibleObjects);
+                    udpSendUtils.SendPositions(matchId, player.player.id, visibleDict);
                 }
             }
         }
         
-        private IEnumerable<GameEntity> GetVisibleObjects(GameEntity currentPlayer)
+        private Dictionary<ushort, ViewTransform> GetVisible(GameEntity currentPlayer)
         {
-            HashSet<GameEntity> result = new HashSet<GameEntity>();
-            Vector2 currentPlayerPosition = currentPlayer.globalTransform.position;
+            var result = new Dictionary<ushort, ViewTransform>();
+            var currentPlayerPosition = currentPlayer.globalTransform.position;
             
             foreach (var withView in grandObjects)
             {
                 AddViewObject(withView);
             }
-
-            result.Add(zone);
             
             return result;
 
@@ -83,7 +110,8 @@ namespace Server.GameEngine.Systems
                         c.hasViewType);
                     foreach (var child in viewChildren)
                     {
-                        result.Add(child);
+                        if(result.ContainsKey(child.id.value)) continue;
+                        result.Add(child.id.value, new ViewTransform(child.position.value, child.direction.angle, child.viewType.id));
                     }
                 }
             }

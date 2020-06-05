@@ -1,7 +1,7 @@
 ﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-         using UnityEngine;
+using UnityEngine;
 using ZeroFormatter;
          
 namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
@@ -47,8 +47,33 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
             DetachedIds = detachedIds;
         }
 
-
         public MessageType GetMessageType() => MessageType.Detaches;
+    }
+
+    [ZeroFormattable]
+    public struct DestroysMessage : ITypedMessage
+    {
+        [Index(0)] public ushort[] DestroyedIds { get; set; }
+
+        public DestroysMessage(ushort[] destroyedIds)
+        {
+            DestroyedIds = destroyedIds;
+        }
+
+        public MessageType GetMessageType() => MessageType.Destroys;
+    }
+
+    [ZeroFormattable]
+    public struct HidesMessage : ITypedMessage
+    {
+        [Index(0)] public ushort[] HiddenIds { get; set; }
+
+        public HidesMessage(ushort[] hiddenIds)
+        {
+            HiddenIds = hiddenIds;
+        }
+
+        public MessageType GetMessageType() => MessageType.Hides;
     }
 
     [ZeroFormattable]
