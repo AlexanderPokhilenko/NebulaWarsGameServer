@@ -35,7 +35,7 @@ public sealed class TargetShootingSystem : IExecuteSystem
             if (absProjectionY <= target.circleCollider.radius)
             {
                 e.isTryingToShoot = true;
-                var childrenWithCannon = e.GetAllChildrenGameEntities(gameContext, entity => entity.hasCannon);
+                var childrenWithCannon = e.GetCannons(gameContext);
                 foreach (var childWithCannon in childrenWithCannon)
                 {
                     childWithCannon.isTryingToShoot = true;

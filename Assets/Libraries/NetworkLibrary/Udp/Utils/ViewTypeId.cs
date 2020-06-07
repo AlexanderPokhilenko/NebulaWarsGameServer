@@ -34,5 +34,6 @@
     MediumUpgradeBonus,
     GatlingExplosion,
     PlasmaExplosion,
-    MediumExplosion
+    MediumExplosion,
+    SmileyPlayer
 }

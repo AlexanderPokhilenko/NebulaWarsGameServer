@@ -64,18 +64,19 @@ public static class GameComponentsLookup {
     public const int RectangleCollider = 53;
     public const int Round = 54;
     public const int SingleTargeting = 55;
-    public const int TargetChanging = 56;
-    public const int Target = 57;
-    public const int TargetingParameters = 58;
-    public const int TargetMovingPoint = 59;
-    public const int TargetScaling = 60;
-    public const int TryingToShoot = 61;
-    public const int Unmovable = 62;
-    public const int Velocity = 63;
-    public const int ViewType = 64;
-    public const int Zone = 65;
+    public const int SpecialShooter = 56;
+    public const int TargetChanging = 57;
+    public const int Target = 58;
+    public const int TargetingParameters = 59;
+    public const int TargetMovingPoint = 60;
+    public const int TargetScaling = 61;
+    public const int TryingToShoot = 62;
+    public const int Unmovable = 63;
+    public const int Velocity = 64;
+    public const int ViewType = 65;
+    public const int Zone = 66;
 
-    public const int TotalComponents = 66;
+    public const int TotalComponents = 67;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -134,6 +135,7 @@ public static class GameComponentsLookup {
         "RectangleCollider",
         "Round",
         "SingleTargeting",
+        "SpecialShooter",
         "TargetChanging",
         "Target",
         "TargetingParameters",
@@ -203,6 +205,7 @@ public static class GameComponentsLookup {
         typeof(RectangleColliderComponent),
         typeof(RoundComponent),
         typeof(SingleTargetingComponent),
+        typeof(SpecialShooterComponent),
         typeof(TargetChangingComponent),
         typeof(TargetComponent),
         typeof(TargetingParametersComponent),

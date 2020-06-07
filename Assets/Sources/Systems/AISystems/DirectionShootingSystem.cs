@@ -22,7 +22,7 @@ public sealed class DirectionShootingSystem : IExecuteSystem
         {
             if (Mathf.Abs(e.GetGlobalAngle(gameContext) - e.directionTargeting.angle) > attackDelta) continue;
             e.isTryingToShoot = true;
-            var childrenWithCannon = e.GetAllChildrenGameEntities(gameContext, entity => entity.hasCannon);
+            var childrenWithCannon = e.GetCannons(gameContext);
             foreach (var childWithCannon in childrenWithCannon)
             {
                 childWithCannon.isTryingToShoot = true;

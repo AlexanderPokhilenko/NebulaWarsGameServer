@@ -29,7 +29,8 @@ namespace Server.GameEngine.Systems
             PlayerPrototypes = new Dictionary<string, PlayerObject>
             {
                 {"hare", Resources.Load<PlayerObject>("SO/Players/HarePlayer")},
-                {"bird", Resources.Load<PlayerObject>("SO/Players/BirdPlayer")}
+                {"bird", Resources.Load<PlayerObject>("SO/Players/BirdPlayer")},
+                {"smiley", Resources.Load<PlayerObject>("SO/Players/SmileyPlayer")}
             };
 
             if (PlayerPrototypes.Any(a => a.Value == null))

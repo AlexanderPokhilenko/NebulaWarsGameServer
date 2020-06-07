@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewRectangleCollider", menuName = "ColliderInfo/RectangleCollider", order = 52)]
+[CreateAssetMenu(fileName = "NewRectangleCollider", menuName = "ColliderInfos/RectangleCollider", order = 52)]
 public class RectangleColliderInfo : ColliderInfo
 {
     [Min(0)]

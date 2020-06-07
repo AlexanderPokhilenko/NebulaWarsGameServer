@@ -16,6 +16,7 @@ public class BaseObject : EntityCreatorObject
     public float collisionDamage;
     public List<EntityCreatorObject> dropObjects;
     public PartObject[] parts;
+    public ShooterInfo shooter;
 
     public override GameEntity CreateEntity(GameContext context)
     {
@@ -44,6 +45,8 @@ public class BaseObject : EntityCreatorObject
                 part.AddPartToEntity(context, entity);
             }
         }
+
+        if(shooter != null) entity.AddSpecialShooter(shooter.CreateInstance());
 
         return entity;
     }

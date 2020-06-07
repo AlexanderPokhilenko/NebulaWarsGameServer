@@ -76,4 +76,11 @@ public static class ParentsExtensions
             yield return childGameEntity;
         }
     }
+
+    public static IEnumerable<GameEntity> GetCannons(this GameEntity entity, GameContext context)
+    {
+        return entity.hasSpecialShooter
+            ? entity.specialShooter.value.GetCannons(entity, context)
+            : entity.GetAllChildrenGameEntities(context, e => e.hasCannon);
+    }
 }

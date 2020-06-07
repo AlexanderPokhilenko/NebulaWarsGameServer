@@ -46,6 +46,7 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
+  shooter: {fileID: 11400000, guid: a3baea1e9701aca49a840b90665f6ea3, type: 2}
   maxVelocity: 3
   maxAngularVelocity: 135
   isNotDecelerating: 0
