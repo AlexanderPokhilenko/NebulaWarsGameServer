@@ -89,6 +89,20 @@ namespace Server.GameEngine.Systems
                 // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
+                //TODO: улучшать по отдельным параметрам
+                var newHp = gameEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
+                var newSpeed = gameEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+                var newRotation = gameEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+                var attackCoefficient = 1f + gameUnit.WarshipCombatPowerLevel * 0.05f;
+                gameEntity.ReplaceMaxHealthPoints(newHp);
+                gameEntity.ReplaceHealthPoints(newHp);
+                gameEntity.ReplaceMaxVelocity(newSpeed);
+                gameEntity.ReplaceMaxAngularVelocity(newRotation);
+                foreach (var child in gameEntity.GetAllChildrenGameEntities(gameContext))
+                {
+                    child.AddAttackIncreasing(attackCoefficient);
+                }
+
                 if (gameUnit.IsBot)
                 {
                     Match.MakeBot(gameEntity);

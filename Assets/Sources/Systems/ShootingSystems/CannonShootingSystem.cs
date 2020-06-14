@@ -48,6 +48,11 @@ public class CannonShootingSystem : IExecuteSystem
         bulletEntity.AddVelocity(Vector2.right * bullet.maxVelocity);
         bulletEntity.AddAngularVelocity(0f);
 
+        if (shooter.hasAttackIncreasing)
+        {
+            bulletEntity.ReplaceDamage(bullet.collisionDamage * shooter.attackIncreasing.value);
+        }
+
         if (bulletEntity.hasChaser)
         {
             if (shooter.hasTargetingParameters && !bulletEntity.hasTargetingParameters)
