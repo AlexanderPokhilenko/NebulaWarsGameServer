@@ -64,7 +64,7 @@ namespace Server.GameEngine.Systems
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
                 //TODO костыль
                 var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
-                    .CreateEntity(gameContext, position, 180f + angle);
+                    .CreateEntity(gameContext, position, 180f + angle, (ushort)(i+1));
                 gameEntity.AddPlayer(gameUnit.TemporaryId);
 
                 if (gameUnit.IsBot)
@@ -79,7 +79,7 @@ namespace Server.GameEngine.Systems
         private void SpawnPlayer(GameUnit playerInfo, int x, int y)
         {
             var gameEntity = PlayerPrototypes[playerInfo.PrefabName.ToLower()]
-                .CreateEntity(gameContext, new Vector2(x, y), 180f);
+                .CreateEntity(gameContext, new Vector2(x, y), 180f, (ushort)matchData.GameUnitsForMatch.Count());
             gameEntity.AddPlayer(playerInfo.TemporaryId);
         }
     }

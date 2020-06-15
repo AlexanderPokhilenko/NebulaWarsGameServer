@@ -39,10 +39,11 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         public readonly GameEntity BonusPickerPart;
         public readonly bool HasDamage;
         public readonly float Damage;
-        public readonly int GrandOwnerId;
-        public readonly int GrandParentId;
+        public readonly ushort GrandOwnerId;
+        public readonly ushort GrandParentId;
+        public readonly ushort? TeamId;
         public readonly bool IsTargetingParasite;
-        public readonly int GrandTargetId;
+        public readonly ushort GrandTargetId;
         public readonly bool HasBonus;
         public bool IsCollided;
         public Vector2 CollisionVector;
@@ -80,9 +81,10 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Chronometer.DeltaTime : entity.damage.value) : 0f;
             GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : id;
             GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : id;
+            TeamId = entity.hasTeam ? entity.team.id : (ushort?)null;
             var hasTarget = entity.hasTarget;
             IsTargetingParasite = entity.isParasite && hasTarget;
-            GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : 0;
+            GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : (ushort)0;
             HasBonus = (entity.hasBonusAdder || entity.hasActionBonus) && !entity.hasBonusTarget;
             IsCollided = false;
             CollisionVector = new Vector2(0f, 0f);
@@ -108,7 +110,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 var other = collidables[j];
                 var otherEntity = other.Entity;
 
-                if (other.GrandOwnerId == current.GrandOwnerId && // чтобы снаряды не попадали по нам
+                if (other.TeamId == current.TeamId && // отключает friendly fire
                     (current.HasDamage || other.HasDamage || current.HasBonus || other.HasBonus)) continue; 
                 if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
                     && current.GrandParentId == other.GrandParentId) continue;

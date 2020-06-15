@@ -22,6 +22,7 @@ public class DropSystem : IExecuteSystem
             foreach (var drop in drops)
             {
                 var dropEntity = drop.CreateEntity(gameContext, position, angle);
+                if(e.hasTeam) dropEntity.AddTeam(e.team.id);
                 dropEntity.AddGlobalTransform(position, angle);
                 if ((dropEntity.hasActionBonus || dropEntity.hasBonusAdder) && dropEntity.hasCircleCollider)
                 {

@@ -71,13 +71,14 @@ public static class GameComponentsLookup {
     public const int TargetingParameters = 60;
     public const int TargetMovingPoint = 61;
     public const int TargetScaling = 62;
-    public const int TryingToShoot = 63;
-    public const int Unmovable = 64;
-    public const int Velocity = 65;
-    public const int ViewType = 66;
-    public const int Zone = 67;
+    public const int Team = 63;
+    public const int TryingToShoot = 64;
+    public const int Unmovable = 65;
+    public const int Velocity = 66;
+    public const int ViewType = 67;
+    public const int Zone = 68;
 
-    public const int TotalComponents = 68;
+    public const int TotalComponents = 69;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -143,6 +144,7 @@ public static class GameComponentsLookup {
         "TargetingParameters",
         "TargetMovingPoint",
         "TargetScaling",
+        "Team",
         "TryingToShoot",
         "Unmovable",
         "Velocity",
@@ -214,6 +216,7 @@ public static class GameComponentsLookup {
         typeof(TargetingParametersComponent),
         typeof(TargetMovingPointComponent),
         typeof(TargetScalingComponent),
+        typeof(TeamComponent),
         typeof(TryingToShootComponent),
         typeof(UnmovableComponent),
         typeof(VelocityComponent),

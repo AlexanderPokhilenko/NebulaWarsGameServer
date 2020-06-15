@@ -28,7 +28,7 @@ public class SpaceStationsInitSystem : IInitializeSystem
         {
             var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
 
-            var entity = spaceStation.CreateEntity(gameContext, position, angle);
+            var entity = spaceStation.CreateEntity(gameContext, position, angle, 0);
         }
     }
 }

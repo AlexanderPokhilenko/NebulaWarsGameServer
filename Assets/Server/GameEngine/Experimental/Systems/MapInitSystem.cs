@@ -83,33 +83,33 @@ namespace Server.GameEngine.Systems
                 
                 var angle = i * step + offset;
                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
-                var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
-                    .CreateEntity(gameContext, position, 180f + angle);
+                var playerEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
+                    .CreateEntity(gameContext, position, 180f + angle, (ushort)(i+1));
 
                 // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
-                gameEntity.AddPlayer(gameUnit.TemporaryId);
+                playerEntity.AddPlayer(gameUnit.TemporaryId);
 
                 //TODO: улучшать по отдельным параметрам
-                var newHp = gameEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
-                var newSpeed = gameEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
-                var newRotation = gameEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+                var newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
+                var newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+                var newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
                 var attackCoefficient = 1f + gameUnit.WarshipCombatPowerLevel * 0.05f;
-                gameEntity.ReplaceMaxHealthPoints(newHp);
-                gameEntity.ReplaceHealthPoints(newHp);
-                gameEntity.ReplaceMaxVelocity(newSpeed);
-                gameEntity.ReplaceMaxAngularVelocity(newRotation);
-                foreach (var child in gameEntity.GetAllChildrenGameEntities(gameContext))
+                playerEntity.ReplaceMaxHealthPoints(newHp);
+                playerEntity.ReplaceHealthPoints(newHp);
+                playerEntity.ReplaceMaxVelocity(newSpeed);
+                playerEntity.ReplaceMaxAngularVelocity(newRotation);
+                foreach (var child in playerEntity.GetAllChildrenGameEntities(gameContext))
                 {
                     child.AddAttackIncreasing(attackCoefficient);
                 }
 
                 if (gameUnit.IsBot)
                 {
-                    Match.MakeBot(gameEntity);
+                    Match.MakeBot(playerEntity);
                 }
                 else
                 {
-                    udpSendUtils.SendPlayerInfo(matchData.MatchId, gameUnit.TemporaryId, gameEntity.id.value);
+                    udpSendUtils.SendPlayerInfo(matchData.MatchId, gameUnit.TemporaryId, playerEntity.id.value);
                 }
 
                 var wallAngle = angle + halfStep;
@@ -123,14 +123,14 @@ namespace Server.GameEngine.Systems
                     }
                 }
 
-                SpaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle);
-                SpaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle);
-                SpaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle, 0);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle, 0);
+                SpaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle, 0);
 
                 RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
 
-            Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f).isBot = true;
+            Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0).isBot = true;
         }
     }
 }

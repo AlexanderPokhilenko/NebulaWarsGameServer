@@ -34,7 +34,7 @@ public class CannonShootingSystem : IExecuteSystem
 
     public static GameEntity ShootBullet(GameEntity shooter, GameContext gameContext, BulletObject bullet, Vector2 bulletOffset)
     {
-        var bulletEntity = bullet.CreateEntity(gameContext);
+        var bulletEntity = bullet.CreateEntity(gameContext, shooter.team.id);
         bulletEntity.AddOwner(shooter.GetGrandParent(gameContext).id.value);
         bulletEntity.AddGrandOwner(shooter.GetGrandOwnerId(gameContext));
         var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
