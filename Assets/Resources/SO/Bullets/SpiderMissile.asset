@@ -27,6 +27,7 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
+  shooter: {fileID: 0}
   maxVelocity: 6
   maxAngularVelocity: 45
   isNotDecelerating: 1
@@ -35,8 +36,8 @@ MonoBehaviour:
   detachable: 1
   parentDependent: 0
   distance: 0
-  detectionRadius: 5
+  detectionRadius: 15
   useAngularTargeting: 1
-  onlyPlayerTargeting: 1
+  onlyPlayerTargeting: 0
   targetChanging: 0
   maxHealthPoints: 10

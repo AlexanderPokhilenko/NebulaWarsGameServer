@@ -30,6 +30,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         public readonly float Radius;
         public readonly float SqrRadius;
         public readonly ushort GrandOwnerId;
+        public readonly int TeamId;
         public readonly Vector2 GlobalPosition;
         public readonly float NegativeAngleSin;
         public readonly float NegativeAngleCos;
@@ -55,6 +56,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             }
             CoordinatesExtensions.GetSinCosFromDegrees(-globalAngle, out NegativeAngleSin, out NegativeAngleCos);
             GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
+            TeamId = entity.hasTeam ? entity.team.id : -1;
             IsPlayer = entity.hasPlayer;
             SqrChildrenTargetingRadiuses = entity.GetAllChildrenGameEntities(gameContext, c => c.hasTargetingParameters)
                 .Select(c => c.targetingParameters.radius).Select(r => r * r).ToArray();
@@ -97,6 +99,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                     if (e.targetingParameters.angularTargeting)
                     {
                         currentVal = Vector2.Angle(currentDirection, direction);
+                        currentVal *= currentVal;
                     }
                     else
                     {
@@ -105,11 +108,15 @@ public sealed class TargetDetectionSystem : IExecuteSystem
 
                     // Установка приоритетности цели:
                     // стреляем по игрокам с большей вероятностью
-                    if (target.IsPlayer) currentVal *= 0.5f;
+                    if (target.IsPlayer) currentVal *= 0.15f;
+                    // не стрелять по нейтрально-пассивным
+                    if (target.TeamId < 0) currentVal *= 10000f;
+                    // стрельба по объектам из другой команды
+                    else if(e.hasTeam && target.TeamId != e.team.id) currentVal *= 0.01f;
                     // обращаем внимание на целящиеся объекты
                     foreach (var sqrChildTargetingRadius in target.SqrChildrenTargetingRadiuses)
                     {
-                        if (sqrDirection <= sqrChildTargetingRadius) currentVal *= 0.5f;
+                        if (sqrDirection <= sqrChildTargetingRadius) currentVal *= 0.125f;
                     }
                     // нужно проверить, стреляют ли в нас
                     foreach (var childGrandTargetId in target.ChildrenGrandTargetIds)
