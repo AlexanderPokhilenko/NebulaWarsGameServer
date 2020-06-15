@@ -19,7 +19,7 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
-  drop: {fileID: 0}
+  dropObjects: []
   parts:
   - baseObject: {fileID: 11400000, guid: 0c69c8db998a8a44f91df95888d94e31, type: 2}
     position: {x: 0.5, y: 0}
@@ -27,13 +27,14 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
+  shooter: {fileID: 0}
   maxVelocity: 3
   maxAngularVelocity: 180
   isNotDecelerating: 0
   maxHealthPoints: 25
   detectionRadius: 5
   useAngularTargeting: 0
-  onlyPlayerTargeting: 1
+  onlyPlayerTargeting: 0
   targetChanging: 0
   distance: -0.1
   isParasite: 1

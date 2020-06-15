@@ -24,7 +24,11 @@ public class LowHealthSystem : ReactiveSystem<GameEntity>
     {
         foreach (var e in entities)
         {
-            if(e.healthPoints.value <= 0) e.isDestroyed = true;
+            if (e.healthPoints.value <= 0)
+            {
+                e.isDestroyed = true;
+                if(e.isOnHealthDropDestroying && e.hasDrop) e.RemoveDrop();
+            }
         }
     }
 }

@@ -28,8 +28,8 @@ public sealed class RemoveDistantTargetSystem : ICleanupSystem
             if (direction.sqrMagnitude > targetingRadius * targetingRadius)
             {
                 e.RemoveTarget();
-                e.RemoveDirectionTargeting();
-                e.RemoveAngularVelocity();
+                if(e.hasDirectionTargeting) e.RemoveDirectionTargeting();
+                if(e.hasAngularVelocity) e.RemoveAngularVelocity();
                 e.isDirectionTargetingShooting = false;
             }
         }

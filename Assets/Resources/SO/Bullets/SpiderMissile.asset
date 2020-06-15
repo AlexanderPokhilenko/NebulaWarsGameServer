@@ -19,14 +19,9 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 20
-  dropObjects: []
-  parts:
-  - baseObject: {fileID: 11400000, guid: dbf93948b2d50544d9b5fe2c77959b51, type: 2}
-    position: {x: 0, y: 0}
-    direction: 0
-    isParentDependent: 1
-    isIgnoringParentCollision: 1
-    isParentFixed: 1
+  dropObjects:
+  - {fileID: 11400000, guid: ccd12e9708f8f634384ca90fb48d433c, type: 2}
+  parts: []
   shooter: {fileID: 0}
   maxVelocity: 6
   maxAngularVelocity: 45

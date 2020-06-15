@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7129b16dc397ffa46a0b9f5a51320f35, type: 3}
   m_Name: SpiderCocoon
   m_EditorClassIdentifier: 
-  typeId: 0
+  typeId: 26
   colliderInfo: {fileID: 11400000, guid: 2ef463eb40fd8fb418b9a8cee1a9de5e, type: 2}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
   collisionDamage: 0
+  dropObjects: []
   parts: []
+  shooter: {fileID: 0}
   bonusObject: {fileID: 11400000, guid: ccd12e9708f8f634384ca90fb48d433c, type: 2}
   duration: 10
   colliderInheritance: 0

@@ -22,6 +22,7 @@ public class TorpedoObject : BulletObject
         {
             entity.AddHealthPoints(maxHealthPoints);
             entity.AddMaxHealthPoints(maxHealthPoints);
+            entity.isOnHealthDropDestroying = true;
         }
 
         return entity;

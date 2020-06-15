@@ -53,32 +53,33 @@ public static class GameComponentsLookup {
     public const int NoncollinearAxises = 42;
     public const int NonstandardRadius = 43;
     public const int NotDecelerating = 44;
-    public const int Owner = 45;
-    public const int Parasite = 46;
-    public const int Parent = 47;
-    public const int ParentDependent = 48;
-    public const int ParentFixed = 49;
-    public const int PassingThrough = 50;
-    public const int PathCollider = 51;
-    public const int Player = 52;
-    public const int Position = 53;
-    public const int RectangleCollider = 54;
-    public const int Round = 55;
-    public const int SingleTargeting = 56;
-    public const int SpecialShooter = 57;
-    public const int TargetChanging = 58;
-    public const int Target = 59;
-    public const int TargetingParameters = 60;
-    public const int TargetMovingPoint = 61;
-    public const int TargetScaling = 62;
-    public const int Team = 63;
-    public const int TryingToShoot = 64;
-    public const int Unmovable = 65;
-    public const int Velocity = 66;
-    public const int ViewType = 67;
-    public const int Zone = 68;
+    public const int OnHealthDropDestroying = 45;
+    public const int Owner = 46;
+    public const int Parasite = 47;
+    public const int Parent = 48;
+    public const int ParentDependent = 49;
+    public const int ParentFixed = 50;
+    public const int PassingThrough = 51;
+    public const int PathCollider = 52;
+    public const int Player = 53;
+    public const int Position = 54;
+    public const int RectangleCollider = 55;
+    public const int Round = 56;
+    public const int SingleTargeting = 57;
+    public const int SpecialShooter = 58;
+    public const int TargetChanging = 59;
+    public const int Target = 60;
+    public const int TargetingParameters = 61;
+    public const int TargetMovingPoint = 62;
+    public const int TargetScaling = 63;
+    public const int Team = 64;
+    public const int TryingToShoot = 65;
+    public const int Unmovable = 66;
+    public const int Velocity = 67;
+    public const int ViewType = 68;
+    public const int Zone = 69;
 
-    public const int TotalComponents = 69;
+    public const int TotalComponents = 70;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -126,6 +127,7 @@ public static class GameComponentsLookup {
         "NoncollinearAxises",
         "NonstandardRadius",
         "NotDecelerating",
+        "OnHealthDropDestroying",
         "Owner",
         "Parasite",
         "Parent",
@@ -198,6 +200,7 @@ public static class GameComponentsLookup {
         typeof(NoncollinearAxisesComponent),
         typeof(NonstandardRadiusComponent),
         typeof(NotDeceleratingComponent),
+        typeof(OnHealthDropDestroyingComponent),
         typeof(OwnerComponent),
         typeof(ParasiteComponent),
         typeof(ParentComponent),

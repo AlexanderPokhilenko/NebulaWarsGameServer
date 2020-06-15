@@ -82,13 +82,14 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             var sqrTargetingRadius = targetingRadius * targetingRadius;
             var grandParent = e.GetGrandParent(gameContext);
             var currentGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.GetGrandOwnerId(gameContext);
+            var currentTeamId = e.hasTeam ? e.team.id : -1;
             var minVal = float.PositiveInfinity;
             ushort targetId = 0;
             var targetFound = false;
             foreach (var target in targets)
             {
-                if (onlyPlayerTargeting && !target.IsPlayer) continue;
-                if (e.id.value == target.Id || /*e.IsParentOf(target, gameContext) || target.IsParentOf(e, gameContext) ||*/ currentGrandOwnerId == target.GrandOwnerId) continue;
+                if (onlyPlayerTargeting && target.TeamId <= 0) continue;
+                if (e.id.value == target.Id || currentTeamId == target.TeamId) continue;
                 var targetPosition = target.GlobalPosition;
                 var direction = targetPosition - currentPosition;
                 var sqrDirection = direction.sqrMagnitude;
