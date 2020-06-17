@@ -38,3 +38,4 @@ MonoBehaviour:
   targetChanging: 0
   distance: -0.1
   isParasite: 1
+  lifetime: 10

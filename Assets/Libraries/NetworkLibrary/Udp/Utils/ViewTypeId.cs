@@ -35,5 +35,6 @@
     GatlingExplosion,
     PlasmaExplosion,
     MediumExplosion,
-    SmileyPlayer
+    SmileyPlayer,
+    RedInterceptor
 }

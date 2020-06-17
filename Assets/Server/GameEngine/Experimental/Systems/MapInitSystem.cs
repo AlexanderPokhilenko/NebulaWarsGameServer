@@ -130,7 +130,7 @@ namespace Server.GameEngine.Systems
                 RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
 
-            Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0).isBot = true;
+            Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0);
         }
     }
 }

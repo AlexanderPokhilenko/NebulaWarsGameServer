@@ -34,8 +34,9 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
+  shooter: {fileID: 0}
   maxVelocity: 4
   maxAngularVelocity: 180
   isNotDecelerating: 0
   maxHealthPoints: 175
-  ability: {fileID: 11400000, guid: 9077651e5c4619944b2310aa000c403c, type: 2}
+  ability: {fileID: 11400000, guid: 344fbc614baf0ea48a003ab982b9112b, type: 2}

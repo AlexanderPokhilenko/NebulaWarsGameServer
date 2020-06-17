@@ -10,6 +10,9 @@ public class FighterObject : MovableWithHealthObject
     public bool targetChanging;
     public float distance;
     public bool isParasite;
+    [Min(0)]
+    public float lifetime;
+    public bool useBotAI;
 
     public override GameEntity CreateEntity(GameContext context)
     {
@@ -18,6 +21,8 @@ public class FighterObject : MovableWithHealthObject
         entity.isTargetChanging = targetChanging;
         entity.AddChaser(distance);
         entity.isParasite = isParasite;
+        if(lifetime > 0) entity.AddLifetime(lifetime);
+        entity.isBot = useBotAI;
 
         return entity;
     }
