@@ -19,7 +19,8 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
-  dropObjects: []
+  dropObjects:
+  - {fileID: 11400000, guid: 86b22da2235e3bd4fbb4b45bc4a73afb, type: 2}
   parts:
   - baseObject: {fileID: 11400000, guid: 0c69c8db998a8a44f91df95888d94e31, type: 2}
     position: {x: 0.5, y: 0}
@@ -39,3 +40,4 @@ MonoBehaviour:
   distance: -0.1
   isParasite: 1
   lifetime: 10
+  useBotAI: 0

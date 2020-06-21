@@ -7,6 +7,8 @@ internal class NetworkSenderSystems : Feature
     {
         Add(new PositionsSenderSystem(contexts, matchId, udpSendUtils));
 
+        Add(new HidesSenderSystem(contexts, matchId, udpSendUtils));
+
         Add(new RadiusesUpdaterSystem(contexts, matchId, udpSendUtils));
         Add(new FinalRadiusesSystem(contexts, matchId, udpSendUtils));
 
@@ -20,5 +22,7 @@ internal class NetworkSenderSystems : Feature
         Add(new CooldownUpdaterSystem(contexts, matchId, udpSendUtils));
 
         Add(new ShieldPointsUpdaterSystem(contexts, matchId, udpSendUtils));
+
+        Add(new DestroysSenderSystem(contexts, matchId, udpSendUtils));
     }
 }
