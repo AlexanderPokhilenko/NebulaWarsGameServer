@@ -64,13 +64,10 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
 
-        public void SendPositions(int matchId, int playerId, Dictionary<ushort, ViewTransform> entitiesInfo)
+        public void SendPositions(int matchId, int playerId, Dictionary<ushort, ViewTransform> entitiesInfo, bool rudp = false)
         {
-            var message = new PositionsMessage
-            {
-                EntitiesInfo = entitiesInfo
-            };
-            SendUdp(matchId, playerId, message);
+            var message = new PositionsMessage { EntitiesInfo = entitiesInfo };
+            SendUdp(matchId, playerId, message, rudp);
         }
 
         public void SendRadiuses(int matchId, int playerId, Dictionary<ushort, ushort> radiuses, bool rudp = false)

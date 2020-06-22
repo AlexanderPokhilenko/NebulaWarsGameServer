@@ -49,6 +49,13 @@ namespace Server.GameEngine.Systems
                 var playerVisible = GetVisible(player);
 
                 var last = viewArea.lastVisible;
+                var unhidden = viewArea.newUnhidden;
+
+                unhidden.Clear();
+                unhidden.UnionWith(playerVisible);
+                unhidden.ExceptWith(removedObjectIdsBuffer);
+                unhidden.ExceptWith(last);
+
                 last.ExceptWith(playerVisible);
                 last.ExceptWith(removedObjectIdsBuffer);
                 if (last.Count > 0) udpSendUtils.SendHides(matchId, playerId, last.ToArray());

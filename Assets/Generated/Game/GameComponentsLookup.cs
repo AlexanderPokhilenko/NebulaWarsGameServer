@@ -50,36 +50,37 @@ public static class GameComponentsLookup {
     public const int MaxHealthPoints = 39;
     public const int MaxVelocity = 40;
     public const int MovementFrames = 41;
-    public const int NoncollinearAxises = 42;
-    public const int NonstandardRadius = 43;
-    public const int NotDecelerating = 44;
-    public const int OnHealthDropDestroying = 45;
-    public const int Owner = 46;
-    public const int Parasite = 47;
-    public const int Parent = 48;
-    public const int ParentDependent = 49;
-    public const int ParentFixed = 50;
-    public const int PassingThrough = 51;
-    public const int PathCollider = 52;
-    public const int Player = 53;
-    public const int Position = 54;
-    public const int RectangleCollider = 55;
-    public const int Round = 56;
-    public const int SingleTargeting = 57;
-    public const int SpecialShooter = 58;
-    public const int TargetChanging = 59;
-    public const int Target = 60;
-    public const int TargetingParameters = 61;
-    public const int TargetMovingPoint = 62;
-    public const int TargetScaling = 63;
-    public const int Team = 64;
-    public const int TryingToShoot = 65;
-    public const int Unmovable = 66;
-    public const int Velocity = 67;
-    public const int ViewType = 68;
-    public const int Zone = 69;
+    public const int Moving = 42;
+    public const int NoncollinearAxises = 43;
+    public const int NonstandardRadius = 44;
+    public const int NotDecelerating = 45;
+    public const int OnHealthDropDestroying = 46;
+    public const int Owner = 47;
+    public const int Parasite = 48;
+    public const int Parent = 49;
+    public const int ParentDependent = 50;
+    public const int ParentFixed = 51;
+    public const int PassingThrough = 52;
+    public const int PathCollider = 53;
+    public const int Player = 54;
+    public const int Position = 55;
+    public const int RectangleCollider = 56;
+    public const int Round = 57;
+    public const int SingleTargeting = 58;
+    public const int SpecialShooter = 59;
+    public const int TargetChanging = 60;
+    public const int Target = 61;
+    public const int TargetingParameters = 62;
+    public const int TargetMovingPoint = 63;
+    public const int TargetScaling = 64;
+    public const int Team = 65;
+    public const int TryingToShoot = 66;
+    public const int Unmovable = 67;
+    public const int Velocity = 68;
+    public const int ViewType = 69;
+    public const int Zone = 70;
 
-    public const int TotalComponents = 70;
+    public const int TotalComponents = 71;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -124,6 +125,7 @@ public static class GameComponentsLookup {
         "MaxHealthPoints",
         "MaxVelocity",
         "MovementFrames",
+        "Moving",
         "NoncollinearAxises",
         "NonstandardRadius",
         "NotDecelerating",
@@ -197,6 +199,7 @@ public static class GameComponentsLookup {
         typeof(MaxHealthPointsComponent),
         typeof(MaxVelocityComponent),
         typeof(MovementFramesComponent),
+        typeof(MovingComponent),
         typeof(NoncollinearAxisesComponent),
         typeof(NonstandardRadiusComponent),
         typeof(NotDeceleratingComponent),

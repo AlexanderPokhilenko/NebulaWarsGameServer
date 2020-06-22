@@ -71,7 +71,7 @@ namespace Server.GameEngine
                     .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, playerDeathHandler, udpSendUtils))
 
                     .Add(new DestroySystems(contexts))
-
+                    .Add(new MovingCheckerSystem(contexts))
                     // .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
                     .Add(new NetworkSenderSystems(contexts, matchDataArg.MatchId, udpSendUtils, playersViewAreas))
 

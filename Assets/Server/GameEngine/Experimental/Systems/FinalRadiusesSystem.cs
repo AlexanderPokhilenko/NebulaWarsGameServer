@@ -8,7 +8,7 @@ namespace Server.GameEngine.Systems
 {
     public class FinalRadiusesSystem : ReactivePlayersVisionSystem
     {
-        public FinalRadiusesSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils) : base(contexts, matchId, udpSendUtils)
+        public FinalRadiusesSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas) : base(contexts, matchId, udpSendUtils, playersViewAreas)
         { }
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
