@@ -47,10 +47,11 @@ namespace Server.GameEngine
             TryEnableDebug();
             
             playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils);
-            
+            var playersViewAreas = new PlayersViewAreas(matchDataArg.GameUnitsForMatch.Players.Count);
+
             systems = new Entitas.Systems()
-                    
                     .Add(new MapInitSystem(contexts, matchDataArg, udpSendUtils))
+                    .Add(new ViewAreasInitSystem(contexts, playersViewAreas))
                     // .Add(new TestEndMatchSystem(contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
                     .Add(new PlayerAttackHandlerSystem(contexts))
@@ -72,7 +73,7 @@ namespace Server.GameEngine
                     .Add(new DestroySystems(contexts))
 
                     // .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
-                    .Add(new NetworkSenderSystems(contexts, matchDataArg.MatchId, udpSendUtils))
+                    .Add(new NetworkSenderSystems(contexts, matchDataArg.MatchId, udpSendUtils, playersViewAreas))
 
                     .Add(new DeleteSystem(contexts))
                     .Add(new InputDeletingSystem(contexts))

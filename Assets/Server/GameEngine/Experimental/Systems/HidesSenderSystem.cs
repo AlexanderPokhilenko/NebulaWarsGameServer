@@ -15,29 +15,25 @@ namespace Server.GameEngine.Systems
         private GameEntity zone;
         private readonly GameContext gameContext;
         private readonly List<ushort> removedObjectIdsBuffer;
-        private const float visibleAreaRadius = 15;
-        private readonly Dictionary<int, HashSet<ushort>> lastVisible;
+        private readonly PlayersViewAreas viewAreas;
+        private const float visibleAreaRadius = PlayersViewAreas.VisibleAreaRadius;
 
-        public HidesSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
+        public HidesSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
+            viewAreas = playersViewAreas;
             gameContext = contexts.game;
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
             grandObjects = gameContext.GetGroup(grandMatcher);
             removedObjects = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Destroyed, GameMatcher.Position, GameMatcher.Direction, GameMatcher.ViewType));
             removedObjectIdsBuffer = new List<ushort>();
-            lastVisible = new Dictionary<int, HashSet<ushort>>(10);
         }
 
         public void Initialize()
         {
             zone = gameContext.zone.GetZone(gameContext);
-            foreach (var player in players)
-            {
-                lastVisible.Add(player.player.id, new HashSet<ushort>());
-            }
         }
 
         public void Execute()
@@ -49,9 +45,10 @@ namespace Server.GameEngine.Systems
             foreach (var player in players)
             {
                 var playerId = player.player.id;
+                var viewArea = viewAreas[playerId];
                 var playerVisible = GetVisible(player);
 
-                var last = lastVisible[playerId];
+                var last = viewArea.lastVisible;
                 last.ExceptWith(playerVisible);
                 last.ExceptWith(removedObjectIdsBuffer);
                 if (last.Count > 0) udpSendUtils.SendHides(matchId, playerId, last.ToArray());

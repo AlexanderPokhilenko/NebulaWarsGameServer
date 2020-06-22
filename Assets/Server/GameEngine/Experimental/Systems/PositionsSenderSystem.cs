@@ -20,7 +20,7 @@ namespace Server.GameEngine.Systems
         private GameEntity zone;
         private readonly GameContext gameContext;
         private readonly List<GameEntity> visibleObjectsBuffer;
-        private const float visibleAreaRadius = 15;
+        private const float visibleAreaRadius = PlayersViewAreas.VisibleAreaRadius;
 
         public PositionsSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {

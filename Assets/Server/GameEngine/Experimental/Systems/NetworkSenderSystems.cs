@@ -1,13 +1,14 @@
-﻿using Server.GameEngine.Systems;
+﻿using Server.GameEngine;
+using Server.GameEngine.Systems;
 using Server.Udp.Sending;
 
 internal class NetworkSenderSystems : Feature
 {
-    public NetworkSenderSystems(Contexts contexts, int matchId, UdpSendUtils udpSendUtils) : base("Network Sender Systems")
+    public NetworkSenderSystems(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas viewAreas) : base("Network Sender Systems")
     {
         Add(new PositionsSenderSystem(contexts, matchId, udpSendUtils));
 
-        Add(new HidesSenderSystem(contexts, matchId, udpSendUtils));
+        Add(new HidesSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
 
         Add(new RadiusesUpdaterSystem(contexts, matchId, udpSendUtils));
         Add(new FinalRadiusesSystem(contexts, matchId, udpSendUtils));
