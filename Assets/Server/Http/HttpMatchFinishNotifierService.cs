@@ -15,8 +15,8 @@ namespace Server.Http
         
         public async Task<bool> Notify(int matchId)
         {
-            string pathname = "/GameServer/DeleteRoom";
-            string query = $"?MatchId={matchId.ToString()}";
+            string pathname = "/GameServer/DeleteMatch";
+            string query = $"?MatchId={matchId.ToString()}&secret={Globals.GameServerSecret}";
             return await httpWrapper.HttpDelete(pathname, query);
         }
     }

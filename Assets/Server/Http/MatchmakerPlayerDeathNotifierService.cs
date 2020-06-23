@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Server;
 using Server.Http;
 
 public class MatchmakerPlayerDeathNotifierService
@@ -15,7 +16,8 @@ public class MatchmakerPlayerDeathNotifierService
         string pathname = "/GameServer/PlayerDeath";
         string query = $"?accountId={playerDeathData.PlayerId}" +
                        $"&placeInBattle={playerDeathData.PlaceInBattle}" +
-                       $"&MatchId={playerDeathData.MatchId}";
+                       $"&MatchId={playerDeathData.MatchId}" +
+                       $"&secret={Globals.GameServerSecret}";
         return await httpWrapper.HttpDelete(pathname, query);
     }
 }

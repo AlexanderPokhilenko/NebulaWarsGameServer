@@ -324,6 +324,7 @@
               <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
             </e>
           </e>
+          <e p="Globals.cs" t="Include" />
           <e p="Http" t="Include">
             <e p="HttpConnection.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />

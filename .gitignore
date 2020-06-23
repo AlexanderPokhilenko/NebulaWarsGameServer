@@ -168,3 +168,4 @@ crashlytics-build.properties
 /.idea/.idea.SpaceRoyal/.idea/vcs.xml
 /Zenit.userproperties
 /Assets/Libraries/Unity_Releases_1.6.4/ZeroFormatterGenerated.cs.meta
+/Assets/Server/Globals.cs
