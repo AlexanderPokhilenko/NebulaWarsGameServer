@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 16
   colliderInfo: {fileID: 11400000, guid: 434df82ff39add4438920c76637c111e, type: 2}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 0
   collisionDamage: 0
+  dropObjects: []
   parts:
   - baseObject: {fileID: 11400000, guid: b0d7d8e9db8ff504ba4462d0d01ea7f0, type: 2}
     position: {x: 0, y: 0}
@@ -25,4 +27,5 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
-  maxHealthPoints: 150
+  shooter: {fileID: 0}
+  maxHealthPoints: 1500

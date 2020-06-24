@@ -24,4 +24,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4aaaef1e53139bf47adf170014a179cb, type: 2}
   - {fileID: 11400000, guid: 4aaaef1e53139bf47adf170014a179cb, type: 2}
   parts: []
-  maxHealthPoints: 300
+  shooter: {fileID: 0}
+  maxHealthPoints: 3000
