@@ -18,9 +18,10 @@ MonoBehaviour:
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
-  collisionDamage: 80
-  drop: {fileID: 0}
+  collisionDamage: 800
+  dropObjects: []
   parts: []
+  shooter: {fileID: 0}
   maxVelocity: 0
   maxAngularVelocity: 0
   isNotDecelerating: 0

@@ -19,6 +19,7 @@ MonoBehaviour:
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
-  drop: {fileID: 0}
+  dropObjects: []
   parts: []
-  maxHealthPoints: 75
+  shooter: {fileID: 0}
+  maxHealthPoints: 750

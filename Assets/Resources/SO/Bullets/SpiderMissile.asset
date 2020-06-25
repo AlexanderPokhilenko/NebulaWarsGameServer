@@ -18,7 +18,7 @@ MonoBehaviour:
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
-  collisionDamage: 20
+  collisionDamage: 200
   dropObjects:
   - {fileID: 11400000, guid: ccd12e9708f8f634384ca90fb48d433c, type: 2}
   parts: []
@@ -35,4 +35,4 @@ MonoBehaviour:
   useAngularTargeting: 1
   onlyPlayerTargeting: 0
   targetChanging: 0
-  maxHealthPoints: 10
+  maxHealthPoints: 100

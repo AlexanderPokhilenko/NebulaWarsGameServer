@@ -39,7 +39,7 @@ MonoBehaviour:
   maxVelocity: 2
   maxAngularVelocity: 45
   isNotDecelerating: 0
-  maxHealthPoints: 500
+  maxHealthPoints: 5000
   detectionRadius: 10
   useAngularTargeting: 1
   onlyPlayerTargeting: 1

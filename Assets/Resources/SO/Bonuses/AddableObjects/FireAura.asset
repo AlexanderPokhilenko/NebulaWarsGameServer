@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 8
   colliderInfo: {fileID: 0}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
   collisionDamage: 0
+  dropObjects: []
   parts: []
+  shooter: {fileID: 0}
   angularVelocity: 5
   outerRadius: 1
-  damage: 5
+  damage: 500

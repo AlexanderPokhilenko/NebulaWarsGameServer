@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 2
   colliderInfo: {fileID: 11400000, guid: 434df82ff39add4438920c76637c111e, type: 2}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
   isPassingThrough: 0
   collisionDamage: 0
+  dropObjects: []
   parts: []
+  shooter: {fileID: 0}
   maxVelocity: 1
   maxAngularVelocity: 45
   isNotDecelerating: 0
-  maxHealthPoints: 200
+  maxHealthPoints: 2000
+  ability: {fileID: 0}

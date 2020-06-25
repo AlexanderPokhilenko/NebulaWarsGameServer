@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 0
   colliderInfo: {fileID: 11400000, guid: 8531e2a5ed2a9db4b9796b97021cd0b8, type: 2}
+  mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
-  collisionDamage: 10
+  collisionDamage: 100
+  dropObjects: []
   parts: []
+  shooter: {fileID: 0}

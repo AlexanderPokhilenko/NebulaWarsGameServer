@@ -29,4 +29,5 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
-  maxHealthPoints: 200
+  shooter: {fileID: 0}
+  maxHealthPoints: 2000
