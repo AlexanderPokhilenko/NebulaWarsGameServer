@@ -28,8 +28,10 @@ public sealed class AuraDamageSystem : IExecuteSystem
             var colliderSqrRadius = e.circleCollider.radius * e.circleCollider.radius;
             var fullSqrRadius = fullRadius * fullRadius;
             var currentDamage = e.aura.damage * Chronometer.DeltaTime;
+            var auraTeam = e.hasTeam ? e.team.id : -1;
             foreach (var damagable in damagableGroup)
             {
+                if(damagable.hasTeam && damagable.team.id == auraTeam) continue;
                 var damagableGlobalPosition = damagable.GetGlobalPositionVector2(gameContext);
                 var direction = damagableGlobalPosition - currentGlobalPosition;
                 var sqrDistance = direction.sqrMagnitude;
