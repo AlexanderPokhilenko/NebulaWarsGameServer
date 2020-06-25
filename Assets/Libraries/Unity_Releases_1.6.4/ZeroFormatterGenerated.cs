@@ -37,7 +37,7 @@ namespace ZeroFormatter
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.PlayerInfoForMatch>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.PlayerInfoForMatchFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.BotInfo>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.BotInfoFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameUnitsForMatch>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameUnitsForMatchFormatter<ZeroFormatter.Formatters.DefaultResolver>());
-            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchDataFormatter<ZeroFormatter.Formatters.DefaultResolver>());
+            ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModelFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameMatcherResponse>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameMatcherResponseFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResult>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameRoomValidationResultFormatter<ZeroFormatter.Formatters.DefaultResolver>());
             ZeroFormatter.Formatters.Formatter<ZeroFormatter.Formatters.DefaultResolver, global::NetworkLibrary.NetworkLibrary.Http.GameUnit>.Register(new ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http.GameUnitFormatter<ZeroFormatter.Formatters.DefaultResolver>());
@@ -1074,7 +1074,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         }
     }
 
-    public class BattleRoyaleMatchDataFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData>
+    public class BattleRoyaleMatchModelFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel>
         where TTypeResolver : ITypeResolver, new()
     {
         public override int? GetLength()
@@ -1082,7 +1082,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             return null;
         }
 
-        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData value)
+        public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel value)
         {
             var segment = value as IZeroFormatterSegment;
             if (segment != null)
@@ -1108,7 +1108,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
             }
         }
 
-        public override global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
+        public override global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel Deserialize(ref byte[] bytes, int offset, global::ZeroFormatter.DirtyTracker tracker, out int byteSize)
         {
             byteSize = BinaryUtil.ReadInt32(ref bytes, offset);
             if (byteSize == -1)
@@ -1116,11 +1116,11 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
                 byteSize = 4;
                 return null;
             }
-            return new BattleRoyaleMatchDataObjectSegment<TTypeResolver>(tracker, new ArraySegment<byte>(bytes, offset, byteSize));
+            return new BattleRoyaleMatchModelObjectSegment<TTypeResolver>(tracker, new ArraySegment<byte>(bytes, offset, byteSize));
         }
     }
 
-    public class BattleRoyaleMatchDataObjectSegment<TTypeResolver> : global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData, IZeroFormatterSegment
+    public class BattleRoyaleMatchModelObjectSegment<TTypeResolver> : global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel, IZeroFormatterSegment
         where TTypeResolver : ITypeResolver, new()
     {
         static readonly int[] __elementSizes = new int[]{ 0, 4, 4, 0 };
@@ -1187,7 +1187,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         }
 
 
-        public BattleRoyaleMatchDataObjectSegment(global::ZeroFormatter.DirtyTracker dirtyTracker, ArraySegment<byte> originalBytes)
+        public BattleRoyaleMatchModelObjectSegment(global::ZeroFormatter.DirtyTracker dirtyTracker, ArraySegment<byte> originalBytes)
         {
             var __array = originalBytes.Array;
 
@@ -1260,7 +1260,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, bool>(ref bytes, startOffset, offset, 0, value.PlayerHasJustBeenRegistered);
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, bool>(ref bytes, startOffset, offset, 1, value.PlayerInQueue);
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, bool>(ref bytes, startOffset, offset, 2, value.PlayerInBattle);
-                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData>(ref bytes, startOffset, offset, 3, value.BattleRoyaleMatchData);
+                offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel>(ref bytes, startOffset, offset, 3, value.battleRoyaleMatchModel);
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 4, value.NumberOfPlayersInQueue);
                 offset += ObjectSegmentHelper.SerializeFromFormatter<TTypeResolver, int>(ref bytes, startOffset, offset, 5, value.NumberOfPlayersInBattles);
 
@@ -1290,7 +1290,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         readonly int __binaryLastIndex;
         readonly byte[] __extraFixedBytes;
 
-        global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData _BattleRoyaleMatchData;
+        global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel _battleRoyaleMatchModel;
 
         // 0
         public override bool PlayerHasJustBeenRegistered
@@ -1332,16 +1332,16 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
         }
 
         // 3
-        public override global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData BattleRoyaleMatchData
+        public override global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel battleRoyaleMatchModel
         {
             get
             {
-                return _BattleRoyaleMatchData;
+                return _battleRoyaleMatchModel;
             }
             set
             {
                 __tracker.Dirty();
-                _BattleRoyaleMatchData = value;
+                _battleRoyaleMatchModel = value;
             }
         }
 
@@ -1382,7 +1382,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
 
             this.__extraFixedBytes = ObjectSegmentHelper.CreateExtraFixedBytes(this.__binaryLastIndex, 5, __elementSizes);
 
-            _BattleRoyaleMatchData = ObjectSegmentHelper.DeserializeSegment<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData>(originalBytes, 3, __binaryLastIndex, __tracker);
+            _battleRoyaleMatchModel = ObjectSegmentHelper.DeserializeSegment<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel>(originalBytes, 3, __binaryLastIndex, __tracker);
         }
 
         public bool CanDirectCopy()
@@ -1405,7 +1405,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Http
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, bool>(ref targetBytes, startOffset, offset, 0, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, bool>(ref targetBytes, startOffset, offset, 1, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, bool>(ref targetBytes, startOffset, offset, 2, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
-                offset += ObjectSegmentHelper.SerializeSegment<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchData>(ref targetBytes, startOffset, offset, 3, _BattleRoyaleMatchData);
+                offset += ObjectSegmentHelper.SerializeSegment<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Http.BattleRoyaleMatchModel>(ref targetBytes, startOffset, offset, 3, _battleRoyaleMatchModel);
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 4, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
                 offset += ObjectSegmentHelper.SerializeFixedLength<TTypeResolver, int>(ref targetBytes, startOffset, offset, 5, __binaryLastIndex, __originalBytes, __extraFixedBytes, __tracker);
 

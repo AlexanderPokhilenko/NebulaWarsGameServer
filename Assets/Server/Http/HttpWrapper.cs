@@ -8,8 +8,8 @@ namespace Server.Http
 {
     public class HttpWrapper
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(HttpWrapper));
         private readonly HttpClient client;
+        private readonly ILog log = LogManager.CreateLogger(typeof(HttpWrapper));
 
         public HttpWrapper()
         {

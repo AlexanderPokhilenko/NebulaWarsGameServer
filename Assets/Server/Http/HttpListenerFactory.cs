@@ -12,9 +12,7 @@ namespace Server.Http
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add($"http://127.0.0.1:{port}/");
             listener.Start();
-            
             Log.Info("Ожидание http подключений на порту "+port);
-            
             return listener;
         }
     }

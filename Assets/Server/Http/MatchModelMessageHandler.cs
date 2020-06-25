@@ -6,25 +6,25 @@ using Server.GameEngine;
 namespace Server.Http
 {
     //TODO говно
-    public class MatchDataMessageHandler
+    public class MatchModelMessageHandler
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchDataMessageHandler));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
         
         private readonly MatchDataValidator matchDataValidator;
         private readonly MatchCreator matchCreator;
 
-        public MatchDataMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
+        public MatchModelMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
         {
             this.matchCreator = matchCreator;
             matchDataValidator = new MatchDataValidator(matchStorage);
         }
         
-        public GameRoomValidationResult Handle(BattleRoyaleMatchData matchData)
+        public GameRoomValidationResult Handle(BattleRoyaleMatchModel matchModel)
         {
-            GameRoomValidationResult result = matchDataValidator.Validate(matchData);
+            GameRoomValidationResult result = matchDataValidator.Validate(matchModel);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
-                AddMatchToQueue(matchData);
+                AddMatchToQueue(matchModel);
             }
             else
             {
@@ -35,9 +35,9 @@ namespace Server.Http
             return result;
         }
 
-        private void AddMatchToQueue(BattleRoyaleMatchData matchData)
+        private void AddMatchToQueue(BattleRoyaleMatchModel matchModel)
         {
-            matchCreator.AddMatchToCreationQueue(matchData);
+            matchCreator.AddMatchToCreationQueue(matchModel);
         }
     }
 }

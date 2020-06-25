@@ -9,9 +9,6 @@ using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-//TODO добавить di контейнер, когда сервер станет стабильным
-
-
 namespace Server
 {
     /// <summary>
@@ -22,25 +19,22 @@ namespace Server
     {
         private const int HttpPort = 14065;
         private const int UdpPort = 48956;
-        
-        private Thread httpListeningThread;
         private ShittyUdpMediator shittyUdpMediator;
-        private Thread matchmakerNotifierThread;
-        
         private MatchStorage matchStorage;
         private MatchRemover matchRemover;
+        private CancellationTokenSource matchmakerNotifierCts;
+        private CancellationTokenSource matchmakerListenerCts;
 
         public void Run()
         {
-            //Чек
-            if (httpListeningThread != null)
+            if (matchmakerListenerCts != null)
             {
                 throw new Exception("Сервер уже запущен");
             }
 
             //Старт уведомления матчмейкера о смертях игроков и окончании матчей
             MatchmakerNotifier notifier = new MatchmakerNotifier();
-            matchmakerNotifierThread = notifier.StartThread();
+            matchmakerNotifierCts = notifier.StartThread();
             
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
@@ -66,10 +60,11 @@ namespace Server
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
             
-            
             //Старт прослушки матчмейкера
-            httpListeningThread = StartMatchmakerListening(HttpPort, matchCreator, matchStorage);
-
+            MatchModelMessageHandler matchModelMessageHandler = new MatchModelMessageHandler(matchCreator, matchStorage);
+            MatchmakerListener matchmakerListener = new MatchmakerListener(matchModelMessageHandler, HttpPort);
+            matchmakerListenerCts = matchmakerListener.StartThread();
+            
             //Старт прослушки игроков
             shittyUdpMediator
                 .SetupConnection(UdpPort)
@@ -84,18 +79,6 @@ namespace Server
             chronometer.StartEndlessLoop();
         }
         
-        private Thread StartMatchmakerListening(int port, MatchCreator matchCreator, MatchStorage matchStorageArg)
-        {
-            MatchDataMessageHandler matchDataMessageHandler = 
-                new MatchDataMessageHandler(matchCreator, matchStorageArg);
-            Thread thread = new Thread(() =>
-            {
-                new HttpConnection(matchDataMessageHandler).StartListenHttp(port).Wait();
-            });
-            thread.Start();
-            return thread;
-        }
-
         public void FinishAllMatches()
         {
             //TODO возможно lock поможет от одновременного вызова систем
@@ -113,9 +96,9 @@ namespace Server
         
         public void StopAllThreads()
         {
-            httpListeningThread.Interrupt();
             shittyUdpMediator.Stop();
-            matchmakerNotifierThread.Interrupt();
+            matchmakerNotifierCts.Cancel();
+            matchmakerListenerCts.Cancel();
         }
     }
 }

@@ -14,18 +14,18 @@ namespace Server.GameEngine
         /// <summary>
         /// Очередь на создание.
         /// </summary>
-        private readonly ConcurrentQueue<BattleRoyaleMatchData> matchesToCreate;
+        private readonly ConcurrentQueue<BattleRoyaleMatchModel> matchesToCreate;
         private readonly MatchFactory matchFactory;
         
         public MatchCreator(MatchFactory matchFactory)
         {
             this.matchFactory = matchFactory;
-            matchesToCreate = new ConcurrentQueue<BattleRoyaleMatchData>();
+            matchesToCreate = new ConcurrentQueue<BattleRoyaleMatchModel>();
         }
         
-        public void AddMatchToCreationQueue(BattleRoyaleMatchData battleRoyaleMatchData)
+        public void AddMatchToCreationQueue(BattleRoyaleMatchModel battleRoyaleMatchModel)
         {
-            matchesToCreate.Enqueue(battleRoyaleMatchData);
+            matchesToCreate.Enqueue(battleRoyaleMatchModel);
         }
         
         public List<Match> CreateMatches()
@@ -33,7 +33,7 @@ namespace Server.GameEngine
             List<Match> result = new List<Match>();
             while (!matchesToCreate.IsEmpty)
             {
-                if (matchesToCreate.TryDequeue(out BattleRoyaleMatchData matchData))
+                if (matchesToCreate.TryDequeue(out BattleRoyaleMatchModel matchData))
                 {
                     Match match = matchFactory.Create(matchData);
                     result.Add(match);

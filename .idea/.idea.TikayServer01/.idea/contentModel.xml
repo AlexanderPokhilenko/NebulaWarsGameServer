@@ -131,7 +131,7 @@
           <e p="NetworkLibrary" t="Include">
             <e p="Http" t="Include">
               <e p="AccountInfo.cs" t="Include" />
-              <e p="BattleRoyaleMatchData.cs" t="Include" />
+              <e p="BattleRoyaleMatchModel.cs" t="Include" />
               <e p="BotInfo.cs" t="Include" />
               <e p="GameMatcherResponse.cs" t="Include" />
               <e p="GameRoomValidationResult.cs" t="Include" />
@@ -326,14 +326,14 @@
           </e>
           <e p="Globals.cs" t="Include" />
           <e p="Http" t="Include">
-            <e p="HttpConnection.cs" t="Include" />
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="HttpMatchFinishNotifierService.cs" t="Include" />
             <e p="HttpWrapper.cs" t="Include" />
-            <e p="MatchDataMessageHandler.cs" t="Include" />
             <e p="MatchDataValidator.cs" t="Include" />
+            <e p="MatchmakerListener.cs" t="Include" />
             <e p="MatchmakerNotifier.cs" t="Include" />
             <e p="MatchmakerPlayerDeathNotifierService.cs" t="Include" />
+            <e p="MatchModelMessageHandler.cs" t="Include" />
             <e p="NetworkGlobals.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathMessageValidator.cs" t="Include" />

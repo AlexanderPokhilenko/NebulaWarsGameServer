@@ -2,6 +2,8 @@
 1) Команда для перегенерации
 zfc.exe -i "..\..\..\Assembly-CSharp.csproj" -o "ZeroFormatterGenerated.cs" -e
 
+zfc.exe -i "..\..\..\Server.csproj" -o "ZeroFormatterGenerated.cs" -e
+
 2) Для всех сообщений в которыъ есть ushort нужно добавлять конструкторы с ushort. 
 Иначе ushort может кастится к float и значение будет испорчено.
 
