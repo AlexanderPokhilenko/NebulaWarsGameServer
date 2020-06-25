@@ -11,7 +11,7 @@ public class MatchmakerPlayerDeathNotifierService
         this.httpWrapper = httpWrapper;
     }
     
-    public async Task<bool> Notify(PlayerDeathData playerDeathData)
+    public async Task<bool> TryNotify(PlayerDeathData playerDeathData)
     {
         string pathname = "/GameServer/PlayerDeath";
         string query = $"?accountId={playerDeathData.PlayerId}" +

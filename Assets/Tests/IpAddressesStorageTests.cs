@@ -33,7 +33,7 @@ namespace Tests
                     int playerId = 1;
                     for (int matchId = 1; matchId <= matchesCount; matchId++)
                     {
-                        BattleRoyaleMatchData data = new BattleRoyaleMatchData()
+                        BattleRoyaleMatchModel model = new BattleRoyaleMatchModel()
                         {
                             MatchId = matchId,
                             GameUnitsForMatch = new GameUnitsForMatch()
@@ -44,13 +44,13 @@ namespace Tests
 
                         for (int i = 1; i <= playersCount; i++)
                         {
-                            data.GameUnitsForMatch.Players.Add(new PlayerInfoForMatch
+                            model.GameUnitsForMatch.Players.Add(new PlayerInfoForMatch
                             {
                                 TemporaryId = (ushort) playerId++
                             });
                         }
 
-                        ipAddressesStorage.AddMatch(data);
+                        ipAddressesStorage.AddMatch(model);
                         lock (lockObj)
                         {
                             lockMatchIds.Add(matchId);

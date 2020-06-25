@@ -35,7 +35,7 @@ namespace Server.GameEngine
 
         private void SendPlayerDeathMessageToMatchmaker(PlayerDeathData playerDeathData)
         {
-            matchmakerNotifier.MarkPlayerAsDeath(playerDeathData);
+            matchmakerNotifier.MarkPlayerAsExcluded(playerDeathData);
         }
     }
 }

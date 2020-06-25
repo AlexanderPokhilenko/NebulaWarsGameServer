@@ -16,7 +16,7 @@ namespace Server.GameEngine.Systems
         private readonly System.Random random = new System.Random();
         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private readonly GameContext gameContext;
-        private readonly BattleRoyaleMatchData matchData;
+        private readonly BattleRoyaleMatchModel matchModel;
         private const float Radius = 40f;
         
         private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayersInitSystem));
@@ -33,19 +33,19 @@ namespace Server.GameEngine.Systems
                 throw new Exception($"В {nameof(PlayersInitSystem)} asset был null.");
         }
 
-        public PlayersInitSystem(Contexts contexts, BattleRoyaleMatchData matchData)
+        public PlayersInitSystem(Contexts contexts, BattleRoyaleMatchModel matchModel)
         {
             gameContext = contexts.game;
-            this.matchData = matchData;
+            this.matchModel = matchModel;
         }
         
         public void Initialize()
         {
-            Log.Info($"Создание игроков для игровой комнаты с номером {matchData.MatchId}");
+            Log.Info($"Создание игроков для игровой комнаты с номером {matchModel.MatchId}");
             int startIndex = 0;
-            int finishIndex = matchData.GameUnitsForMatch.Count() - 1;
-            SpawnPlayersInACircle(matchData.GameUnitsForMatch, startIndex, finishIndex);
-            SpawnPlayer(matchData.GameUnitsForMatch[matchData.GameUnitsForMatch.Count()-1], 0, 0);
+            int finishIndex = matchModel.GameUnitsForMatch.Count() - 1;
+            SpawnPlayersInACircle(matchModel.GameUnitsForMatch, startIndex, finishIndex);
+            SpawnPlayer(matchModel.GameUnitsForMatch[matchModel.GameUnitsForMatch.Count()-1], 0, 0);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Server.GameEngine.Systems
         private void SpawnPlayer(GameUnit playerInfo, int x, int y)
         {
             var gameEntity = PlayerPrototypes[playerInfo.PrefabName.ToLower()]
-                .CreateEntity(gameContext, new Vector2(x, y), 180f, (ushort)matchData.GameUnitsForMatch.Count());
+                .CreateEntity(gameContext, new Vector2(x, y), 180f, (ushort)matchModel.GameUnitsForMatch.Count());
             gameEntity.AddPlayer(playerInfo.TemporaryId);
         }
     }

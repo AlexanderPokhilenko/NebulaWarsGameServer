@@ -19,7 +19,7 @@ namespace Server.GameEngine.Systems
         private static readonly EntityCreatorObject Boss;
         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private readonly GameContext gameContext;
-        private readonly BattleRoyaleMatchData matchData;
+        private readonly BattleRoyaleMatchModel matchModel;
         private readonly UdpSendUtils udpSendUtils;
         
         private static readonly ILog Log = LogManager.CreateLogger(typeof(MapInitSystem));
@@ -57,28 +57,28 @@ namespace Server.GameEngine.Systems
                 throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
         }
 
-        public MapInitSystem(Contexts contexts, BattleRoyaleMatchData matchData, UdpSendUtils udpSendUtils)
+        public MapInitSystem(Contexts contexts, BattleRoyaleMatchModel matchModel, UdpSendUtils udpSendUtils)
         {
             gameContext = contexts.game;
-            this.matchData = matchData;
+            this.matchModel = matchModel;
             this.udpSendUtils = udpSendUtils;
         }
         
         public void Initialize()
         {
-            // Log.Info($"Создание игровой комнаты с номером {matchData.MatchId}");
+            // Log.Info($"Создание игровой комнаты с номером {matchModel.MatchId}");
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
 
-            var step = 360f / matchData.GameUnitsForMatch.Count();
+            var step = 360f / matchModel.GameUnitsForMatch.Count();
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
             
-            for (var i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
+            for (var i = 0; i < matchModel.GameUnitsForMatch.Count(); i++)
             {
-                GameUnit gameUnit = matchData.GameUnitsForMatch[i];
+                GameUnit gameUnit = matchModel.GameUnitsForMatch[i];
                 // UnityEngine.Debug.LogWarning($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId} {nameof(gameUnit.IsBot)} {gameUnit.IsBot}");
                 
                 var angle = i * step + offset;
@@ -109,7 +109,7 @@ namespace Server.GameEngine.Systems
                 }
                 else
                 {
-                    udpSendUtils.SendPlayerInfo(matchData.MatchId, gameUnit.TemporaryId, playerEntity.id.value);
+                    udpSendUtils.SendPlayerInfo(matchModel.MatchId, gameUnit.TemporaryId, playerEntity.id.value);
                 }
 
                 var wallAngle = angle + halfStep;

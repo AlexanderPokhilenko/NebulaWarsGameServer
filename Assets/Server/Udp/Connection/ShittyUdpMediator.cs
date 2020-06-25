@@ -22,7 +22,7 @@ namespace Server.Udp.Connection
             }
             else
             {
-                throw new Exception("Обрабтчик пакетов уже был установлен.");
+                throw new Exception("Обработчик пакетов уже был установлен.");
             }
         }
         

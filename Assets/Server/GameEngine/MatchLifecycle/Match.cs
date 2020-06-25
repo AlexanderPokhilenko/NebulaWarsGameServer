@@ -32,14 +32,14 @@ namespace Server.GameEngine
         }
 
         //ECS
-        public void ConfigureSystems(BattleRoyaleMatchData matchDataArg, UdpSendUtils udpSendUtils)
+        public void ConfigureSystems(BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils)
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
             //TODO это нужно убрать в отдельный класс
             var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
             
-            playersIds = new HashSet<int>(matchDataArg.GameUnitsForMatch
+            playersIds = new HashSet<int>(matchModelArg.GameUnitsForMatch
                 .Select(gu=>(int)gu.TemporaryId));
             
             contexts = ContextsPool.GetContexts();
@@ -47,10 +47,10 @@ namespace Server.GameEngine
             TryEnableDebug();
             
             playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils);
-            var playersViewAreas = new PlayersViewAreas(matchDataArg.GameUnitsForMatch.Players.Count);
+            var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnitsForMatch.Players.Count);
 
             systems = new Entitas.Systems()
-                    .Add(new MapInitSystem(contexts, matchDataArg, udpSendUtils))
+                    .Add(new MapInitSystem(contexts, matchModelArg, udpSendUtils))
                     .Add(new ViewAreasInitSystem(contexts, playersViewAreas))
                     // .Add(new TestEndMatchSystem(contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
@@ -66,13 +66,13 @@ namespace Server.GameEngine
                     .Add(new TimeSystems(contexts))
                     .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))
                     
-                    .Add(new PlayerExitSystem(contexts, matchDataArg.MatchId, playerDeathHandler))
+                    .Add(new PlayerExitSystem(contexts, matchModelArg.MatchId, playerDeathHandler))
                     .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
-                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchDataArg.MatchId, playerDeathHandler, udpSendUtils))
+                    .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchModelArg.MatchId, playerDeathHandler, udpSendUtils))
 
                     .Add(new DestroySystems(contexts))
-                    // .Add(new MatchDebugSenderSystem(contexts, matchDataArg.MatchId, udpSendUtils))
-                    .Add(new NetworkSenderSystems(contexts, matchDataArg.MatchId, udpSendUtils, playersViewAreas))
+                    // .Add(new MatchDebugSenderSystem(contexts, matchModelArg.MatchId, udpSendUtils))
+                    .Add(new NetworkSenderSystems(contexts, matchModelArg.MatchId, udpSendUtils, playersViewAreas))
                     .Add(new MovingCheckerSystem(contexts))
 
                     .Add(new DeleteSystem(contexts))

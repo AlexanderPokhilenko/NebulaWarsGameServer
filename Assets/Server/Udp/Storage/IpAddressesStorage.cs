@@ -29,14 +29,14 @@ namespace Server.Udp.Storage
         private readonly ConcurrentDictionary<int, ConcurrentDictionary<int, IPEndPoint>> ipEndPoints 
             = new ConcurrentDictionary<int, ConcurrentDictionary<int, IPEndPoint>>();
         
-        public void AddMatch(BattleRoyaleMatchData matchData)
+        public void AddMatch(BattleRoyaleMatchModel matchModel)
         {
             var playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
-            foreach (PlayerInfoForMatch playerInfo in matchData.GameUnitsForMatch.Players)
+            foreach (PlayerInfoForMatch playerInfo in matchModel.GameUnitsForMatch.Players)
             {
                 playersIpAddresses.TryAdd(playerInfo.AccountId, new IPEndPoint(1, 1));
             }
-            ipEndPoints.TryAdd(matchData.MatchId, playersIpAddresses);
+            ipEndPoints.TryAdd(matchModel.MatchId, playersIpAddresses);
         }
 
         public bool TryGetIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)

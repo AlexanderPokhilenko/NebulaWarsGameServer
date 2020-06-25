@@ -23,11 +23,11 @@ namespace Server.GameEngine
             this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public Match Create(BattleRoyaleMatchData matchData)
+        public Match Create(BattleRoyaleMatchModel matchModel)
         {
-            ipAddressesStorage.AddMatch(matchData);
-            Match match = new Match(matchData.MatchId, matchRemover, matchmakerNotifier);
-            match.ConfigureSystems(matchData, udpSendUtils);
+            ipAddressesStorage.AddMatch(matchModel);
+            Match match = new Match(matchModel.MatchId, matchRemover, matchmakerNotifier);
+            match.ConfigureSystems(matchModel, udpSendUtils);
             return match;
         }
     }

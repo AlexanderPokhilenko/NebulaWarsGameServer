@@ -1,34 +1,42 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
+using UnityEditor.Experimental.GraphView;
 using ZeroFormatter;
 
 namespace Server.Http
 {
-    public sealed class HttpConnection
+    public sealed class MatchmakerListener
     {
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(HttpConnection));
-        
-        private HttpListener listener;
-        private readonly MatchDataMessageHandler matchDataMessageHandler;
+        private readonly HttpListener listener;
+        private readonly MatchModelMessageHandler matchModelMessageHandler;
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchmakerListener));
 
-        public HttpConnection(MatchDataMessageHandler matchDataMessageHandler)
-        {
-            this.matchDataMessageHandler = matchDataMessageHandler;
-        }
-        
-        public async Task StartListenHttp(int port)
+        public MatchmakerListener(MatchModelMessageHandler matchModelMessageHandler, int port)
         {
             listener = HttpListenerFactory.CreateAndRunHttpListener(port);
-            await StartEndlessCycle();
+            this.matchModelMessageHandler = matchModelMessageHandler;
         }
 
-        private async Task StartEndlessCycle()
+        public CancellationTokenSource StartThread()
         {
-             while(true)
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationToken token = cts.Token;
+            Thread thread = new Thread(async () => await EndlessCycle(token))
+            {
+                IsBackground = true
+            };
+            thread.Start();
+            return cts;
+        }
+        
+        private async Task EndlessCycle(CancellationToken cancellationToken)
+        {
+             while(!cancellationToken.IsCancellationRequested)
              {
                  await HandleNextRequest();
              }
@@ -42,20 +50,20 @@ namespace Server.Http
                 HttpListenerContext context = await listener.GetContextAsync();
                 HttpListenerRequest request = context.Request;
                 
-                // Log.Info($"Client data content length {request.ContentLength64}");
-                
                 Stream inputStream = request.InputStream;
                 byte[] data;
 
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    inputStream.CopyTo(memoryStream);
+                    await inputStream.CopyToAsync(memoryStream);
                     data = memoryStream.ToArray();
                 }
                
                 inputStream.Close();
 
-                GameRoomValidationResult result = HandleBytes(data);
+                BattleRoyaleMatchModel matchModel = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchModel>(data);
+                GameRoomValidationResult result = matchModelMessageHandler.Handle(matchModel);
+                
 
                 if (result != null)
                 {
@@ -66,7 +74,7 @@ namespace Server.Http
                     byte[] responseData = ZeroFormatterSerializer.Serialize(result);
                     context.Response.StatusCode = 200;
                     context.Response.ContentLength64 = responseData.Length;
-                    context.Response.OutputStream.Write(responseData,0,responseData.Length);    
+                    await context.Response.OutputStream.WriteAsync(responseData,0,responseData.Length);    
                     context.Response.OutputStream.Close();
                 }
                 else
@@ -78,12 +86,6 @@ namespace Server.Http
             {
                 Log.Error("Брошено исключение при обработке http запроса "+e.Message);
             }
-        }
-
-        private GameRoomValidationResult HandleBytes(byte[] data)
-        {
-            BattleRoyaleMatchData matchData = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchData>(data);
-            return matchDataMessageHandler.Handle(matchData);
         }
     }
 }

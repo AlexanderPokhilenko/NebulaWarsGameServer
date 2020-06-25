@@ -12,27 +12,27 @@ namespace Server.Http
     public class MatchDataValidator
     {
         private readonly MatchStorage matchStorage;
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchDataMessageHandler));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
 
         public MatchDataValidator(MatchStorage matchStorage)
         {
             this.matchStorage = matchStorage;
         }
         
-        public GameRoomValidationResult Validate(BattleRoyaleMatchData matchData)
+        public GameRoomValidationResult Validate(BattleRoyaleMatchModel matchModel)
         {
-            CheckPrefabNames(matchData);
-            bool matchWithThisIdDoesNotExist = CheckMatchId(matchData);
-            bool thereIsNoMatchWithSuchPlayers = CheckPlayers(matchData);
+            CheckPrefabNames(matchModel);
+            bool matchWithThisIdDoesNotExist = CheckMatchId(matchModel);
+            bool thereIsNoMatchWithSuchPlayers = CheckPlayers(matchModel);
             var result = GetValidationResult(matchWithThisIdDoesNotExist, thereIsNoMatchWithSuchPlayers);
             return result;
         }
 
-        private void CheckPrefabNames(BattleRoyaleMatchData matchData)
+        private void CheckPrefabNames(BattleRoyaleMatchModel matchModel)
         {
-            for (int i = 0; i < matchData.GameUnitsForMatch.Count(); i++)
+            for (int i = 0; i < matchModel.GameUnitsForMatch.Count(); i++)
             {
-                var gameUnit = matchData.GameUnitsForMatch[i];
+                var gameUnit = matchModel.GameUnitsForMatch[i];
                 if (string.IsNullOrWhiteSpace(gameUnit.PrefabName))
                 {
                     throw new ArgumentException(nameof(gameUnit.PrefabName));
@@ -40,10 +40,10 @@ namespace Server.Http
             }
         }
         
-        private bool CheckPlayers(BattleRoyaleMatchData matchData)
+        private bool CheckPlayers(BattleRoyaleMatchModel matchModel)
         {
             bool thereIsNoRoomWithSuchPlayers = true;
-            foreach (var playerId in matchData.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
+            foreach (var playerId in matchModel.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
             {
                 if (matchStorage.HasPlayer(playerId))
                 {
@@ -55,9 +55,9 @@ namespace Server.Http
             return thereIsNoRoomWithSuchPlayers;
         }
 
-        private bool CheckMatchId(BattleRoyaleMatchData matchData)
+        private bool CheckMatchId(BattleRoyaleMatchModel matchModel)
         {
-            return !matchStorage.HasMatch(matchData.MatchId);
+            return !matchStorage.HasMatch(matchModel.MatchId);
         }
 
         //TODO говно

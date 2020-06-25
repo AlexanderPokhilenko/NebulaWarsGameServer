@@ -44,7 +44,7 @@ namespace Server.GameEngine
             //запросить и отправить сообщения для всех пар
             foreach ((int matchId, int playerId) in pairs)
             {
-                //messageId, data
+                //messageId, model
                 byte[][] messagesForPlayer = byteArrayRudpStorage.GetMessages(matchId, playerId);
                 
                 if (messagesForPlayer != null)

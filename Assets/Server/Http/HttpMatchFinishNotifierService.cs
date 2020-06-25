@@ -13,7 +13,7 @@ namespace Server.Http
             this.httpWrapper = httpWrapper;
         }
         
-        public async Task<bool> Notify(int matchId)
+        public async Task<bool> TryNotify(int matchId)
         {
             string pathname = "/GameServer/DeleteMatch";
             string query = $"?MatchId={matchId.ToString()}&secret={Globals.GameServerSecret}";

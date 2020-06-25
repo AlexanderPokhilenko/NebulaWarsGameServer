@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Code.Common;
@@ -6,92 +7,94 @@ using Code.Common;
 namespace Server.Http
 {
     /// <summary>
-    /// Уведомляет матчмейкер о смертях игроков и окончании матчей.
+    /// Отправляет матчмейкеру сообщения о исключении игрока из мачта и окончании матча.
     /// Если сообщение не отправилось, то попробует заново.
     /// </summary>
     public class MatchmakerNotifier
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchmakerNotifier));
-        
-        private readonly ConcurrentQueue<int> finishedMatches = new ConcurrentQueue<int>();
-        private readonly ConcurrentQueue<PlayerDeathData> killedPlayers = new ConcurrentQueue<PlayerDeathData>();
-        
+        private const int PeriodMs = 1000;
+        private readonly PlayerDeathMessageValidator playerDeathMessageValidator;
         private readonly HttpMatchFinishNotifierService httpMatchFinishNotifierService;
-        private readonly  PlayerDeathMessageValidator playerDeathMessageValidator;
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchmakerNotifier));
         private readonly MatchmakerPlayerDeathNotifierService matchmakerPlayerDeathNotifierService;
+        
+        //matchId + null
+        private readonly ConcurrentDictionary<int, object> finishedMatchIdCollection = 
+            new ConcurrentDictionary<int, object>();
+        //PlayerDeathData + null
+        private readonly ConcurrentDictionary<PlayerDeathData, object> killedPlayerCollection = 
+            new ConcurrentDictionary<PlayerDeathData, object>();
         
         public MatchmakerNotifier()
         {
             HttpWrapper httpWrapper = new HttpWrapper();
-            httpMatchFinishNotifierService = new HttpMatchFinishNotifierService(httpWrapper);
             playerDeathMessageValidator = new PlayerDeathMessageValidator();
+            httpMatchFinishNotifierService = new HttpMatchFinishNotifierService(httpWrapper);
             matchmakerPlayerDeathNotifierService = new MatchmakerPlayerDeathNotifierService(httpWrapper);
         }
         
+        /// <summary>
+        /// Вызывается, когда матч окончен
+        /// </summary>
+        /// <param name="matchId"></param>
         public void MarkMatchAsFinished(int matchId)
         {
-            finishedMatches.Enqueue(matchId);
+            if (!finishedMatchIdCollection.TryAdd(matchId, null))
+            {
+                log.Error($"Попытка повторно добавить матч с {nameof(matchId)} {matchId} в коллекцию матчей" +
+                          " о завершении которых нужно сообщить матчмейкеру.");
+            }
         }
 
-        public void MarkPlayerAsDeath(PlayerDeathData playerDeathData)
+        /// <summary>
+        /// Вызывается, когда игрок умер или покинул матч или был исключен из матча.
+        /// </summary>
+        /// <param name="playerDeathData"></param>
+        public void MarkPlayerAsExcluded(PlayerDeathData playerDeathData)
         {
-            killedPlayers.Enqueue(playerDeathData);
+            if (!killedPlayerCollection.TryAdd(playerDeathData, null))
+            {
+                log.Error($"Попытка повторно добавить игрока с {nameof(playerDeathData.PlayerId)} " +
+                          $"{playerDeathData.PlayerId} в коллекцию игроков которые были исключены из матча.");
+            }
         }
         
-        public Thread StartThread()
+        public CancellationTokenSource StartThread()
         {
-            Thread thread = new Thread(() => StartEndlessLoop().Wait())
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationToken token = cts.Token;
+            Thread thread = new Thread(async () => await EndlessLoop(token))
             {
                 IsBackground = true
             };
             thread.Start();
-            return thread;
+            return cts;
         }
         
-        private async Task StartEndlessLoop()
+        private async Task EndlessLoop(CancellationToken token)
         {
-            while (true)
+            while (!token.IsCancellationRequested)
             {
-                await SendOut();
-                await Task.Delay(1000);
+                foreach (int matchId in finishedMatchIdCollection.Select(pair=>pair.Key))
+                {
+                    if (await httpMatchFinishNotifierService.TryNotify(matchId))
+                    {
+                        finishedMatchIdCollection.TryRemove(matchId, out _);
+                    }
+                }
+            
+                foreach (PlayerDeathData playerDeathData in killedPlayerCollection.Select(pair=>pair.Key))
+                {
+                    playerDeathMessageValidator.Validate(playerDeathData);
+                    if (await matchmakerPlayerDeathNotifierService.TryNotify(playerDeathData))
+                    {
+                        killedPlayerCollection.TryRemove(playerDeathData, out _);
+                    }
+                }
+                
+                await Task.Delay(PeriodMs, token);
             }
             // ReSharper disable once FunctionNeverReturns
-        }
-
-        private async Task SendOut()
-        {
-            while (!finishedMatches.IsEmpty)
-            {
-                finishedMatches.TryDequeue(out int matchId);
-                await SendMatchFinishMessage(matchId);
-            }
-            
-            while (!killedPlayers.IsEmpty)
-            {
-                killedPlayers.TryDequeue(out var playerDeathData);
-                playerDeathMessageValidator.Validate(playerDeathData);
-                await SendPlayerDeathMessage(playerDeathData);
-            }
-        }
-
-        private async Task SendMatchFinishMessage(int matchId)
-        {
-            bool success = await httpMatchFinishNotifierService.Notify(matchId);
-            //Если http не справился, то повторить попытку
-            if (!success)
-            {
-                finishedMatches.Enqueue(matchId);
-            }
-        }
-        
-        private async Task SendPlayerDeathMessage(PlayerDeathData playerDeathData)
-        {
-            bool success = await matchmakerPlayerDeathNotifierService.Notify(playerDeathData);
-            //Если http не справился, то повторить попытку
-            if (!success)
-            {
-                killedPlayers.Enqueue(playerDeathData);
-            }
         }
     }
 }
