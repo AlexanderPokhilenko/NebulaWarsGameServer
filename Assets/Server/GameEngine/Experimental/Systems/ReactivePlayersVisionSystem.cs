@@ -30,8 +30,10 @@ namespace Server.GameEngine.Systems
             }
         }
 
-        private static List<GameEntity> GetVisibleObjects(PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<GameEntity> entities)
+        private List<GameEntity> GetVisibleObjects(PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<GameEntity> entities)
         {
+            if (viewAreas.sendAll) return entities.ToList();
+
             var playerVisible = viewArea.lastVisible;
 
             return entities.Where(withView => playerVisible.Contains(withView.id.value)).ToList();

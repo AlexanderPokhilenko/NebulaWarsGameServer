@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 
 namespace Server.GameEngine
 {
@@ -8,6 +7,7 @@ namespace Server.GameEngine
     {
         public const float VisibleAreaRadius = 15f;
         private readonly Dictionary<int, PlayerViewAreaInfo> areas;
+        public bool sendAll = false;
 
         public PlayersViewAreas(int playersCount)
         {
