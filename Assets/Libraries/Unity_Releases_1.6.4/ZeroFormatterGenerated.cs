@@ -3209,7 +3209,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
     public class PlayerInputMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage>
         where TTypeResolver : ITypeResolver, new()
     {
-        readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, ushort> formatter0;
         readonly Formatter<TTypeResolver, int> formatter1;
         readonly Formatter<TTypeResolver, float> formatter2;
         readonly Formatter<TTypeResolver, float> formatter3;
@@ -3232,7 +3232,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
 
         public PlayerInputMessageFormatter()
         {
-            formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter0 = Formatter<TTypeResolver, ushort>.Default;
             formatter1 = Formatter<TTypeResolver, int>.Default;
             formatter2 = Formatter<TTypeResolver, float>.Default;
             formatter3 = Formatter<TTypeResolver, float>.Default;
