@@ -1,9 +1,9 @@
 ﻿using Entitas;
 using Entitas.CodeGeneration.Attributes;
 
-[Game, Input]
-public class PlayerComponent : IComponent
+[Game]
+public class AccountComponent : IComponent
 {
     [PrimaryEntityIndex]
-    public ushort id;
+    public int id;
 }

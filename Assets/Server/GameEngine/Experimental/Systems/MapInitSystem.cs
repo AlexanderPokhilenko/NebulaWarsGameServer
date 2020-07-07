@@ -67,6 +67,7 @@ namespace Server.GameEngine.Systems
         public void Initialize()
         {
             // Log.Info($"Создание игровой комнаты с номером {matchModel.MatchId}");
+            var playerInfos = new Dictionary<int, ushort>(matchModel.GameUnitsForMatch.Count());
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
@@ -105,12 +106,14 @@ namespace Server.GameEngine.Systems
 
                 if (gameUnit.IsBot)
                 {
+                    playerEntity.AddAccount(-((BotInfo)gameUnit).TemporaryId);
                     Match.MakeBot(playerEntity);
                 }
                 else
                 {
-                    udpSendUtils.SendPlayerInfo(matchModel.MatchId, gameUnit.TemporaryId, playerEntity.id.value);
+                    playerEntity.AddAccount(((PlayerInfoForMatch)gameUnit).AccountId);
                 }
+                playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
 
                 var wallAngle = angle + halfStep;
                 var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);
@@ -131,6 +134,11 @@ namespace Server.GameEngine.Systems
             }
 
             Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0);
+
+            foreach (var playerInfo in matchModel.GameUnitsForMatch.Players)
+            {
+                udpSendUtils.SendPlayerInfo(matchModel.MatchId, playerInfo.TemporaryId, playerInfos);
+            }
         }
     }
 }

@@ -32,8 +32,8 @@ namespace Server.GameEngine.Systems
             this.playerDeathHandler = playerDeathHandler;
             this.udpSendUtils = udpSendUtils;
             var gameContext = contexts.game;
-            alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
+            alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Account, GameMatcher.Player).NoneOf(GameMatcher.Bot));
+            alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Account, GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
         }
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -43,7 +43,7 @@ namespace Server.GameEngine.Systems
 
         protected override bool Filter(GameEntity entity)
         {
-            return entity.hasPlayer && entity.hasViewType && entity.hasKilledBy;
+            return entity.hasAccount && entity.hasViewType && entity.hasKilledBy;
         }
 
         protected override void Execute(List<GameEntity> killedEntities)
@@ -67,7 +67,7 @@ namespace Server.GameEngine.Systems
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
                         VictimType = killedEntity.viewType.id,
-                        VictimId = killedEntity.player.id
+                        VictimId = killedEntity.account.id
                     };
                 
                     udpSendUtils.SendKill(matchId, killData);

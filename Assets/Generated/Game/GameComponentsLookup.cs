@@ -10,81 +10,83 @@ public static class GameComponentsLookup {
 
     public const int Ability = 0;
     public const int AbilityCooldown = 1;
-    public const int ActionBonus = 2;
-    public const int AngularVelocity = 3;
-    public const int AttackIncreasing = 4;
-    public const int Aura = 5;
-    public const int BonusAdder = 6;
-    public const int BonusPickable = 7;
-    public const int BonusTarget = 8;
-    public const int Bot = 9;
-    public const int Cannon = 10;
-    public const int CannonCooldown = 11;
-    public const int Chaser = 12;
-    public const int CircleCollider = 13;
-    public const int CircleScaling = 14;
-    public const int Collapses = 15;
-    public const int Collidable = 16;
-    public const int Collided = 17;
-    public const int CollisionVector = 18;
-    public const int Concave = 19;
-    public const int Damage = 20;
-    public const int Destroyed = 21;
-    public const int Direction = 22;
-    public const int DirectionTargeting = 23;
-    public const int DirectionTargetingShooting = 24;
-    public const int Drop = 25;
-    public const int GlobalNoncollinearAxises = 26;
-    public const int GlobalPathCollider = 27;
-    public const int GlobalTransform = 28;
-    public const int GrandOwner = 29;
-    public const int HealthPoints = 30;
-    public const int Id = 31;
-    public const int IgnoringParentCollision = 32;
-    public const int Invulnerable = 33;
-    public const int KilledBy = 34;
-    public const int Lifetime = 35;
-    public const int LongParent = 36;
-    public const int Mass = 37;
-    public const int MaxAngularVelocity = 38;
-    public const int MaxHealthPoints = 39;
-    public const int MaxVelocity = 40;
-    public const int MovementFrames = 41;
-    public const int Moving = 42;
-    public const int NoncollinearAxises = 43;
-    public const int NonstandardRadius = 44;
-    public const int NotDecelerating = 45;
-    public const int OnHealthDropDestroying = 46;
-    public const int Owner = 47;
-    public const int Parasite = 48;
-    public const int Parent = 49;
-    public const int ParentDependent = 50;
-    public const int ParentFixed = 51;
-    public const int PassingThrough = 52;
-    public const int PathCollider = 53;
-    public const int Player = 54;
-    public const int Position = 55;
-    public const int RectangleCollider = 56;
-    public const int Round = 57;
-    public const int SingleTargeting = 58;
-    public const int SpecialShooter = 59;
-    public const int TargetChanging = 60;
-    public const int Target = 61;
-    public const int TargetingParameters = 62;
-    public const int TargetMovingPoint = 63;
-    public const int TargetScaling = 64;
-    public const int Team = 65;
-    public const int TryingToShoot = 66;
-    public const int Unmovable = 67;
-    public const int Velocity = 68;
-    public const int ViewType = 69;
-    public const int Zone = 70;
+    public const int Account = 2;
+    public const int ActionBonus = 3;
+    public const int AngularVelocity = 4;
+    public const int AttackIncreasing = 5;
+    public const int Aura = 6;
+    public const int BonusAdder = 7;
+    public const int BonusPickable = 8;
+    public const int BonusTarget = 9;
+    public const int Bot = 10;
+    public const int Cannon = 11;
+    public const int CannonCooldown = 12;
+    public const int Chaser = 13;
+    public const int CircleCollider = 14;
+    public const int CircleScaling = 15;
+    public const int Collapses = 16;
+    public const int Collidable = 17;
+    public const int Collided = 18;
+    public const int CollisionVector = 19;
+    public const int Concave = 20;
+    public const int Damage = 21;
+    public const int Destroyed = 22;
+    public const int Direction = 23;
+    public const int DirectionTargeting = 24;
+    public const int DirectionTargetingShooting = 25;
+    public const int Drop = 26;
+    public const int GlobalNoncollinearAxises = 27;
+    public const int GlobalPathCollider = 28;
+    public const int GlobalTransform = 29;
+    public const int GrandOwner = 30;
+    public const int HealthPoints = 31;
+    public const int Id = 32;
+    public const int IgnoringParentCollision = 33;
+    public const int Invulnerable = 34;
+    public const int KilledBy = 35;
+    public const int Lifetime = 36;
+    public const int LongParent = 37;
+    public const int Mass = 38;
+    public const int MaxAngularVelocity = 39;
+    public const int MaxHealthPoints = 40;
+    public const int MaxVelocity = 41;
+    public const int MovementFrames = 42;
+    public const int Moving = 43;
+    public const int NoncollinearAxises = 44;
+    public const int NonstandardRadius = 45;
+    public const int NotDecelerating = 46;
+    public const int OnHealthDropDestroying = 47;
+    public const int Owner = 48;
+    public const int Parasite = 49;
+    public const int Parent = 50;
+    public const int ParentDependent = 51;
+    public const int ParentFixed = 52;
+    public const int PassingThrough = 53;
+    public const int PathCollider = 54;
+    public const int Player = 55;
+    public const int Position = 56;
+    public const int RectangleCollider = 57;
+    public const int Round = 58;
+    public const int SingleTargeting = 59;
+    public const int SpecialShooter = 60;
+    public const int TargetChanging = 61;
+    public const int Target = 62;
+    public const int TargetingParameters = 63;
+    public const int TargetMovingPoint = 64;
+    public const int TargetScaling = 65;
+    public const int Team = 66;
+    public const int TryingToShoot = 67;
+    public const int Unmovable = 68;
+    public const int Velocity = 69;
+    public const int ViewType = 70;
+    public const int Zone = 71;
 
-    public const int TotalComponents = 71;
+    public const int TotalComponents = 72;
 
     public static readonly string[] componentNames = {
         "Ability",
         "AbilityCooldown",
+        "Account",
         "ActionBonus",
         "AngularVelocity",
         "AttackIncreasing",
@@ -159,6 +161,7 @@ public static class GameComponentsLookup {
     public static readonly System.Type[] componentTypes = {
         typeof(AbilityComponent),
         typeof(AbilityCooldownComponent),
+        typeof(AccountComponent),
         typeof(ActionBonusComponent),
         typeof(AngularVelocityComponent),
         typeof(AttackIncreasingComponent),

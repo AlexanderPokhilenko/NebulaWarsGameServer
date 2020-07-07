@@ -12,7 +12,7 @@ namespace Server.GameEngine.Experimental
         private readonly ILog log = LogManager.CreateLogger(typeof(ExitEntitiesCreator));
         
         //matchId, playerId
-        private readonly ConcurrentDictionary<int, int> dictionary = new ConcurrentDictionary<int, int>();
+        private readonly ConcurrentDictionary<int, ushort> dictionary = new ConcurrentDictionary<int, ushort>();
         private readonly MatchStorage matchStorage;
         
         public ExitEntitiesCreator(MatchStorage matchStorage)
@@ -20,7 +20,7 @@ namespace Server.GameEngine.Experimental
             this.matchStorage = matchStorage;
         }
         
-        public void AddExitMessage(int matchId, int playerId)
+        public void AddExitMessage(int matchId, ushort playerId)
         {
             log.Info(nameof(AddExitMessage));
             if (!dictionary.ContainsKey(matchId))
@@ -31,10 +31,10 @@ namespace Server.GameEngine.Experimental
 
         public void Create()
         {
-            foreach (KeyValuePair<int, int> pair in dictionary)
+            foreach (KeyValuePair<int, ushort> pair in dictionary)
             {
                 int matchId = pair.Key;
-                int playerId = pair.Value;
+                ushort playerId = pair.Value;
 
 
                 if (matchStorage.TryGetMatch(matchId, out Match match))

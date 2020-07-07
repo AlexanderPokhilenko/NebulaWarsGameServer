@@ -58,6 +58,7 @@ public partial class Contexts : Entitas.IContexts {
 //------------------------------------------------------------------------------
 public partial class Contexts {
 
+    public const string Account = "Account";
     public const string GrandOwner = "GrandOwner";
     public const string Id = "Id";
     public const string KilledBy = "KilledBy";
@@ -68,6 +69,11 @@ public partial class Contexts {
 
     [Entitas.CodeGeneration.Attributes.PostConstructor]
     public void InitializeEntityIndices() {
+        game.AddEntityIndex(new Entitas.PrimaryEntityIndex<GameEntity, int>(
+            Account,
+            game.GetGroup(GameMatcher.Account),
+            (e, c) => ((AccountComponent)c).id));
+
         game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, ushort>(
             GrandOwner,
             game.GetGroup(GameMatcher.GrandOwner),
@@ -97,11 +103,11 @@ public partial class Contexts {
             game.GetGroup(GameMatcher.Parent),
             (e, c) => ((ParentComponent)c).id));
 
-        game.AddEntityIndex(new Entitas.PrimaryEntityIndex<GameEntity, int>(
+        game.AddEntityIndex(new Entitas.PrimaryEntityIndex<GameEntity, ushort>(
             Player,
             game.GetGroup(GameMatcher.Player),
             (e, c) => ((PlayerComponent)c).id));
-        input.AddEntityIndex(new Entitas.PrimaryEntityIndex<InputEntity, int>(
+        input.AddEntityIndex(new Entitas.PrimaryEntityIndex<InputEntity, ushort>(
             Player,
             input.GetGroup(InputMatcher.Player),
             (e, c) => ((PlayerComponent)c).id));
@@ -114,6 +120,10 @@ public partial class Contexts {
 }
 
 public static class ContextsExtensions {
+
+    public static GameEntity GetEntityWithAccount(this GameContext context, int id) {
+        return ((Entitas.PrimaryEntityIndex<GameEntity, int>)context.GetEntityIndex(Contexts.Account)).GetEntity(id);
+    }
 
     public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithGrandOwner(this GameContext context, ushort id) {
         return ((Entitas.EntityIndex<GameEntity, ushort>)context.GetEntityIndex(Contexts.GrandOwner)).GetEntities(id);
@@ -139,12 +149,12 @@ public static class ContextsExtensions {
         return ((Entitas.EntityIndex<GameEntity, ushort>)context.GetEntityIndex(Contexts.Parent)).GetEntities(id);
     }
 
-    public static GameEntity GetEntityWithPlayer(this GameContext context, int id) {
-        return ((Entitas.PrimaryEntityIndex<GameEntity, int>)context.GetEntityIndex(Contexts.Player)).GetEntity(id);
+    public static GameEntity GetEntityWithPlayer(this GameContext context, ushort id) {
+        return ((Entitas.PrimaryEntityIndex<GameEntity, ushort>)context.GetEntityIndex(Contexts.Player)).GetEntity(id);
     }
 
-    public static InputEntity GetEntityWithPlayer(this InputContext context, int id) {
-        return ((Entitas.PrimaryEntityIndex<InputEntity, int>)context.GetEntityIndex(Contexts.Player)).GetEntity(id);
+    public static InputEntity GetEntityWithPlayer(this InputContext context, ushort id) {
+        return ((Entitas.PrimaryEntityIndex<InputEntity, ushort>)context.GetEntityIndex(Contexts.Player)).GetEntity(id);
     }
 
     public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithTeam(this GameContext context, ushort id) {

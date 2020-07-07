@@ -52,9 +52,9 @@ namespace Server.Udp.Sending
             }
         }
 
-        public void SendPlayerInfo(int matchId, int playerId, ushort entityId)
+        public void SendPlayerInfo(int matchId, int playerId, Dictionary<int, ushort> entityIds)
         {
-            var message = new PlayerInfoMessage(entityId);
+            var message = new PlayerInfoMessage(entityIds);
             SendUdp(matchId, playerId, message, true);
         }
 

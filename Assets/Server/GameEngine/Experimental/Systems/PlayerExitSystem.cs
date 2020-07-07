@@ -52,7 +52,7 @@ namespace Server.GameEngine.Systems
             }
         }
 
-        private void TurnIntoBot(int playerId)
+        private void TurnIntoBot(ushort playerId)
         {
             var playerEntity = gameContext.GetEntityWithPlayer(playerId);
             if(playerEntity != null && !playerEntity.isBot) Match.MakeBot(playerEntity);
