@@ -11,7 +11,7 @@ public partial interface IPlayerEntity {
     PlayerComponent player { get; }
     bool hasPlayer { get; }
 
-    void AddPlayer(int newId);
-    void ReplacePlayer(int newId);
+    void AddPlayer(ushort newId);
+    void ReplacePlayer(ushort newId);
     void RemovePlayer();
 }

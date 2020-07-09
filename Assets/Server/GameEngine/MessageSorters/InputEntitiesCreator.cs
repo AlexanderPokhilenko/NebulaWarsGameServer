@@ -14,28 +14,28 @@ namespace Server.GameEngine.Experimental
         private readonly MatchStorage matchStorage;
         
         //playerId matchId value
-        private readonly ConcurrentDictionary<int, Tuple<int, Vector2>>  movementMessages = new ConcurrentDictionary<int, Tuple<int, Vector2>>();
+        private readonly ConcurrentDictionary<ushort, Tuple<int, Vector2>>  movementMessages = new ConcurrentDictionary<ushort, Tuple<int, Vector2>>();
         //playerId, matchId value
-        private readonly ConcurrentDictionary<int, Tuple<int, float>> attackMessages = new ConcurrentDictionary<int, Tuple<int, float>>();
+        private readonly ConcurrentDictionary<ushort, Tuple<int, float>> attackMessages = new ConcurrentDictionary<ushort, Tuple<int, float>>();
         //playerId, matchId value
-        private readonly ConcurrentDictionary<int, Tuple<int,bool>> abilityMessages = new ConcurrentDictionary<int, Tuple<int, bool>>();
+        private readonly ConcurrentDictionary<ushort, Tuple<int,bool>> abilityMessages = new ConcurrentDictionary<ushort, Tuple<int, bool>>();
 
         public InputEntitiesCreator(MatchStorage matchStorage)
         {
             this.matchStorage = matchStorage;
         }
         
-        public bool TryAddMovementMessage(int matchId, int playerId, Vector2 vector)
+        public bool TryAddMovementMessage(int matchId, ushort playerId, Vector2 vector)
         {
             return movementMessages.TryAdd(playerId, new Tuple<int, Vector2>(matchId, vector));
         }
 
-        public bool TryAddAttackMessage(int matchId, int playerId, float angle)
+        public bool TryAddAttackMessage(int matchId, ushort playerId, float angle)
         {
             return attackMessages.TryAdd(playerId, new Tuple<int, float>(matchId, angle));
         }
 
-        public bool TryAddAbilityMessage(int matchId, int playerId, bool ability)
+        public bool TryAddAbilityMessage(int matchId, ushort playerId, bool ability)
         {
             return abilityMessages.TryAdd(playerId, new Tuple<int, bool>(matchId, ability));
         }
@@ -62,12 +62,12 @@ namespace Server.GameEngine.Experimental
             inputEntity.AddMovement(vector2);
         }
 
-        private void ActionForEachMessage<T>(ConcurrentDictionary<int, Tuple<int, T>> messages, Action<InputEntity, T> action)
+        private void ActionForEachMessage<T>(ConcurrentDictionary<ushort, Tuple<int, T>> messages, Action<InputEntity, T> action)
         {
-            foreach (KeyValuePair<int, Tuple<int, T>> pair in messages)
+            foreach (KeyValuePair<ushort, Tuple<int, T>> pair in messages)
             {
                 int matchId = pair.Value.Item1;
-                int playerId = pair.Key;
+                ushort playerId = pair.Key;
                 T value = pair.Value.Item2;
 
                 if (matchStorage.TryGetMatch(matchId, out Match match))

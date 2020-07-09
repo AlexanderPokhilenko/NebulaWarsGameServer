@@ -1,4 +1,5 @@
-﻿﻿﻿using NetworkLibrary.NetworkLibrary.Udp;
+﻿﻿﻿using System.Collections.Generic;
+  using NetworkLibrary.NetworkLibrary.Udp;
 using ZeroFormatter;
 
 namespace Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus
@@ -28,11 +29,11 @@ namespace Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus
     [ZeroFormattable]
     public struct PlayerInfoMessage : ITypedMessage
     {
-        [Index(0)] public readonly ushort EntityId;
+        [Index(0)] public readonly Dictionary<int, ushort> EntityIds;
 
-        public PlayerInfoMessage(ushort entityId)
+        public PlayerInfoMessage(Dictionary<int, ushort> entityIds)
         {
-            EntityId = entityId;
+            EntityIds = entityIds;
         }
 
         public MessageType GetMessageType()

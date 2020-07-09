@@ -75,6 +75,14 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
                 var parasiteGrandOwner = e.GetGrandOwnerId(gameContext);
                 addableBonus.AddOwner(parasiteGrandOwner);
                 addableBonus.AddGrandOwner(parasiteGrandOwner);
+                if(e.hasTeam)
+                {
+                    addableBonus.ReplaceTeam(e.team.id);
+                }
+                else
+                {
+                    addableBonus.RemoveTeam();
+                }
                 e.ToGlobal(gameContext, out position, out angle, out _, out _, out _);
                 addableBonus.ReplacePosition(position);
                 addableBonus.ReplaceDirection(angle);

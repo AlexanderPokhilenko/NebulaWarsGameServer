@@ -6,14 +6,14 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage
     [ZeroFormattable]
     public struct PlayerInputMessage : ITypedMessage
     {
-        [Index(0)] public int TemporaryId { get; }
+        [Index(0)] public ushort TemporaryId { get; }
         [Index(1)] public int MatchId { get; }
         [Index(2)] public float X { get; }
         [Index(3)] public float Y { get; }
         [Index(4)] public float Angle { get; }
         [Index(5)] public bool UseAbility { get; }
 
-        public PlayerInputMessage(int temporaryId, int matchId, float x, float y, float angle, bool ability)
+        public PlayerInputMessage(ushort temporaryId, int matchId, float x, float y, float angle, bool ability)
         {
             TemporaryId = temporaryId;
             MatchId = matchId;

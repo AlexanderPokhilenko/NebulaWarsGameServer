@@ -34,16 +34,16 @@ namespace Server.GameEngine.Systems
 
         protected override void Execute(List<GameEntity> entities)
         {
-            foreach (GameEntity e in entities)
+            foreach (var e in entities)
             {
                 var grandOwnerId = e.grandOwner.id;
                 if (ownersInfo.ContainsKey(grandOwnerId)) return;
                 var grandOwner = gameContext.GetEntityWithId(grandOwnerId);
-                if (grandOwner != null)
+                if (grandOwner != null && grandOwner.hasViewType)
                 {
-                    int playerId = 0;
-                    ViewTypeId typeId = grandOwner.viewType.id;
-                    if (grandOwner.hasPlayer) playerId = grandOwner.player.id;
+                    var playerId = 0;
+                    var typeId = grandOwner.viewType.id;
+                    if (grandOwner.hasAccount) playerId = grandOwner.account.id;
                     ownersInfo.Add(grandOwnerId, (playerId, typeId));
                 }
             }

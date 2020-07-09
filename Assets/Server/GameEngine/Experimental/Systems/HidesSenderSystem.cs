@@ -38,7 +38,8 @@ namespace Server.GameEngine.Systems
 
         public void Execute()
         {
-            if (zone.circleCollider.radius <= visibleAreaRadius) return;
+            if(viewAreas.sendAll) return;
+            if (zone.circleCollider.radius <= visibleAreaRadius) viewAreas.sendAll = true;
 
             removedObjectIdsBuffer.Clear();
             removedObjectIdsBuffer.AddRange(removedObjects.AsEnumerable().Select(e => e.id.value));

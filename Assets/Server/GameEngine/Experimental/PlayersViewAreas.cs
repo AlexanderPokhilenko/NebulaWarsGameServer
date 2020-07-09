@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 
 namespace Server.GameEngine
 {
-    public class PlayersViewAreas : IEnumerable<KeyValuePair<int, PlayersViewAreas.PlayerViewAreaInfo>>
+    public class PlayersViewAreas : IEnumerable<KeyValuePair<ushort, PlayersViewAreas.PlayerViewAreaInfo>>
     {
         public const float VisibleAreaRadius = 15f;
-        private readonly Dictionary<int, PlayerViewAreaInfo> areas;
+        private readonly Dictionary<ushort, PlayerViewAreaInfo> areas;
+        public bool sendAll = false;
 
         public PlayersViewAreas(int playersCount)
         {
-            areas = new Dictionary<int, PlayerViewAreaInfo>(playersCount);
+            areas = new Dictionary<ushort, PlayerViewAreaInfo>(playersCount);
         }
         
-        public void Initialize(IEnumerable<int> playerIds)
+        public void Initialize(IEnumerable<ushort> playerIds)
         {
             foreach (var playerId in playerIds)
             {
@@ -22,7 +22,7 @@ namespace Server.GameEngine
             }
         }
 
-        public IEnumerator<KeyValuePair<int, PlayerViewAreaInfo>> GetEnumerator()
+        public IEnumerator<KeyValuePair<ushort, PlayerViewAreaInfo>> GetEnumerator()
         {
             return areas.GetEnumerator();
         }
@@ -32,7 +32,7 @@ namespace Server.GameEngine
             return GetEnumerator();
         }
 
-        public PlayerViewAreaInfo this[int playerId] => areas[playerId];
+        public PlayerViewAreaInfo this[ushort playerId] => areas[playerId];
 
         public class PlayerViewAreaInfo
         {

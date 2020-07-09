@@ -93,7 +93,7 @@ namespace Server.GameEngine
             entity.isBot = true;
         }
         
-        public void AddInputEntity<T>(int playerId, Action<InputEntity, T> action, T value)
+        public void AddInputEntity<T>(ushort playerId, Action<InputEntity, T> action, T value)
         {
             if (contexts != null)
             {
@@ -107,7 +107,7 @@ namespace Server.GameEngine
             }
         }
 
-        public void AddInputEntity(int playerId, Action<InputEntity> action)
+        public void AddInputEntity(ushort playerId, Action<InputEntity> action)
         {
             if (contexts != null)
             {

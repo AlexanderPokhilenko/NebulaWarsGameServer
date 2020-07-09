@@ -1,5 +1,5 @@
-﻿using System;
-using Entitas;
+﻿using Entitas;
+using System;
 
 public static class ContextsIdExtensions
 {
@@ -28,6 +28,6 @@ public static class ContextsIdExtensions
 
     public static void AddId(IContext context, IEntity entity)
     {
-        (entity as IIdEntity).ReplaceId((ushort)entity.creationIndex);
+        ((IIdEntity)entity).ReplaceId((ushort)entity.creationIndex);
     }
 }

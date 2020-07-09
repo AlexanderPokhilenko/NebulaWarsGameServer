@@ -7,9 +7,9 @@ namespace Libraries.NetworkLibrary.Udp.PlayerToServer
     public struct BattleExitMessage:ITypedMessage
     {
         [Index(0)] public int MatchId { get; }
-        [Index(1)] public int TemporaryId { get; }
+        [Index(1)] public ushort TemporaryId { get; }
 
-        public BattleExitMessage(int matchId, int temporaryId)
+        public BattleExitMessage(int matchId, ushort temporaryId)
         {
             MatchId = matchId;
             TemporaryId = temporaryId;

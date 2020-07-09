@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
@@ -2376,33 +2378,32 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
     public class PlayerInfoMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerInfoMessage>
         where TTypeResolver : ITypeResolver, new()
     {
-        readonly Formatter<TTypeResolver, ushort> formatter0;
-        
+        readonly Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<int, ushort>> formatter0;
+
         public override bool NoUseDirtyTracker
         {
             get
             {
                 return formatter0.NoUseDirtyTracker
-                ;
+                    ;
             }
         }
 
         public PlayerInfoMessageFormatter()
         {
-            formatter0 = Formatter<TTypeResolver, ushort>.Default;
-            
+            formatter0 = Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<int, ushort>>.Default;
+
         }
 
         public override int? GetLength()
         {
-            return 2;
+            return null;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerInfoMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 2);
             var startOffset = offset;
-            offset += formatter0.Serialize(ref bytes, offset, value.EntityId);
+            offset += formatter0.Serialize(ref bytes, offset, value.EntityIds);
             return offset - startOffset;
         }
 
@@ -2413,7 +2414,7 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
             var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
             offset += size;
             byteSize += size;
-            
+
             return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerInfoMessage(item0);
         }
     }
@@ -3140,7 +3141,7 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
         where TTypeResolver : ITypeResolver, new()
     {
         readonly Formatter<TTypeResolver, int> formatter0;
-        readonly Formatter<TTypeResolver, int> formatter1;
+        readonly Formatter<TTypeResolver, ushort> formatter1;
         
         public override bool NoUseDirtyTracker
         {
@@ -3155,7 +3156,7 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
         public BattleExitMessageFormatter()
         {
             formatter0 = Formatter<TTypeResolver, int>.Default;
-            formatter1 = Formatter<TTypeResolver, int>.Default;
+            formatter1 = Formatter<TTypeResolver, ushort>.Default;
             
         }
 
@@ -3209,7 +3210,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
     public class PlayerInputMessageFormatter<TTypeResolver> : Formatter<TTypeResolver, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage>
         where TTypeResolver : ITypeResolver, new()
     {
-        readonly Formatter<TTypeResolver, int> formatter0;
+        readonly Formatter<TTypeResolver, ushort> formatter0;
         readonly Formatter<TTypeResolver, int> formatter1;
         readonly Formatter<TTypeResolver, float> formatter2;
         readonly Formatter<TTypeResolver, float> formatter3;
@@ -3232,7 +3233,7 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
 
         public PlayerInputMessageFormatter()
         {
-            formatter0 = Formatter<TTypeResolver, int>.Default;
+            formatter0 = Formatter<TTypeResolver, ushort>.Default;
             formatter1 = Formatter<TTypeResolver, int>.Default;
             formatter2 = Formatter<TTypeResolver, float>.Default;
             formatter3 = Formatter<TTypeResolver, float>.Default;
