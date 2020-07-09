@@ -21,6 +21,7 @@
             <e p="Components" t="Include">
               <e p="GameAbilityComponent.cs" t="Include" />
               <e p="GameAbilityCooldownComponent.cs" t="Include" />
+              <e p="GameAccountComponent.cs" t="Include" />
               <e p="GameActionBonusComponent.cs" t="Include" />
               <e p="GameAngularVelocityComponent.cs" t="Include" />
               <e p="GameAttackIncreasingComponent.cs" t="Include" />
@@ -435,6 +436,7 @@
               <e p="VelocityComponent.cs" t="Include" />
             </e>
             <e p="PlayerComponents" t="Include">
+              <e p="AccountComponent.cs" t="Include" />
               <e p="AttackComponent.cs" t="Include" />
               <e p="LeftTheGame.cs" t="Include" />
               <e p="MovementComponent.cs" t="Include" />

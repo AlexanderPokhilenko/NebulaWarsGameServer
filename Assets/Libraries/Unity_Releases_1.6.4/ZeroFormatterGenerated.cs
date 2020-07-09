@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
@@ -175,6 +173,7 @@ namespace ZeroFormatter
             }
             // Unions
             // Generics
+            ZeroFormatter.Formatters.Formatter.RegisterDictionary<ZeroFormatter.Formatters.DefaultResolver, int, ushort>();
             ZeroFormatter.Formatters.Formatter.RegisterDictionary<ZeroFormatter.Formatters.DefaultResolver, ushort, global::NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.ViewTransform>();
             ZeroFormatter.Formatters.Formatter.RegisterDictionary<ZeroFormatter.Formatters.DefaultResolver, ushort, ushort>();
             ZeroFormatter.Formatters.Formatter.RegisterArray<ZeroFormatter.Formatters.DefaultResolver, byte[]>();
@@ -2379,20 +2378,20 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
         where TTypeResolver : ITypeResolver, new()
     {
         readonly Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<int, ushort>> formatter0;
-
+        
         public override bool NoUseDirtyTracker
         {
             get
             {
                 return formatter0.NoUseDirtyTracker
-                    ;
+                ;
             }
         }
 
         public PlayerInfoMessageFormatter()
         {
             formatter0 = Formatter<TTypeResolver, global::System.Collections.Generic.Dictionary<int, ushort>>.Default;
-
+            
         }
 
         public override int? GetLength()
@@ -2414,7 +2413,7 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Serve
             var item0 = formatter0.Deserialize(ref bytes, offset, tracker, out size);
             offset += size;
             byteSize += size;
-
+            
             return new global::Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus.PlayerInfoMessage(item0);
         }
     }
@@ -3162,12 +3161,12 @@ namespace ZeroFormatter.DynamicObjectSegments.Libraries.NetworkLibrary.Udp.Playe
 
         public override int? GetLength()
         {
-            return 8;
+            return 6;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::Libraries.NetworkLibrary.Udp.PlayerToServer.BattleExitMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 8);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 6);
             var startOffset = offset;
             offset += formatter0.Serialize(ref bytes, offset, value.MatchId);
             offset += formatter1.Serialize(ref bytes, offset, value.TemporaryId);
@@ -3244,12 +3243,12 @@ namespace ZeroFormatter.DynamicObjectSegments.NetworkLibrary.NetworkLibrary.Udp.
 
         public override int? GetLength()
         {
-            return 21;
+            return 19;
         }
 
         public override int Serialize(ref byte[] bytes, int offset, global::NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage.PlayerInputMessage value)
         {
-            BinaryUtil.EnsureCapacity(ref bytes, offset, 21);
+            BinaryUtil.EnsureCapacity(ref bytes, offset, 19);
             var startOffset = offset;
             offset += formatter0.Serialize(ref bytes, offset, value.TemporaryId);
             offset += formatter1.Serialize(ref bytes, offset, value.MatchId);
