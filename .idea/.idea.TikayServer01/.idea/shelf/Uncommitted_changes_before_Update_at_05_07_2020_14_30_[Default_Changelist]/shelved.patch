@@ -1,0 +1,79 @@
+Index: ProjectSettings/ProjectVersion.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>m_EditorVersion: 2019.4.0f1\r\nm_EditorVersionWithRevision: 2019.4.0f1 (0af376155913)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ProjectSettings/ProjectVersion.txt	(revision d474598e57ffaa1dce1aca53eac7a539cdbe4d57)
++++ ProjectSettings/ProjectVersion.txt	(date 1593687978303)
+@@ -1,2 +1,2 @@
+-m_EditorVersion: 2019.4.0f1
+-m_EditorVersionWithRevision: 2019.4.0f1 (0af376155913)
++m_EditorVersion: 2019.4.2f1
++m_EditorVersionWithRevision: 2019.4.2f1 (20b4642a3455)
+Index: Packages/manifest.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"dependencies\": {\r\n    \"com.unity.2d.sprite\": \"1.0.0\",\r\n    \"com.unity.2d.tilemap\": \"1.0.0\",\r\n    \"com.unity.ads\": \"3.4.5\",\r\n    \"com.unity.analytics\": \"3.3.5\",\r\n    \"com.unity.collab-proxy\": \"1.2.16\",\r\n    \"com.unity.ide.rider\": \"1.1.4\",\r\n    \"com.unity.ide.vscode\": \"1.2.0\",\r\n    \"com.unity.multiplayer-hlapi\": \"1.0.6\",\r\n    \"com.unity.purchasing\": \"2.0.6\",\r\n    \"com.unity.test-framework\": \"1.1.14\",\r\n    \"com.unity.textmeshpro\": \"2.0.1\",\r\n    \"com.unity.timeline\": \"1.2.12\",\r\n    \"com.unity.ugui\": \"1.0.0\",\r\n    \"com.unity.xr.legacyinputhelpers\": \"2.1.4\",\r\n    \"com.unity.modules.ai\": \"1.0.0\",\r\n    \"com.unity.modules.androidjni\": \"1.0.0\",\r\n    \"com.unity.modules.animation\": \"1.0.0\",\r\n    \"com.unity.modules.assetbundle\": \"1.0.0\",\r\n    \"com.unity.modules.audio\": \"1.0.0\",\r\n    \"com.unity.modules.cloth\": \"1.0.0\",\r\n    \"com.unity.modules.director\": \"1.0.0\",\r\n    \"com.unity.modules.imageconversion\": \"1.0.0\",\r\n    \"com.unity.modules.imgui\": \"1.0.0\",\r\n    \"com.unity.modules.jsonserialize\": \"1.0.0\",\r\n    \"com.unity.modules.particlesystem\": \"1.0.0\",\r\n    \"com.unity.modules.physics\": \"1.0.0\",\r\n    \"com.unity.modules.physics2d\": \"1.0.0\",\r\n    \"com.unity.modules.screencapture\": \"1.0.0\",\r\n    \"com.unity.modules.terrain\": \"1.0.0\",\r\n    \"com.unity.modules.terrainphysics\": \"1.0.0\",\r\n    \"com.unity.modules.tilemap\": \"1.0.0\",\r\n    \"com.unity.modules.ui\": \"1.0.0\",\r\n    \"com.unity.modules.uielements\": \"1.0.0\",\r\n    \"com.unity.modules.umbra\": \"1.0.0\",\r\n    \"com.unity.modules.unityanalytics\": \"1.0.0\",\r\n    \"com.unity.modules.unitywebrequest\": \"1.0.0\",\r\n    \"com.unity.modules.unitywebrequestassetbundle\": \"1.0.0\",\r\n    \"com.unity.modules.unitywebrequestaudio\": \"1.0.0\",\r\n    \"com.unity.modules.unitywebrequesttexture\": \"1.0.0\",\r\n    \"com.unity.modules.unitywebrequestwww\": \"1.0.0\",\r\n    \"com.unity.modules.vehicles\": \"1.0.0\",\r\n    \"com.unity.modules.video\": \"1.0.0\",\r\n    \"com.unity.modules.vr\": \"1.0.0\",\r\n    \"com.unity.modules.wind\": \"1.0.0\",\r\n    \"com.unity.modules.xr\": \"1.0.0\"\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Packages/manifest.json	(revision d474598e57ffaa1dce1aca53eac7a539cdbe4d57)
++++ Packages/manifest.json	(date 1593687878136)
+@@ -2,11 +2,11 @@
+   "dependencies": {
+     "com.unity.2d.sprite": "1.0.0",
+     "com.unity.2d.tilemap": "1.0.0",
+-    "com.unity.ads": "3.4.5",
++    "com.unity.ads": "3.4.7",
+     "com.unity.analytics": "3.3.5",
+     "com.unity.collab-proxy": "1.2.16",
+     "com.unity.ide.rider": "1.1.4",
+-    "com.unity.ide.vscode": "1.2.0",
++    "com.unity.ide.vscode": "1.2.1",
+     "com.unity.multiplayer-hlapi": "1.0.6",
+     "com.unity.purchasing": "2.0.6",
+     "com.unity.test-framework": "1.1.14",
+Index: Assets/Server/Http/MatchmakerListener.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System;\r\nusing System.IO;\r\nusing System.Net;\r\nusing System.Threading;\r\nusing System.Threading.Tasks;\r\nusing Code.Common;\r\nusing NetworkLibrary.NetworkLibrary.Http;\r\nusing UnityEditor.Experimental.GraphView;\r\nusing ZeroFormatter;\r\n\r\nnamespace Server.Http\r\n{\r\n    public sealed class MatchmakerListener\r\n    {\r\n        private readonly HttpListener listener;\r\n        private readonly MatchModelMessageHandler matchModelMessageHandler;\r\n        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchmakerListener));\r\n\r\n        public MatchmakerListener(MatchModelMessageHandler matchModelMessageHandler, int port)\r\n        {\r\n            listener = HttpListenerFactory.CreateAndRunHttpListener(port);\r\n            this.matchModelMessageHandler = matchModelMessageHandler;\r\n        }\r\n\r\n        public CancellationTokenSource StartThread()\r\n        {\r\n            CancellationTokenSource cts = new CancellationTokenSource();\r\n            CancellationToken token = cts.Token;\r\n            Thread thread = new Thread(async () => await EndlessCycle(token))\r\n            {\r\n                IsBackground = true\r\n            };\r\n            thread.Start();\r\n            return cts;\r\n        }\r\n        \r\n        private async Task EndlessCycle(CancellationToken cancellationToken)\r\n        {\r\n             while(!cancellationToken.IsCancellationRequested)\r\n             {\r\n                 await HandleNextRequest();\r\n             }\r\n             // ReSharper disable once FunctionNeverReturns\r\n        }\r\n\r\n        private async Task HandleNextRequest()\r\n        {\r\n            try\r\n            {\r\n                HttpListenerContext context = await listener.GetContextAsync();\r\n                HttpListenerRequest request = context.Request;\r\n                \r\n                Stream inputStream = request.InputStream;\r\n                byte[] data;\r\n\r\n                using (MemoryStream memoryStream = new MemoryStream())\r\n                {\r\n                    await inputStream.CopyToAsync(memoryStream);\r\n                    data = memoryStream.ToArray();\r\n                }\r\n               \r\n                inputStream.Close();\r\n\r\n                BattleRoyaleMatchModel matchModel = ZeroFormatterSerializer.Deserialize<BattleRoyaleMatchModel>(data);\r\n                GameRoomValidationResult result = matchModelMessageHandler.Handle(matchModel);\r\n                \r\n\r\n                if (result != null)\r\n                {\r\n                    if (result.ResultEnum != GameRoomValidationResultEnum.Ok)\r\n                    {\r\n                        Log.Error(result.ResultEnum);\r\n                    }\r\n                    byte[] responseData = ZeroFormatterSerializer.Serialize(result);\r\n                    context.Response.StatusCode = 200;\r\n                    context.Response.ContentLength64 = responseData.Length;\r\n                    await context.Response.OutputStream.WriteAsync(responseData,0,responseData.Length);    \r\n                    context.Response.OutputStream.Close();\r\n                }\r\n                else\r\n                {\r\n                    throw new Exception(\"Отправка пустого ответа гейм матчеру запрещена.\");\r\n                }\r\n            }\r\n            catch (Exception e)\r\n            {\r\n                Log.Error(\"Брошено исключение при обработке http запроса \"+e.Message);\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Assets/Server/Http/MatchmakerListener.cs	(revision d474598e57ffaa1dce1aca53eac7a539cdbe4d57)
++++ Assets/Server/Http/MatchmakerListener.cs	(date 1593185788547)
+@@ -5,7 +5,6 @@
+ using System.Threading.Tasks;
+ using Code.Common;
+ using NetworkLibrary.NetworkLibrary.Http;
+-using UnityEditor.Experimental.GraphView;
+ using ZeroFormatter;
+ 
+ namespace Server.Http
+Index: .idea/.idea.TikayServer01/.idea/indexLayout.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ContentModelUserStore\">\r\n    <attachedFolders>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.8</Path>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.ide.vscode@1.1.4</Path>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.multiplayer-hlapi@1.0.4</Path>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.test-framework@1.1.11</Path>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.xr.legacyinputhelpers@1.3.8</Path>\r\n      <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/nuget.mono-cecil@0.1.5-preview</Path>\r\n    </attachedFolders>\r\n    <explicitIncludes>\r\n      <Path>Library/PackageCache/com.unity.ads@3.4.5</Path>\r\n      <Path>Library/PackageCache/com.unity.analytics@3.3.5</Path>\r\n      <Path>Library/PackageCache/com.unity.collab-proxy@1.2.16</Path>\r\n      <Path>Library/PackageCache/com.unity.ext.nunit@1.0.0</Path>\r\n      <Path>Library/PackageCache/com.unity.ide.rider@1.1.4</Path>\r\n      <Path>Library/PackageCache/com.unity.ide.vscode@1.2.0</Path>\r\n      <Path>Library/PackageCache/com.unity.multiplayer-hlapi@1.0.6</Path>\r\n      <Path>Library/PackageCache/com.unity.purchasing@2.0.6</Path>\r\n      <Path>Library/PackageCache/com.unity.test-framework@1.1.14</Path>\r\n      <Path>Library/PackageCache/com.unity.textmeshpro@2.0.1</Path>\r\n      <Path>Library/PackageCache/com.unity.timeline@1.2.12</Path>\r\n      <Path>Library/PackageCache/com.unity.xr.legacyinputhelpers@2.1.4</Path>\r\n      <Path>Library/PackageCache/nuget.mono-cecil@0.1.6-preview</Path>\r\n      <Path>Packages</Path>\r\n      <Path>ProjectSettings</Path>\r\n    </explicitIncludes>\r\n    <explicitExcludes>\r\n      <Path>.git</Path>\r\n      <Path>.idea</Path>\r\n      <Path>.vs</Path>\r\n      <Path>Library</Path>\r\n      <Path>Logs</Path>\r\n      <Path>Temp</Path>\r\n      <Path>obj</Path>\r\n    </explicitExcludes>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.idea.TikayServer01/.idea/indexLayout.xml	(revision d474598e57ffaa1dce1aca53eac7a539cdbe4d57)
++++ .idea/.idea.TikayServer01/.idea/indexLayout.xml	(date 1593948643633)
+@@ -10,12 +10,13 @@
+       <Path>$USER_HOME$/AppData/Local/Unity/cache/packages/packages.unity.com/nuget.mono-cecil@0.1.5-preview</Path>
+     </attachedFolders>
+     <explicitIncludes>
+-      <Path>Library/PackageCache/com.unity.ads@3.4.5</Path>
++      <Path>Assets</Path>
++      <Path>Library/PackageCache/com.unity.ads@3.4.7</Path>
+       <Path>Library/PackageCache/com.unity.analytics@3.3.5</Path>
+       <Path>Library/PackageCache/com.unity.collab-proxy@1.2.16</Path>
+       <Path>Library/PackageCache/com.unity.ext.nunit@1.0.0</Path>
+       <Path>Library/PackageCache/com.unity.ide.rider@1.1.4</Path>
+-      <Path>Library/PackageCache/com.unity.ide.vscode@1.2.0</Path>
++      <Path>Library/PackageCache/com.unity.ide.vscode@1.2.1</Path>
+       <Path>Library/PackageCache/com.unity.multiplayer-hlapi@1.0.6</Path>
+       <Path>Library/PackageCache/com.unity.purchasing@2.0.6</Path>
+       <Path>Library/PackageCache/com.unity.test-framework@1.1.14</Path>
