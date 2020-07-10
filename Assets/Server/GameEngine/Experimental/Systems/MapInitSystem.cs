@@ -76,19 +76,18 @@ namespace Server.GameEngine.Systems
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
-            BattleRoyalePlayerModelFactory factory = new BattleRoyalePlayerModelFactory();
+            GameUnitsFactory factory = new GameUnitsFactory();
+            List<GameUnitModel> gameUnits = factory.Create(matchModel);
 
-            BattleRoyalePlayerModel[] gameUnits = factory.Create(matchModel);
-
-            for(int gameUnitIndex = 0; gameUnitIndex < gameUnits.Length; gameUnitIndex++)
+            for(int gameUnitIndex = 0; gameUnitIndex < gameUnits.Count; gameUnitIndex++)
             {
-                BattleRoyalePlayerModel gameUnit = gameUnits[gameUnitIndex];
+                GameUnitModel gameUnit = gameUnits[gameUnitIndex];
                 float angle = gameUnitIndex * step + offset;
                 Vector2 position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
                 GameEntity playerEntity = PlayerPrototypes[gameUnit.WarshipName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
                 
-                playerEntity.AddPlayer((ushort) gameUnit.AccountId);
+                playerEntity.AddPlayer(gameUnit.TemporaryId);
 
                 //TODO: улучшать по отдельным параметрам
                 float newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipPowerLevel * 0.075f);
