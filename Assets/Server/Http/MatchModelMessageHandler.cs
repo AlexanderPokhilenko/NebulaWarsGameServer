@@ -10,18 +10,18 @@ namespace Server.Http
     {
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
         
-        private readonly MatchDataValidator matchDataValidator;
+        private readonly MatchModelValidator matchModelValidator;
         private readonly MatchCreator matchCreator;
 
         public MatchModelMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
         {
             this.matchCreator = matchCreator;
-            matchDataValidator = new MatchDataValidator(matchStorage);
+            matchModelValidator = new MatchModelValidator(matchStorage);
         }
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchModel matchModel)
         {
-            GameRoomValidationResult result = matchDataValidator.Validate(matchModel);
+            GameRoomValidationResult result = matchModelValidator.Validate(matchModel);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
                 AddMatchToQueue(matchModel);

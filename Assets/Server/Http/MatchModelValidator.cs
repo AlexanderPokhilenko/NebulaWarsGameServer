@@ -9,12 +9,12 @@ namespace Server.Http
     /// <summary>
     /// Проверяет содержимое объекта с информацией про матч, который нужно создать. 
     /// </summary>
-    public class MatchDataValidator
+    public class MatchModelValidator
     {
         private readonly MatchStorage matchStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
 
-        public MatchDataValidator(MatchStorage matchStorage)
+        public MatchModelValidator(MatchStorage matchStorage)
         {
             this.matchStorage = matchStorage;
         }
@@ -30,24 +30,34 @@ namespace Server.Http
 
         private void CheckPrefabNames(BattleRoyaleMatchModel matchModel)
         {
-            for (int i = 0; i < matchModel.GameUnitsForMatch.Count(); i++)
+            foreach (PlayerModel playerModel in matchModel.GameUnits.Players)
             {
-                var gameUnit = matchModel.GameUnitsForMatch[i];
-                if (string.IsNullOrWhiteSpace(gameUnit.PrefabName))
+                if (string.IsNullOrWhiteSpace(playerModel.WarshipName))
                 {
-                    throw new ArgumentException(nameof(gameUnit.PrefabName));
+                    throw new ArgumentException(nameof(playerModel.WarshipName));
+                }
+            } foreach (BotModel botModel in matchModel.GameUnits.Bots)
+            {
+                if (string.IsNullOrWhiteSpace(botModel.WarshipName))
+                {
+                    throw new ArgumentException(nameof(botModel.WarshipName));
                 }
             }
+         
         }
         
         private bool CheckPlayers(BattleRoyaleMatchModel matchModel)
         {
             bool thereIsNoRoomWithSuchPlayers = true;
-            foreach (var playerId in matchModel.GameUnitsForMatch.Players.Select(player => player.TemporaryId))
+            var tmpIds = matchModel.GameUnits.Bots.Select(bot => bot.TemporaryId)
+                .ToList();
+            var test1 = matchModel.GameUnits.Players.Select(player => player.TemporaryId);
+            tmpIds.AddRange(test1);
+            foreach (ushort tmpId in tmpIds)
             {
-                if (matchStorage.HasPlayer(playerId))
+                if (matchStorage.HasPlayer(tmpId))
                 {
-                    log.Error("В словаре уже содержится игрок с id = "+playerId);
+                    log.Error("В словаре уже содержится игрок с id = "+tmpId);
                     thereIsNoRoomWithSuchPlayers = false;
                     break;
                 }

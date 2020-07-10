@@ -37,17 +37,18 @@ namespace Server.GameEngine
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
             //TODO это нужно убрать в отдельный класс
-            var possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+            Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
+
             
-            playersIds = new HashSet<int>(matchModelArg.GameUnitsForMatch
-                .Select(gu=>(int)gu.TemporaryId));
+            var test = new BattleRoyalePlayerModelFactory().Create(matchModelArg).Select(model=>model.AccountId);
+            playersIds = new HashSet<int>(test);
             
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
             TryEnableDebug();
             
             playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils);
-            var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnitsForMatch.Players.Count);
+            var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnits.Players.Count);
 
             systems = new Entitas.Systems()
                     .Add(new MapInitSystem(contexts, matchModelArg, udpSendUtils))

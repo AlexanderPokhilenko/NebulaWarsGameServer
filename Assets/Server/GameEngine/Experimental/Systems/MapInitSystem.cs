@@ -67,34 +67,34 @@ namespace Server.GameEngine.Systems
         public void Initialize()
         {
             // Log.Info($"Создание игровой комнаты с номером {matchModel.MatchId}");
-            var playerInfos = new Dictionary<int, ushort>(matchModel.GameUnitsForMatch.Count());
+            Dictionary<int, ushort> playerInfos = new Dictionary<int, ushort>(matchModel.GameUnits.Count());
             
             var zoneEntity = FlameCircle.CreateEntity(gameContext, Vector2.zero, 0f);
             gameContext.SetZone(zoneEntity.id.value);
 
-            var step = 360f / matchModel.GameUnitsForMatch.Count();
+            var step = 360f / matchModel.GameUnits.Count();
             var halfStep = step * 0.5f;
             var offset = step / 2f;
 
-            
-            for (var i = 0; i < matchModel.GameUnitsForMatch.Count(); i++)
-            {
-                GameUnit gameUnit = matchModel.GameUnitsForMatch[i];
-                // UnityEngine.Debug.LogWarning($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId} {nameof(gameUnit.IsBot)} {gameUnit.IsBot}");
-                
-                var angle = i * step + offset;
-                var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
-                var playerEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
-                    .CreateEntity(gameContext, position, 180f + angle, (ushort)(i+1));
+            BattleRoyalePlayerModelFactory factory = new BattleRoyalePlayerModelFactory();
 
-                // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
-                playerEntity.AddPlayer(gameUnit.TemporaryId);
+            BattleRoyalePlayerModel[] gameUnits = factory.Create(matchModel);
+
+            for(int gameUnitIndex = 0; gameUnitIndex < gameUnits.Length; gameUnitIndex++)
+            {
+                BattleRoyalePlayerModel gameUnit = gameUnits[gameUnitIndex];
+                float angle = gameUnitIndex * step + offset;
+                Vector2 position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
+                GameEntity playerEntity = PlayerPrototypes[gameUnit.WarshipName.ToLower()]
+                    .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
+                
+                playerEntity.AddPlayer((ushort) gameUnit.AccountId);
 
                 //TODO: улучшать по отдельным параметрам
-                var newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
-                var newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
-                var newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
-                var attackCoefficient = 1f + gameUnit.WarshipCombatPowerLevel * 0.05f;
+                float newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipPowerLevel * 0.075f);
+                float newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipPowerLevel * 0.025f);
+                float newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipPowerLevel * 0.025f);
+                float attackCoefficient = 1f + gameUnit.WarshipPowerLevel * 0.05f;
                 playerEntity.ReplaceMaxHealthPoints(newHp);
                 playerEntity.ReplaceHealthPoints(newHp);
                 playerEntity.ReplaceMaxVelocity(newSpeed);
@@ -104,14 +104,14 @@ namespace Server.GameEngine.Systems
                     child.AddAttackIncreasing(attackCoefficient);
                 }
 
-                if (gameUnit.IsBot)
+                if (gameUnit.IsBot())
                 {
-                    playerEntity.AddAccount(-((BotInfo)gameUnit).TemporaryId);
+                    playerEntity.AddAccount(gameUnit.AccountId);
                     Match.MakeBot(playerEntity);
                 }
                 else
                 {
-                    playerEntity.AddAccount(((PlayerInfoForMatch)gameUnit).AccountId);
+                    playerEntity.AddAccount(gameUnit.AccountId);
                 }
                 playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
 
@@ -132,10 +132,65 @@ namespace Server.GameEngine.Systems
 
                 RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
+            
+            // for (int gameUnitIndex = 0; gameUnitIndex < matchModel.GameUnits.Count(); gameUnitIndex++)
+            // {
+            //     GameUnit gameUnit = matchModel.GameUnitsForMatch[gameUnitIndex];
+            //     
+            //     var angle = gameUnitIndex * step + offset;
+            //     var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
+            //     var playerEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
+            //         .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
+            //
+            //     // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
+            //     playerEntity.AddPlayer(gameUnit.TemporaryId);
+            //
+            //     //TODO: улучшать по отдельным параметрам
+            //     var newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
+            //     var newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+            //     var newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
+            //     var attackCoefficient = 1f + gameUnit.WarshipCombatPowerLevel * 0.05f;
+            //     playerEntity.ReplaceMaxHealthPoints(newHp);
+            //     playerEntity.ReplaceHealthPoints(newHp);
+            //     playerEntity.ReplaceMaxVelocity(newSpeed);
+            //     playerEntity.ReplaceMaxAngularVelocity(newRotation);
+            //     foreach (var child in playerEntity.GetAllChildrenGameEntities(gameContext))
+            //     {
+            //         child.AddAttackIncreasing(attackCoefficient);
+            //     }
+            //
+            //     if (gameUnit.IsBot)
+            //     {
+            //         playerEntity.AddAccount(-((BotInfo)gameUnit).TemporaryId);
+            //         Match.MakeBot(playerEntity);
+            //     }
+            //     else
+            //     {
+            //         playerEntity.AddAccount(((PlayerInfoForMatch)gameUnit).AccountId);
+            //     }
+            //     playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
+            //
+            //     var wallAngle = angle + halfStep;
+            //     var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);
+            //
+            //     for (var r = 11; r < 50; r += 25)
+            //     {
+            //         for (var j = r; j < r + 10; j++)
+            //         {
+            //             RandomAsteroid.CreateEntity(gameContext, wallDirection * j, (float)random.NextDouble() * 360f);
+            //         }
+            //     }
+            //
+            //     SpaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle, 0);
+            //     SpaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle, 0);
+            //     SpaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle, 0);
+            //
+            //     RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
+            // }
 
             Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0);
 
-            foreach (var playerInfo in matchModel.GameUnitsForMatch.Players)
+            foreach (var playerInfo in matchModel.GameUnits.Players)
             {
                 udpSendUtils.SendPlayerInfo(matchModel.MatchId, playerInfo.TemporaryId, playerInfos);
             }

@@ -31,10 +31,10 @@ namespace Server.Udp.Storage
         
         public void AddMatch(BattleRoyaleMatchModel matchModel)
         {
-            var playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
-            foreach (PlayerInfoForMatch playerInfo in matchModel.GameUnitsForMatch.Players)
+            ConcurrentDictionary<int, IPEndPoint> playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
+            foreach (PlayerModel playerModel in matchModel.GameUnits.Players)
             {
-                playersIpAddresses.TryAdd(playerInfo.AccountId, new IPEndPoint(1, 1));
+                playersIpAddresses.TryAdd(playerModel.AccountId, new IPEndPoint(1, 1));
             }
             ipEndPoints.TryAdd(matchModel.MatchId, playersIpAddresses);
         }

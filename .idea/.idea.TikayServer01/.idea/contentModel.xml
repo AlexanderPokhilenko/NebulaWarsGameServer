@@ -131,17 +131,48 @@
           </e>
           <e p="NetworkLibrary" t="Include">
             <e p="Http" t="Include">
-              <e p="AccountInfo.cs" t="Include" />
-              <e p="BattleRoyaleMatchModel.cs" t="Include" />
-              <e p="BotInfo.cs" t="Include" />
-              <e p="GameMatcherResponse.cs" t="Include" />
-              <e p="GameRoomValidationResult.cs" t="Include" />
-              <e p="GameUnit.cs" t="Include" />
-              <e p="GameUnitsEnum.cs" t="Include" />
-              <e p="GameUnitsForMatch.cs" t="Include" />
-              <e p="MatchType.cs" t="Include" />
-              <e p="PlayerInfoForMatch.cs" t="Include" />
-              <e p="WarshipCopy.cs" t="Include" />
+              <e p="Lobby" t="Include">
+                <e p="AccountModel.cs" t="Include" />
+                <e p="LobbyModel.cs" t="Include" />
+                <e p="LootboxModel.cs" t="Include" />
+                <e p="RewardsThatHaveNotBeenShown.cs" t="Include" />
+                <e p="Shop" t="Include">
+                  <e p="CurrencyType.cs" t="Include" />
+                  <e p="DiscountPrice.cs" t="Include" />
+                  <e p="ForeignServiceProduct.cs" t="Include" />
+                  <e p="MarkType.cs" t="Include" />
+                  <e p="ProductMark.cs" t="Include" />
+                  <e p="ProductModel.cs" t="Include" />
+                  <e p="ProductSizeEnum.cs" t="Include" />
+                  <e p="SectionModel.cs" t="Include" />
+                  <e p="ShopModel.cs" t="Include" />
+                  <e p="TransactionTypeEnum.cs" t="Include" />
+                  <e p="WarshipModel.cs" t="Include" />
+                  <e p="WarshipPowerPointsProduct.cs" t="Include" />
+                </e>
+                <e p="WarshipImprovementModel.cs" t="Include" />
+                <e p="WarshipModel.cs" t="Include" />
+                <e p="WarshipPowerScaleModel.cs" t="Include" />
+                <e p="WarshipRatingScaleModel.cs" t="Include" />
+              </e>
+              <e p="Match" t="Include">
+                <e p="GameRoomValidationResult.cs" t="Include" />
+                <e p="Matchmker" t="Include">
+                  <e p="MatchmakerResponse.cs" t="Include" />
+                </e>
+                <e p="MatchModel" t="Include">
+                  <e p="BattleRoyaleClientMatchModel.cs" t="Include" />
+                  <e p="BattleRoyaleMatchModel.cs" t="Include" />
+                  <e p="BattleRoyalePlayerModel.cs" t="Include" />
+                  <e p="BotModel.cs" t="Include" />
+                  <e p="GameUnit.cs" t="Include" />
+                  <e p="GameUnits.cs" t="Include" />
+                  <e p="PlayerInfoForMatch.cs" t="Include" />
+                </e>
+                <e p="MatchResultDto.cs" t="Include" />
+                <e p="MatchRewardTypeEnum.cs" t="Include" />
+                <e p="MatchType.cs" t="Include" />
+              </e>
             </e>
             <e p="Udp" t="Include">
               <e p="Common" t="Include">
@@ -330,11 +361,11 @@
             <e p="HttpListenerFactory.cs" t="Include" />
             <e p="HttpMatchFinishNotifierService.cs" t="Include" />
             <e p="HttpWrapper.cs" t="Include" />
-            <e p="MatchDataValidator.cs" t="Include" />
             <e p="MatchmakerListener.cs" t="Include" />
             <e p="MatchmakerNotifier.cs" t="Include" />
             <e p="MatchmakerPlayerDeathNotifierService.cs" t="Include" />
             <e p="MatchModelMessageHandler.cs" t="Include" />
+            <e p="MatchModelValidator.cs" t="Include" />
             <e p="NetworkGlobals.cs" t="Include" />
             <e p="PlayerDeathData.cs" t="Include" />
             <e p="PlayerDeathMessageValidator.cs" t="Include" />
