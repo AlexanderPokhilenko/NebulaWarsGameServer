@@ -18,6 +18,7 @@ public class SpawningAbility : ActiveAbility
         newAngle += angle;
 
         var entity = ability.CreateEntity(gameContext, newPosition, newAngle, executor.team.id);
+        if(executor.hasSkin) executor.skin.value.AddSkin(entity, gameContext);
 
         entity.AddOwner(executor.GetGrandParent(gameContext).id.value);
         entity.AddGrandOwner(executor.GetGrandOwnerId(gameContext));

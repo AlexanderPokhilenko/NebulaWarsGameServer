@@ -68,20 +68,21 @@ public static class GameComponentsLookup {
     public const int RectangleCollider = 57;
     public const int Round = 58;
     public const int SingleTargeting = 59;
-    public const int SpecialShooter = 60;
-    public const int TargetChanging = 61;
-    public const int Target = 62;
-    public const int TargetingParameters = 63;
-    public const int TargetMovingPoint = 64;
-    public const int TargetScaling = 65;
-    public const int Team = 66;
-    public const int TryingToShoot = 67;
-    public const int Unmovable = 68;
-    public const int Velocity = 69;
-    public const int ViewType = 70;
-    public const int Zone = 71;
+    public const int Skin = 60;
+    public const int SpecialShooter = 61;
+    public const int TargetChanging = 62;
+    public const int Target = 63;
+    public const int TargetingParameters = 64;
+    public const int TargetMovingPoint = 65;
+    public const int TargetScaling = 66;
+    public const int Team = 67;
+    public const int TryingToShoot = 68;
+    public const int Unmovable = 69;
+    public const int Velocity = 70;
+    public const int ViewType = 71;
+    public const int Zone = 72;
 
-    public const int TotalComponents = 72;
+    public const int TotalComponents = 73;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -144,6 +145,7 @@ public static class GameComponentsLookup {
         "RectangleCollider",
         "Round",
         "SingleTargeting",
+        "Skin",
         "SpecialShooter",
         "TargetChanging",
         "Target",
@@ -219,6 +221,7 @@ public static class GameComponentsLookup {
         typeof(RectangleColliderComponent),
         typeof(RoundComponent),
         typeof(SingleTargetingComponent),
+        typeof(SkinComponent),
         typeof(SpecialShooterComponent),
         typeof(TargetChangingComponent),
         typeof(TargetComponent),

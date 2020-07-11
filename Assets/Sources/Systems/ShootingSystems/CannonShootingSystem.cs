@@ -35,10 +35,11 @@ public class CannonShootingSystem : IExecuteSystem
     public static GameEntity ShootBullet(GameEntity shooter, GameContext gameContext, BulletObject bullet, Vector2 bulletOffset)
     {
         var bulletEntity = bullet.CreateEntity(gameContext, shooter.team.id);
+        if(shooter.hasSkin) shooter.skin.value.AddSkin(bulletEntity, gameContext);
         bulletEntity.AddOwner(shooter.GetGrandParent(gameContext).id.value);
         bulletEntity.AddGrandOwner(shooter.GetGrandOwnerId(gameContext));
         var bulletDeltaSize = bulletEntity.hasCircleCollider ? bulletEntity.circleCollider.radius :
-            bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width / 2 :
+            bulletEntity.hasRectangleCollider ? bulletEntity.rectangleCollider.width * 0.5f :
             bulletEntity.hasPathCollider ? -1 * bulletEntity.pathCollider.dots.Min(d => d.x) :
             throw new NotSupportedException("Ошибка вычисления размера снаряда. Вероятно, использовался неизвестный коллайдер.");
         // для быстрого перевода из локальной в глобальную системы координат

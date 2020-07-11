@@ -22,6 +22,7 @@ public class DropSystem : IExecuteSystem
             foreach (var drop in drops)
             {
                 var dropEntity = drop.CreateEntity(gameContext, position, angle);
+                if(e.hasSkin) e.skin.value.AddSkin(dropEntity, gameContext);
                 if (e.hasTeam)
                 {
                     foreach (var child in dropEntity.GetAllChildrenGameEntities(gameContext))

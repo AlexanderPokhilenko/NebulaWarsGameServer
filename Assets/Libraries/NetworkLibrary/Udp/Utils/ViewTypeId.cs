@@ -36,5 +36,7 @@
     PlasmaExplosion,
     MediumExplosion,
     SmileyPlayer,
-    RedInterceptor
+    RedInterceptor,
+    Raven,
+    VoidBeam
 }

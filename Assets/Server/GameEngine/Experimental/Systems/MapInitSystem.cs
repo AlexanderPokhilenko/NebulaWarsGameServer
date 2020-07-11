@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Code.Common;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
@@ -18,6 +19,7 @@ namespace Server.GameEngine.Systems
         private static readonly RandomObject RandomBonus;
         private static readonly EntityCreatorObject Boss;
         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
+        private static readonly Dictionary<string, SkinInfo> Skins;
         private readonly GameContext gameContext;
         private readonly BattleRoyaleMatchModel matchModel;
         private readonly UdpSendUtils udpSendUtils;
@@ -26,15 +28,21 @@ namespace Server.GameEngine.Systems
 
         static MapInitSystem()
         {
-            PlayerPrototypes = new Dictionary<string, PlayerObject>
-            {
-                {"hare", Resources.Load<PlayerObject>("SO/Players/HarePlayer")},
-                {"bird", Resources.Load<PlayerObject>("SO/Players/BirdPlayer")},
-                {"smiley", Resources.Load<PlayerObject>("SO/Players/SmileyPlayer")}
-            };
+            PlayerPrototypes = Resources.LoadAll<PlayerObject>("SO/Players")
+                .ToDictionary(po => Regex.Match(po.name,
+                        "^([A-Z][a-z]+)") // Первая часть до следующей большой буквы
+                    .Value.ToLower());
 
-            if (PlayerPrototypes.Any(a => a.Value == null))
+            Skins = Resources.LoadAll<SkinInfo>("SO/Skins")
+                .ToDictionary(po => Regex.Match(po.name,
+                        "^([A-Z][a-z]+)") // Первая часть до следующей большой буквы
+                    .Value);
+
+            if (PlayerPrototypes.Any(p => p.Value == null))
                 throw new Exception($"В {nameof(MapInitSystem)} playerPrototype был null.");
+
+            if (Skins.Any(p => p.Value == null))
+                throw new Exception($"В {nameof(MapInitSystem)} skin был null.");
 
             FlameCircle = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
             if (FlameCircle == null)
@@ -92,6 +100,7 @@ namespace Server.GameEngine.Systems
                 playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
 
                 if (gameUnit.IsBot()) Match.MakeBot(playerEntity);
+                if(Skins.TryGetValue(gameUnit.SkinName, out var skin)) skin.AddSkin(playerEntity, gameContext);
 
                 //TODO: улучшать по отдельным параметрам
                 float newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipPowerLevel * 0.075f);

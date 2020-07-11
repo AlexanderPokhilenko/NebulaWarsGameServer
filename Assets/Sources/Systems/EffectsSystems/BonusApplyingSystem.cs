@@ -32,6 +32,7 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
             var pickablePart = gameContext.GetEntityWithId(e.bonusTarget.id);
 
             var addableBonus = e.bonusAdder.bonusObject.CreateEntity(gameContext, Vector2.zero, 0f, pickablePart.team.id);
+            if(e.hasSkin) e.skin.value.AddSkin(addableBonus, gameContext);
             if (addableBonus.hasLifetime)
             {
                 addableBonus.ReplaceLifetime(e.bonusAdder.duration);
