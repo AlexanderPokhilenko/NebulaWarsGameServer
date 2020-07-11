@@ -23,11 +23,11 @@ namespace Server.GameEngine
             this.udpSendUtils = udpSendUtils;
         }
         
-        public void PlayerDeath(PlayerDeathData playerDeathData, bool sendNotificationToPlayer)
+        public void PlayerDeath(PlayerDeathData playerDeathData, ushort temporaryId, bool sendNotificationToPlayer)
         {
             if (sendNotificationToPlayer)
             {
-                udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, playerDeathData.PlayerTemporaryId);   
+                udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, temporaryId);   
             }
             
             SendPlayerDeathMessageToMatchmaker(playerDeathData);

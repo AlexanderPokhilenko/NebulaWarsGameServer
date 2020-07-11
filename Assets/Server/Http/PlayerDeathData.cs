@@ -2,7 +2,7 @@
 {
     public class PlayerDeathData
     {
-        public ushort PlayerTemporaryId;
+        public int PlayerAccountId;
         public int PlaceInBattle;
         public int MatchId;
     }

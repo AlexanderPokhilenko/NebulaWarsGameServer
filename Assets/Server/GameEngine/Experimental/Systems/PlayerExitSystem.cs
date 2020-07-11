@@ -45,10 +45,16 @@ namespace Server.GameEngine.Systems
             Log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)
             {
-                var playerId = inputEntity.player.id;
-                Log.Warn($"преждевременное удаление игрока из матча {nameof(playerId)} {playerId}");
-                TurnIntoBot(playerId);
-                SendDeathMessage(playerId);
+                var temporaryId = inputEntity.player.id;
+                var playerEntity = gameContext.GetEntityWithPlayer(temporaryId);
+                if (playerEntity == null || !playerEntity.hasAccount)
+                {
+                    Log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
+                }
+                var accountId = playerEntity.account.id;
+                Log.Warn($"преждевременное удаление игрока из матча {nameof(temporaryId)} {temporaryId} {nameof(accountId)} {accountId}");
+                TurnIntoBot(temporaryId);
+                SendDeathMessage(accountId, temporaryId);
             }
         }
 
@@ -58,17 +64,17 @@ namespace Server.GameEngine.Systems
             if(playerEntity != null && !playerEntity.isBot) Match.MakeBot(playerEntity);
         }
 
-        private void SendDeathMessage(ushort playerId)
+        private void SendDeathMessage(int accountId, ushort temporaryId)
         {
             int placeInBattle = alivePlayerAndBotsGroup.count;
             PlayerDeathData playerDeathData = new PlayerDeathData
             {
-                PlayerTemporaryId = playerId,
+                PlayerAccountId = accountId,
                 PlaceInBattle = placeInBattle,
                 MatchId = matchId 
             };
-                
-            playerDeathHandler.PlayerDeath(playerDeathData, false);
+
+            playerDeathHandler.PlayerDeath(playerDeathData, temporaryId, false);
         }
     }
 }

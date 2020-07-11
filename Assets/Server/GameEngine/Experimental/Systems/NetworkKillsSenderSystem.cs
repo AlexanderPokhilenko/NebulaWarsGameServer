@@ -74,18 +74,19 @@ namespace Server.GameEngine.Systems
 
                     if (!killedEntity.isBot)
                     {
-                        var playerId = killedEntity.player.id;
+                        var temporaryId = killedEntity.player.id;
+                        var accountId = killedEntity.account.id;
                         var placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                             killedEntityIndex);
                         
                         PlayerDeathData playerDeathData = new PlayerDeathData
                         {
-                            PlayerTemporaryId = playerId,
+                            PlayerAccountId = accountId,
                             PlaceInBattle = placeInBattle,
                             MatchId = matchId 
                         };
                         
-                        playerDeathHandler.PlayerDeath(playerDeathData, true);
+                        playerDeathHandler.PlayerDeath(playerDeathData, temporaryId, true);
                     }
                 }
             }
