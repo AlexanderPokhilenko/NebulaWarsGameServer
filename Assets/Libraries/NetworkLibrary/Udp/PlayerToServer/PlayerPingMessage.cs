@@ -5,10 +5,10 @@ namespace NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.Ping
     [ZeroFormattable]
     public struct PlayerPingMessage : ITypedMessage
     {
-        [Index(0)] public int TemporaryId { get; }
+        [Index(0)] public ushort TemporaryId { get; }
         [Index(1)] public int MatchId { get; }
 
-        public PlayerPingMessage(int temporaryId, int matchId)
+        public PlayerPingMessage(ushort temporaryId, int matchId)
         {
             TemporaryId = temporaryId;
             MatchId = matchId;

@@ -26,20 +26,20 @@ namespace Server.Udp.Storage
 
         //TODO какую тут коллекцию выбрать?
         //matchId, playerId , ip
-        private readonly ConcurrentDictionary<int, ConcurrentDictionary<int, IPEndPoint>> ipEndPoints 
-            = new ConcurrentDictionary<int, ConcurrentDictionary<int, IPEndPoint>>();
+        private readonly ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>> ipEndPoints 
+            = new ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>>();
         
         public void AddMatch(BattleRoyaleMatchModel matchModel)
         {
-            ConcurrentDictionary<int, IPEndPoint> playersIpAddresses = new ConcurrentDictionary<int, IPEndPoint>();
+            ConcurrentDictionary<ushort, IPEndPoint> playersIpAddresses = new ConcurrentDictionary<ushort, IPEndPoint>();
             foreach (PlayerModel playerModel in matchModel.GameUnits.Players)
             {
-                playersIpAddresses.TryAdd(playerModel.AccountId, new IPEndPoint(1, 1));
+                playersIpAddresses.TryAdd(playerModel.TemporaryId, new IPEndPoint(1, 1));
             }
             ipEndPoints.TryAdd(matchModel.MatchId, playersIpAddresses);
         }
 
-        public bool TryGetIpEndPoint(int matchId, int playerId, out IPEndPoint ipEndPoint)
+        public bool TryGetIpEndPoint(int matchId, ushort playerId, out IPEndPoint ipEndPoint)
         {
             if (ipEndPoints.TryGetValue(matchId, out var dictionary))
             {
@@ -59,14 +59,14 @@ namespace Server.Udp.Storage
             }
         }
 
-        public bool TryRemoveIpEndPoint(int matchId, int playerId)
+        public bool TryRemoveIpEndPoint(int matchId, ushort playerId)
         {
             bool success = ipEndPoints[matchId].TryRemove(playerId, out _);
             log.Warn($"Удаление ip для игрока {nameof(playerId)} {playerId}" );
             return success;
         }
 
-        public bool TryUpdateIpEndPoint(int matchId, int playerId, IPEndPoint newIpEndPoint)
+        public bool TryUpdateIpEndPoint(int matchId, ushort playerId, IPEndPoint newIpEndPoint)
         {
             //игрок есть в списке активных игроков?
             if (ipEndPoints.TryGetValue(matchId, out var dictionary))
@@ -95,7 +95,7 @@ namespace Server.Udp.Storage
         }
 
         [CanBeNull]
-        public List<int> GetActivePlayersIds(int matchId)
+        public List<ushort> GetActivePlayersIds(int matchId)
         {
             if (ipEndPoints.TryGetValue(matchId, out var dictionary))
             {

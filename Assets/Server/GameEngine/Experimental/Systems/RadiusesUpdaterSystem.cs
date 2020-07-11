@@ -21,7 +21,7 @@ namespace Server.GameEngine.Systems
             return entity.hasCircleCollider && entity.hasCircleScaling;
         }
 
-        protected override void SendData(UdpSendUtils udpSendUtils, int matchId, int playerId, IEnumerable<GameEntity> entities)
+        protected override void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities)
         {
             var dict = entities.ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius));
             udpSendUtils.SendRadiuses(matchId, playerId, dict);

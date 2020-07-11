@@ -24,13 +24,13 @@ namespace Server.Udp.MessageProcessing.Handlers
             PlayerPingMessage mes = 
                 ZeroFormatterSerializer.Deserialize<PlayerPingMessage>(messageWrapper.SerializedMessage);
             
-            int playerId = mes.TemporaryId;
-            int matchId = mes.MatchId;
+            var playerId = mes.TemporaryId;
+            var matchId = mes.MatchId;
             
-            TryUpdateIpEndPoint(sender,matchId, playerId);
+            TryUpdateIpEndPoint(sender, matchId, playerId);
         }
 
-        private void TryUpdateIpEndPoint(IPEndPoint ipEndPoint, int matchId, int playerId)
+        private void TryUpdateIpEndPoint(IPEndPoint ipEndPoint, int matchId, ushort playerId)
         {
             bool successUpdate = ipAddressesStorage.TryUpdateIpEndPoint(matchId, playerId, ipEndPoint);
         }

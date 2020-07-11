@@ -22,7 +22,7 @@ namespace Server.GameEngine
         
         public void Notify(Match match)
         {
-            List<int> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
+            var activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
             if (activePlayersIds == null || activePlayersIds.Count == 0)
             {
                 log.Error("Список активных игроков пуст. Некого уведомлять о окончании матча.");
@@ -30,7 +30,7 @@ namespace Server.GameEngine
             else
             {
                 log.Info(" Старт уведомления игроков про окончание матча");
-                foreach (int playerId in activePlayersIds)
+                foreach (var playerId in activePlayersIds)
                 {
                     log.Info($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
                     udpSendUtils.SendShowAchievementsMessage(match.MatchId, playerId);

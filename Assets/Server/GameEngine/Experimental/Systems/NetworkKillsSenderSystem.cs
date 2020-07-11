@@ -63,7 +63,7 @@ namespace Server.GameEngine.Systems
 
                     KillData killData = new KillData
                     {
-                        TargetPlayerId = alivePlayer.player.id,
+                        TargetPlayerTmpId = alivePlayer.player.id,
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
                         VictimType = killedEntity.viewType.id,
@@ -74,13 +74,13 @@ namespace Server.GameEngine.Systems
 
                     if (!killedEntity.isBot)
                     {
-                        int playerId = killedEntity.player.id;
-                        int placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
+                        var playerId = killedEntity.player.id;
+                        var placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                             killedEntityIndex);
                         
                         PlayerDeathData playerDeathData = new PlayerDeathData
                         {
-                            PlayerId = playerId,
+                            PlayerTemporaryId = playerId,
                             PlaceInBattle = placeInBattle,
                             MatchId = matchId 
                         };

@@ -88,6 +88,10 @@ namespace Server.GameEngine.Systems
                     .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
                 
                 playerEntity.AddPlayer(gameUnit.TemporaryId);
+                playerEntity.AddAccount(gameUnit.AccountId);
+                playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
+
+                if (gameUnit.IsBot()) Match.MakeBot(playerEntity);
 
                 //TODO: улучшать по отдельным параметрам
                 float newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipPowerLevel * 0.075f);
@@ -102,17 +106,6 @@ namespace Server.GameEngine.Systems
                 {
                     child.AddAttackIncreasing(attackCoefficient);
                 }
-
-                if (gameUnit.IsBot())
-                {
-                    playerEntity.AddAccount(gameUnit.AccountId);
-                    Match.MakeBot(playerEntity);
-                }
-                else
-                {
-                    playerEntity.AddAccount(gameUnit.AccountId);
-                }
-                playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
 
                 var wallAngle = angle + halfStep;
                 var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);

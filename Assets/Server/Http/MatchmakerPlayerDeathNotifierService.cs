@@ -14,7 +14,7 @@ public class MatchmakerPlayerDeathNotifierService
     public async Task<bool> TryNotify(PlayerDeathData playerDeathData)
     {
         string pathname = "/GameServer/PlayerDeath";
-        string query = $"?accountId={playerDeathData.PlayerId}" +
+        string query = $"?accountId={playerDeathData.PlayerTemporaryId}" +
                        $"&placeInBattle={playerDeathData.PlaceInBattle}" +
                        $"&MatchId={playerDeathData.MatchId}" +
                        $"&secret={Globals.GameServerSecret}";

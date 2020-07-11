@@ -21,7 +21,7 @@ namespace Server.GameEngine.Systems
             return entity.hasPosition && entity.hasDirection && entity.hasViewType;
         }
 
-        protected override void SendData(UdpSendUtils udpSendUtils, int matchId, int playerId, IEnumerable<GameEntity> entities)
+        protected override void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities)
         {
             var visibleDict = entities.ToDictionary(e => e.id.value,
                 e => new ViewTransform(e.position.value,

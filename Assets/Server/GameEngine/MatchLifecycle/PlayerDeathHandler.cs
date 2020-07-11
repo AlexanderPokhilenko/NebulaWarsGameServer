@@ -27,7 +27,7 @@ namespace Server.GameEngine
         {
             if (sendNotificationToPlayer)
             {
-                udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, playerDeathData.PlayerId);   
+                udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, playerDeathData.PlayerTemporaryId);   
             }
             
             SendPlayerDeathMessageToMatchmaker(playerDeathData);

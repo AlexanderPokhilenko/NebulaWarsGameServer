@@ -58,12 +58,12 @@ namespace Server.GameEngine.Systems
             if(playerEntity != null && !playerEntity.isBot) Match.MakeBot(playerEntity);
         }
 
-        private void SendDeathMessage(int playerId)
+        private void SendDeathMessage(ushort playerId)
         {
             int placeInBattle = alivePlayerAndBotsGroup.count;
             PlayerDeathData playerDeathData = new PlayerDeathData
             {
-                PlayerId = playerId,
+                PlayerTemporaryId = playerId,
                 PlaceInBattle = placeInBattle,
                 MatchId = matchId 
             };

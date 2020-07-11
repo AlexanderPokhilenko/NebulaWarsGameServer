@@ -11,9 +11,9 @@ namespace Server.Http
                 throw new Exception(nameof(playerDeathData.MatchId));
             }
             
-            if (playerDeathData.PlayerId == 0)
+            if (playerDeathData.PlayerTemporaryId == 0)
             {
-                throw new Exception(nameof(playerDeathData.PlayerId));
+                throw new Exception(nameof(playerDeathData.PlayerTemporaryId));
             }
             
             if (playerDeathData.PlaceInBattle == 0)

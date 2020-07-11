@@ -25,13 +25,13 @@ namespace Server.GameEngine
         
         public void SendAll()
         {
-            List<(int matchId, int playerId)> pairs = new List<(int matchId, int playerId)>();
+            var pairs = new List<(int matchId, ushort playerId)>();
             
             //получить пары matchId playerId из хранилища матчей
             foreach (Match match in matchStorage.GetAllMatches())
             {
                 int matchId = match.MatchId;
-                List<int> players = ipAddressesStorage.GetActivePlayersIds(matchId);
+                var players = ipAddressesStorage.GetActivePlayersIds(matchId);
                 if (players != null)
                 {
                     foreach (var playersId in players)
@@ -42,7 +42,7 @@ namespace Server.GameEngine
             }
             
             //запросить и отправить сообщения для всех пар
-            foreach ((int matchId, int playerId) in pairs)
+            foreach (var (matchId, playerId) in pairs)
             {
                 //messageId, model
                 byte[][] messagesForPlayer = byteArrayRudpStorage.GetMessages(matchId, playerId);

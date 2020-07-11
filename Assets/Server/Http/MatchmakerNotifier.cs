@@ -54,8 +54,8 @@ namespace Server.Http
         {
             if (!killedPlayerCollection.TryAdd(playerDeathData, null))
             {
-                log.Error($"Попытка повторно добавить игрока с {nameof(playerDeathData.PlayerId)} " +
-                          $"{playerDeathData.PlayerId} в коллекцию игроков которые были исключены из матча.");
+                log.Error($"Попытка повторно добавить игрока с {nameof(playerDeathData.PlayerTemporaryId)} " +
+                          $"{playerDeathData.PlayerTemporaryId} в коллекцию игроков которые были исключены из матча.");
             }
         }
         

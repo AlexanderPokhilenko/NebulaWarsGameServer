@@ -38,7 +38,7 @@ namespace Server.GameEngine.Systems
             foreach (var e in players)
             {
                 var shield = e.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == ViewTypeId.Shield).FirstOrDefault();
-                int playerId = e.player.id;
+                var playerId = e.player.id;
                 if (shield == null)
                 {
                     if (playerMaxShieldPoints[playerId] > 0f)

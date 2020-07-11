@@ -18,7 +18,7 @@ namespace Server.GameEngine.Systems
             this.udpSendUtils = udpSendUtils;
         }
 
-        protected abstract void SendData(UdpSendUtils udpSendUtils, int matchId, int playerId, IEnumerable<GameEntity> entities);
+        protected abstract void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities);
 
         protected sealed override void Execute(List<GameEntity> entities)
         {

@@ -2,7 +2,7 @@
 {
     public struct KillData
     {
-        public int TargetPlayerId;
+        public ushort TargetPlayerTmpId;
         public int KillerId;
         public ViewTypeId KillerType;
         public int VictimId;
