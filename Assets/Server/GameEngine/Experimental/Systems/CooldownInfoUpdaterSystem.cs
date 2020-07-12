@@ -38,9 +38,19 @@ namespace Server.GameEngine.Systems
                 var playerId = gameEntity.player.id;
 
                 var abilityCooldown = gameEntity.hasAbility ? gameEntity.ability.cooldown : 0f;
-                
-                var weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
-                    .Select(e => new WeaponInfo(e.cannon.bullet.typeId, e.cannon.cooldown)).ToArray();
+
+                WeaponInfo[] weaponInfos;
+                if (gameEntity.hasSkin)
+                {
+                    var skin = gameEntity.skin.value;
+                    weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
+                        .Select(e => new WeaponInfo(skin.Apply(e.cannon.bullet.typeId), e.cannon.cooldown)).ToArray();
+                }
+                else
+                {
+                    weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
+                        .Select(e => new WeaponInfo(e.cannon.bullet.typeId, e.cannon.cooldown)).ToArray();
+                }
 
                 if (weaponInfos.SequenceEqual(lastWeaponInfos[playerId])) continue;
 

@@ -22,6 +22,8 @@ public class SkinInfo : ScriptableObject
         }
     }
 
+    public ViewTypeId Apply(ViewTypeId oldId) => dictionary.TryGetValue(oldId, out var newId) ? newId : oldId;
+
     public void AddSkin(GameEntity entity, GameContext gameContext)
     {
         var children = entity.GetAllChildrenGameEntities(gameContext);
