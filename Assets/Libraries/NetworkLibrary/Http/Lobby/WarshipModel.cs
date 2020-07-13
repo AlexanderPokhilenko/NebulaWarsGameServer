@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿using System.Collections.Generic;
+﻿﻿﻿﻿﻿﻿﻿using System.Collections.Generic;
  using ZeroFormatter;
 
 namespace NetworkLibrary.NetworkLibrary.Http
@@ -8,7 +8,7 @@ namespace NetworkLibrary.NetworkLibrary.Http
         Hare=1,
         Bird=2,
         Smiley=3,
-        HareDestroyer=4
+        Raven=4
     }
     
     [ZeroFormattable]
