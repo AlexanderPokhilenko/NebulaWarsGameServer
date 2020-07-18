@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c9a5faa21875b42a56a147735d305f, type: 3}
+  m_Name: SagePlayer
+  m_EditorClassIdentifier: 
+  typeId: 39
+  colliderInfo: {fileID: 11400000, guid: ea48d678b921fd84599f59c88c644f9c, type: 2}
+  mass: 90
+  cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 0
+  collisionDamage: 0
+  dropObjects:
+  - {fileID: 11400000, guid: 25c762cb01adadd4b9537c7c33cf6f9e, type: 2}
+  parts:
+  - baseObject: {fileID: 11400000, guid: f565b9b0b6895d646b6f2bb90556632d, type: 2}
+    position: {x: 0, y: 0.06}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: f565b9b0b6895d646b6f2bb90556632d, type: 2}
+    position: {x: 0, y: -0.06}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  shooter: {fileID: 11400000, guid: a3baea1e9701aca49a840b90665f6ea3, type: 2}
+  maxVelocity: 5
+  maxAngularVelocity: 270
+  isNotDecelerating: 0
+  maxHealthPoints: 1450
+  ability: {fileID: 11400000, guid: 344fbc614baf0ea48a003ab982b9112b, type: 2}

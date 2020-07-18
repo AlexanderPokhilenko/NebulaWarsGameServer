@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ee96d899f1c9343ae52e67b78ab036, type: 3}
-  m_Name: RedInterceptor
+  m_Script: {fileID: 11500000, guid: d0eb86c4517deec42bb377ba7cd4fbdb, type: 3}
+  m_Name: SageCollider
   m_EditorClassIdentifier: 
-  cooldown: 5
-  ability: {fileID: 11400000, guid: 36071b0866ce38f458ac4f52e0ea78de, type: 2}
-  spawnAsChild: 0
-  position: {x: -1.05, y: 0}
-  angle: 180
+  dots:
+  - {x: 0.75, y: 0.15}
+  - {x: -0.3, y: 0.55}
+  - {x: -0.7, y: 0.3}
+  - {x: -0.7, y: -0.3}
+  - {x: -0.3, y: -0.55}
+  - {x: 0.75, y: -0.15}

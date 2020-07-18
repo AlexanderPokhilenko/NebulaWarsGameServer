@@ -38,5 +38,7 @@
     SmileyPlayer,
     RedInterceptor,
     Raven,
-    VoidBeam
+    VoidBeam,
+    SagePlayer,
+    BlasterShoot
 }
