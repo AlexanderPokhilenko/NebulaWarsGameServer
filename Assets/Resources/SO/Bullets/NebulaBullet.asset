@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NebulaBullet
   m_EditorClassIdentifier: 
   typeId: 10
-  colliderInfo: {fileID: 11400000, guid: d69acf0b9f3dc2c4bbeeebf1f7a597a4, type: 2}
+  colliderInfo: {fileID: 11400000, guid: 1a106c530aa9ce24089fd58d35d8ec85, type: 2}
   mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 0
