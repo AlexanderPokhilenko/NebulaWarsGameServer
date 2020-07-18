@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a7b70f268384f145b23befb2a68a0b7, type: 3}
-  m_Name: LaserBeam
+  m_Name: IncineratorBeam
   m_EditorClassIdentifier: 
-  typeId: 17
+  typeId: 41
   colliderInfo: {fileID: 11400000, guid: 3b900586041803840a1352bad83c46e7, type: 2}
   mass: 0
   cannonInfo: {fileID: 0}
   isUnmovable: 1
   isPassingThrough: 1
-  collisionDamage: 600
+  collisionDamage: 750
   dropObjects: []
   parts: []
   shooter: {fileID: 0}
@@ -26,6 +26,6 @@ MonoBehaviour:
   maxAngularVelocity: 0
   isNotDecelerating: 0
   isCollapses: 0
-  lifetime: 0.5
+  lifetime: 2
   detachable: 0
   parentDependent: 1

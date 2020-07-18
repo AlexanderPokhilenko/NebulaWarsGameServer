@@ -40,5 +40,7 @@
     Raven,
     VoidBeam,
     SagePlayer,
-    BlasterShoot
+    BlasterShoot,
+    IncineratorBeam,
+    AbyssBeam
 }
