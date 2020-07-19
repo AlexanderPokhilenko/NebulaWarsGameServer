@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f57b6283d30af1b469ce378688514b6e, type: 3}
-  m_Name: SimplePlasmaCannon
+  m_Script: {fileID: 11500000, guid: b2e4c13d70d9eaf489fcb3cb69bc2246, type: 3}
+  m_Name: TriplePlasmaShooter
   m_EditorClassIdentifier: 
-  position: {x: 0.6, y: 0}
-  cooldown: 0.75
-  bulletObject: {fileID: 11400000, guid: 10b5ec54a9da87c49803ebf1747d5ace, type: 2}
+  timeDelay: 0.25
+  cannonsInGroup: 1
+  groupsCount: 3
+  mirroring: 1

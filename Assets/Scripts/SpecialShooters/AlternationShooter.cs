@@ -1,11 +1,11 @@
 ﻿using Server.GameEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class AlternationShooter : SpecialShooter
 {
     private readonly float timeDelay;
     private readonly int groupCount;
+    private readonly int twinGroupCount;
     private int framesCount = int.MaxValue;
     private bool odd;
 
@@ -13,6 +13,7 @@ public class AlternationShooter : SpecialShooter
     {
         this.timeDelay = timeDelay;
         this.groupCount = groupCount;
+        twinGroupCount = 2 * groupCount;
     }
 
     protected override IEnumerable<GameEntity> GetSpecialCannons(List<GameEntity> cannons)
@@ -25,12 +26,10 @@ public class AlternationShooter : SpecialShooter
             if (cannons.Count % 2 != 0)
             {
                 i++;
-                yield return cannons.First();
+                yield return cannons[0];
             }
 
             if (odd) i += groupCount;
-
-            var twinGroupCount = 2 * groupCount;
 
             for (; i < cannons.Count; i+= twinGroupCount)
             {

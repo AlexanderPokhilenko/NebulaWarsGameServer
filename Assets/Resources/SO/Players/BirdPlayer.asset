@@ -23,7 +23,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 25c762cb01adadd4b9537c7c33cf6f9e, type: 2}
   parts:
   - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: 0.84}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
     position: {x: -0.05, y: 0.9}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: 0.96}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: -0.96}
     direction: 0
     isParentDependent: 1
     isIgnoringParentCollision: 1
@@ -34,7 +52,13 @@ MonoBehaviour:
     isParentDependent: 1
     isIgnoringParentCollision: 1
     isParentFixed: 1
-  shooter: {fileID: 0}
+  - baseObject: {fileID: 11400000, guid: 0f07d8f4a353cbb4aad453f7789bb21e, type: 2}
+    position: {x: -0.05, y: -0.84}
+    direction: 0
+    isParentDependent: 1
+    isIgnoringParentCollision: 1
+    isParentFixed: 1
+  shooter: {fileID: 11400000, guid: b1be74e0a2acfe043be07d6093d0eb27, type: 2}
   maxVelocity: 4
   maxAngularVelocity: 180
   isNotDecelerating: 0
