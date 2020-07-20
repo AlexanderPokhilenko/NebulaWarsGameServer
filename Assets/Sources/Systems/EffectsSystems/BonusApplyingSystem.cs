@@ -7,7 +7,7 @@ using UnityEngine;
 public class BonusApplyingSystem : ReactiveSystem<GameEntity>
 {
     private readonly GameContext gameContext;
-    private const float colliderScalingCoefficient = 1.25f;
+    private const float colliderIncrement = 0.5f;
     private const float maxSameScaleDelta = 0.05f;
 
     public BonusApplyingSystem(Contexts contexts) : base(contexts.game)
@@ -44,7 +44,7 @@ public class BonusApplyingSystem : ReactiveSystem<GameEntity>
 
             if (e.bonusAdder.colliderInheritance)
             {
-                var targetRadius = pickablePart.circleCollider.radius * colliderScalingCoefficient;
+                var targetRadius = pickablePart.circleCollider.radius + colliderIncrement;
                 if (addableBonus.hasCircleCollider)
                 {
                     if (Math.Abs(targetRadius - addableBonus.circleCollider.radius) > maxSameScaleDelta)
