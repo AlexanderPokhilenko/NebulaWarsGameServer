@@ -19,7 +19,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.TargetingParameters).NoneOf(GameMatcher.Target);
         targetingGroup = gameContext.GetGroup(matcher);
-        var targetMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.HealthPoints, GameMatcher.Collidable, GameMatcher.CircleCollider).NoneOf(GameMatcher.PassingThrough);
+        var targetMatcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.HealthPoints, GameMatcher.MaxHealthPoints, GameMatcher.Collidable, GameMatcher.CircleCollider).NoneOf(GameMatcher.PassingThrough);
         targetGroup = gameContext.GetGroup(targetMatcher);
         targets = new List<Target>(predictedCapacity);
     }
