@@ -11,7 +11,7 @@ namespace NetworkLibrary.NetworkLibrary.Http
        public readonly ushort TemporaryId;
        public readonly int WarshipPowerLevel;
 
-       public GameUnitModel(PlayerModel playerModel)
+        public GameUnitModel(PlayerModel playerModel)
        {
            AccountId = playerModel.AccountId;
            Nickname = playerModel.Nickname;

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Code.Common;
+using Entitas;
+using NetworkLibrary.NetworkLibrary;
+using NetworkLibrary.NetworkLibrary.Http;
+using Server.Udp.Sending;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Code.Common;
-using Entitas;
-using NetworkLibrary.NetworkLibrary.Http;
-using Server.Udp.Sending;
 using UnityEngine;
 
 namespace Server.GameEngine.Systems
@@ -102,18 +103,21 @@ namespace Server.GameEngine.Systems
                 if (gameUnit.IsBot()) Match.MakeBot(playerEntity);
                 if(Skins.TryGetValue(gameUnit.SkinName, out var skin)) skin.AddSkin(playerEntity, gameContext);
 
-                //TODO: улучшать по отдельным параметрам
-                float newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipPowerLevel * 0.075f);
-                float newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipPowerLevel * 0.025f);
-                float newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipPowerLevel * 0.025f);
-                float attackCoefficient = 1f + gameUnit.WarshipPowerLevel * 0.05f;
-                playerEntity.ReplaceMaxHealthPoints(newHp);
-                playerEntity.ReplaceHealthPoints(newHp);
-                playerEntity.ReplaceMaxVelocity(newSpeed);
-                playerEntity.ReplaceMaxAngularVelocity(newRotation);
-                foreach (var child in playerEntity.GetAllChildrenGameEntities(gameContext))
+                var powerLevel = gameUnit.WarshipPowerLevel - 1;
+                if (powerLevel > 0)
                 {
-                    child.AddAttackIncreasing(attackCoefficient);
+                    var newHp = playerEntity.maxHealthPoints.value * (1f + powerLevel * WarshipImprovementConstants.HealthPointsCoefficient);
+                    var newSpeed = playerEntity.maxVelocity.value * (1f + powerLevel * WarshipImprovementConstants.LinearVelocityCoefficient);
+                    var newRotation = playerEntity.maxAngularVelocity.value * (1f + powerLevel * WarshipImprovementConstants.AngularVelocityCoefficient);
+                    var attackCoefficient = 1f + powerLevel * WarshipImprovementConstants.AttackCoefficient;
+                    playerEntity.ReplaceMaxHealthPoints(newHp);
+                    playerEntity.ReplaceHealthPoints(newHp);
+                    playerEntity.ReplaceMaxVelocity(newSpeed);
+                    playerEntity.ReplaceMaxAngularVelocity(newRotation);
+                    foreach (var child in playerEntity.GetAllChildrenGameEntities(gameContext))
+                    {
+                        child.AddAttackIncreasing(attackCoefficient);
+                    }
                 }
 
                 var wallAngle = angle + halfStep;
@@ -133,61 +137,6 @@ namespace Server.GameEngine.Systems
 
                 RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
             }
-            
-            // for (int gameUnitIndex = 0; gameUnitIndex < matchModel.GameUnits.Count(); gameUnitIndex++)
-            // {
-            //     GameUnit gameUnit = matchModel.GameUnitsForMatch[gameUnitIndex];
-            //     
-            //     var angle = gameUnitIndex * step + offset;
-            //     var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
-            //     var playerEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
-            //         .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
-            //
-            //     // Log.Info($"{nameof(gameUnit.TemporaryId)} {gameUnit.TemporaryId}");
-            //     playerEntity.AddPlayer(gameUnit.TemporaryId);
-            //
-            //     //TODO: улучшать по отдельным параметрам
-            //     var newHp = playerEntity.maxHealthPoints.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.075f);
-            //     var newSpeed = playerEntity.maxVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
-            //     var newRotation = playerEntity.maxAngularVelocity.value * (1f + gameUnit.WarshipCombatPowerLevel * 0.025f);
-            //     var attackCoefficient = 1f + gameUnit.WarshipCombatPowerLevel * 0.05f;
-            //     playerEntity.ReplaceMaxHealthPoints(newHp);
-            //     playerEntity.ReplaceHealthPoints(newHp);
-            //     playerEntity.ReplaceMaxVelocity(newSpeed);
-            //     playerEntity.ReplaceMaxAngularVelocity(newRotation);
-            //     foreach (var child in playerEntity.GetAllChildrenGameEntities(gameContext))
-            //     {
-            //         child.AddAttackIncreasing(attackCoefficient);
-            //     }
-            //
-            //     if (gameUnit.IsBot)
-            //     {
-            //         playerEntity.AddAccount(-((BotInfo)gameUnit).TemporaryId);
-            //         Match.MakeBot(playerEntity);
-            //     }
-            //     else
-            //     {
-            //         playerEntity.AddAccount(((PlayerInfoForMatch)gameUnit).AccountId);
-            //     }
-            //     playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
-            //
-            //     var wallAngle = angle + halfStep;
-            //     var wallDirection = CoordinatesExtensions.GetRotatedUnitVector2(wallAngle);
-            //
-            //     for (var r = 11; r < 50; r += 25)
-            //     {
-            //         for (var j = r; j < r + 10; j++)
-            //         {
-            //             RandomAsteroid.CreateEntity(gameContext, wallDirection * j, (float)random.NextDouble() * 360f);
-            //         }
-            //     }
-            //
-            //     SpaceStation.CreateEntity(gameContext, wallDirection * 10f, wallAngle, 0);
-            //     SpaceStation.CreateEntity(gameContext, wallDirection * 25f, wallAngle, 0);
-            //     SpaceStation.CreateEntity(gameContext, wallDirection * 35f, 180f + wallAngle, 0);
-            //
-            //     RandomBonus.CreateEntity(gameContext, wallDirection * 30f, 0);
-            // }
 
             Boss.CreateEntity(gameContext, Vector2.zero, (float) random.NextDouble() * 360f, 0);
 
