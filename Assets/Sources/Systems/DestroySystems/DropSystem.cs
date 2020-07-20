@@ -16,13 +16,24 @@ public class DropSystem : IExecuteSystem
     {
         foreach (var e in droppingGroup)
         {
+            var hasSkin = e.hasSkin;
+            var hasAttackIncreasing = e.hasAttackIncreasing;
+            var attackIncreasing = hasAttackIncreasing ? e.attackIncreasing.value : 0f;
             e.ToGlobal(gameContext, out var position, out var angle, out _, out var velocity, out var angularVelocity);
 
             var drops = e.drop.objects;
             foreach (var drop in drops)
             {
                 var dropEntity = drop.CreateEntity(gameContext, position, angle);
-                if(e.hasSkin) e.skin.value.AddSkin(dropEntity, gameContext);
+                if(hasSkin) e.skin.value.AddSkin(dropEntity, gameContext);
+                if (hasAttackIncreasing)
+                {
+                    foreach (var dropChild in dropEntity.GetAllChildrenGameEntities(gameContext))
+                    {
+                        dropChild.AddAttackIncreasing(attackIncreasing);
+                        if(dropChild.hasDamage) dropChild.ReplaceDamage(dropChild.damage.value * attackIncreasing);
+                    }
+                }
                 if (e.hasTeam)
                 {
                     foreach (var child in dropEntity.GetAllChildrenGameEntities(gameContext))

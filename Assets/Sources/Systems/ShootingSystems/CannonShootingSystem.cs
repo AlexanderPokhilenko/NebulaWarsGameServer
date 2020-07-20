@@ -51,7 +51,12 @@ public class CannonShootingSystem : IExecuteSystem
 
         if (shooter.hasAttackIncreasing)
         {
-            bulletEntity.ReplaceDamage(bullet.collisionDamage * shooter.attackIncreasing.value);
+            var attackIncreasing = shooter.attackIncreasing.value;
+            foreach (var bulletChild in bulletEntity.GetAllChildrenGameEntities(gameContext))
+            {
+                bulletChild.AddAttackIncreasing(attackIncreasing);
+                bulletChild.ReplaceDamage(bullet.collisionDamage * attackIncreasing);
+            }
         }
 
         if (bulletEntity.hasChaser)

@@ -19,6 +19,15 @@ public class SpawningAbility : ActiveAbility
 
         var entity = ability.CreateEntity(gameContext, newPosition, newAngle, executor.team.id);
         if(executor.hasSkin) executor.skin.value.AddSkin(entity, gameContext);
+        if (executor.hasAttackIncreasing)
+        {
+            var attackIncreasing = executor.attackIncreasing.value;
+            foreach (var child in entity.GetAllChildrenGameEntities(gameContext))
+            {
+                child.AddAttackIncreasing(attackIncreasing);
+                if(child.hasDamage) child.ReplaceDamage(child.damage.value * attackIncreasing);
+            }
+        }
 
         entity.AddOwner(executor.GetGrandParent(gameContext).id.value);
         entity.AddGrandOwner(executor.GetGrandOwnerId(gameContext));
