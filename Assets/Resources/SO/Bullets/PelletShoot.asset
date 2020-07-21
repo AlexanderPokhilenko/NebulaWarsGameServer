@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7b70f268384f145b23befb2a68a0b7, type: 3}
+  m_Name: PelletShoot
+  m_EditorClassIdentifier: 
+  typeId: 43
+  colliderInfo: {fileID: 11400000, guid: 22ab480fa177c424a84d10c45c5b4b8e, type: 2}
+  mass: 0
+  cannonInfo: {fileID: 0}
+  isUnmovable: 0
+  isPassingThrough: 1
+  collisionDamage: 25
+  dropObjects:
+  - {fileID: 11400000, guid: 86b22da2235e3bd4fbb4b45bc4a73afb, type: 2}
+  parts: []
+  shooter: {fileID: 0}
+  maxVelocity: 6.5
+  maxAngularVelocity: 0
+  isNotDecelerating: 1
+  isCollapses: 1
+  lifetime: 1.25
+  detachable: 1
+  parentDependent: 0

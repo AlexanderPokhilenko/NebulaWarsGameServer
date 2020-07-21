@@ -42,5 +42,6 @@
     SagePlayer,
     BlasterShoot,
     IncineratorBeam,
-    AbyssBeam
+    AbyssBeam,
+    PelletShoot
 }
