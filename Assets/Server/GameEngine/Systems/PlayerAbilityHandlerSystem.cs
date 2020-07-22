@@ -38,7 +38,7 @@ namespace Server.GameEngine.Systems
                     return;
                 }
 
-                if (!gamePlayer.hasAbilityCooldown) gamePlayer.ability.action(gamePlayer, gameContext);
+                gamePlayer.isTryingToUseAbility = true;
             }
         }
     }

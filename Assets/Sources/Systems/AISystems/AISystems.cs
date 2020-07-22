@@ -19,7 +19,7 @@
         Add(new DirectionTargetingSystem(contexts));
         Add(new AngularVelocityTargetingSystem(contexts));
 
-        Add(new AbilityUsingSystem(contexts));
+        Add(new BotAbilityUsingSystem(contexts));
 
         Add(new BotsFrameMovingControlSystem(contexts));
         Add(new MovingFramesDecreaseSystem(contexts));

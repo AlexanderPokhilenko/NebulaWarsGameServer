@@ -2,7 +2,7 @@
 using Entitas;
 using UnityEngine;
 
-public sealed class AbilityUsingSystem : IExecuteSystem
+public sealed class BotAbilityUsingSystem : IExecuteSystem
 {
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> withAbilityGroup;
@@ -10,7 +10,7 @@ public sealed class AbilityUsingSystem : IExecuteSystem
     private readonly List<GameEntity> buffer;
     private const int PredictedCapacity = 10;
 
-    public AbilityUsingSystem(Contexts contexts)
+    public BotAbilityUsingSystem(Contexts contexts)
     {
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Position, GameMatcher.Target, GameMatcher.Ability, GameMatcher.Bot, GameMatcher.TargetingParameters).NoneOf(GameMatcher.AbilityCooldown);
@@ -68,7 +68,7 @@ public sealed class AbilityUsingSystem : IExecuteSystem
 
             if (absProjectionY <= target.circleCollider.radius) // Мы навелись на цель
             {
-                e.ability.action(e, gameContext);
+                e.isTryingToUseAbility = true;
             }
         }
     }

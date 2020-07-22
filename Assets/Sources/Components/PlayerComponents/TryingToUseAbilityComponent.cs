@@ -1,6 +1,6 @@
 ﻿using Entitas;
 
-[Input]
+[Input, Game]
 public class TryingToUseAbilityComponent : IComponent
 {
 }

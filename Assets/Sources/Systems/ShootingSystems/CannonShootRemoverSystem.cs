@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Entitas;
-using UnityEngine;
+﻿using Entitas;
+using System.Collections.Generic;
 
 
 public class CannonShootRemoverSystem : ReactiveSystem<GameEntity>
