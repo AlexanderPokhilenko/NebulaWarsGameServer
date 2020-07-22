@@ -2,6 +2,8 @@
 {
     public AISystems(Contexts contexts) : base("AI Systems")
     {
+        Add(new DirectionSaverCheckerSystem(contexts));
+
         Add(new TargetDetectionSystem(contexts));
         Add(new ChaserTargetPointUpdaterSystem(contexts));
 

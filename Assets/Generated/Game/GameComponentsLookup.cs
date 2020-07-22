@@ -32,57 +32,58 @@ public static class GameComponentsLookup {
     public const int Damage = 21;
     public const int Destroyed = 22;
     public const int Direction = 23;
-    public const int DirectionTargeting = 24;
-    public const int DirectionTargetingShooting = 25;
-    public const int Drop = 26;
-    public const int GlobalNoncollinearAxises = 27;
-    public const int GlobalPathCollider = 28;
-    public const int GlobalTransform = 29;
-    public const int GrandOwner = 30;
-    public const int HealthPoints = 31;
-    public const int Id = 32;
-    public const int IgnoringParentCollision = 33;
-    public const int Invulnerable = 34;
-    public const int KilledBy = 35;
-    public const int Lifetime = 36;
-    public const int LongParent = 37;
-    public const int Mass = 38;
-    public const int MaxAngularVelocity = 39;
-    public const int MaxHealthPoints = 40;
-    public const int MaxVelocity = 41;
-    public const int MovementFrames = 42;
-    public const int Moving = 43;
-    public const int NoncollinearAxises = 44;
-    public const int NonstandardRadius = 45;
-    public const int NotDecelerating = 46;
-    public const int OnHealthDropDestroying = 47;
-    public const int Owner = 48;
-    public const int Parasite = 49;
-    public const int Parent = 50;
-    public const int ParentDependent = 51;
-    public const int ParentFixed = 52;
-    public const int PassingThrough = 53;
-    public const int PathCollider = 54;
-    public const int Player = 55;
-    public const int Position = 56;
-    public const int RectangleCollider = 57;
-    public const int Round = 58;
-    public const int SingleTargeting = 59;
-    public const int Skin = 60;
-    public const int SpecialShooter = 61;
-    public const int TargetChanging = 62;
-    public const int Target = 63;
-    public const int TargetingParameters = 64;
-    public const int TargetMovingPoint = 65;
-    public const int TargetScaling = 66;
-    public const int Team = 67;
-    public const int TryingToShoot = 68;
-    public const int Unmovable = 69;
-    public const int Velocity = 70;
-    public const int ViewType = 71;
-    public const int Zone = 72;
+    public const int DirectionSaver = 24;
+    public const int DirectionTargeting = 25;
+    public const int DirectionTargetingShooting = 26;
+    public const int Drop = 27;
+    public const int GlobalNoncollinearAxises = 28;
+    public const int GlobalPathCollider = 29;
+    public const int GlobalTransform = 30;
+    public const int GrandOwner = 31;
+    public const int HealthPoints = 32;
+    public const int Id = 33;
+    public const int IgnoringParentCollision = 34;
+    public const int Invulnerable = 35;
+    public const int KilledBy = 36;
+    public const int Lifetime = 37;
+    public const int LongParent = 38;
+    public const int Mass = 39;
+    public const int MaxAngularVelocity = 40;
+    public const int MaxHealthPoints = 41;
+    public const int MaxVelocity = 42;
+    public const int MovementFrames = 43;
+    public const int Moving = 44;
+    public const int NoncollinearAxises = 45;
+    public const int NonstandardRadius = 46;
+    public const int NotDecelerating = 47;
+    public const int OnHealthDropDestroying = 48;
+    public const int Owner = 49;
+    public const int Parasite = 50;
+    public const int Parent = 51;
+    public const int ParentDependent = 52;
+    public const int ParentFixed = 53;
+    public const int PassingThrough = 54;
+    public const int PathCollider = 55;
+    public const int Player = 56;
+    public const int Position = 57;
+    public const int RectangleCollider = 58;
+    public const int Round = 59;
+    public const int SingleTargeting = 60;
+    public const int Skin = 61;
+    public const int SpecialShooter = 62;
+    public const int TargetChanging = 63;
+    public const int Target = 64;
+    public const int TargetingParameters = 65;
+    public const int TargetMovingPoint = 66;
+    public const int TargetScaling = 67;
+    public const int Team = 68;
+    public const int TryingToShoot = 69;
+    public const int Unmovable = 70;
+    public const int Velocity = 71;
+    public const int ViewType = 72;
+    public const int Zone = 73;
 
-    public const int TotalComponents = 73;
+    public const int TotalComponents = 74;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -109,6 +110,7 @@ public static class GameComponentsLookup {
         "Damage",
         "Destroyed",
         "Direction",
+        "DirectionSaver",
         "DirectionTargeting",
         "DirectionTargetingShooting",
         "Drop",
@@ -185,6 +187,7 @@ public static class GameComponentsLookup {
         typeof(DamageComponent),
         typeof(DestroyedComponent),
         typeof(DirectionComponent),
+        typeof(DirectionSaverComponent),
         typeof(DirectionTargetingComponent),
         typeof(DirectionTargetingShootingComponent),
         typeof(DropComponent),

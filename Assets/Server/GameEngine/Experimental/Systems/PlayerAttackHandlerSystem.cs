@@ -60,14 +60,8 @@ namespace Server.GameEngine.Systems
                     playerAttackDirection %= 360;
                 }
 
-                if (gamePlayer.hasDirectionTargeting)
-                {
-                    gamePlayer.ReplaceDirectionTargeting(playerAttackDirection);
-                }
-                else
-                {
-                    gamePlayer.AddDirectionTargeting(playerAttackDirection);
-                }
+                gamePlayer.ReplaceDirectionTargeting(playerAttackDirection);
+                gamePlayer.ReplaceDirectionSaver(playerAttackDirection, DirectionSaverComponent.DefaultTime * 0.5f);
 
                 gamePlayer.isDirectionTargetingShooting = true;
             }

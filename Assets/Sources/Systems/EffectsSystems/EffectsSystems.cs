@@ -8,5 +8,6 @@
         Add(new AuraDamageSystem(contexts));
         Add(new CircleScalingSystem(contexts));
         Add(new CircleTargetScalingCheckerSystem(contexts));
+        Add(new DirectionSaverRemoverSystem(contexts));
     }
 }

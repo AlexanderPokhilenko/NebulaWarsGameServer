@@ -24,6 +24,18 @@ public class CannonShootingSystem : IExecuteSystem
         {
             var bullet = e.cannon.bullet;
             var bulletEntity = ShootBullet(e, gameContext, bullet, e.cannon.position);
+            if (e.hasViewType)
+            {
+                e.ReplaceDirectionSaver(e.direction.angle, DirectionSaverComponent.DefaultTime);
+            }
+            else
+            {
+                if (e.hasParent)
+                {
+                    var parent = gameContext.GetEntityWithId(e.parent.id);
+                    parent?.ReplaceDirectionSaver(parent.direction.angle, DirectionSaverComponent.DefaultTime);
+                }
+            }
 
             if (!bulletEntity.hasChaser && bullet.maxAngularVelocity > 0f)
             {
