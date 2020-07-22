@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-
+﻿//#define ParentAngularToLinear
+using UnityEngine;
 
 public static class CoordinatesExtensions
 {
@@ -25,15 +25,17 @@ public static class CoordinatesExtensions
             firstParent = context.GetEntityWithId(firstParent.parent.id);
             if (firstParent.hasAngularVelocity)
             {
-                var leftPositionPerpendicular = new Vector2(-position.y, position.x);
-                if (leftPositionPerpendicular != Vector2.zero)
-                {
-                    velocity += firstParent.angularVelocity.value * Mathf.Deg2Rad * leftPositionPerpendicular;
-                }
-                else
+                if (position == Vector2.zero)
                 {
                     angularVelocity += firstParent.angularVelocity.value;
                 }
+#if ParentAngularToLinear
+                else
+                {
+                    var leftPositionPerpendicular = new Vector2(-position.y, position.x);
+                    velocity += firstParent.angularVelocity.value * Mathf.Deg2Rad * leftPositionPerpendicular;
+                }
+#endif
             }
             if (firstParent.hasDirection)
             {
