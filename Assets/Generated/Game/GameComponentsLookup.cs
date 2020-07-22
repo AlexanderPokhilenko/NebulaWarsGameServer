@@ -43,47 +43,49 @@ public static class GameComponentsLookup {
     public const int HealthPoints = 32;
     public const int Id = 33;
     public const int IgnoringParentCollision = 34;
-    public const int Invulnerable = 35;
-    public const int KilledBy = 36;
-    public const int Lifetime = 37;
-    public const int LongParent = 38;
-    public const int Mass = 39;
-    public const int MaxAngularVelocity = 40;
-    public const int MaxHealthPoints = 41;
-    public const int MaxVelocity = 42;
-    public const int MovementFrames = 43;
-    public const int Moving = 44;
-    public const int NoncollinearAxises = 45;
-    public const int NonstandardRadius = 46;
-    public const int NotDecelerating = 47;
-    public const int OnHealthDropDestroying = 48;
-    public const int Owner = 49;
-    public const int Parasite = 50;
-    public const int Parent = 51;
-    public const int ParentDependent = 52;
-    public const int ParentFixed = 53;
-    public const int PassingThrough = 54;
-    public const int PathCollider = 55;
-    public const int Player = 56;
-    public const int Position = 57;
-    public const int RectangleCollider = 58;
-    public const int Round = 59;
-    public const int SingleTargeting = 60;
-    public const int Skin = 61;
-    public const int SpecialShooter = 62;
-    public const int TargetChanging = 63;
-    public const int Target = 64;
-    public const int TargetingParameters = 65;
-    public const int TargetMovingPoint = 66;
-    public const int TargetScaling = 67;
-    public const int Team = 68;
-    public const int TryingToShoot = 69;
-    public const int Unmovable = 70;
-    public const int Velocity = 71;
-    public const int ViewType = 72;
-    public const int Zone = 73;
+    public const int InitialDirectionSaver = 35;
+    public const int Invulnerable = 36;
+    public const int KilledBy = 37;
+    public const int Lifetime = 38;
+    public const int LocalDirectionTargeting = 39;
+    public const int LongParent = 40;
+    public const int Mass = 41;
+    public const int MaxAngularVelocity = 42;
+    public const int MaxHealthPoints = 43;
+    public const int MaxVelocity = 44;
+    public const int MovementFrames = 45;
+    public const int Moving = 46;
+    public const int NoncollinearAxises = 47;
+    public const int NonstandardRadius = 48;
+    public const int NotDecelerating = 49;
+    public const int OnHealthDropDestroying = 50;
+    public const int Owner = 51;
+    public const int Parasite = 52;
+    public const int Parent = 53;
+    public const int ParentDependent = 54;
+    public const int ParentFixed = 55;
+    public const int PassingThrough = 56;
+    public const int PathCollider = 57;
+    public const int Player = 58;
+    public const int Position = 59;
+    public const int RectangleCollider = 60;
+    public const int Round = 61;
+    public const int SingleTargeting = 62;
+    public const int Skin = 63;
+    public const int SpecialShooter = 64;
+    public const int TargetChanging = 65;
+    public const int Target = 66;
+    public const int TargetingParameters = 67;
+    public const int TargetMovingPoint = 68;
+    public const int TargetScaling = 69;
+    public const int Team = 70;
+    public const int TryingToShoot = 71;
+    public const int Unmovable = 72;
+    public const int Velocity = 73;
+    public const int ViewType = 74;
+    public const int Zone = 75;
 
-    public const int TotalComponents = 74;
+    public const int TotalComponents = 76;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -121,9 +123,11 @@ public static class GameComponentsLookup {
         "HealthPoints",
         "Id",
         "IgnoringParentCollision",
+        "InitialDirectionSaver",
         "Invulnerable",
         "KilledBy",
         "Lifetime",
+        "LocalDirectionTargeting",
         "LongParent",
         "Mass",
         "MaxAngularVelocity",
@@ -198,9 +202,11 @@ public static class GameComponentsLookup {
         typeof(HealthPointsComponent),
         typeof(IdComponent),
         typeof(IgnoringParentCollisionComponent),
+        typeof(InitialDirectionSaverComponent),
         typeof(InvulnerableComponent),
         typeof(KilledByComponent),
         typeof(LifetimeComponent),
+        typeof(LocalDirectionTargetingComponent),
         typeof(LongParentComponent),
         typeof(MassComponent),
         typeof(MaxAngularVelocityComponent),

@@ -9,6 +9,7 @@ public abstract class EntityCreatorObject : ScriptableObject
         var entity = CreateEntity(context);
         entity.AddPosition(position);
         entity.AddDirection(angle);
+        if (entity.hasInitialDirectionSaver) entity.ReplaceInitialDirectionSaver(angle);
         return entity;
     }
 

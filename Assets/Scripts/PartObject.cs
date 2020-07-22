@@ -13,10 +13,8 @@ public class PartObject
 
     public void AddPartToEntity(GameContext context, GameEntity parent)
     {
-        var child = baseObject.CreateEntity(context);
+        var child = baseObject.CreateEntity(context, position, direction);
         child.AddParent(parent.id.value);
-        child.AddPosition(position);
-        child.AddDirection(direction);
         child.isParentDependent = isParentDependent;
         child.isIgnoringParentCollision = isIgnoringParentCollision;
         child.isParentFixed = isParentFixed;

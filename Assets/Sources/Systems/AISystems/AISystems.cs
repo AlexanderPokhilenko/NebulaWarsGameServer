@@ -2,7 +2,13 @@
 {
     public AISystems(Contexts contexts) : base("AI Systems")
     {
+        Add(new BotsOnHealthMoveChangingSystem(contexts));
+        Add(new BotsMovingSystem(contexts));
+        Add(new TargetPointMovingSystem(contexts));
+
         Add(new DirectionSaverCheckerSystem(contexts));
+        Add(new InitialDirectionSaverCheckerSystem(contexts));
+        Add(new LocalTargetingSystem(contexts));
 
         Add(new TargetDetectionSystem(contexts));
         Add(new ChaserTargetPointUpdaterSystem(contexts));
@@ -15,15 +21,11 @@
 
         Add(new AbilityUsingSystem(contexts));
 
+        Add(new BotsFrameMovingControlSystem(contexts));
+        Add(new MovingFramesDecreaseSystem(contexts));
+
         Add(new RemoveTargetForChangingSystem(contexts));
         Add(new RemoveTargetForSingleTargetingSystem(contexts));
         Add(new RemoveDistantTargetSystem(contexts));
-
-        Add(new BotsOnHealthMoveChangingSystem(contexts));
-        Add(new BotsMovingSystem(contexts));
-        Add(new TargetPointMovingSystem(contexts));
-
-        Add(new BotsFrameMovingControlSystem(contexts));
-        Add(new MovingFramesDecreaseSystem(contexts));
     }
 }

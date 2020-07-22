@@ -17,6 +17,7 @@ public class TargetingTurretObject : BaseObject
         entity.AddMaxAngularVelocity(maxAngularVelocity);
         entity.AddTargetingParameters(useAngularTargeting, detectionRadius, onlyPlayerTargeting);
         entity.isTargetChanging = targetChanging;
+        entity.AddInitialDirectionSaver(0f);
 
         return entity;
     }

@@ -33,7 +33,6 @@ public sealed class TargetPointMovingSystem : IExecuteSystem
             }
 
             var newVelocity = delta / Chronometer.DeltaTime;
-
             if (!e.isDirectionTargetingShooting)
             {
                 var directionAngle = Mathf.Atan2(newVelocity.y, newVelocity.x) * Mathf.Rad2Deg;
