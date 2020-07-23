@@ -112,7 +112,7 @@ public partial class Contexts {
             input.GetGroup(InputMatcher.Player),
             (e, c) => ((PlayerComponent)c).id));
 
-        game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, ushort>(
+        game.AddEntityIndex(new Entitas.EntityIndex<GameEntity, byte>(
             Team,
             game.GetGroup(GameMatcher.Team),
             (e, c) => ((TeamComponent)c).id));
@@ -157,8 +157,8 @@ public static class ContextsExtensions {
         return ((Entitas.PrimaryEntityIndex<InputEntity, ushort>)context.GetEntityIndex(Contexts.Player)).GetEntity(id);
     }
 
-    public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithTeam(this GameContext context, ushort id) {
-        return ((Entitas.EntityIndex<GameEntity, ushort>)context.GetEntityIndex(Contexts.Team)).GetEntities(id);
+    public static System.Collections.Generic.HashSet<GameEntity> GetEntitiesWithTeam(this GameContext context, byte id) {
+        return ((Entitas.EntityIndex<GameEntity, byte>)context.GetEntityIndex(Contexts.Team)).GetEntities(id);
     }
 }
 //------------------------------------------------------------------------------

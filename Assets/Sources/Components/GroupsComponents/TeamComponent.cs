@@ -5,5 +5,5 @@ using Entitas.CodeGeneration.Attributes;
 public sealed class TeamComponent : IComponent
 {
     [EntityIndex]
-    public ushort id;
+    public byte id;
 }

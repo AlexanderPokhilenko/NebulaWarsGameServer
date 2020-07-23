@@ -94,7 +94,7 @@ namespace Server.GameEngine.Systems
                 float angle = gameUnitIndex * step + offset;
                 Vector2 position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
                 GameEntity playerEntity = PlayerPrototypes[gameUnit.WarshipName.ToLower()]
-                    .CreateEntity(gameContext, position, 180f + angle, (ushort)(gameUnitIndex+1));
+                    .CreateEntity(gameContext, position, 180f + angle, (byte)(gameUnitIndex+1));
                 
                 playerEntity.AddPlayer(gameUnit.TemporaryId);
                 playerEntity.AddAccount(gameUnit.AccountId);

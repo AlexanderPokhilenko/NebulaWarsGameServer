@@ -11,14 +11,14 @@ public partial class GameEntity {
     public TeamComponent team { get { return (TeamComponent)GetComponent(GameComponentsLookup.Team); } }
     public bool hasTeam { get { return HasComponent(GameComponentsLookup.Team); } }
 
-    public void AddTeam(ushort newId) {
+    public void AddTeam(byte newId) {
         var index = GameComponentsLookup.Team;
         var component = (TeamComponent)CreateComponent(index, typeof(TeamComponent));
         component.id = newId;
         AddComponent(index, component);
     }
 
-    public void ReplaceTeam(ushort newId) {
+    public void ReplaceTeam(byte newId) {
         var index = GameComponentsLookup.Team;
         var component = (TeamComponent)CreateComponent(index, typeof(TeamComponent));
         component.id = newId;

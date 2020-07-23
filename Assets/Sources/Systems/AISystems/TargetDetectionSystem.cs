@@ -29,8 +29,8 @@ public sealed class TargetDetectionSystem : IExecuteSystem
         public readonly ushort Id;
         public readonly float Radius;
         public readonly float SqrRadius;
-        public readonly ushort GrandOwnerId;
-        public readonly int TeamId;
+        //public readonly ushort GrandOwnerId;
+        public readonly byte TeamId;
         public readonly Vector2 GlobalPosition;
         public readonly float NegativeAngleSin;
         public readonly float NegativeAngleCos;
@@ -55,8 +55,8 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                 entity.ToGlobal(gameContext, out GlobalPosition, out globalAngle, out _, out _, out _);
             }
             CoordinatesExtensions.GetSinCosFromDegrees(-globalAngle, out NegativeAngleSin, out NegativeAngleCos);
-            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
-            TeamId = entity.hasTeam ? entity.team.id : -1;
+            //GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
+            TeamId = entity.hasTeam ? entity.team.id : byte.MaxValue;
             IsPlayer = entity.hasPlayer;
             SqrChildrenTargetingRadiuses = entity.GetAllChildrenGameEntities(gameContext, c => c.hasTargetingParameters)
                 .Select(c => c.targetingParameters.radius).Select(r => r * r).ToArray();
@@ -82,13 +82,13 @@ public sealed class TargetDetectionSystem : IExecuteSystem
             var sqrTargetingRadius = targetingRadius * targetingRadius;
             var grandParent = e.GetGrandParent(gameContext);
             var currentGrandOwnerId = e.hasGrandOwner ? e.grandOwner.id : e.GetGrandOwnerId(gameContext);
-            var currentTeamId = e.hasTeam ? e.team.id : -1;
+            var currentTeamId = e.hasTeam ? e.team.id : byte.MaxValue;
             var minVal = float.PositiveInfinity;
             ushort targetId = 0;
             var targetFound = false;
             foreach (var target in targets)
             {
-                if (onlyPlayerTargeting && target.TeamId <= 0) continue;
+                if (onlyPlayerTargeting && target.TeamId == byte.MaxValue) continue;
                 if (e.id.value == target.Id || currentTeamId == target.TeamId) continue;
                 var targetPosition = target.GlobalPosition;
                 var direction = targetPosition - currentPosition;
@@ -111,7 +111,7 @@ public sealed class TargetDetectionSystem : IExecuteSystem
                     // стреляем по игрокам с большей вероятностью
                     if (target.IsPlayer) currentVal *= 0.15f;
                     // не стрелять по нейтрально-пассивным
-                    if (target.TeamId < 0) currentVal *= 10000f;
+                    if (target.TeamId == byte.MaxValue) currentVal *= 10000f;
                     // стрельба по объектам из другой команды
                     else if(e.hasTeam && target.TeamId != e.team.id) currentVal *= 0.01f;
                     // обращаем внимание на целящиеся объекты

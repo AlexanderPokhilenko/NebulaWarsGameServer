@@ -41,7 +41,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         public readonly float Damage;
         public readonly ushort GrandOwnerId;
         public readonly ushort GrandParentId;
-        public readonly ushort? TeamId;
+        public readonly byte TeamId;
         public readonly bool IsTargetingParasite;
         public readonly ushort GrandTargetId;
         public readonly bool HasBonus;
@@ -81,7 +81,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Chronometer.DeltaTime : entity.damage.value) : 0f;
             GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : id;
             GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : id;
-            TeamId = entity.hasTeam ? entity.team.id : (ushort?)null;
+            TeamId = entity.hasTeam ? entity.team.id : byte.MaxValue;
             var hasTarget = entity.hasTarget;
             IsTargetingParasite = entity.isParasite && hasTarget;
             GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : (ushort)0;
