@@ -53,6 +53,37 @@ public static class CoordinatesExtensions
         while (angle >= 360f) angle -= 360f;
     }
 
+    public static void Set(this ref Vector2 current, Vector2 other)
+    {
+        current.Set(other.x, other.y);
+    }
+
+    public static void Add(this ref Vector2 current, Vector2 other)
+    {
+        current.Set(current.x + other.x, current.y + other.y);
+    }
+
+    public static void Subtract(this ref Vector2 current, Vector2 other)
+    {
+        current.Set(current.x - other.x, current.y - other.y);
+    }
+
+    public static void Multiply(this ref Vector2 current, float coefficient)
+    {
+        current.Set(current.x * coefficient, current.y * coefficient);
+    }
+
+    public static void Divide(this ref Vector2 current, float coefficient)
+    {
+        var inverted = 1f / coefficient;
+        current.Multiply(inverted);
+    }
+
+    public static void ChangeSign(this ref Vector2 current)
+    {
+        current.Set(-current.x, -current.y);
+    }
+
     public static Vector2 GetLocalVector(this GameEntity entity, GameContext context, Vector2 globalVector)
     {
         var currentAngle = entity.GetGlobalAngle(context);

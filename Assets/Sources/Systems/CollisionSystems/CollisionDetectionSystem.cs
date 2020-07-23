@@ -9,7 +9,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> collidableGroup;
     private readonly List<GameEntity> buffer;
-    private readonly List<CollisionInfo> collidables;
+    private CollisionInfo[] collidables;
     private const int predictedCapacity = 512;
 
     public CollisionDetectionSystem(Contexts contexts)
@@ -18,10 +18,10 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         var matcher = GameMatcher.AllOf(GameMatcher.Collidable, GameMatcher.CircleCollider, GameMatcher.Position);
         collidableGroup = gameContext.GetGroup(matcher);
         buffer = new List<GameEntity>(predictedCapacity);
-        collidables = new List<CollisionInfo>(predictedCapacity);
+        collidables = new CollisionInfo[predictedCapacity];
     }
 
-    private class CollisionInfo
+    private struct CollisionInfo
     {
         public readonly GameEntity Entity;
         public readonly Vector2 GlobalPosition;
@@ -95,33 +95,43 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
     {
         var entities = collidableGroup.GetEntities(buffer);
         var count = entities.Count;
-        if (count < 2) return;
+        if (count > collidables.Length) collidables = new CollisionInfo[count];
         for (int i = 0; i < count; i++)
         {
             var entity = entities[i];
-            collidables.Add(new CollisionInfo(entity, gameContext));
+            collidables[i] = new CollisionInfo(entity, gameContext);
         }
+        // ReSharper disable TooWideLocalVariableScope
+        ref var current = ref collidables[0];
+        GameEntity currentEntity;
+        ref var other = ref collidables[0];
+        GameEntity otherEntity;
+        var distance = Vector2.zero;
+        float closeDistance;
+        float sqrDistance;
+        bool collided;
+        var penetration = Vector2.zero;
+        // ReSharper restore TooWideLocalVariableScope
         for (int i = 1; i < count; i++)
         {
-            var current = collidables[i - 1];
-            var currentEntity = current.Entity;
+            current = ref collidables[i - 1];
+            currentEntity = current.Entity;
             for (int j = i; j < count; j++)
             {
-                var other = collidables[j];
-                var otherEntity = other.Entity;
+                other = ref collidables[j];
+                otherEntity = other.Entity;
 
                 if (other.TeamId == current.TeamId && // отключает friendly fire
                     (current.HasDamage || other.HasDamage || current.HasBonus || other.HasBonus)) continue; 
                 if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
                     && current.GrandParentId == other.GrandParentId) continue;
 
-                var distance = other.GlobalPosition - current.GlobalPosition;
-                var closeDistance = other.Radius + current.Radius;
-                var sqrDistance = distance.sqrMagnitude;
+                distance.Set(other.GlobalPosition);
+                distance.Subtract(current.GlobalPosition);
+                closeDistance = other.Radius + current.Radius;
+                sqrDistance = distance.sqrMagnitude;
                 if (sqrDistance <= closeDistance * closeDistance)
                 {
-                    bool collided;
-                    Vector2 penetration;
                     if (current.IsRound)
                     {
                         if (other.IsRound)
@@ -129,17 +139,18 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             collided = true;
                             if (distance != Vector2.zero)
                             {
-                                penetration = distance - distance.normalized * closeDistance;
+                                penetration.Set(distance);
+                                penetration.Subtract(distance.normalized * closeDistance);
                             }
                             else
                             {
-                                penetration = CoordinatesExtensions.GetRandomUnitVector2() * closeDistance;
+                                penetration.Set(CoordinatesExtensions.GetRandomUnitVector2() * closeDistance);
                             }
                         }
                         else
                         {
                             collided = CheckCollisionFigureWithCircle(other, current, out penetration);
-                            penetration = -penetration;
+                            penetration.ChangeSign();
                         }
                     }
                     else
@@ -166,13 +177,13 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                             if (current.HasMass || other.HasMass)
                             {
                                 var totalMass = current.Mass + other.Mass;
-                                current.CollisionVector += penetration * other.Mass / totalMass;
-                                other.CollisionVector -= penetration * current.Mass / totalMass;
+                                current.CollisionVector.Add(penetration * (other.Mass / totalMass));
+                                other.CollisionVector.Subtract(penetration * (current.Mass / totalMass));
                             }
                             else
                             {
-                                current.CollisionVector += penetration * 0.5f;
-                                other.CollisionVector -= penetration * 0.5f;
+                                current.CollisionVector.Add(penetration * 0.5f);
+                                other.CollisionVector.Subtract(penetration * 0.5f);
                             }
                         }
 
@@ -217,16 +228,16 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 
         for (int i = 0; i < count; i++)
         {
-            var current = collidables[i];
+            current = ref collidables[i];
             if (current.IsCollided)
             {
-                var currentEntity = current.Entity;
+                currentEntity = current.Entity;
                 currentEntity.isCollided = true;
                 currentEntity.AddCollisionVector(current.CollisionVector);
             }
         }
 
-        collidables.Clear();
+        //collidables.Clear();
     }
 
     public void Cleanup()
@@ -261,7 +272,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetration = -depth * axis;
+                    penetration.Set(depth * -axis);
                     prevDepth = depth;
                 }
             }
@@ -271,7 +282,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetration = depth * axis;
+                    penetration.Set(depth * axis);
                     prevDepth = depth;
                 }
             }
@@ -314,7 +325,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetrationVector = -depth * axis;
+                    penetrationVector.Set(depth * -axis);
                     prevDepth = depth;
                 }
             }
@@ -324,7 +335,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
                 if (depth < 0) return false;
                 if (depth < prevDepth)
                 {
-                    penetrationVector = depth * axis;
+                    penetrationVector.Set(depth * axis);
                     prevDepth = depth;
                 }
             }
