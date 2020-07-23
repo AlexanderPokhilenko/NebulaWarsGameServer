@@ -6,6 +6,8 @@ internal class NetworkSenderSystems : Feature
 {
     public NetworkSenderSystems(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas viewAreas) : base("Network Sender Systems")
     {
+        Add(new FrameRateSenderSystem(contexts, matchId, udpSendUtils));
+
         Add(new HidesSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
         Add(new ChangingPositionsSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
         Add(new UnhiddenStoppedSenderSystem(contexts, matchId, udpSendUtils, viewAreas));

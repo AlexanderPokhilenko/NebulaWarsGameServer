@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using UnityEngine;
 
 namespace Server.GameEngine
@@ -10,7 +11,7 @@ namespace Server.GameEngine
     public class Chronometer: MonoBehaviour
     {
         private Action callback;
-        private const float MaxDelay = 1f / 30f;
+        private const float MaxDelay = ServerTimeConstants.MinDeltaTime;
 
         /// <summary>
         /// Время в секундах, которое потребовалось для обработки последнего тика.
@@ -18,7 +19,7 @@ namespace Server.GameEngine
         /// <remarks>
         /// Это НЕ постоянная величина и она может изменяться из-за нагрузки на сервер.
         /// </remarks>
-        public static float DeltaTime { get; private set; }
+        public static float DeltaTime { get; private set; } = ServerTimeConstants.MinDeltaTime;
         
         public void SetCallback(Action actionArg)
         {

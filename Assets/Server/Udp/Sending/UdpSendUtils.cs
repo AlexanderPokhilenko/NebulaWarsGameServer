@@ -144,7 +144,13 @@ namespace Server.Udp.Sending
             var message = new ShowPlayerAchievementsMessage(matchId);
             SendUdp(matchId, playerId, message, true);
         }
-        
+
+        public void SendFrameRate(int matchId, ushort playerId, float deltaTime)
+        {
+            var message = new FrameRateMessage(deltaTime);
+            SendUdp(matchId, playerId, message, true);
+        }
+
         public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint playerAddress)
         {
             if (playerAddress != null)
