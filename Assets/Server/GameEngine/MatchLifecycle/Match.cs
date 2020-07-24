@@ -51,7 +51,7 @@ namespace Server.GameEngine
             var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnits.Players.Count);
 
             systems = new Entitas.Systems()
-                    .Add(new MapInitSystem(contexts, matchModelArg, udpSendUtils))
+                    .Add(new MapInitSystem(contexts, matchModelArg, udpSendUtils, out var chunks))
                     .Add(new ViewAreasInitSystem(contexts, playersViewAreas))
                     // .Add(new TestEndMatchSystem(contexts))
                     .Add(new PlayerMovementHandlerSystem(contexts))
@@ -62,6 +62,7 @@ namespace Server.GameEngine
                     .Add(new MovementSystems(contexts))
                     .Add(new GlobalTransformSystem(contexts))
                     .Add(new ShootingSystems(contexts))
+                    .Add(new UpdatePositionChunksSystem(contexts, chunks))
                     .Add(new CollisionSystems(contexts))
                     .Add(new EffectsSystems(contexts))
                     .Add(new TimeSystems(contexts))

@@ -14,6 +14,7 @@ namespace Server.GameEngine.Systems
     public class MapInitSystem : IInitializeSystem
     {
         private readonly System.Random random = new System.Random();
+        private static readonly int mapIntRadius;
         private static readonly FlameCircleObject FlameCircle;
         private static readonly RandomObject RandomAsteroid;
         private static readonly BaseWithHealthObject SpaceStation;
@@ -48,6 +49,7 @@ namespace Server.GameEngine.Systems
             FlameCircle = Resources.Load<FlameCircleObject>("SO/BaseObjects/FlameCircle");
             if (FlameCircle == null)
                 throw new Exception($"В {nameof(MapInitSystem)} flameCircle был null.");
+            mapIntRadius = Mathf.CeilToInt(((CircleColliderInfo) FlameCircle.colliderInfo).radius);
 
             RandomAsteroid = Resources.Load<RandomObject>("SO/BaseObjects/RandomAsteroid");
             if (RandomAsteroid == null)
@@ -66,11 +68,12 @@ namespace Server.GameEngine.Systems
                 throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
         }
 
-        public MapInitSystem(Contexts contexts, BattleRoyaleMatchModel matchModel, UdpSendUtils udpSendUtils)
+        public MapInitSystem(Contexts contexts, BattleRoyaleMatchModel matchModel, UdpSendUtils udpSendUtils, out PositionChunks chunks)
         {
             gameContext = contexts.game;
             this.matchModel = matchModel;
             this.udpSendUtils = udpSendUtils;
+            chunks = new PositionChunks(mapIntRadius);
         }
         
         public void Initialize()
