@@ -6,23 +6,28 @@ using UnityEngine;
 
 public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
 {
+    private readonly PositionChunks chunks;
     private readonly GameContext gameContext;
     private readonly IGroup<GameEntity> collidableGroup;
     private readonly List<GameEntity> buffer;
+    private readonly Dictionary<ushort, int> idsToIndexes;
     private CollisionInfo[] collidables;
     private const int predictedCapacity = 512;
 
-    public CollisionDetectionSystem(Contexts contexts)
+    public CollisionDetectionSystem(Contexts contexts, PositionChunks positionChunks)
     {
+        chunks = positionChunks;
         gameContext = contexts.game;
         var matcher = GameMatcher.AllOf(GameMatcher.Collidable, GameMatcher.CircleCollider, GameMatcher.Position);
         collidableGroup = gameContext.GetGroup(matcher);
         buffer = new List<GameEntity>(predictedCapacity);
+        idsToIndexes = new Dictionary<ushort, int>(predictedCapacity);
         collidables = new CollisionInfo[predictedCapacity];
     }
 
     private struct CollisionInfo
     {
+        public readonly ushort Id;
         public readonly GameEntity Entity;
         public readonly Vector2 GlobalPosition;
         public readonly float Radius;
@@ -46,11 +51,12 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         public readonly ushort GrandTargetId;
         public readonly bool HasBonus;
         public bool IsCollided;
+        public bool WasProcessed;
         public Vector2 CollisionVector;
 
         public CollisionInfo(GameEntity entity, GameContext gameContext)
         {
-            var id = entity.id.value;
+            Id = entity.id.value;
             Entity = entity;
             Radius = entity.circleCollider.radius;
             if (entity.isUnmovable && !entity.hasParent)
@@ -79,20 +85,22 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
             HasBonusPickerPart = !IsPassingThrough && entity.TryGetFirstGameEntity(gameContext, part => part.isBonusPickable, out BonusPickerPart);
             HasDamage = entity.hasDamage;
             Damage = HasDamage ? (IsPassingThrough && !entity.isCollapses ? entity.damage.value * Chronometer.DeltaTime : entity.damage.value) : 0f;
-            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : id;
-            GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : id;
+            GrandOwnerId = entity.hasGrandOwner ? entity.grandOwner.id : Id;
+            GrandParentId = entity.hasParent ? entity.GetGrandParent(gameContext).id.value : Id;
             TeamId = entity.hasTeam ? entity.team.id : byte.MaxValue;
             var hasTarget = entity.hasTarget;
             IsTargetingParasite = entity.isParasite && hasTarget;
             GrandTargetId = hasTarget ? gameContext.GetEntityWithId(entity.target.id).GetGrandParent(gameContext).id.value : (ushort)0;
             HasBonus = (entity.hasBonusAdder || entity.hasActionBonus) && !entity.hasBonusTarget;
             IsCollided = false;
+            WasProcessed = false;
             CollisionVector = new Vector2(0f, 0f);
         }
     }
 
     public void Execute()
     {
+        idsToIndexes.Clear();
         var entities = collidableGroup.GetEntities(buffer);
         var count = entities.Count;
         if (count > collidables.Length) collidables = new CollisionInfo[count];
@@ -100,6 +108,7 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         {
             var entity = entities[i];
             collidables[i] = new CollisionInfo(entity, gameContext);
+            idsToIndexes[collidables[i].Id] = i;
         }
         // ReSharper disable TooWideLocalVariableScope
         ref var current = ref collidables[0];
@@ -112,115 +121,129 @@ public sealed class CollisionDetectionSystem : IExecuteSystem, ICleanupSystem
         bool collided;
         var penetration = Vector2.zero;
         // ReSharper restore TooWideLocalVariableScope
-        for (int i = 1; i < count; i++)
+        foreach (var (currentId, otherId) in chunks.SameChunkPairs)
         {
-            current = ref collidables[i - 1];
+            var currentIndex = idsToIndexes[currentId];
+            var otherIndex = idsToIndexes[otherId];
+
+            current = ref collidables[currentIndex];
             currentEntity = current.Entity;
-            for (int j = i; j < count; j++)
+
+            other = ref collidables[otherIndex];
+            otherEntity = other.Entity;
+
+            if(current.WasProcessed || other.WasProcessed) continue;
+
+            if (other.TeamId == current.TeamId && // отключает friendly fire
+                    (current.HasDamage || other.HasDamage || current.HasBonus || other.HasBonus)) continue;
+            if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
+                && current.GrandParentId == other.GrandParentId) continue;
+
+            distance.Set(other.GlobalPosition);
+            distance.Subtract(current.GlobalPosition);
+            closeDistance = other.Radius + current.Radius;
+            sqrDistance = distance.sqrMagnitude;
+            if (sqrDistance <= closeDistance * closeDistance)
             {
-                other = ref collidables[j];
-                otherEntity = other.Entity;
-
-                if (other.TeamId == current.TeamId && // отключает friendly fire
-                    (current.HasDamage || other.HasDamage || current.HasBonus || other.HasBonus)) continue; 
-                if ((other.IsIgnoringParentCollision || current.IsIgnoringParentCollision)
-                    && current.GrandParentId == other.GrandParentId) continue;
-
-                distance.Set(other.GlobalPosition);
-                distance.Subtract(current.GlobalPosition);
-                closeDistance = other.Radius + current.Radius;
-                sqrDistance = distance.sqrMagnitude;
-                if (sqrDistance <= closeDistance * closeDistance)
+                if (current.IsRound)
                 {
-                    if (current.IsRound)
+                    if (other.IsRound)
                     {
-                        if (other.IsRound)
+                        collided = true;
+                        if (distance != Vector2.zero)
                         {
-                            collided = true;
-                            if (distance != Vector2.zero)
-                            {
-                                penetration.Set(distance);
-                                penetration.Subtract(distance.normalized * closeDistance);
-                            }
-                            else
-                            {
-                                penetration.Set(CoordinatesExtensions.GetRandomUnitVector2() * closeDistance);
-                            }
+                            penetration.Set(distance);
+                            penetration.Subtract(distance.normalized * closeDistance);
                         }
                         else
                         {
-                            collided = CheckCollisionFigureWithCircle(other, current, out penetration);
-                            penetration.ChangeSign();
+                            penetration.Set(CoordinatesExtensions.GetRandomUnitVector2() * closeDistance);
                         }
                     }
                     else
                     {
-                        if (other.IsRound)
+                        collided = CheckCollisionFigureWithCircle(other, current, out penetration);
+                        penetration.ChangeSign();
+                    }
+                }
+                else
+                {
+                    if (other.IsRound)
+                    {
+                        collided = CheckCollisionFigureWithCircle(current, other, out penetration);
+                    }
+                    else
+                    {
+                        collided = CheckCollisionFigureWithFigure(current, other, out penetration);
+                    }
+                }
+
+                if (collided)
+                {
+                    if (!current.IsPassingThrough && !other.IsPassingThrough &&
+                        !((current.IsTargetingParasite && current.GrandTargetId == other.GrandParentId) ||
+                          (other.IsTargetingParasite && other.GrandTargetId == current.GrandParentId)))
+                    {
+                        current.IsCollided = true;
+                        other.IsCollided = true;
+
+                        if (current.HasMass || other.HasMass)
                         {
-                            collided = CheckCollisionFigureWithCircle(current, other, out penetration);
+                            var totalMass = current.Mass + other.Mass;
+                            current.CollisionVector.Add(penetration * (other.Mass / totalMass));
+                            other.CollisionVector.Subtract(penetration * (current.Mass / totalMass));
                         }
                         else
                         {
-                            collided = CheckCollisionFigureWithFigure(current, other, out penetration);
+                            current.CollisionVector.Add(penetration * 0.5f);
+                            other.CollisionVector.Subtract(penetration * 0.5f);
                         }
                     }
 
-                    if (collided)
+                    if (current.HasDamage && !other.IsPassingThrough && other.HasHealthPointsPart)
                     {
-                        if (!current.IsPassingThrough && !other.IsPassingThrough &&
-                            !((current.IsTargetingParasite && current.GrandTargetId == other.GrandParentId) ||
-                              (other.IsTargetingParasite && other.GrandTargetId == current.GrandParentId)))
-                        {
-                            current.IsCollided = true;
-                            other.IsCollided = true;
+                        current.IsCollided = true;
+                        var otherHealthPointsPart = other.HealthPointsPart;
+                        otherHealthPointsPart.ReplaceHealthPoints(otherHealthPointsPart.healthPoints.value - current.Damage);
+                        if (otherHealthPointsPart.healthPoints.value <= 0 && !otherHealthPointsPart.hasKilledBy) otherHealthPointsPart.AddKilledBy(current.GrandOwnerId);
+                    }
+                    if (other.HasDamage && !current.IsPassingThrough && current.HasHealthPointsPart)
+                    {
+                        other.IsCollided = true;
+                        var currentHealthPointsPart = current.HealthPointsPart;
+                        currentHealthPointsPart.ReplaceHealthPoints(currentHealthPointsPart.healthPoints.value - other.Damage);
+                        if (currentHealthPointsPart.healthPoints.value <= 0 && !currentHealthPointsPart.hasKilledBy) currentHealthPointsPart.AddKilledBy(other.GrandOwnerId);
+                    }
 
-                            if (current.HasMass || other.HasMass)
-                            {
-                                var totalMass = current.Mass + other.Mass;
-                                current.CollisionVector.Add(penetration * (other.Mass / totalMass));
-                                other.CollisionVector.Subtract(penetration * (current.Mass / totalMass));
-                            }
-                            else
-                            {
-                                current.CollisionVector.Add(penetration * 0.5f);
-                                other.CollisionVector.Subtract(penetration * 0.5f);
-                            }
-                        }
-
-                        if (current.HasDamage && !other.IsPassingThrough && other.HasHealthPointsPart)
+                    if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
+                    {
+                        if (currentEntity.hasBonusTarget)
                         {
-                            current.IsCollided = true;
-                            var otherHealthPointsPart = other.HealthPointsPart;
-                            otherHealthPointsPart.ReplaceHealthPoints(otherHealthPointsPart.healthPoints.value - current.Damage);
-                            if(otherHealthPointsPart.healthPoints.value <= 0 && !otherHealthPointsPart.hasKilledBy) otherHealthPointsPart.AddKilledBy(current.GrandOwnerId);
-                        }
-                        if (other.HasDamage && !current.IsPassingThrough && current.HasHealthPointsPart)
+                            current.WasProcessed = true;
+                            continue;
+                        };
+                        var otherBonusPicker = other.BonusPickerPart;
+                        if (currentEntity.hasBonusAdder && otherBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                        if (currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherBonusPicker)) continue;
+                        current.IsCollided = true;
+                        currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
+                        current.WasProcessed = true;
+                        continue;
+                    }
+                    else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
+                    {
+                        if (otherEntity.hasBonusTarget)
                         {
-                            other.IsCollided = true;
-                            var currentHealthPointsPart = current.HealthPointsPart;
-                            currentHealthPointsPart.ReplaceHealthPoints(currentHealthPointsPart.healthPoints.value - other.Damage);
-                            if (currentHealthPointsPart.healthPoints.value <= 0 && !currentHealthPointsPart.hasKilledBy) currentHealthPointsPart.AddKilledBy(other.GrandOwnerId);
-                        }
-
-                        if (current.HasBonus && !other.IsPassingThrough && other.HasBonusPickerPart)
-                        {
-                            if (currentEntity.hasBonusTarget) break;
-                            var otherBonusPicker = other.BonusPickerPart;
-                            if (currentEntity.hasBonusAdder && otherBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == currentEntity.bonusAdder.bonusObject.typeId).Any()) continue;
-                            if (currentEntity.hasActionBonus && !currentEntity.actionBonus.check(otherBonusPicker)) continue;
-                            current.IsCollided = true;
-                            currentEntity.AddBonusTarget(other.BonusPickerPart.id.value);
-                            break;
-                        }
-                        else if (other.HasBonus && !current.IsPassingThrough && current.HasBonusPickerPart)
-                        {
-                            if (otherEntity.hasBonusTarget) continue;
-                            var currentBonusPicker = current.BonusPickerPart;
-                            if (otherEntity.hasBonusAdder && currentBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == otherEntity.bonusAdder.bonusObject.typeId).Any()) continue;
-                            if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentBonusPicker)) continue;
-                            other.IsCollided = true;
-                            otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
-                        }
+                            other.WasProcessed = true;
+                            continue;
+                        };
+                        var currentBonusPicker = current.BonusPickerPart;
+                        if (otherEntity.hasBonusAdder && currentBonusPicker.GetAllChildrenGameEntities(gameContext, c => c.hasViewType && c.viewType.id == otherEntity.bonusAdder.bonusObject.typeId).Any()) continue;
+                        if (otherEntity.hasActionBonus && !otherEntity.actionBonus.check(currentBonusPicker)) continue;
+                        other.IsCollided = true;
+                        otherEntity.AddBonusTarget(current.BonusPickerPart.id.value);
+                        other.WasProcessed = true;
+                        continue;
                     }
                 }
             }

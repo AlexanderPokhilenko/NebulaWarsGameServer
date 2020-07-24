@@ -63,7 +63,7 @@ namespace Server.GameEngine
                     .Add(new GlobalTransformSystem(contexts))
                     .Add(new ShootingSystems(contexts))
                     .Add(new UpdatePositionChunksSystem(contexts, chunks))
-                    .Add(new CollisionSystems(contexts))
+                    .Add(new CollisionSystems(contexts, chunks))
                     .Add(new EffectsSystems(contexts))
                     .Add(new TimeSystems(contexts))
                     .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))

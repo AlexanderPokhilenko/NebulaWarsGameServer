@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -9,11 +10,11 @@ namespace Server.GameEngine
         private readonly List<ushort>[,] chunks;
         private readonly Dictionary<(int x, int y), List<ushort>> additionalChunks;
         private readonly Stack<List<ushort>> additionalListsPool;
-        public readonly Dictionary<ushort, ushort> SameChunkPairs;
-        private const int PredictedSameTotalCapacity = 256;
+        public readonly HashSet<(ushort CurrentId, ushort OtherId)> SameChunkPairs;
         private const int PredictedNormalCapacity = 16;
         private const int PredictedAdditionalCapacity = 4;
         private const int PredictedAdditionalCount = 2;
+        private const float MicroIncrement = 0.001f;
 
         public PositionChunks(int mapRadius)
         {
@@ -28,7 +29,7 @@ namespace Server.GameEngine
                 }
             }
 
-            SameChunkPairs = new Dictionary<ushort, ushort>(PredictedSameTotalCapacity);
+            SameChunkPairs = new HashSet<(ushort CurrentId, ushort OtherId)>();
 
             additionalChunks = new Dictionary<(int x, int y), List<ushort>>();
 
@@ -39,7 +40,7 @@ namespace Server.GameEngine
             }
         }
 
-        public void Fill(List<GameEntity> entities)
+        public void Fill(List<GameEntity> entities, GameContext context)
         {
             Clear();
 
@@ -48,8 +49,8 @@ namespace Server.GameEngine
             {
                 var entity = entities[i];
                 var id = entity.id.value;
-                var position = entity.globalTransform.position;
-                var colliderRadius = entity.circleCollider.radius;
+                var position = entity.hasGlobalTransform ? entity.globalTransform.position : entity.GetGlobalPositionVector2(context);
+                var colliderRadius = entity.circleCollider.radius + MicroIncrement;
 
                 var floatX = position.x + floatRadius;
                 var floatY = position.y + floatRadius;
@@ -94,16 +95,30 @@ namespace Server.GameEngine
 
                             if (prevId > id)
                             {
-                                SameChunkPairs[id] = prevId;
+                                SameChunkPairs.Add((id, prevId));
                             }
                             else
                             {
-                                SameChunkPairs[prevId] = id;
+                                SameChunkPairs.Add((prevId, id));
                             }
                         }
                     }
                 }
             }
+
+            //string str = "";
+            //for (int y = diameter - 1; y >= 0; y--)
+            //{
+            //    for (int x = 0; x < diameter; x++)
+            //    {
+            //        str += "[" + string.Join(", ", chunks[x, y]) + "]";
+            //    }
+
+            //    str += "\n";
+            //}
+            //Debug.Log(str);
+            //Debug.Log(string.Join("; ", SameChunkPairs));
+            //Debug.Log(SameChunkPairs.Count);
         }
 
         private void Clear()

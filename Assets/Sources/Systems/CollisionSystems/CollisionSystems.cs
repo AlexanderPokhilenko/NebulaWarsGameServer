@@ -1,8 +1,8 @@
-﻿using Entitas;
+﻿using Server.GameEngine;
 
 public class CollisionSystems : Feature
 {
-    public CollisionSystems(Contexts contexts) : base("Collision Systems")
+    public CollisionSystems(Contexts contexts, PositionChunks chunks) : base("Collision Systems")
     {
         Add(new AddCollidersToRectSystem(contexts));
         Add(new AddCollidersToPathSystem(contexts));
@@ -10,7 +10,7 @@ public class CollisionSystems : Feature
         Add(new AddGlobalCollisionComponentsSystem(contexts));
         Add(new ConcaveColliderDetectionSystem(contexts));
         Add(new UpdateGlobalCollisionComponentsSystem(contexts));
-        Add(new CollisionDetectionSystem(contexts));
+        Add(new CollisionDetectionSystem(contexts, chunks));
         Add(new CollisionFixedPenetrationDetectionSystem(contexts));
         Add(new CollisionPenetrationAvoidanceSystem(contexts));
     }

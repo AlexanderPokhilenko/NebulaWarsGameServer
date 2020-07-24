@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using Entitas;
+using Server.GameEngine;
 using UnityEngine;
 
 public class StubSpawner : MonoBehaviour
@@ -22,13 +23,16 @@ public class StubSpawner : MonoBehaviour
         contexts.SubscribeId();
         gameContext = contexts.game;
 
+        PositionChunks chunks = new PositionChunks(2);
+
         systems = new Systems()
                 .Add(new ParentsSystems(contexts))
                 .Add(new AISystems(contexts))
                 .Add(new MovementSystems(contexts))
                 .Add(new GlobalTransformSystem(contexts))
                 .Add(new ShootingSystems(contexts))
-                .Add(new CollisionSystems(contexts))
+                .Add(new UpdatePositionChunksSystem(contexts, chunks))
+                .Add(new CollisionSystems(contexts, chunks))
                 .Add(new EffectsSystems(contexts))
                 .Add(new TimeSystems(contexts))
                 .Add(new DestroySystems(contexts))
