@@ -21,6 +21,7 @@ namespace Server.GameEngine
         {
             this.matchmakerNotifier = matchmakerNotifier;
             this.udpSendUtils = udpSendUtils;
+            ipAddressesStorage = udpSendUtils.ipAddressesStorage;
         }
         
         public void PlayerDeath(PlayerDeathData playerDeathData, ushort temporaryId, bool sendNotificationToPlayer)
@@ -29,6 +30,8 @@ namespace Server.GameEngine
             {
                 udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, temporaryId);   
             }
+
+            ipAddressesStorage.TryRemoveIpEndPoint(playerDeathData.MatchId, temporaryId);
             
             SendPlayerDeathMessageToMatchmaker(playerDeathData);
         }

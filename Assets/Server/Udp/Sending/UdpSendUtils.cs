@@ -20,7 +20,7 @@ namespace Server.Udp.Sending
     /// </summary>
     public class UdpSendUtils
     {
-        private readonly IpAddressesStorage ipAddressesStorage;
+        public readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage rudpStorage;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
