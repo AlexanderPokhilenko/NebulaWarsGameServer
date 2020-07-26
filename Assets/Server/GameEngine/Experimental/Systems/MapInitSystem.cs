@@ -19,6 +19,7 @@ namespace Server.GameEngine.Systems
         private static readonly RandomObject RandomAsteroid;
         private static readonly BaseWithHealthObject SpaceStation;
         private static readonly RandomObject RandomBonus;
+        private static readonly UpgradeBonusObject UpgradeBonus;
         private static readonly EntityCreatorObject Boss;
         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
         private static readonly Dictionary<string, SkinInfo> Skins;
@@ -63,6 +64,10 @@ namespace Server.GameEngine.Systems
             if (RandomBonus == null)
                 throw new Exception($"В {nameof(MapInitSystem)} bonus был null.");
 
+            UpgradeBonus = Resources.Load<UpgradeBonusObject>("SO/Bonuses/PickableObjects/SmallUpgradeBonus");
+            if (UpgradeBonus == null)
+                throw new Exception($"В {nameof(MapInitSystem)} upgrade bonus был null.");
+
             Boss = Resources.Load<FighterObject>("SO/BaseObjects/ScarabBoss");
             if (Boss == null)
                 throw new Exception($"В {nameof(MapInitSystem)} boss был null.");
@@ -98,6 +103,15 @@ namespace Server.GameEngine.Systems
                 Vector2 position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
                 GameEntity playerEntity = PlayerPrototypes[gameUnit.WarshipName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle, (byte)(gameUnitIndex+1));
+
+                if (playerEntity.hasDrop)
+                {
+                    playerEntity.drop.objects.Add(UpgradeBonus);
+                }
+                else
+                {
+                    playerEntity.AddDrop(new List<EntityCreatorObject> { UpgradeBonus });
+                }
                 
                 playerEntity.AddPlayer(gameUnit.TemporaryId);
                 playerEntity.AddAccount(gameUnit.AccountId);
