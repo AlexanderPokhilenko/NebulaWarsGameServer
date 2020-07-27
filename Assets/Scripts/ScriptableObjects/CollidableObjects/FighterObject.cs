@@ -14,16 +14,14 @@ public class FighterObject : MovableWithHealthObject
     public float lifetime;
     public bool useBotAI;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddTargetingParameters(useAngularTargeting, detectionRadius, onlyPlayerTargeting);
         entity.isTargetChanging = targetChanging;
         entity.AddChaser(distance);
         entity.isParasite = isParasite;
         if(lifetime > 0) entity.AddLifetime(lifetime);
         entity.isBot = useBotAI;
-
-        return entity;
     }
 }

@@ -8,11 +8,9 @@ public class BonusAdderObject : BaseObject
     public float duration;
     public bool colliderInheritance = true;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddBonusAdder(bonusObject, duration, colliderInheritance);
-
-        return entity;
     }
 }

@@ -18,9 +18,8 @@ public class BaseObject : EntityCreatorObject
     public PartObject[] parts;
     public ShooterInfo shooter;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = context.CreateEntity();
         if(typeId != ViewTypeId.Invisible) entity.AddViewType(typeId);
         if (colliderInfo != null)
         {
@@ -47,7 +46,5 @@ public class BaseObject : EntityCreatorObject
         }
 
         if(shooter != null) entity.AddSpecialShooter(shooter.CreateInstance());
-
-        return entity;
     }
 }

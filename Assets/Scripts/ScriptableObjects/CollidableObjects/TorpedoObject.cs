@@ -12,9 +12,9 @@ public class TorpedoObject : BulletObject
     [Min(0)]
     public float maxHealthPoints;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddChaser(distance);
         if(detectionRadius > 0f) entity.AddTargetingParameters(useAngularTargeting, detectionRadius, onlyPlayerTargeting);
         entity.isTargetChanging = targetChanging;
@@ -24,7 +24,5 @@ public class TorpedoObject : BulletObject
             entity.AddMaxHealthPoints(maxHealthPoints);
             entity.isOnHealthDropDestroying = true;
         }
-
-        return entity;
     }
 }

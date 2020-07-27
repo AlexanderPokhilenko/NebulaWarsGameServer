@@ -9,13 +9,11 @@ public class AuraObject : BaseObject
     [Min(0)]
     public float damage;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddAngularVelocity(angularVelocity);
         entity.AddAura(outerRadius, damage);
         entity.isCollidable = false;
-
-        return entity;
     }
 }

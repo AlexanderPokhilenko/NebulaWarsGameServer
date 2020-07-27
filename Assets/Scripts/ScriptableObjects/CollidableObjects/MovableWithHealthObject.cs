@@ -6,12 +6,10 @@ public class MovableWithHealthObject : MovableObject
     [Min(0)]
     public float maxHealthPoints;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddHealthPoints(maxHealthPoints);
         entity.AddMaxHealthPoints(maxHealthPoints);
-
-        return entity;
     }
 }

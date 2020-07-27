@@ -9,13 +9,11 @@ public class MovableObject : BaseObject
     public float maxAngularVelocity;
     public bool isNotDecelerating;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddMaxVelocity(maxVelocity);
         entity.AddMaxAngularVelocity(maxAngularVelocity);
         entity.isNotDecelerating = isNotDecelerating;
-
-        return entity;
     }
 }

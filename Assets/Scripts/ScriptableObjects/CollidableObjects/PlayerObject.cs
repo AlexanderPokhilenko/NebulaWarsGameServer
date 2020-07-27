@@ -5,13 +5,11 @@ public class PlayerObject : MovableWithHealthObject
 {
     public AbilityInfo ability;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         ability.AddAbilityToEntity(entity);
         entity.isBonusPickable = true;
         entity.isSingleTargeting = true;
-
-        return entity;
     }
 }

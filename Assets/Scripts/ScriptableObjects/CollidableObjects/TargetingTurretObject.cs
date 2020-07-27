@@ -11,14 +11,12 @@ public class TargetingTurretObject : BaseObject
     public bool onlyPlayerTargeting = true;
     public bool targetChanging;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddMaxAngularVelocity(maxAngularVelocity);
         entity.AddTargetingParameters(useAngularTargeting, detectionRadius, onlyPlayerTargeting);
         entity.isTargetChanging = targetChanging;
         entity.AddInitialDirectionSaver(0f);
-
-        return entity;
     }
 }

@@ -11,9 +11,9 @@ public class BulletObject : MovableObject
     public bool detachable = true;
     public bool parentDependent;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.isCollapses = isCollapses;
         entity.AddLifetime(lifetime);
         if (!detachable)
@@ -22,7 +22,5 @@ public class BulletObject : MovableObject
             entity.isIgnoringParentCollision = true;
             entity.isParentDependent = parentDependent;
         }
-
-        return entity;
     }
 }

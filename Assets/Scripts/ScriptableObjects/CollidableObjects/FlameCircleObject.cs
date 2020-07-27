@@ -5,13 +5,11 @@ public class FlameCircleObject : AuraObject
 {
     public float scalingSpeed = -1.0f;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddCircleScaling(scalingSpeed);
         entity.AddTargetScaling(0f);
         entity.isNonstandardRadius = true;
-
-        return entity;
     }
 }

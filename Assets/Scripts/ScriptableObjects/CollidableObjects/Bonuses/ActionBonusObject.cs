@@ -1,11 +1,9 @@
 ﻿public abstract class ActionBonusObject : BaseObject
 {
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddActionBonus(Check, Action);
-
-        return entity;
     }
 
     protected abstract bool Check(GameEntity entity);

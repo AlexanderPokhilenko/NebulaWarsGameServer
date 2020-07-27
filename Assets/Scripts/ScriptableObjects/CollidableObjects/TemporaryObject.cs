@@ -6,11 +6,9 @@ public class TemporaryObject : BaseObject
     [Min(0)]
     public float lifetime = 1f;
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
-        var entity = base.CreateEntity(context);
+        base.FillEntity(context, entity);
         entity.AddLifetime(lifetime);
-
-        return entity;
     }
 }

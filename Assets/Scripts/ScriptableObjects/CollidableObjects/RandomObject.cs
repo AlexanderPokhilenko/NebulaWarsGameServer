@@ -14,7 +14,7 @@ public class RandomObject : EntityCreatorObject
         maxProbability = objects.Sum(o => o.probability);
     }
 
-    public override GameEntity CreateEntity(GameContext context)
+    public override void FillEntity(GameContext context, GameEntity entity)
     {
         var probability = random.Next(maxProbability);
 
@@ -27,13 +27,11 @@ public class RandomObject : EntityCreatorObject
 
         if (result == null)
         {
-            var entity = context.CreateEntity();
             entity.isDestroyed = true;
-            return entity;
         }
         else
         {
-            return result.CreateEntity(context);
+            result.FillEntity(context, entity);
         }
     }
 }

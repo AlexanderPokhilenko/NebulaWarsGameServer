@@ -2,7 +2,28 @@
 
 public abstract class EntityCreatorObject : ScriptableObject
 {
-    public abstract GameEntity CreateEntity(GameContext context);
+    public abstract void FillEntity(GameContext context, GameEntity entity);
+
+    public void RefillEntity(GameContext context, GameEntity entity, Vector2 position, float direction)
+    {
+        var id = entity.id.value;
+
+        entity.RemoveAllComponents();
+        //entity.RemoveAllOnEntityReleasedHandlers();
+
+        entity.AddId(id);
+        entity.AddPosition(position);
+        entity.AddDirection(direction);
+
+        FillEntity(context, entity);
+    }
+
+    public GameEntity CreateEntity(GameContext context)
+    {
+        var entity = context.CreateEntity();
+        FillEntity(context, entity);
+        return entity;
+    }
 
     public GameEntity CreateEntity(GameContext context, Vector2 position, float angle)
     {
