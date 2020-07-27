@@ -4,7 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewSkin", menuName = "Skin", order = 55)]
 public class SkinInfo : ScriptableObject
 {
+#pragma warning disable 649 // Присваивается в Unity Editor.
     [SerializeField] private ViewTypePair[] pairs;
+#pragma warning restore 649
     protected Dictionary<ViewTypeId, ViewTypeId> dictionary;
 
     void OnEnable()
