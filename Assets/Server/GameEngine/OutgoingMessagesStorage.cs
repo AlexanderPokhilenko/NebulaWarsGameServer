@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using Code.Common;
 using Server.Udp.Sending;
+using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -10,32 +12,43 @@ namespace Server.GameEngine
     /// </summary>
     public class OutgoingMessagesStorage
     {
-        private readonly SimpleDatagramPacker simpleDatagramPacker;
-        private readonly Dictionary<IPEndPoint, List<byte[]>> messages = new Dictionary<IPEndPoint, List<byte[]>>();
+        private readonly IpAddressesStorage ipAddressesStorage;
+        private readonly SimpleMessagesPacker simpleMessagesPacker;
+        private readonly ILog log = LogManager.CreateLogger(typeof(OutgoingMessagesStorage));
+        private readonly Dictionary<Tuple<int, ushort>, List<byte[]>> messages = new Dictionary<Tuple<int, ushort>, List<byte[]>>();
         
-        public OutgoingMessagesStorage(SimpleDatagramPacker simpleDatagramPacker)
+        public OutgoingMessagesStorage(SimpleMessagesPacker simpleMessagesPacker, IpAddressesStorage ipAddressesStorage)
         {
-            this.simpleDatagramPacker = simpleDatagramPacker;
+            this.simpleMessagesPacker = simpleMessagesPacker;
+            this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public void AddMessage(byte[] data, IPEndPoint ipEndPoint)
+        public void AddMessage(int matchId, ushort playerId, byte[] data)
         {
-            if (messages.TryGetValue(ipEndPoint, out List<byte[]> playerMessages))
+            var id = new Tuple<int, ushort>(matchId, playerId);
+            if (messages.TryGetValue(id, out List<byte[]> playerMessages))
             {
                 playerMessages.Add(data);
             }
             else
             {
-                //TODO сколько сообщений отправляется игроку за кадр в среднем?
-                messages.Add(ipEndPoint, new List<byte[]>(5){data} );
+                messages.Add(id, new List<byte[]>{data} );
             }
         }
         
         public void SendAllMessages()
         {
-            foreach (KeyValuePair<IPEndPoint, List<byte[]>> pair in messages)
+            foreach (KeyValuePair<Tuple<int, ushort>, List<byte[]>> pair in messages)
             {
-                simpleDatagramPacker.Send(pair.Key, pair.Value);
+                int matchId = pair.Key.Item1;
+                ushort playerId = pair.Key.Item2;
+                List<byte[]> serializedMessages = pair.Value;
+                if(!ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out var ip))
+                {
+                    log.Debug($"Ip игрока {nameof(matchId)} {matchId} {nameof(playerId)} {playerId} нет.");
+                    return;
+                }
+                simpleMessagesPacker.Send(matchId, playerId, ip, serializedMessages);
             }
             
             messages.Clear();

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using Entitas;
 using Server.GameEngine;
+using Server.GameEngine.Experimental;
 using UnityEngine;
 
 public class StubSpawner : MonoBehaviour

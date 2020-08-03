@@ -3,7 +3,7 @@ using Code.Common;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.MatchLifecycle
 {
     /// <summary>
     /// Отправляет игрокам сообщения об окончании матча по udp.

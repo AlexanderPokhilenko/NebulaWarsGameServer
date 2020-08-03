@@ -219,7 +219,7 @@
                 </e>
               </e>
               <e p="Utils" t="Include">
-                <e p="MessagesContainer.cs" t="Include" />
+                <e p="MessagesPack.cs" t="Include" />
                 <e p="MessageWrapper.cs" t="Include" />
                 <e p="TestMessageClass1.cs" t="Include" />
                 <e p="TestMessageStruct1.cs" t="Include" />
@@ -409,8 +409,9 @@
               <e p="KillData.cs" t="Include" />
               <e p="MessageFactory.cs" t="Include" />
               <e p="MessageIdFactory.cs" t="Include" />
+              <e p="MessagesPackIdFactory.cs" t="Include" />
               <e p="MockUdpSender.cs" t="Include" />
-              <e p="ShittyDatagramPacker.cs" t="Include" />
+              <e p="SimpleMessagesPacker.cs" t="Include" />
               <e p="UdpSendUtils.cs" t="Include" />
             </e>
             <e p="Storage" t="Include">

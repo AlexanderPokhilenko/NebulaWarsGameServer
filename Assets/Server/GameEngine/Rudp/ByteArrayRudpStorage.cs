@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 //TODO убрать lock и выяснить в чём проблема
 //конкурентной коллекции должно быть достаточно 
 
-namespace Server.Udp.Storage
+namespace Server.GameEngine.Rudp
 {
     /// <summary>
     /// Хранит сообщения, доставка которых не была подтверждена.

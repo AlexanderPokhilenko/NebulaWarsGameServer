@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Experimental
 {
     public class PlayersViewAreas : IEnumerable<KeyValuePair<ushort, PlayersViewAreas.PlayerViewAreaInfo>>
     {

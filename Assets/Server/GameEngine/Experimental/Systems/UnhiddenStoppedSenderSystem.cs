@@ -1,10 +1,10 @@
-﻿using Entitas;
+﻿using System.Linq;
+using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
-using System.Linq;
 using UnityEngine;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class UnhiddenStoppedSenderSystem : IExecuteSystem
     {

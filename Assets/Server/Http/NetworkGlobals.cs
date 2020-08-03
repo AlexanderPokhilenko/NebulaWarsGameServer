@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace
+﻿namespace Server.Http
 {
     public static class NetworkGlobals
     {

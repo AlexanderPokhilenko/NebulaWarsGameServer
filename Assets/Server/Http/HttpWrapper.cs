@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Code.Common;
-using DefaultNamespace;
 
 namespace Server.Http
 {

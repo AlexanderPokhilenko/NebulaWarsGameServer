@@ -1,26 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Code.Common;
+using Server.GameEngine.MatchLifecycle;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Rudp
 {
     public class RudpMessagesSender
     {
-        private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly MatchStorage matchStorage;
         private readonly UdpSendUtils udpSendUtils;
         private readonly IpAddressesStorage ipAddressesStorage;
+        private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(RudpMessagesSender));
 
         public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage, 
             UdpSendUtils udpSendUtils, IpAddressesStorage ipAddressesStorage)
         {
-            this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchStorage = matchStorage;
             this.udpSendUtils = udpSendUtils;
             this.ipAddressesStorage = ipAddressesStorage;
+            this.byteArrayRudpStorage = byteArrayRudpStorage;
         }
         
         public void SendAll()
@@ -53,8 +54,8 @@ namespace Server.GameEngine
                     {
                         for (int i = 0; i < messagesForPlayer.Length; i++)
                         {
-                            var data = messagesForPlayer[i];
-                            udpSendUtils.SendReadyMadeMessage(data, ipEndPoint);
+                            byte[] data = messagesForPlayer[i];
+                            udpSendUtils.SendReadyMadeMessage(matchId, playerId, data);
                         }
                     }
                     else

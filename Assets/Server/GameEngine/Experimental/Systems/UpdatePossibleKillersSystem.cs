@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Entitas;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class UpdatePossibleKillersSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     {

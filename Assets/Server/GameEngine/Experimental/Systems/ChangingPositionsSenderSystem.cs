@@ -4,7 +4,7 @@ using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class ChangingPositionsSenderSystem : ReactivePlayersVisionSystem
     {

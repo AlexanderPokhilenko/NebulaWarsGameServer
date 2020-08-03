@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Code.Common;
 using JetBrains.Annotations;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.MatchLifecycle
 {
     /// <summary>
     /// Хранит таблицу текущих матчей.

@@ -3,7 +3,7 @@ using System.Linq;
 using Entitas;
 using Server.Udp.Sending;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public abstract class ReactivePlayersVisionSystem : ReactiveSystem<GameEntity>
     {

@@ -1,7 +1,4 @@
-﻿using Entitas;
-using Server.Udp.Sending;
-
-namespace Server.GameEngine.Systems.Debug
+﻿namespace Server.GameEngine.Experimental.Systems.Debug
 {
     // public class MatchDebugSenderSystem:IExecuteSystem
     // {

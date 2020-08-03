@@ -1,6 +1,6 @@
 ﻿using Entitas;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class GameDeletingSystem : ITearDownSystem
     {

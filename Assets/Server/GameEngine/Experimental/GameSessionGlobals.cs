@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Experimental
 {
     public static class GameSessionGlobals
     {

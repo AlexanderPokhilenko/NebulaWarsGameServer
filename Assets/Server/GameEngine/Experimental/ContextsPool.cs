@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Experimental
 {
     public static class ContextsPool
     {

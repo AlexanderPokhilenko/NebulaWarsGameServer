@@ -12,10 +12,10 @@ namespace Server.Udp.Sending
             this.messageIdFactory = messageIdFactory;
         }
         
-        public byte[] GetSerializedMessage<T>(T message, bool rudpEnabled, ushort playerId, out uint messageId)
+        public byte[] GetSerializedMessage<T>(T message, bool rudpEnabled, int matchId,  ushort playerId, out uint messageId)
             where T : ITypedMessage
         {
-            MessageWrapper messageWrapper = GetMessage(message, rudpEnabled, playerId,  out messageId);
+            MessageWrapper messageWrapper = GetMessage(message, rudpEnabled,matchId, playerId,  out messageId);
             return ZeroFormatterSerializer.Serialize(messageWrapper);
         }
 
@@ -24,12 +24,12 @@ namespace Server.Udp.Sending
             return ZeroFormatterSerializer.Serialize(messageWrapper);
         }
         
-        private MessageWrapper GetMessage<T>(T mes, bool rudpEnabled, ushort playerId, out uint messageId) 
+        private MessageWrapper GetMessage<T>(T mes, bool rudpEnabled,int matchId, ushort playerId, out uint messageId) 
             where T : ITypedMessage
         {
             byte[] serializedMessage = ZeroFormatterSerializer.Serialize(mes);
             MessageType messageType = mes.GetMessageType();
-            messageId = messageIdFactory.CreateMessageId(playerId);
+            messageId = messageIdFactory.CreateMessageId(matchId, playerId);
             MessageWrapper message = new MessageWrapper(messageType, serializedMessage, messageId, rudpEnabled);
             return message;
         }

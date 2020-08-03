@@ -5,7 +5,7 @@ using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 using Server.Udp.Sending;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     /// <summary>
     /// Отвечает за отправку сообщения о смертях, которые произошли за этот кадр.

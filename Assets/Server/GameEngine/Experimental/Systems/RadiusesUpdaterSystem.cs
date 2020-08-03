@@ -1,10 +1,10 @@
-﻿using Entitas;
-using Server.Udp.Sending;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Entitas;
+using Server.Udp.Sending;
 using UnityEngine;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class RadiusesUpdaterSystem : ReactivePlayersVisionSystem
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Entitas;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class ViewAreasInitSystem : IInitializeSystem
     {

@@ -4,7 +4,7 @@ using Entitas;
 using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     /// <summary>
     /// Если игрок вышел преждевременно (через кнопку), то эта система

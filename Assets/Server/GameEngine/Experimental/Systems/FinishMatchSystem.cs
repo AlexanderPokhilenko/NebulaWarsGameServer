@@ -3,19 +3,18 @@ using Code.Common;
 using Entitas;
 using Server.GameEngine.MatchLifecycle;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     /// <summary>
     /// Вызывает удаление матча, когда остаётся мало игроков
     /// </summary>
     public class FinishMatchSystem:ReactiveSystem<GameEntity>
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(FinishMatchSystem));
-        
         private readonly int matchId;
         private readonly MatchRemover matchRemover;
         private readonly IGroup<GameEntity> alivePlayersGroup;
         private readonly IGroup<GameEntity> alivePlayersAndBotsGroup;
+        private readonly ILog log = LogManager.CreateLogger(typeof(FinishMatchSystem));
         
         public FinishMatchSystem(Contexts contexts, MatchRemover matchRemover, int matchId) 
             : base(contexts.game)
@@ -69,8 +68,7 @@ namespace Server.GameEngine.Systems
 
         private void LogKilledEntities(List<GameEntity> entities)
         {
-            log.Warn($" {nameof(matchId)} {matchId} " +
-                     $"Погибло игровых сущностей: {entities.Count}. ");
+            log.Warn($" {nameof(matchId)} {matchId} Погибло игровых сущностей: {entities.Count}. ");
             foreach (var gameEntity in entities)
             {
                 if (gameEntity.isBot)
@@ -83,7 +81,7 @@ namespace Server.GameEngine.Systems
                 }
                 else
                 {
-                    log.Warn("Было убито хер знает что");
+                    log.Error("Был убит неопознанный объект");
                 }
             }
         }

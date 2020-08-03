@@ -13,14 +13,16 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly MessageIdFactory messageIdFactory;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
+        private readonly MessagesPackIdFactory messagesPackIdFactory;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
-            MessageIdFactory messageIdFactory)
+            MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory)
         {
-            this.messageIdFactory = messageIdFactory;
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
+            this.messageIdFactory = messageIdFactory;
+            this.messagesPackIdFactory = messagesPackIdFactory;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
         }
@@ -31,8 +33,10 @@ namespace Server.GameEngine.MatchLifecycle
 
             foreach (ushort playerId in matchModel.GameUnits.Players.Select(player=>player.TemporaryId))
             {
-                messageIdFactory.AddPlayer(playerId);
+                messageIdFactory.AddPlayer(matchModel.MatchId, playerId);
+                messagesPackIdFactory.AddPlayer(matchModel.MatchId, playerId);
             }
+            
             
             Match match = new Match(matchModel.MatchId, matchRemover, matchmakerNotifier);
             match.ConfigureSystems(matchModel, udpSendUtils, ipAddressesStorage);

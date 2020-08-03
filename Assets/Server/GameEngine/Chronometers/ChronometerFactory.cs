@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Chronometers
 {
     /// <summary>
     /// Создаёт game object на сцене и цепляет на него хронометр.

@@ -2,7 +2,7 @@
 using Code.Common;
 using Entitas;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class PlayerAttackHandlerSystem : ReactiveSystem<InputEntity>
     {

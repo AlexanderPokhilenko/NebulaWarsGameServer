@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Server.Udp.Sending
 {
@@ -11,28 +12,24 @@ namespace Server.Udp.Sending
         /// <summary>
         /// playerId + lastMessageId
         /// </summary>
-        private readonly Dictionary<ushort, uint> messageIds = new Dictionary<ushort, uint>();
+        private readonly Dictionary<Tuple<int, ushort>, uint> messageIds = new Dictionary<Tuple<int, ushort>, uint>();
 
-        public void AddPlayer(ushort playerId)
+        public void AddPlayer(int matchId, ushort playerId)
         {
-            
+            messageIds.Add(new Tuple<int, ushort>(matchId, playerId), 0);
         }
 
-        public void RemovePlayer(ushort playerId)
+        public void RemovePlayer(int matchId, ushort playerId)
         {
-            
+            messageIds.Remove(new Tuple<int, ushort>(matchId, playerId));
         }
         
-        public uint CreateMessageId(ushort playerId)
+        public uint CreateMessageId(int matchId, ushort playerId)
         {
-            if (!messageIds.ContainsKey(playerId))
-            {
-                messageIds.Add(playerId, 0);
-            }
-
-            uint lastMessageId = messageIds[playerId];
+            var key = new Tuple<int, ushort>(matchId, playerId);
+            uint lastMessageId = messageIds[key];
             lastMessageId++;
-            messageIds[playerId] = lastMessageId;
+            messageIds[key] = lastMessageId;
             return lastMessageId;
         }
     }

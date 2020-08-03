@@ -3,7 +3,7 @@ using System.Collections;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using UnityEngine;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Chronometers
 {
     /// <summary>
     /// Оно тикает.

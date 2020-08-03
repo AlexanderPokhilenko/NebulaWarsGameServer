@@ -4,7 +4,7 @@ using Entitas;
 using Server.Udp.Sending;
 using UnityEngine;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class FinalRadiusesSystem : ReactivePlayersVisionSystem
     {

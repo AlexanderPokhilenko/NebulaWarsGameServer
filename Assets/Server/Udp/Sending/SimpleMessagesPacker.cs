@@ -8,19 +8,13 @@ using ZeroFormatter;
 
 namespace Server.Udp.Sending
 {
-    // public class MessagesPackIdFactory
-    // {
-    //     public int Create(int playerId)
-    //     {
-    //         
-    //     }
-    // }
-    public class SimpleDatagramPacker
+    public class SimpleMessagesPacker
     {
         private readonly int mtu;
         private readonly IUdpSender udpSender;
+        private readonly MessagesPackIdFactory messagesPackIdFactory;
 
-        public SimpleDatagramPacker(int mtu, IUdpSender udpSender)
+        public SimpleMessagesPacker(int mtu, IUdpSender udpSender, MessagesPackIdFactory messagesPackIdFactory)
         {
             if (mtu < 500)
             {
@@ -29,9 +23,10 @@ namespace Server.Udp.Sending
             
             this.mtu = mtu;
             this.udpSender = udpSender;
+            this.messagesPackIdFactory = messagesPackIdFactory;
         }
 
-        public void Send([NotNull] IPEndPoint ipEndPoint, [NotNull] List<byte[]> messages)
+        public void Send(int matchId, ushort playerId,[NotNull] IPEndPoint ipEndPoint, [NotNull] List<byte[]> messages)
         {
             //Проверка на наличие слишком больших сообщений
             MessagesMtuExceedCheck(ipEndPoint,messages);
@@ -52,7 +47,7 @@ namespace Server.Udp.Sending
                 else
                 {
                     //Отправка полезной нагрузки
-                    SendDatagram(ipEndPoint, messages, startMessageIndex, messagesCount, 0);
+                    SendDatagram(ipEndPoint, messages, startMessageIndex, messagesCount, messagesPackIdFactory.CreateId(matchId, playerId));
                     //Сбросить номер первого сообщения в контейнере
                     startMessageIndex = currentMessageIndex;
                     currentPayloadLengthInBytes = currentMessageLength;
@@ -63,7 +58,7 @@ namespace Server.Udp.Sending
             if (currentPayloadLengthInBytes != 0)
             {
                 //Отправить не до конца заполненный контейнер
-                SendDatagram(ipEndPoint, messages, startMessageIndex, messages.Count-startMessageIndex, 0);
+                SendDatagram(ipEndPoint, messages, startMessageIndex, messages.Count-startMessageIndex, messagesPackIdFactory.CreateId(matchId, playerId));
             }
         }
 

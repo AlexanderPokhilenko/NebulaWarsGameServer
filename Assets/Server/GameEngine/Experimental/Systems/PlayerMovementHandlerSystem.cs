@@ -3,7 +3,7 @@ using Code.Common;
 using Entitas;
 using UnityEngine;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class PlayerMovementHandlerSystem : ReactiveSystem<InputEntity>
     {

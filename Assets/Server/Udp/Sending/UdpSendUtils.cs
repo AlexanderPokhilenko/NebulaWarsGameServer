@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using Code.Common;
-using Libraries.NetworkLibrary.Udp;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
+using Server.GameEngine.Rudp;
 using Server.Udp.Storage;
-using UnityEngine;
 
 namespace Server.Udp.Sending
 {
@@ -19,7 +15,6 @@ namespace Server.Udp.Sending
     {
         private readonly MessageFactory messageFactory;
         private readonly ByteArrayRudpStorage rudpStorage;
-        private readonly IpAddressesStorage ipAddressesStorage;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
 
@@ -28,13 +23,12 @@ namespace Server.Udp.Sending
         {
             rudpStorage = byteArrayRudpStorage;
             this.messageFactory = messageFactory;
-            this.ipAddressesStorage = ipAddressesStorage;
             this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
 
-        public void SendReadyMadeMessage(byte[] serializedMessage, IPEndPoint ipEndPoint)
+        public void SendReadyMadeMessage(int matchId, ushort playerId, byte[] serializedMessage)
         {
-            outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
+            outgoingMessagesStorage.AddMessage(matchId, playerId, serializedMessage);
         }
         
         public void SendPlayerInfo(int matchId, ushort playerId, Dictionary<int, ushort> entityIds)
@@ -136,28 +130,23 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
 
-        public void SendDeliveryConfirmationMessage(DeliveryConfirmationMessage message, IPEndPoint playerAddress)
+        public void SendDeliveryConfirmationMessage(int matchId, ushort playerId, uint messageNumberThatConfirms)
         {
-            if (playerAddress != null)
+            DeliveryConfirmationMessage mes = new DeliveryConfirmationMessage
             {
-                byte[] serializedMessage = messageFactory.GetSerializedMessage(message, false, message.PlayerId, out uint messageId);
-                outgoingMessagesStorage.AddMessage(serializedMessage, playerAddress);
-            }
-            else
-            {
-                throw new Exception("SendDeliveryConfirmationMessage playerAddress == null");
-            }
+                MessageNumberThatConfirms = messageNumberThatConfirms
+            };
+            
+            byte[] serializedMessage = messageFactory
+                .GetSerializedMessage(mes, false, matchId, playerId, out uint messageId);
+            outgoingMessagesStorage.AddMessage(matchId, playerId, serializedMessage);
         }
         
         private void SendUdp<T>(int matchId, ushort playerId, T message, bool rudp = false)
             where T : ITypedMessage
         {
-            byte[] serializedMessage = messageFactory.GetSerializedMessage(message, rudp, playerId, out uint messageId);
-            if (ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
-            {
-                outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
-            }
-
+            byte[] serializedMessage = messageFactory.GetSerializedMessage(message, rudp, matchId, playerId, out uint messageId);
+            outgoingMessagesStorage.AddMessage(matchId, playerId, serializedMessage);
             if (rudp)
             {
                 rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);

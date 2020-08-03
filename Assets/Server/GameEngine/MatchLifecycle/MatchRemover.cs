@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Code.Common;
+using Server.GameEngine.Rudp;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
@@ -86,7 +87,7 @@ namespace Server.GameEngine.MatchLifecycle
                 {
                     foreach (ushort playerId in playersIds)
                     {
-                        messageIdFactory.RemovePlayer(playerId);
+                        messageIdFactory.RemovePlayer(matchId, playerId);
                     }
                 }
             });

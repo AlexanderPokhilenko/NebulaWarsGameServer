@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
-using Server.GameEngine.Experimental;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public interface IRudpMessagesStorage
     {

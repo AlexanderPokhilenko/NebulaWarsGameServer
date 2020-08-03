@@ -4,7 +4,7 @@ using Entitas;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using Server.Udp.Sending;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     public class CooldownInfoUpdaterSystem : IExecuteSystem, IInitializeSystem
     {

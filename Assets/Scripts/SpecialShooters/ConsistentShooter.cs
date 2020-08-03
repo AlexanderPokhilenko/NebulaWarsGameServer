@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Server.GameEngine;
+using Server.GameEngine.Chronometers;
 
 public class ConsistentShooter : SpecialShooter
 {

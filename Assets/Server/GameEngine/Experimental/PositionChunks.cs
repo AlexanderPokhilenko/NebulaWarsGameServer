@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.Experimental
 {
     public class PositionChunks
     {

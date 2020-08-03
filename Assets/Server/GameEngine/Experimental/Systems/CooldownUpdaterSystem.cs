@@ -2,7 +2,7 @@
 using Entitas;
 using Server.Udp.Sending;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     //TODO отправлять сообщения только при изменении
     public class CooldownUpdaterSystem : IExecuteSystem

@@ -1,7 +1,7 @@
 ﻿using System;
 using Entitas;
 
-namespace Server.GameEngine.Systems
+namespace Server.GameEngine.Experimental.Systems
 {
     /// <summary>
     /// Убивает всех ботов после задержки
