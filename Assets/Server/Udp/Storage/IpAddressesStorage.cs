@@ -101,10 +101,13 @@ namespace Server.Udp.Storage
             {
                 return dictionary.Keys.ToList();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
+        }
+
+        public bool Contains(int matchId, ushort playerId)
+        {
+            return ipEndPoints.ContainsKey(matchId) && ipEndPoints[matchId].ContainsKey(playerId);
         }
     }
 }

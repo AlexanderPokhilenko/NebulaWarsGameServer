@@ -25,6 +25,13 @@ namespace Server.GameEngine
         
         public void AddMessage(int matchId, ushort playerId, byte[] data)
         {
+            if (!ipAddressesStorage.Contains(matchId, playerId))
+            {
+                return;
+            }
+            
+            
+            
             var id = new Tuple<int, ushort>(matchId, playerId);
             if (messages.TryGetValue(id, out List<byte[]> playerMessages))
             {

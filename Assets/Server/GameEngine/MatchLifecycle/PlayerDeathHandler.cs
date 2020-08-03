@@ -2,6 +2,7 @@
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using System.Threading.Tasks;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -32,7 +33,12 @@ namespace Server.GameEngine.MatchLifecycle
                 udpSendUtils.SendShowAchievementsMessage(playerDeathData.MatchId, temporaryId);   
             }
 
-            ipAddressesStorage.TryRemoveIpEndPoint(playerDeathData.MatchId, temporaryId);
+            Task.Run(async () =>
+            {
+                //todo вынести это в отдельную систему
+                await Task.Delay(10_000);
+                ipAddressesStorage.TryRemoveIpEndPoint(playerDeathData.MatchId, temporaryId);
+            });
             
             SendPlayerDeathMessageToMatchmaker(playerDeathData);
         }

@@ -25,12 +25,14 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
+        private readonly MessagesPackIdFactory messagesPackIdFactory;
         private readonly PlayersMatchFinishNotifier playersMatchFinishNotifier;
 
         public MatchRemover(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             UdpSendUtils udpSendUtils, MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
-            MessageIdFactory messageIdFactory)
+            MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory)
         {
+            this.messagesPackIdFactory = messagesPackIdFactory;
             this.matchStorage = matchStorage;
             this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchmakerNotifier = matchmakerNotifier;
@@ -88,6 +90,7 @@ namespace Server.GameEngine.MatchLifecycle
                     foreach (ushort playerId in playersIds)
                     {
                         messageIdFactory.RemovePlayer(matchId, playerId);
+                        messagesPackIdFactory.RemovePlayer(matchId, playerId);
                     }
                 }
             });

@@ -7,6 +7,9 @@ using Server.Udp.Storage;
 
 namespace Server.GameEngine.Rudp
 {
+    /// <summary>
+    /// Достаёт сообщения из rudp хранилища и кладёт их в очередь на отправку.
+    /// </summary>
     public class RudpMessagesSender
     {
         private readonly MatchStorage matchStorage;
@@ -32,10 +35,10 @@ namespace Server.GameEngine.Rudp
             foreach (Match match in matchStorage.GetAllMatches())
             {
                 int matchId = match.MatchId;
-                var players = ipAddressesStorage.GetActivePlayersIds(matchId);
+                List<ushort> players = ipAddressesStorage.GetActivePlayersIds(matchId);
                 if (players != null)
                 {
-                    foreach (var playersId in players)
+                    foreach (ushort playersId in players)
                     {
                         pairs.Add((matchId, playersId));
                     }
@@ -47,14 +50,12 @@ namespace Server.GameEngine.Rudp
             {
                 //messageId, model
                 byte[][] messagesForPlayer = byteArrayRudpStorage.GetMessages(matchId, playerId);
-                
                 if (messagesForPlayer != null)
                 {
                     if(ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
                     {
-                        for (int i = 0; i < messagesForPlayer.Length; i++)
+                        foreach (byte[] data in messagesForPlayer)
                         {
-                            byte[] data = messagesForPlayer[i];
                             udpSendUtils.SendReadyMadeMessage(matchId, playerId, data);
                         }
                     }
