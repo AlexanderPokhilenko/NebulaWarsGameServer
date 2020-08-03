@@ -3,7 +3,7 @@ using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 
-namespace Server.GameEngine
+namespace Server.GameEngine.MatchLifecycle
 {
     /// <summary>
     /// При смерти игрока или при самостоятельном выходе из боя
@@ -12,16 +12,17 @@ namespace Server.GameEngine
     /// </summary>
     public class PlayerDeathHandler
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(PlayerDeathHandler));
+        private readonly UdpSendUtils udpSendUtils;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly MatchmakerNotifier matchmakerNotifier;
-        private readonly UdpSendUtils udpSendUtils;
+        private readonly ILog log = LogManager.CreateLogger(typeof(PlayerDeathHandler));
 
-        public PlayerDeathHandler(MatchmakerNotifier matchmakerNotifier, UdpSendUtils udpSendUtils)
+        public PlayerDeathHandler(MatchmakerNotifier matchmakerNotifier, UdpSendUtils udpSendUtils,
+            IpAddressesStorage ipAddressesStorage)
         {
-            this.matchmakerNotifier = matchmakerNotifier;
             this.udpSendUtils = udpSendUtils;
-            ipAddressesStorage = udpSendUtils.ipAddressesStorage;
+            this.matchmakerNotifier = matchmakerNotifier;
+            this.ipAddressesStorage = ipAddressesStorage;
         }
         
         public void PlayerDeath(PlayerDeathData playerDeathData, ushort temporaryId, bool sendNotificationToPlayer)

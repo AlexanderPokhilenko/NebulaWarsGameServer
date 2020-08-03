@@ -1,44 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Server.GameEngine.Experimental;
-using Server.Udp.Sending;
+﻿using Server.GameEngine.Experimental;
 
 namespace Server.GameEngine
 {
-    public class OutgoingMessagesStorage
-    {
-        private readonly ShittyDatagramPacker shittyDatagramPacker;
-
-        private readonly Dictionary<IPEndPoint, List<byte[]>> messages = new Dictionary<IPEndPoint, List<byte[]>>();
-        
-        public OutgoingMessagesStorage(ShittyDatagramPacker shittyDatagramPacker)
-        {
-            this.shittyDatagramPacker = shittyDatagramPacker;
-        }
-        
-        public void AddMessage(byte[] data, IPEndPoint ipEndPoint)
-        {
-            if (messages.TryGetValue(ipEndPoint, out var playerMessages))
-            {
-                playerMessages.Add(data);
-            }
-            else
-            {
-                //TODO сколько сообщений отправляется игроку за кадр в среднем?
-                messages.Add(ipEndPoint, new List<byte[]>(5){data} );
-            }
-        }
-        
-        public void SendAllMessages()
-        {
-            foreach (var pair in messages)
-            {
-                shittyDatagramPacker.Send(pair.Key, pair.Value);
-            }
-            
-            messages.Clear();
-        }
-    }
     /// <summary>
     /// Отвечает за правильный вызов подпрограмм во время тика.
     /// </summary>

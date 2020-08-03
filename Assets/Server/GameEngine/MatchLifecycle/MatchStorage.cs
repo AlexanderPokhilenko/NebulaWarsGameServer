@@ -33,20 +33,22 @@ namespace Server.GameEngine
             }
         }
         
+        
         /// <summary>
         /// Удаляет матч из коллекции.
         /// </summary>
+        [CanBeNull]
         public Match DequeueMatch(int matchId)
         {
+            log.Debug("Попытка удалить матч "+matchId);
             if (matches.TryRemove(matchId, out Match match))
             {
                 log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
                 return match;
             }
-            else
-            {
-                throw new Exception($"Попытка удалить матч, которого нет {nameof(matchId)} {matchId}");
-            }
+            
+            log.Error($"Попытка удалить матч, которого нет {nameof(matchId)} {matchId}");
+            return null;
         }
 
         /// <summary>

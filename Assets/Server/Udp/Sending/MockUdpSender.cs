@@ -8,13 +8,13 @@ namespace Server.Udp.Sending
 {
     public class MockUdpSender: IUdpSender
     {
-        private readonly List<MessagesContainer> containers = new List<MessagesContainer>();
+        private readonly List<MessagesPack> containers = new List<MessagesPack>();
         
         public void Send(byte[] serializedContainer, IPEndPoint endPoint)
         {
             Console.WriteLine("Отправка контейнера размером "+serializedContainer.Length+"\n\n\n\n");
-            MessagesContainer container = ZeroFormatterSerializer
-                .Deserialize<MessagesContainer>(serializedContainer);
+            MessagesPack container = ZeroFormatterSerializer
+                .Deserialize<MessagesPack>(serializedContainer);
             if (container.Messages == null)
             {
                 throw new Exception("Пустой контейнер");
@@ -22,7 +22,7 @@ namespace Server.Udp.Sending
             containers.Add(container);
         }
 
-        public List<MessagesContainer> GetAllMessages()
+        public List<MessagesPack> GetAllMessages()
         {
             return containers;
         }

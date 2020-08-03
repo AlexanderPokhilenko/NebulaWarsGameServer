@@ -1,4 +1,5 @@
 ﻿using Code.Common;
+using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using Server;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ServerController : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = (int) ServerTimeConstants.MaxFps;
         LoggerConfig config = new LoggerConfig(100, 10_000, 
             Application.persistentDataPath);
         if (LogManager.TrySetConfig(config))

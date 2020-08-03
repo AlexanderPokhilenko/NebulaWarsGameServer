@@ -27,8 +27,7 @@ namespace Server.Udp.Connection
                 {
                     Client =
                     {
-                        Blocking = false,
-                        ReceiveTimeout = 1000
+                        Blocking = false
                     }
                 };
             }

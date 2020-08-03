@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine;
 using Server.GameEngine.Experimental;
+using Server.GameEngine.MatchLifecycle;
 using Server.Http;
+using Server.Udp;
 using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
@@ -38,6 +41,11 @@ namespace Server
             
             //Создание структур данных для матчей
             matchStorage = new MatchStorage();
+
+
+            MessageIdFactory messageIdFactory = new MessageIdFactory();
+            MessageFactory messageFactory = new MessageFactory(messageIdFactory);
+            
             InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
             ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
             
@@ -46,16 +54,16 @@ namespace Server
             shittyUdpMediator = new ShittyUdpMediator();
             
             IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
-            ShittyDatagramPacker shittyDatagramPacker = new ShittyDatagramPacker(1500, shittyUdpMediator);
-            OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(shittyDatagramPacker);
-            UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage);
+            SimpleDatagramPacker simpleDatagramPacker = new SimpleDatagramPacker(1500, shittyUdpMediator);
+            OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleDatagramPacker);
+            UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
             MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, 
                 byteArrayRudpStorage, udpSendUtils, ipAddressesStorage);
             
             shittyUdpMediator.SetProcessor(messageProcessor);
             
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage);
+            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);

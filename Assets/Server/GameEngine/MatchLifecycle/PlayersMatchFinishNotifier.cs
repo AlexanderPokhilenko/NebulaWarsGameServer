@@ -22,7 +22,7 @@ namespace Server.GameEngine
         
         public void Notify(Match match)
         {
-            var activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
+            List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
             if (activePlayersIds == null || activePlayersIds.Count == 0)
             {
                 log.Error("Список активных игроков пуст. Некого уведомлять о окончании матча.");

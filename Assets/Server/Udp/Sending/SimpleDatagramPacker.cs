@@ -1,0 +1,134 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using NetworkLibrary.NetworkLibrary.Udp;
+using ZeroFormatter;
+
+namespace Server.Udp.Sending
+{
+    // public class MessagesPackIdFactory
+    // {
+    //     public int Create(int playerId)
+    //     {
+    //         
+    //     }
+    // }
+    public class SimpleDatagramPacker
+    {
+        private readonly int mtu;
+        private readonly IUdpSender udpSender;
+
+        public SimpleDatagramPacker(int mtu, IUdpSender udpSender)
+        {
+            if (mtu < 500)
+            {
+                throw new Exception($"Размер mtu слишком мал {mtu}");
+            }
+            
+            this.mtu = mtu;
+            this.udpSender = udpSender;
+        }
+
+        public void Send([NotNull] IPEndPoint ipEndPoint, [NotNull] List<byte[]> messages)
+        {
+            //Проверка на наличие слишком больших сообщений
+            MessagesMtuExceedCheck(ipEndPoint,messages);
+            //Суммарная длина нескольких сообщений в контейнере
+            int currentPayloadLengthInBytes = 0;
+            //Номер первого сообщения в контейнере
+            int startMessageIndex = 0;
+            for (int currentMessageIndex = 0; currentMessageIndex < messages.Count; currentMessageIndex++)
+            {
+                int messagesCount = currentMessageIndex - startMessageIndex;
+                int currentMessageLength = messages[currentMessageIndex].Length;
+                
+                if (IsMessageFitsIntoPackage(currentPayloadLengthInBytes, currentMessageLength, messagesCount))
+                {
+                    //Обновить длину полезной нагрузки
+                    currentPayloadLengthInBytes += currentMessageLength;
+                }
+                else
+                {
+                    //Отправка полезной нагрузки
+                    SendDatagram(ipEndPoint, messages, startMessageIndex, messagesCount, 0);
+                    //Сбросить номер первого сообщения в контейнере
+                    startMessageIndex = currentMessageIndex;
+                    currentPayloadLengthInBytes = currentMessageLength;
+                }
+            }
+
+            //Если последняя полезная нагрузка не была отправлена
+            if (currentPayloadLengthInBytes != 0)
+            {
+                //Отправить не до конца заполненный контейнер
+                SendDatagram(ipEndPoint, messages, startMessageIndex, messages.Count-startMessageIndex, 0);
+            }
+        }
+
+        private bool IsMessageFitsIntoPackage(int currentPayloadLengthInBytes, int currentMessageLength, 
+            int payloadMessagesCount)
+        {
+            int dataLength = currentPayloadLengthInBytes + currentMessageLength;
+            int indexLength = MessagesPack.IndexLength + 4 * (payloadMessagesCount + 1); 
+            return dataLength + indexLength  <= mtu;
+        }
+        
+        /// <summary>
+        /// Если сообщение превышает размер mtu, то нужно бросать исключение или отправлять его отдельно.
+        /// </summary>
+        private void MessagesMtuExceedCheck(IPEndPoint ipEndPoint, List<byte[]> messages)
+        {
+            //Отправка сообщений, которые превышают  mtu отдельно
+            int index = 0;
+            while(index < messages.Count)
+            {
+                byte[] message = messages[index];
+                if (message.Length + MessagesPack.IndexLength + 4 > mtu)
+                {
+                    //Console.WriteLine("Длина сообщения слишком большая "+message.Length);
+                    // throw new Exception($"Длина сообщения больше, чем mtu {message.Length}");
+                    
+                    // TODO убрать после добавления возможности разделять большие сообщения
+                    {
+                        MessagesPack messagesPack = new MessagesPack
+                        {
+                            Messages = new[] {message}
+                        };
+                        byte[] data = ZeroFormatterSerializer.Serialize(messagesPack);
+                        udpSender.Send(data, ipEndPoint);
+                        messages.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    // //Console.WriteLine("Сообщение допустимой длины "+message.Length);
+                    index++;
+                }
+            }
+        } 
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SendDatagram(IPEndPoint ipEndPoint, List<byte[]> messages, int startMessageIndex, 
+            int messagesCount, int packId)
+        {
+            if (messagesCount == 0)
+            {
+                throw new Exception("Нельзя отправлять пустые контейнеры");
+            }
+            
+            //Положить сообщения в контейнер
+            MessagesPack messagesPack = new MessagesPack();
+            messagesPack.Messages = new byte[messagesCount][];
+            messages.CopyTo(startMessageIndex, messagesPack.Messages, 0, messagesCount);
+            //Установить номер контейнера для игрока
+            messagesPack.Id = packId;
+            //Сериализовать контейнер
+            byte[] serializedDatagram = ZeroFormatterSerializer.Serialize(messagesPack);
+            //Отправить контейнер
+            udpSender.Send(serializedDatagram, ipEndPoint);
+        }
+    }
+}

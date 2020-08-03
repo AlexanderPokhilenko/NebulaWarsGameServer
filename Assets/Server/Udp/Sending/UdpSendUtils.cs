@@ -15,21 +15,20 @@ using UnityEngine;
 
 namespace Server.Udp.Sending
 {
-    /// <summary>
-    /// Отправляет сообщение игроку по его id.
-    /// </summary>
     public class UdpSendUtils
     {
-        public readonly IpAddressesStorage ipAddressesStorage;
+        private readonly MessageFactory messageFactory;
         private readonly ByteArrayRudpStorage rudpStorage;
+        private readonly IpAddressesStorage ipAddressesStorage;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
 
         public UdpSendUtils(IpAddressesStorage ipAddressesStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
-            OutgoingMessagesStorage outgoingMessagesStorage)
+            OutgoingMessagesStorage outgoingMessagesStorage, MessageFactory messageFactory)
         {
-            this.ipAddressesStorage = ipAddressesStorage;
             rudpStorage = byteArrayRudpStorage;
+            this.messageFactory = messageFactory;
+            this.ipAddressesStorage = ipAddressesStorage;
             this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
 
@@ -37,21 +36,7 @@ namespace Server.Udp.Sending
         {
             outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
         }
-
-        private void SendUdp<T>(int matchId, ushort playerId, T message, bool rudp = false) where T : ITypedMessage
-        {
-            var serializedMessage = MessageFactory.GetSerializedMessage(message, rudp, out var messageId);
-            if (ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
-            {
-                outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
-            }
-
-            if (rudp)
-            {
-                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
-            }
-        }
-
+        
         public void SendPlayerInfo(int matchId, ushort playerId, Dictionary<int, ushort> entityIds)
         {
             var message = new PlayerInfoMessage(entityIds);
@@ -155,12 +140,27 @@ namespace Server.Udp.Sending
         {
             if (playerAddress != null)
             {
-                byte[] serializedMessage = MessageFactory.GetSerializedMessage(message, false, out uint messageId);
+                byte[] serializedMessage = messageFactory.GetSerializedMessage(message, false, message.PlayerId, out uint messageId);
                 outgoingMessagesStorage.AddMessage(serializedMessage, playerAddress);
             }
             else
             {
                 throw new Exception("SendDeliveryConfirmationMessage playerAddress == null");
+            }
+        }
+        
+        private void SendUdp<T>(int matchId, ushort playerId, T message, bool rudp = false)
+            where T : ITypedMessage
+        {
+            byte[] serializedMessage = messageFactory.GetSerializedMessage(message, rudp, playerId, out uint messageId);
+            if (ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out IPEndPoint ipEndPoint))
+            {
+                outgoingMessagesStorage.AddMessage(serializedMessage, ipEndPoint);
+            }
+
+            if (rudp)
+            {
+                rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
             }
         }
     }

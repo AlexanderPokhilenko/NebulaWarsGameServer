@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
+using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.Systems;
 using Server.Http;
 using Server.Udp.Sending;
+using Server.Udp.Storage;
 
 namespace Server.GameEngine
 {
@@ -32,7 +34,8 @@ namespace Server.GameEngine
         }
 
         //ECS
-        public void ConfigureSystems(BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils)
+        public void ConfigureSystems(BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
+            IpAddressesStorage ipAddressesStorage)
         {
             log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
             
@@ -47,7 +50,7 @@ namespace Server.GameEngine
             contexts.SubscribeId();
             TryEnableDebug();
             
-            playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils);
+            playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils, ipAddressesStorage);
             var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnits.Players.Count);
 
             systems = new Entitas.Systems()

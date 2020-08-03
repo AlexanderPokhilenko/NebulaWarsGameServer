@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
 
-
-namespace Server.GameEngine
+namespace Server.GameEngine.MatchLifecycle
 {
     /// <summary>
     /// Правильно создаёт матчи, данные о которых есть в очереди.
     /// </summary>
     public class MatchCreator
     {
-        //TODO говно
         /// <summary>
         /// Очередь на создание.
         /// </summary>
@@ -33,9 +31,9 @@ namespace Server.GameEngine
             List<Match> result = new List<Match>();
             while (!matchesToCreate.IsEmpty)
             {
-                if (matchesToCreate.TryDequeue(out BattleRoyaleMatchModel matchData))
+                if (matchesToCreate.TryDequeue(out BattleRoyaleMatchModel matchModel))
                 {
-                    Match match = matchFactory.Create(matchData);
+                    Match match = matchFactory.Create(matchModel);
                     result.Add(match);
                 }
             }
