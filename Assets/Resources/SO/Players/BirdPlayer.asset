@@ -60,7 +60,7 @@ MonoBehaviour:
     isParentFixed: 1
   shooter: {fileID: 11400000, guid: b1be74e0a2acfe043be07d6093d0eb27, type: 2}
   maxVelocity: 4
-  maxAngularVelocity: 180
+  maxAngularVelocity: 135
   isNotDecelerating: 0
   maxHealthPoints: 1750
   ability: {fileID: 11400000, guid: fa8a3461bdfe1fc4486cc24c52ca547d, type: 2}
