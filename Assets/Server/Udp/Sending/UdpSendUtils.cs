@@ -48,7 +48,7 @@ namespace Server.Udp.Sending
             var length = PackingHelper.GetByteLength(entitiesInfo);
             if (length > PackingHelper.MaxSingleMessageSize)
             {
-                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)}, выполняется разделение сообщения.");
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
                 var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
                 var dictionaries = entitiesInfo.Split(messagesCount);
                 for (var i = 0; i < dictionaries.Length; i++)
@@ -69,7 +69,7 @@ namespace Server.Udp.Sending
             var length = PackingHelper.GetByteLength(radiuses);
             if (length > PackingHelper.MaxSingleMessageSize)
             {
-                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendRadiuses)}, выполняется разделение сообщения.");
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendRadiuses)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
                 var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
                 var dictionaries = radiuses.Split(messagesCount);
                 for (var i = 0; i < dictionaries.Length; i++)
@@ -99,8 +99,23 @@ namespace Server.Udp.Sending
 
         public void SendDestroys(int matchId, ushort playerId, ushort[] destroyedIds)
         {
-            var message = new DestroysMessage(destroyedIds);
-            SendUdp(matchId, playerId, message, true);
+            var length = PackingHelper.GetByteLength(destroyedIds);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendDestroys)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var arrays = destroyedIds.Split(messagesCount);
+                for (var i = 0; i < arrays.Length; i++)
+                {
+                    var message = new DestroysMessage(arrays[i]);
+                    SendUdp(matchId, playerId, message, true);
+                }
+            }
+            else
+            {
+                var message = new DestroysMessage(destroyedIds);
+                SendUdp(matchId, playerId, message, true);
+            }
         }
 
         public void SendKill(int matchId, KillData killData)
