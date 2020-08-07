@@ -83,18 +83,17 @@ namespace Server.Udp.Sending
                 if (message.Length + MessagesPack.IndexLength + 4 > mtu)
                 {
                     //Console.WriteLine("Длина сообщения слишком большая "+message.Length);
-                    // throw new Exception($"Длина сообщения больше, чем mtu {message.Length}");
+                    throw new Exception($"Длина сообщения больше, чем mtu {message.Length}");
                     
-                    // TODO убрать после добавления возможности разделять большие сообщения
-                    {
-                        MessagesPack messagesPack = new MessagesPack
-                        {
-                            Messages = new[] {message}
-                        };
-                        byte[] data = ZeroFormatterSerializer.Serialize(messagesPack);
-                        udpSender.Send(data, ipEndPoint);
-                        messages.RemoveAt(index);
-                    }
+                    //{
+                    //    MessagesPack messagesPack = new MessagesPack
+                    //    {
+                    //        Messages = new[] {message}
+                    //    };
+                    //    byte[] data = ZeroFormatterSerializer.Serialize(messagesPack);
+                    //    udpSender.Send(data, ipEndPoint);
+                    //    messages.RemoveAt(index);
+                    //}
                 }
                 else
                 {

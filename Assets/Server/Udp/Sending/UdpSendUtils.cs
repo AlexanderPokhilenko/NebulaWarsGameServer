@@ -45,14 +45,44 @@ namespace Server.Udp.Sending
 
         public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransform> entitiesInfo, bool rudp = false)
         {
-            var message = new PositionsMessage { EntitiesInfo = entitiesInfo };
-            SendUdp(matchId, playerId, message, rudp);
+            var length = PackingHelper.GetByteLength(entitiesInfo);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var dictionaries = entitiesInfo.Split(messagesCount);
+                for (var i = 0; i < dictionaries.Length; i++)
+                {
+                    var message = new PositionsMessage(dictionaries[i]);
+                    SendUdp(matchId, playerId, message, rudp);
+                }
+            }
+            else
+            {
+                var message = new PositionsMessage(entitiesInfo);
+                SendUdp(matchId, playerId, message, rudp);
+            }
         }
 
         public void SendRadiuses(int matchId, ushort playerId, Dictionary<ushort, ushort> radiuses, bool rudp = false)
         {
-            var message = new RadiusesMessage(radiuses);
-            SendUdp(matchId, playerId, message, rudp);
+            var length = PackingHelper.GetByteLength(radiuses);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendRadiuses)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var dictionaries = radiuses.Split(messagesCount);
+                for (var i = 0; i < dictionaries.Length; i++)
+                {
+                    var message = new RadiusesMessage(dictionaries[i]);
+                    SendUdp(matchId, playerId, message, rudp);
+                }
+            }
+            else
+            {
+                var message = new RadiusesMessage(radiuses);
+                SendUdp(matchId, playerId, message, rudp);
+            }
         }
 
         public void SendParents(int matchId, ushort playerId, Dictionary<ushort, ushort> parents)
@@ -69,8 +99,23 @@ namespace Server.Udp.Sending
 
         public void SendDestroys(int matchId, ushort playerId, ushort[] destroyedIds)
         {
-            var message = new DestroysMessage(destroyedIds);
-            SendUdp(matchId, playerId, message, true);
+            var length = PackingHelper.GetByteLength(destroyedIds);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendDestroys)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var arrays = destroyedIds.Split(messagesCount);
+                for (var i = 0; i < arrays.Length; i++)
+                {
+                    var message = new DestroysMessage(arrays[i]);
+                    SendUdp(matchId, playerId, message, true);
+                }
+            }
+            else
+            {
+                var message = new DestroysMessage(destroyedIds);
+                SendUdp(matchId, playerId, message, true);
+            }
         }
 
         public void SendKill(int matchId, KillData killData)
