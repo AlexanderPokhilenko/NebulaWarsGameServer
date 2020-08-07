@@ -22,18 +22,18 @@ namespace Server.GameEngine.MatchLifecycle
         
         public void Notify(Match match)
         {
-            List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.MatchId);
+            List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.matchId);
             if (activePlayersIds == null || activePlayersIds.Count == 0)
             {
-                log.Error("Список активных игроков пуст. Некого уведомлять о окончании матча.");
+                log.Info("Список активных игроков пуст. Некого уведомлять о окончании матча.");
             }
             else
             {
                 log.Info(" Старт уведомления игроков про окончание матча");
-                foreach (var playerId in activePlayersIds)
+                foreach (ushort playerId in activePlayersIds)
                 {
                     log.Info($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
-                    udpSendUtils.SendShowAchievementsMessage(match.MatchId, playerId);
+                    udpSendUtils.SendShowAchievementsMessage(match.matchId, playerId);
                 }
                 log.Info(" Конец уведомления игроков про окончание матча");
             }

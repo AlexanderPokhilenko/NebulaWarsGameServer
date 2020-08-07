@@ -37,7 +37,6 @@ namespace Server.GameEngine.MatchLifecycle
                 messagesPackIdFactory.AddPlayer(matchModel.MatchId, playerId);
             }
             
-            
             Match match = new Match(matchModel.MatchId, matchRemover, matchmakerNotifier);
             match.ConfigureSystems(matchModel, udpSendUtils, ipAddressesStorage);
             return match;

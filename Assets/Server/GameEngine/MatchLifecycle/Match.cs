@@ -17,9 +17,9 @@ namespace Server.GameEngine.MatchLifecycle
     public class Match
     {
         private Contexts contexts;
-        public readonly int MatchId;
+        public readonly int matchId;
         private DateTime? gameStartTime;
-        private HashSet<int> playersIds;
+        // private HashSet<int> playersIds;
         private Entitas.Systems systems;
         private readonly MatchRemover matchRemover;
         private PlayerDeathHandler playerDeathHandler; 
@@ -29,7 +29,7 @@ namespace Server.GameEngine.MatchLifecycle
         public Match(int matchId, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier)
         {
-            MatchId = matchId;
+            this.matchId = matchId;
             this.matchRemover = matchRemover;
             this.matchmakerNotifier = matchmakerNotifier;
         }
@@ -38,14 +38,14 @@ namespace Server.GameEngine.MatchLifecycle
         public void ConfigureSystems(BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage)
         {
-            log.Info($"Создание нового матча {nameof(MatchId)} {MatchId}");
+            log.Info($"Создание нового матча {nameof(matchId)} {matchId}");
             
             //TODO это нужно убрать в отдельный класс
             Dictionary<int, (int playerId, ViewTypeId type)> possibleKillersInfo = new Dictionary<int, (int playerId, ViewTypeId type)>();
 
             
-            var test = new BattleRoyalePlayerModelFactory().Create(matchModelArg).Select(model=>model.AccountId);
-            playersIds = new HashSet<int>(test);
+            // var test = new BattleRoyalePlayerModelFactory().Create(matchModelArg).Select(model=>model.AccountId);
+            // playersIds = new HashSet<int>(test);
             
             contexts = ContextsPool.GetContexts();
             contexts.SubscribeId();
@@ -72,8 +72,8 @@ namespace Server.GameEngine.MatchLifecycle
                     .Add(new TimeSystems(contexts))
                     .Add(new UpdatePossibleKillersSystem(contexts, possibleKillersInfo))
                     
-                    .Add(new PlayerExitSystem(contexts, matchModelArg.MatchId, playerDeathHandler))
-                    .Add(new FinishMatchSystem(contexts, matchRemover, MatchId))
+                    .Add(new PlayerExitSystem(contexts, matchModelArg.MatchId, playerDeathHandler, matchRemover))
+                    .Add(new FinishMatchSystem(contexts, matchRemover, matchId))
                     .Add(new NetworkKillsSenderSystem(contexts, possibleKillersInfo, matchModelArg.MatchId, playerDeathHandler, udpSendUtils))
 
                     .Add(new DestroySystems(contexts))
@@ -133,7 +133,7 @@ namespace Server.GameEngine.MatchLifecycle
             if (IsSessionTimedOut())
             {
                 //Тик на матче больше не будет вызван.
-                matchRemover.MarkMatchAsFinished(MatchId);
+                matchRemover.MarkMatchAsFinished(matchId);
                 return;
             }
             systems.Execute();
@@ -164,11 +164,6 @@ namespace Server.GameEngine.MatchLifecycle
             CollidersDrawer.contextsList.Add(contexts);
             // Log.Info("Количество контекстов в списке CollidersDrawer'а: " + CollidersDrawer.contextsList.Count);
 #endif
-        }
-
-        public bool HasPlayer(int playerId)
-        {
-            return playersIds.Contains(playerId);
         }
     }
 }

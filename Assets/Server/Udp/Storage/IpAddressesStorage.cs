@@ -13,8 +13,7 @@ namespace Server.Udp.Storage
     У него ещё может не быть ip адреса.
     Он может быть убитым.
     
-    Активноть игрока можно определить по наличию его в структуре данных с ip адресами.
-    ip адрес может быть null. 
+    Активность игрока можно определить по наличию его в структуре данных с ip адресами.
  */
 
     /// <summary>
@@ -23,11 +22,9 @@ namespace Server.Udp.Storage
     public class IpAddressesStorage
     {
         private readonly ILog log = LogManager.CreateLogger(typeof(IpAddressesStorage));
-
         //TODO какую тут коллекцию выбрать?
         //matchId, playerId , ip
-        private readonly ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>> ipEndPoints 
-            = new ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>>();
+        private readonly ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>> ipEndPoints = new ConcurrentDictionary<int, ConcurrentDictionary<ushort, IPEndPoint>>();
         
         public void AddMatch(BattleRoyaleMatchModel matchModel)
         {
@@ -47,22 +44,22 @@ namespace Server.Udp.Storage
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                ipEndPoint = null;
+
                 return false;
             }
+
+            ipEndPoint = null;
+            return false;
         }
 
         public bool TryRemoveIpEndPoint(int matchId, ushort playerId)
         {
             bool success = ipEndPoints[matchId].TryRemove(playerId, out _);
-            log.Warn($"Удаление ip для игрока {nameof(playerId)} {playerId}" );
+            log.Info($"Удаление ip для игрока {nameof(playerId)} {playerId}" );
+            if (!success)
+            {
+                log.Error($"Не удалось удалить ip игрока {nameof(matchId)} {matchId} {nameof(playerId)} {playerId}");
+            }
             return success;
         }
 
@@ -77,21 +74,15 @@ namespace Server.Udp.Storage
                     {
                         return dictionary.TryUpdate(playerId, newIpEndPoint, ipEndPoint);
                     }
-                    else
-                    {
-                        //ip игрока не поменялся
-                        return false;
-                    }   
-                }
-                else
-                {
+
+                    //ip игрока не поменялся
                     return false;
                 }
-            }
-            else
-            {
+
                 return false;
             }
+
+            return false;
         }
 
         [CanBeNull]

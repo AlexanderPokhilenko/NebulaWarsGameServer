@@ -29,12 +29,12 @@ namespace Server.GameEngine.Rudp
         
         public void SendAll()
         {
-            var pairs = new List<(int matchId, ushort playerId)>();
+            List<(int matchId, ushort playerId)> pairs = new List<(int matchId, ushort playerId)>();
             
             //получить пары matchId playerId из хранилища матчей
             foreach (Match match in matchStorage.GetAllMatches())
             {
-                int matchId = match.MatchId;
+                int matchId = match.matchId;
                 List<ushort> players = ipAddressesStorage.GetActivePlayersIds(matchId);
                 if (players != null)
                 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Code.Common;
 using Server.GameEngine.Rudp;
@@ -14,19 +15,18 @@ namespace Server.GameEngine.MatchLifecycle
     /// </summary>
     public class MatchRemover
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchRemover));
-        
+        private readonly MatchStorage matchStorage;
+        private readonly MessageIdFactory messageIdFactory;
         /// <summary>
         /// Очередь на удаление матча.
         /// </summary>
-        private readonly MatchStorage matchStorage;
-        private readonly MessageIdFactory messageIdFactory;
         private readonly ConcurrentQueue<int> matchesToRemove;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly MessagesPackIdFactory messagesPackIdFactory;
         private readonly PlayersMatchFinishNotifier playersMatchFinishNotifier;
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchRemover));
 
         public MatchRemover(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             UdpSendUtils udpSendUtils, MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
@@ -44,7 +44,15 @@ namespace Server.GameEngine.MatchLifecycle
         
         public void MarkMatchAsFinished(int matchId)
         {
-            matchesToRemove.Enqueue(matchId);
+            if (!matchesToRemove.Contains(matchId))
+            {
+                log.Info("Добавление матча для в очередь для удаления.");
+                matchesToRemove.Enqueue(matchId);
+            }
+            else
+            {
+                log.Info("Попытка добавить матч в очередь для удаления");
+            }
         }
         
         //TODO изолировать этот метод. он сейчас доступен из систем
@@ -54,7 +62,7 @@ namespace Server.GameEngine.MatchLifecycle
             {
                 if (matchesToRemove.TryDequeue(out int matchId))
                 {
-                    log.Warn("Удаление боя "+matchId);
+                    log.Info("Удаление боя "+matchId);
                     DeleteMatch(matchId);    
                 }
             }
@@ -76,13 +84,12 @@ namespace Server.GameEngine.MatchLifecycle
             match.TearDown();
             matchmakerNotifier.MarkMatchAsFinished(matchId);
             
-            log.Warn($"Перед удалением сообщений для матча {nameof(matchId)} {matchId}.");
             Task.Run(async () =>
             {
                 //todo вынести это в новый класс
                 //задержка нужна для того, чтобы последние udp сообщения дошли до игроков
                 await Task.Delay(10_000);
-                log.Warn($"Удаление rudp сообщений для матча {nameof(matchId)} {matchId}.");
+                log.Info($"Удаление rudp сообщений для матча {nameof(matchId)} {matchId}.");
                 byteArrayRudpStorage.RemoveMatchMessages(matchId);
                 List<ushort> playersIds = ipAddressesStorage.GetActivePlayersIds(matchId);
                 if (playersIds != null)

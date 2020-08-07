@@ -16,19 +16,13 @@ namespace Server.GameEngine.Rudp
     /// </summary>
     public class ByteArrayRudpStorage
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(ByteArrayRudpStorage));
-        
         private readonly object lockObj = new object();
-        
-        //messageId matchId playerId
-        private readonly ConcurrentDictionary<uint, (int matchId, int playerId)> messageIdPlayerId;
-        
+        private readonly ILog log = LogManager.CreateLogger(typeof(ByteArrayRudpStorage));
         //matchId playerId messageId message
         private readonly ConcurrentDictionary<int, Dictionary<int, Dictionary<uint, byte[]>>> unconfirmedMessages;
         
         public ByteArrayRudpStorage()
         {
-            messageIdPlayerId = new ConcurrentDictionary<uint, (int matchId, int playerId)>();
             unconfirmedMessages = new ConcurrentDictionary<int, Dictionary<int, Dictionary<uint, byte[]>>>();
         }
         
@@ -39,7 +33,6 @@ namespace Server.GameEngine.Rudp
                 TryCreateMatchDictionary(matchId);
                 TryCreatePlayerDictionary(matchId, playerId);
                 unconfirmedMessages[matchId][playerId].Add(messageId, serializedMessage);
-                messageIdPlayerId.TryAdd(messageId, (matchId, playerId));
             }
         }
 
@@ -50,30 +43,6 @@ namespace Server.GameEngine.Rudp
             {
                 if(unconfirmedMessages.TryRemove(matchId, out var playersDict))
                 {
-                    foreach (var playerDict in playersDict)
-                    {
-                        foreach (var messageId in playerDict.Value.Keys)
-                        {
-                            messageIdPlayerId.TryRemove(messageId, out _);
-                        }
-                    }
-                }
-            }
-        }
-        
-        public bool TryRemoveMessage(uint messageId)
-        {
-            lock (lockObj)
-            {
-                if(messageIdPlayerId.TryRemove(messageId, out var value))
-                {
-                    unconfirmedMessages[value.matchId][value.playerId].Remove(messageId);
-                    return true;
-                }
-                else
-                {
-                    //сообщение с messageId нет в структуре данных
-                    return false;
                 }
             }
         }
@@ -121,6 +90,20 @@ namespace Server.GameEngine.Rudp
                     unconfirmedMessages[matchId].Add(playerId, new Dictionary<uint, byte[]>());
                     //структура данных для игрока в матче создана
                 }
+            }
+        }
+
+        public bool TryRemoveMessage(int matchId, ushort playerId, uint messageIdToConfirm)
+        {
+            lock (lockObj)
+            {
+                if (unconfirmedMessages[matchId][playerId].ContainsKey(messageIdToConfirm))
+                {
+                    unconfirmedMessages[matchId][playerId].Remove(messageIdToConfirm);
+                    return true;
+                }
+
+                return false;
             }
         }
     }

@@ -97,7 +97,7 @@ namespace Server
             {
                 foreach (var match in matchStorage.GetAllMatches())
                 {
-                    matchRemover.MarkMatchAsFinished(match.MatchId);
+                    matchRemover.MarkMatchAsFinished(match.matchId);
                 }
                 matchRemover.DeleteFinishedMatches();    
             }

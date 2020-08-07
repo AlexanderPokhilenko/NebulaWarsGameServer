@@ -8,11 +8,10 @@ namespace Server.GameEngine.MatchLifecycle
     /// </summary>
     public class MatchLifeCycleManager
     {
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchLifeCycleManager));
-
         private readonly MatchStorage matchStorage;
         private readonly MatchCreator matchCreator;
         private readonly MatchRemover matchRemover;
+        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchLifeCycleManager));
         
         public MatchLifeCycleManager(MatchStorage matchStorage, MatchCreator matchCreator, MatchRemover matchRemover)
         {

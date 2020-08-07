@@ -48,7 +48,7 @@ namespace Server.GameEngine.Experimental.Systems
             switch (alivePlayersAndBotsGroup.count)
             {
                 case 0:
-                    //последние игроки сдохли в одном кадре
+                    //последние игроки погибли в одном кадре
                     matchRemover.MarkMatchAsFinished(matchId);
                     break;
                 case 1 :
@@ -61,23 +61,23 @@ namespace Server.GameEngine.Experimental.Systems
             {
                 //живых игроков не осталось. остались только боты
                 //чем закончится драка ботов неинтересно матч можно завершать
-                log.Warn("Живые игроки в матче кончились.");
+                log.Info("Живые игроки в матче кончились.");
                 matchRemover.MarkMatchAsFinished(matchId);
             }
         }
 
         private void LogKilledEntities(List<GameEntity> entities)
         {
-            log.Warn($" {nameof(matchId)} {matchId} Погибло игровых сущностей: {entities.Count}. ");
+            log.Info($" {nameof(matchId)} {matchId} Погибло игровых сущностей: {entities.Count}. ");
             foreach (var gameEntity in entities)
             {
                 if (gameEntity.isBot)
                 {
-                    log.Warn($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.id}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.id}");
                 }
                 else if(gameEntity.hasPlayer)
                 {
-                    log.Warn($"{nameof(matchId)} {matchId} Погиб игрок {gameEntity.player.id}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {gameEntity.player.id}");
                 }
                 else
                 {

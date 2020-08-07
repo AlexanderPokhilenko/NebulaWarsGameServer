@@ -3,7 +3,6 @@ using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
 using NetworkLibrary.NetworkLibrary.Udp;
 using Server.GameEngine.Rudp;
-using Server.Udp.Storage;
 using ZeroFormatter;
 
 namespace Server.Udp.MessageProcessing.Handlers
@@ -14,9 +13,8 @@ namespace Server.Udp.MessageProcessing.Handlers
     /// </summary>
     public class RudpConfirmationReceiver:IMessageHandler
     {
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(RudpConfirmationReceiver));
-        
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
+        private readonly ILog log = LogManager.CreateLogger(typeof(RudpConfirmationReceiver));
 
         public RudpConfirmationReceiver(ByteArrayRudpStorage byteArrayRudpStorage)
         {
@@ -28,7 +26,10 @@ namespace Server.Udp.MessageProcessing.Handlers
             DeliveryConfirmationMessage mes =
                 ZeroFormatterSerializer.Deserialize<DeliveryConfirmationMessage>(messageWrapper.SerializedMessage);
             uint messageIdToConfirm = mes.MessageNumberThatConfirms;
-            byteArrayRudpStorage.TryRemoveMessage(messageIdToConfirm);
+            int matchId = mes.MatchId;
+            ushort playerId = mes.PlayerId;
+            // log.Debug($"{matchId} {playerId} {messageIdToConfirm}");
+            byteArrayRudpStorage.TryRemoveMessage(matchId, playerId, messageIdToConfirm);
         }
     }
 }

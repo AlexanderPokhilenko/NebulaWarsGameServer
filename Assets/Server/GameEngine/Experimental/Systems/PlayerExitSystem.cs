@@ -14,21 +14,27 @@ namespace Server.GameEngine.Experimental.Systems
     /// </summary>
     public class PlayerExitSystem:ReactiveSystem<InputEntity>
     {
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerExitSystem));
-    
-        private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
-        private readonly IGroup<InputEntity> playerExitGroup;
         private readonly int matchId;
-        private readonly PlayerDeathHandler playerDeathHandler;
         private readonly GameContext gameContext;
-        
-        public PlayerExitSystem(Contexts contexts, int matchId, PlayerDeathHandler playerDeathHandler)
+        private readonly MatchRemover matchRemover;
+        private readonly IGroup<InputEntity> playerExitGroup;
+        private readonly IGroup<GameEntity> alivePlayersGroup;
+        private readonly PlayerDeathHandler playerDeathHandler;
+        private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
+        private readonly ILog log = LogManager.CreateLogger(typeof(PlayerExitSystem));
+
+        public PlayerExitSystem(Contexts contexts, int matchId, PlayerDeathHandler playerDeathHandler,
+            MatchRemover matchRemover)
             :base(contexts.input)
         {
             gameContext = contexts.game;
             alivePlayerAndBotsGroup = gameContext.GetGroup(GameMatcher.Player);
             this.matchId = matchId;
             this.playerDeathHandler = playerDeathHandler;
+            this.matchRemover = matchRemover;
+            alivePlayersGroup = contexts.game.GetGroup(
+                GameMatcher.AllOf(GameMatcher.Player).
+                    NoneOf(GameMatcher.KilledBy, GameMatcher.Bot));
         }
 
         protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
@@ -43,19 +49,27 @@ namespace Server.GameEngine.Experimental.Systems
 
         protected override void Execute(List<InputEntity> entities)
         {
-            Log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
+            log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)
             {
                 var temporaryId = inputEntity.player.id;
                 var playerEntity = gameContext.GetEntityWithPlayer(temporaryId);
                 if (playerEntity == null || !playerEntity.hasAccount)
                 {
-                    Log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
+                    log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
                 }
                 var accountId = playerEntity.account.id;
-                Log.Warn($"преждевременное удаление игрока из матча {nameof(temporaryId)} {temporaryId} {nameof(accountId)} {accountId}");
+                log.Warn($"преждевременное удаление игрока из матча {nameof(temporaryId)} {temporaryId} {nameof(accountId)} {accountId}");
                 TurnIntoBot(temporaryId);
                 SendDeathMessage(accountId, temporaryId);
+            }
+            
+            if (alivePlayersGroup.count == 0)
+            {
+                //живых игроков не осталось. остались только боты
+                //чем закончится драка ботов неинтересно матч можно завершать
+                log.Info("Живые игроки в матче кончились.");
+                matchRemover.MarkMatchAsFinished(matchId);
             }
         }
 

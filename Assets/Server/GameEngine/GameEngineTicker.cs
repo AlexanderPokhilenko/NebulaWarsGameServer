@@ -11,10 +11,10 @@ namespace Server.GameEngine
     public class GameEngineTicker
     {
         private readonly MatchStorage matchStorage;
-        private readonly MatchLifeCycleManager matchLifeCycleManager;
-        private readonly InputEntitiesCreator inputEntitiesCreator;
-        private readonly ExitEntitiesCreator exitEntitiesCreator;
         private readonly RudpMessagesSender rudpMessagesSender;
+        private readonly ExitEntitiesCreator exitEntitiesCreator;
+        private readonly InputEntitiesCreator inputEntitiesCreator;
+        private readonly MatchLifeCycleManager matchLifeCycleManager;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
 
         public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
@@ -22,10 +22,10 @@ namespace Server.GameEngine
             RudpMessagesSender rudpMessagesSender, OutgoingMessagesStorage outgoingMessagesStorage)
         {
             this.matchStorage = matchStorage;
-            this.matchLifeCycleManager = matchLifeCycleManager;
-            this.inputEntitiesCreator = inputEntitiesCreator;
-            this.exitEntitiesCreator = exitEntitiesCreator;
             this.rudpMessagesSender = rudpMessagesSender;
+            this.exitEntitiesCreator = exitEntitiesCreator;
+            this.inputEntitiesCreator = inputEntitiesCreator;
+            this.matchLifeCycleManager = matchLifeCycleManager;
             this.outgoingMessagesStorage = outgoingMessagesStorage;
         }
 
@@ -43,7 +43,7 @@ namespace Server.GameEngine
             //добавление rudp к списку того, что нужно отправить
             rudpMessagesSender.SendAll();
             
-            //Отправка созданных сообщений игрокам
+            //Отправка созданных сообщений
             outgoingMessagesStorage.SendAllMessages();
             
             //создание/удаление матчей

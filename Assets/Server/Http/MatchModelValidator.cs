@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
@@ -12,6 +13,7 @@ namespace Server.Http
     /// </summary>
     public class MatchModelValidator
     {
+        //todo переписать это
         private readonly MatchStorage matchStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
 
@@ -24,8 +26,7 @@ namespace Server.Http
         {
             CheckPrefabNames(matchModel);
             bool matchWithThisIdDoesNotExist = CheckMatchId(matchModel);
-            bool thereIsNoMatchWithSuchPlayers = CheckPlayers(matchModel);
-            var result = GetValidationResult(matchWithThisIdDoesNotExist, thereIsNoMatchWithSuchPlayers);
+            var result = GetValidationResult(matchWithThisIdDoesNotExist);
             return result;
         }
 
@@ -37,58 +38,34 @@ namespace Server.Http
                 {
                     throw new ArgumentException(nameof(playerModel.WarshipName));
                 }
-            } foreach (BotModel botModel in matchModel.GameUnits.Bots)
+            } 
+            
+            foreach (BotModel botModel in matchModel.GameUnits.Bots)
             {
                 if (string.IsNullOrWhiteSpace(botModel.WarshipName))
                 {
                     throw new ArgumentException(nameof(botModel.WarshipName));
                 }
             }
-         
-        }
-        
-        private bool CheckPlayers(BattleRoyaleMatchModel matchModel)
-        {
-            bool thereIsNoRoomWithSuchPlayers = true;
-            var tmpIds = matchModel.GameUnits.Bots.Select(bot => bot.TemporaryId)
-                .ToList();
-            var test1 = matchModel.GameUnits.Players.Select(player => player.TemporaryId);
-            tmpIds.AddRange(test1);
-            foreach (ushort tmpId in tmpIds)
-            {
-                if (matchStorage.HasPlayer(tmpId))
-                {
-                    log.Error("В словаре уже содержится игрок с id = "+tmpId);
-                    thereIsNoRoomWithSuchPlayers = false;
-                    break;
-                }
-            }
-            return thereIsNoRoomWithSuchPlayers;
         }
 
         private bool CheckMatchId(BattleRoyaleMatchModel matchModel)
         {
             return !matchStorage.HasMatch(matchModel.MatchId);
         }
-
-        //TODO говно
-        //заменить enum на несколько bool
-        private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist,
-            bool thereIsNoRoomWithSuchPlayers )
+        
+        private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist)
         {
             GameRoomValidationResult result = new GameRoomValidationResult();
-            if (roomWithThisNumberDoesNotExist && thereIsNoRoomWithSuchPlayers)
+            if (roomWithThisNumberDoesNotExist)
             {
                 result.ResultEnum = GameRoomValidationResultEnum.Ok;
             }
-            else if(!roomWithThisNumberDoesNotExist)
+            else
             {
                 result.ResultEnum = GameRoomValidationResultEnum.AlreadyHaveARoomWithThatNumber;
-            }else
-            {
-                result.ResultEnum = GameRoomValidationResultEnum.ThereIsAtLeastOneSuchPlayer;
             }
-            
+
             return result;
         }
     }

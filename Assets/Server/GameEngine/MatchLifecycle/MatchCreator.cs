@@ -12,8 +12,8 @@ namespace Server.GameEngine.MatchLifecycle
         /// <summary>
         /// Очередь на создание.
         /// </summary>
-        private readonly ConcurrentQueue<BattleRoyaleMatchModel> matchesToCreate;
         private readonly MatchFactory matchFactory;
+        private readonly ConcurrentQueue<BattleRoyaleMatchModel> matchesToCreate;
         
         public MatchCreator(MatchFactory matchFactory)
         {

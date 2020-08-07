@@ -9,11 +9,10 @@ namespace Server.Http
     //TODO говно
     public class MatchModelMessageHandler
     {
+        private readonly MatchCreator matchCreator;
+        private readonly MatchModelValidator matchModelValidator;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
         
-        private readonly MatchModelValidator matchModelValidator;
-        private readonly MatchCreator matchCreator;
-
         public MatchModelMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
         {
             this.matchCreator = matchCreator;

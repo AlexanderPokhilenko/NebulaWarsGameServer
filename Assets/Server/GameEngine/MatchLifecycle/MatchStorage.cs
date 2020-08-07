@@ -11,10 +11,9 @@ namespace Server.GameEngine.MatchLifecycle
     /// </summary>
     public class MatchStorage
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchStorage));
-        
         //matchId match
         private readonly ConcurrentDictionary<int, Match> matches;
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchStorage));
       
         public MatchStorage()
         {
@@ -23,7 +22,7 @@ namespace Server.GameEngine.MatchLifecycle
 
         public void AddMatch(Match match)
         {
-            if (matches.TryAdd(match.MatchId, match))
+            if (matches.TryAdd(match.matchId, match))
             {
                 //ignore
             }
@@ -40,7 +39,7 @@ namespace Server.GameEngine.MatchLifecycle
         [CanBeNull]
         public Match DequeueMatch(int matchId)
         {
-            log.Debug("Попытка удалить матч "+matchId);
+            log.Info("Попытка удалить матч "+matchId);
             if (matches.TryRemove(matchId, out Match match))
             {
                 log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
@@ -50,23 +49,7 @@ namespace Server.GameEngine.MatchLifecycle
             log.Error($"Попытка удалить матч, которого нет {nameof(matchId)} {matchId}");
             return null;
         }
-
-        /// <summary>
-        /// Перед созданием матча.
-        /// </summary>
-        public bool HasPlayer(int playerId)
-        {
-            foreach (Match match in matches.Values)
-            {
-                if (match.HasPlayer(playerId))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+      
         /// <summary>
         /// Перед созданием матча.
         /// </summary>
