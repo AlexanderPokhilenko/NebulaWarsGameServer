@@ -45,7 +45,7 @@ namespace Server.Udp.Sending
 
         public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransform> entitiesInfo, bool rudp = false)
         {
-            var message = new PositionsMessage { EntitiesInfo = entitiesInfo };
+            var message = new PositionsMessage(entitiesInfo);
             SendUdp(matchId, playerId, message, rudp);
         }
 
