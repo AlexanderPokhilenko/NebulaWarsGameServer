@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.CompilerServices;
+using Code.Common;
 using JetBrains.Annotations;
 using NetworkLibrary.NetworkLibrary.Udp;
+using UnityEngine;
 using ZeroFormatter;
 
 namespace Server.Udp.Sending
@@ -13,7 +15,8 @@ namespace Server.Udp.Sending
         private readonly int mtu;
         private readonly IUdpSender udpSender;
         private readonly MessagesPackIdFactory messagesPackIdFactory;
-
+        private readonly ILog log = LogManager.CreateLogger(typeof(SimpleMessagesPacker));
+        
         public SimpleMessagesPacker(int mtu, IUdpSender udpSender, MessagesPackIdFactory messagesPackIdFactory)
         {
             if (mtu < 500)
@@ -83,6 +86,9 @@ namespace Server.Udp.Sending
                 if (message.Length + MessagesPack.IndexLength + 4 > mtu)
                 {
                     //Console.WriteLine("Длина сообщения слишком большая "+message.Length);
+                    MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(message);
+                    log.Error($"MessageType = "+messageWrapper.MessageType);
+                    log.Error($"NeedResponse = "+messageWrapper.NeedResponse);
                     throw new Exception($"Длина сообщения больше, чем mtu {message.Length}");
                     
                     //{
