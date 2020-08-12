@@ -1,12 +1,10 @@
-﻿using System;
-using Entitas;
+﻿using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using UnityEngine;
-using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace SharedSimulationCode
 {
@@ -26,25 +24,40 @@ namespace SharedSimulationCode
             contexts.SubscribeId();
             systems = new Systems()
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
+                    .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
+                    .Add(new MovementSystem(contexts))
                     .Add(new PositionSenderSystem(matchId, contexts, udpSendUtils))
-                    // .Add(new PositionSenderSystem(contexts))
+                    
+                    .Add(new InputClearSystem(contexts))
+                    
+                    .Add(new PositionCheckSystem(contexts))
                 ;
-            
-            //todo нужно оповестить игроков о связи accountId - entityId
         }
-        
 
         public void Initialize()
         {
             systems.Initialize();
         }
 
+        public void Tick()
+        {
+            systems.Execute();
+            systems.Cleanup();
+        }
+
+        public void TearDown()
+        {
+            systems.DeactivateReactiveSystems();
+            systems.TearDown();
+            systems.ClearReactiveSystems();
+        }
+        
         public void AddMovement(ushort playerId, Vector2 vector2)
         {
             if (contexts != null)
             {
                 var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.AddMovement(vector2);
+                inputEntity.ReplaceMovement(vector2);
             }
         }
         public void AddAttack(ushort playerId, float attackAngle)
@@ -52,7 +65,7 @@ namespace SharedSimulationCode
             if (contexts != null)
             {
                 var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.AddAttack(attackAngle);
+                inputEntity.ReplaceAttack(attackAngle);
             }
         }
         
@@ -84,21 +97,6 @@ namespace SharedSimulationCode
             }
 
             return inputEntity;
-        }
-
-      
-        
-        public void Tick()
-        {
-            systems.Execute();
-            systems.Cleanup();
-        }
-
-        public void TearDown()
-        {
-            systems.DeactivateReactiveSystems();
-            systems.TearDown();
-            systems.ClearReactiveSystems();
         }
     }
 }

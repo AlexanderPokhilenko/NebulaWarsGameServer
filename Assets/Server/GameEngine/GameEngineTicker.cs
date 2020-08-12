@@ -3,6 +3,7 @@ using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.MessageSorters;
 using Server.GameEngine.Rudp;
 using SharedSimulationCode;
+using UnityEngine;
 
 namespace Server.GameEngine
 {
@@ -36,7 +37,7 @@ namespace Server.GameEngine
             exitEntitiesCreator.Create();
             
             //Перемещение игровых сущностей и создание сообщений с новым состоянием игрового мира
-            foreach (MatchSimulation match in matchStorage.GetAllMatches())
+            foreach (var match in matchStorage.GetAllMatches())
             {
                 match.Tick();
             }

@@ -69,25 +69,26 @@ public static class GameComponentsLookup {
     public const int Player = 58;
     public const int Position = 59;
     public const int RectangleCollider = 60;
-    public const int Round = 61;
-    public const int SingleTargeting = 62;
-    public const int Skin = 63;
-    public const int SpecialShooter = 64;
-    public const int TargetChanging = 65;
-    public const int Target = 66;
-    public const int TargetingParameters = 67;
-    public const int TargetMovingPoint = 68;
-    public const int TargetScaling = 69;
-    public const int Team = 70;
-    public const int Transform = 71;
-    public const int TryingToShoot = 72;
-    public const int TryingToUseAbility = 73;
-    public const int Unmovable = 74;
-    public const int Velocity = 75;
-    public const int ViewType = 76;
-    public const int Zone = 77;
+    public const int Rigidbody = 61;
+    public const int Round = 62;
+    public const int SingleTargeting = 63;
+    public const int Skin = 64;
+    public const int SpecialShooter = 65;
+    public const int TargetChanging = 66;
+    public const int Target = 67;
+    public const int TargetingParameters = 68;
+    public const int TargetMovingPoint = 69;
+    public const int TargetScaling = 70;
+    public const int Team = 71;
+    public const int Transform = 72;
+    public const int TryingToShoot = 73;
+    public const int TryingToUseAbility = 74;
+    public const int Unmovable = 75;
+    public const int Velocity = 76;
+    public const int ViewType = 77;
+    public const int Zone = 78;
 
-    public const int TotalComponents = 78;
+    public const int TotalComponents = 79;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -151,6 +152,7 @@ public static class GameComponentsLookup {
         "Player",
         "Position",
         "RectangleCollider",
+        "Rigidbody",
         "Round",
         "SingleTargeting",
         "Skin",
@@ -232,6 +234,7 @@ public static class GameComponentsLookup {
         typeof(PlayerComponent),
         typeof(PositionComponent),
         typeof(RectangleColliderComponent),
+        typeof(RigidbodyComponent),
         typeof(RoundComponent),
         typeof(SingleTargetingComponent),
         typeof(SkinComponent),

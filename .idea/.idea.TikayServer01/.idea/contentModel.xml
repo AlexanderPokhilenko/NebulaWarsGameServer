@@ -80,6 +80,7 @@
               <e p="GamePlayerComponent.cs" t="Include" />
               <e p="GamePositionComponent.cs" t="Include" />
               <e p="GameRectangleColliderComponent.cs" t="Include" />
+              <e p="GameRigidbodyComponent.cs" t="Include" />
               <e p="GameRoundComponent.cs" t="Include" />
               <e p="GameSingleTargetingComponent.cs" t="Include" />
               <e p="GameSkinComponent.cs" t="Include" />
@@ -422,6 +423,7 @@
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
         <e p="SharedSimulationCode" t="Include">
+          <e p="InputClearSystem.cs" t="Include" />
           <e p="LagCompensation" t="Include">
             <e p="GameState.cs" t="Include" />
             <e p="IGameStateHistory.cs" t="Include" />
@@ -433,10 +435,14 @@
           </e>
           <e p="MapInitializeSystem.cs" t="Include" />
           <e p="MatchSimulation.cs" t="Include" />
+          <e p="MovementSystem.cs" t="Include" />
           <e p="PhysicsSceneTesting" t="Include">
             <e p="PhysicsSceneTest.cs" t="Include" />
           </e>
+          <e p="PlayersSendingSystem.cs" t="Include" />
+          <e p="PositionCheckSystem.cs" t="Include" />
           <e p="PositionSenderSystem.cs" t="Include" />
+          <e p="RotationSystem.cs" t="Include" />
         </e>
         <e p="Sources" t="Include">
           <e p="Components" t="Include">

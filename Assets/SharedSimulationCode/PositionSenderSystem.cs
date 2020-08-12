@@ -2,6 +2,7 @@
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
+using UnityEngine;
 
 namespace SharedSimulationCode
 {
@@ -20,8 +21,7 @@ namespace SharedSimulationCode
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
             alivePlayers = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            allWithView = contexts.game
-                .GetGroup(GameMatcher.AllOf(GameMatcher.Transform, GameMatcher.ViewType));
+            allWithView = contexts.game.GetGroup(GameMatcher.Transform);
         }
 
         public void Execute()
@@ -31,10 +31,10 @@ namespace SharedSimulationCode
             {
                 var position = entity.transform.value.position;
                 float x = position.x;
-                float y = position.z;
+                float z = position.z;
                 float angle = entity.transform.value.rotation.y;
                 ViewTypeId viewTypeId = entity.viewType.id;
-                ViewTransform viewTransform = new ViewTransform(x, y, angle, viewTypeId);
+                ViewTransform viewTransform = new ViewTransform(x, z, angle, viewTypeId);
                 allGos.Add(entity.id.value, viewTransform);
             }
             
