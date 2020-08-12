@@ -27,9 +27,8 @@ namespace SharedSimulationCode
         {
             //todo создать корабли
             Vector3 position = new Vector3();
-            for (var index = 0; index < matchModel.GameUnits.Players.Count; index++)
+            for (var index = 0; index < matchModel.GameUnits.Players.Count+5; index++)
             {
-                var playerModel = matchModel.GameUnits.Players[index];
                 var go = Object.Instantiate(startSparrowPrefab, position, Quaternion.identity);
                 GameEntity entity = contexts.game.CreateEntity();
                 entity.AddHealthPoints(2000);

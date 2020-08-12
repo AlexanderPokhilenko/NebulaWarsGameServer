@@ -5,6 +5,8 @@ using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using UnityEngine;
+using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace SharedSimulationCode
 {
@@ -21,6 +23,7 @@ namespace SharedSimulationCode
             this.matchId = matchId;
             var playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils, ipAddressesStorage);
             contexts = new Contexts();
+            contexts.SubscribeId();
             systems = new Systems()
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
                     .Add(new PositionSenderSystem(matchId, contexts, udpSendUtils))
@@ -36,33 +39,54 @@ namespace SharedSimulationCode
             systems.Initialize();
         }
 
-        public void AddInputEntity<T>(ushort playerId, Action<InputEntity, T> action, T value)
+        public void AddMovement(ushort playerId, Vector2 vector2)
         {
             if (contexts != null)
             {
-                var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
-                if (inputEntity == null)
-                {
-                    inputEntity = contexts.input.CreateEntity();
-                    inputEntity.AddPlayer(playerId);
-                }
-                action(inputEntity, value);
+                var inputEntity = GetEntityForPlayer(playerId);
+                inputEntity.AddMovement(vector2);
+            }
+        }
+        public void AddAttack(ushort playerId, float attackAngle)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = GetEntityForPlayer(playerId);
+                inputEntity.AddAttack(attackAngle);
+            }
+        }
+        
+        public void AddExit(ushort playerId)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = GetEntityForPlayer(playerId);
+                inputEntity.isLeftTheGame = true;
+            }
+        }
+        
+        public void AddAbility(ushort playerId)
+        {
+            if (contexts != null)
+            {
+                var inputEntity = GetEntityForPlayer(playerId);
+                inputEntity.isTryingToUseAbility = true;
             }
         }
 
-        public void AddInputEntity(ushort playerId, Action<InputEntity> action)
+        private InputEntity GetEntityForPlayer(ushort playerId)
         {
-            if (contexts != null)
+            var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+            if (inputEntity == null)
             {
-                var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
-                if (inputEntity == null)
-                {
-                    inputEntity = contexts.input.CreateEntity();
-                    inputEntity.AddPlayer(playerId);
-                }
-                action(inputEntity);
+                inputEntity = contexts.input.CreateEntity();
+                inputEntity.AddPlayer(playerId);
             }
+
+            return inputEntity;
         }
+
+      
         
         public void Tick()
         {

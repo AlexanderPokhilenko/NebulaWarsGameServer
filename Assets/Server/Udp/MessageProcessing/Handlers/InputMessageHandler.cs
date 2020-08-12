@@ -4,6 +4,7 @@ using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
 using Server.GameEngine.Experimental;
 using Server.GameEngine.MessageSorters;
 using UnityEngine;
+using UnityEngine.Playables;
 using ZeroFormatter;
 using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
@@ -25,10 +26,7 @@ namespace Server.Udp.MessageProcessing.Handlers
         {
             PlayerInputMessage message =
                 ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(messageWrapper.SerializedMessage);
-            int matchId = message.MatchId;
-            inputEntitiesCreator.TryAddMovementMessage(matchId, message.TemporaryId, message.GetVector2());
-            inputEntitiesCreator.TryAddAttackMessage(matchId, message.TemporaryId, message.Angle);
-            inputEntitiesCreator.TryAddAbilityMessage(matchId, message.TemporaryId, message.UseAbility);
+            inputEntitiesCreator.AddInputMessage(message);
         }
     }
 }

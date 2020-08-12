@@ -45,6 +45,8 @@ namespace Server.GameEngine.MatchLifecycle
                 ipAddressesStorage,
                 matchRemover,
                 matchmakerNotifier);
+            
+            match.Initialize();
             return match;
         }
     }

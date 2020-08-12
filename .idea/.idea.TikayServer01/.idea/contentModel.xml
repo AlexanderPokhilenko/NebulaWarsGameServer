@@ -436,6 +436,7 @@
           <e p="PhysicsSceneTesting" t="Include">
             <e p="PhysicsSceneTest.cs" t="Include" />
           </e>
+          <e p="PositionSenderSystem.cs" t="Include" />
         </e>
         <e p="Sources" t="Include">
           <e p="Components" t="Include">
