@@ -21,7 +21,7 @@ namespace Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus
 
     public static class ServerTimeConstants
     {
-        public const float MaxFps = 30f;
+        public const float MaxFps = 10;
         public const float MinDeltaTime = 1f / MaxFps;
     }
 }

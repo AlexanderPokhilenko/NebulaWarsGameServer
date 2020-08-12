@@ -5,6 +5,9 @@ using Server.Udp.Sending;
 
 namespace Server.GameEngine.Experimental.Systems
 {
+    /// <summary>
+    /// Отвечает за радиус обзора и отправляет спрятанные обьекты.
+    /// </summary>
     public class HidesSenderSystem : IExecuteSystem, IInitializeSystem
     {
         private readonly int matchId;
@@ -24,6 +27,7 @@ namespace Server.GameEngine.Experimental.Systems
             this.udpSendUtils = udpSendUtils;
             viewAreas = playersViewAreas;
             gameContext = contexts.game;
+            //todo добавить сюда observer
             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
             grandObjects = gameContext.GetGroup(grandMatcher);

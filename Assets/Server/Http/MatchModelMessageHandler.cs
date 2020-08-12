@@ -24,7 +24,7 @@ namespace Server.Http
             GameRoomValidationResult result = matchModelValidator.Validate(matchModel);
             if (result?.ResultEnum == GameRoomValidationResultEnum.Ok)
             {
-                AddMatchToQueue(matchModel);
+                matchCreator.AddMatchToCreationQueue(matchModel);
             }
             else
             {
@@ -33,11 +33,6 @@ namespace Server.Http
                 throw new Exception(errMessage);
             }
             return result;
-        }
-
-        private void AddMatchToQueue(BattleRoyaleMatchModel matchModel)
-        {
-            matchCreator.AddMatchToCreationQueue(matchModel);
         }
     }
 }

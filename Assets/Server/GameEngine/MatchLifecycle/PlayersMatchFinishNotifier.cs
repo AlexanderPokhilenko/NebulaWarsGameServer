@@ -2,6 +2,7 @@
 using Code.Common;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -20,7 +21,7 @@ namespace Server.GameEngine.MatchLifecycle
             this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public void Notify(Match match)
+        public void Notify(MatchSimulation match)
         {
             List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.matchId);
             if (activePlayersIds == null || activePlayersIds.Count == 0)

@@ -43,5 +43,6 @@
     BlasterShoot,
     IncineratorBeam,
     AbyssBeam,
-    PelletShoot
+    PelletShoot,
+    StarSparrow
 }

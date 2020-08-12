@@ -9,6 +9,7 @@ namespace Server.GameEngine.Experimental.Systems
             Add(new FrameRateSenderSystem(contexts, matchId, udpSendUtils));
 
             Add(new HidesSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
+            //todo добавить сюда систему для отправки сообщения про смерть
             Add(new ChangingPositionsSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
             Add(new UnhiddenStoppedSenderSystem(contexts, matchId, udpSendUtils, viewAreas));
 

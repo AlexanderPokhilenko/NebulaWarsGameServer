@@ -7,6 +7,7 @@ using Server.GameEngine.Rudp;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -73,7 +74,7 @@ namespace Server.GameEngine.MatchLifecycle
         /// </summary>
         private void DeleteMatch(int matchId)
         {
-            Match match = matchStorage.DequeueMatch(matchId);
+            MatchSimulation match = matchStorage.DequeueMatch(matchId);
             if (match == null)
             {
                 log.Error($"Матч уже был удалён. {nameof(matchId)} {matchId}");

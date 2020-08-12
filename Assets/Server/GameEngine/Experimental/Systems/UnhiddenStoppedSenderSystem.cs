@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
@@ -32,29 +33,30 @@ namespace Server.GameEngine.Experimental.Systems
 
         public void Execute()
         {
-            foreach (var pair in viewAreas)
-            {
-                var playerId = pair.Key;
-                var unhidden = pair.Value.newUnhidden;
-
-                var unhiddenTransforms = withTransforms.AsEnumerable().Where(e => unhidden.Contains(e.id.value)).ToList();
-                if (unhiddenTransforms.Count > 0)
-                {
-                    var positions = unhiddenTransforms.ToDictionary(e => e.id.value,
-                        e => new ViewTransform(e.position.value,
-                            e.direction.angle,
-                            e.viewType.id));
-
-                    udpSendUtils.SendPositions(matchId, playerId, positions, true);
-                }
-
-                var unhiddenRadiuses = withRadiuses.AsEnumerable().Where(e => unhidden.Contains(e.id.value)).ToList();
-                if (unhiddenRadiuses.Count > 0)
-                {
-                    var radiuses = unhiddenRadiuses.ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius));
-                    udpSendUtils.SendRadiuses(matchId, playerId, radiuses, true);
-                }
-            }
+            throw new NotImplementedException();
+            // foreach (var pair in viewAreas)
+            // {
+            //     var playerId = pair.Key;
+            //     var unhidden = pair.Value.newUnhidden;
+            //
+            //     var unhiddenTransforms = withTransforms.AsEnumerable().Where(e => unhidden.Contains(e.id.value)).ToList();
+            //     if (unhiddenTransforms.Count > 0)
+            //     {
+            //         var positions = unhiddenTransforms.ToDictionary(e => e.id.value,
+            //             e => new ViewTransform(e.position.value,
+            //                 e.direction.angle,
+            //                 e.viewType.id));
+            //
+            //         udpSendUtils.SendPositions(matchId, playerId, positions, true);
+            //     }
+            //
+            //     var unhiddenRadiuses = withRadiuses.AsEnumerable().Where(e => unhidden.Contains(e.id.value)).ToList();
+            //     if (unhiddenRadiuses.Count > 0)
+            //     {
+            //         var radiuses = unhiddenRadiuses.ToDictionary(e => e.id.value, e => Mathf.FloatToHalf(e.circleCollider.radius));
+            //         udpSendUtils.SendRadiuses(matchId, playerId, radiuses, true);
+            //     }
+            // }
         }
     }
 }

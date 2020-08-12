@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -26,14 +27,14 @@ namespace Server.GameEngine.MatchLifecycle
             matchesToCreate.Enqueue(battleRoyaleMatchModel);
         }
         
-        public List<Match> CreateMatches()
+        public List<MatchSimulation> CreateMatches()
         {
-            List<Match> result = new List<Match>();
+            List<MatchSimulation> result = new List<MatchSimulation>();
             while (!matchesToCreate.IsEmpty)
             {
                 if (matchesToCreate.TryDequeue(out BattleRoyaleMatchModel matchModel))
                 {
-                    Match match = matchFactory.Create(matchModel);
+                    MatchSimulation match = matchFactory.Create(matchModel);
                     result.Add(match);
                 }
             }

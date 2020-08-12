@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Common;
 using Entitas;
 using Server.GameEngine.MatchLifecycle;
@@ -76,7 +77,11 @@ namespace Server.GameEngine.Experimental.Systems
         private void TurnIntoBot(ushort playerId)
         {
             var playerEntity = gameContext.GetEntityWithPlayer(playerId);
-            if(playerEntity != null && !playerEntity.isBot) Match.MakeBot(playerEntity);
+            if (playerEntity != null && !playerEntity.isBot)
+            {
+                throw new NotImplementedException();
+                // Match.MakeBot(playerEntity);
+            }
         }
 
         private void SendDeathMessage(int accountId, ushort temporaryId)

@@ -8,7 +8,6 @@ using NetworkLibrary.NetworkLibrary;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.Udp.Sending;
 using UnityEngine;
-using Match = Server.GameEngine.MatchLifecycle.Match;
 
 namespace Server.GameEngine.Experimental.Systems
 {
@@ -118,7 +117,8 @@ namespace Server.GameEngine.Experimental.Systems
                 playerEntity.AddAccount(gameUnit.AccountId);
                 playerInfos.Add(playerEntity.account.id, playerEntity.id.value);
 
-                if (gameUnit.IsBot()) Match.MakeBot(playerEntity);
+                throw new NotImplementedException();
+                // if (gameUnit.IsBot()) Match.MakeBot(playerEntity);
                 if(Skins.TryGetValue(gameUnit.SkinName, out var skin)) skin.AddSkin(playerEntity, gameContext);
 
                 var powerLevel = gameUnit.WarshipPowerLevel - 1;

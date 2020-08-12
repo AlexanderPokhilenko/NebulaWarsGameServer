@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
@@ -45,23 +46,24 @@ namespace Server.Udp.Sending
 
         public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransform> entitiesInfo, bool rudp = false)
         {
-            var length = PackingHelper.GetByteLength(entitiesInfo);
-            if (length > PackingHelper.MaxSingleMessageSize)
-            {
-                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
-                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
-                var dictionaries = entitiesInfo.Split(messagesCount);
-                for (var i = 0; i < dictionaries.Length; i++)
-                {
-                    var message = new PositionsMessage(dictionaries[i]);
-                    SendUdp(matchId, playerId, message, rudp);
-                }
-            }
-            else
-            {
-                var message = new PositionsMessage(entitiesInfo);
-                SendUdp(matchId, playerId, message, rudp);
-            }
+            throw new NotImplementedException();
+            // var length = PackingHelper.GetByteLength(entitiesInfo);
+            // if (length > PackingHelper.MaxSingleMessageSize)
+            // {
+            //     log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+            //     var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+            //     var dictionaries = entitiesInfo.Split(messagesCount);
+            //     for (var i = 0; i < dictionaries.Length; i++)
+            //     {
+            //         var message = new PositionsMessage(dictionaries[i]);
+            //         SendUdp(matchId, playerId, message, rudp);
+            //     }
+            // }
+            // else
+            // {
+            //     var message = new PositionsMessage(entitiesInfo);
+            //     SendUdp(matchId, playerId, message, rudp);
+            // }
         }
 
         public void SendRadiuses(int matchId, ushort playerId, Dictionary<ushort, ushort> radiuses, bool rudp = false)

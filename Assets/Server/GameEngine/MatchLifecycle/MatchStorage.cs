@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Code.Common;
 using JetBrains.Annotations;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -12,15 +13,15 @@ namespace Server.GameEngine.MatchLifecycle
     public class MatchStorage
     {
         //matchId match
-        private readonly ConcurrentDictionary<int, Match> matches;
+        private readonly ConcurrentDictionary<int, MatchSimulation> matches;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchStorage));
       
         public MatchStorage()
         {
-            matches = new ConcurrentDictionary<int, Match>();
+            matches = new ConcurrentDictionary<int, MatchSimulation>();
         }
 
-        public void AddMatch(Match match)
+        public void AddMatch(MatchSimulation match)
         {
             if (matches.TryAdd(match.matchId, match))
             {
@@ -37,10 +38,10 @@ namespace Server.GameEngine.MatchLifecycle
         /// Удаляет матч из коллекции.
         /// </summary>
         [CanBeNull]
-        public Match DequeueMatch(int matchId)
+        public MatchSimulation DequeueMatch(int matchId)
         {
             log.Info("Попытка удалить матч "+matchId);
-            if (matches.TryRemove(matchId, out Match match))
+            if (matches.TryRemove(matchId, out MatchSimulation match))
             {
                 log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
                 return match;
@@ -58,12 +59,12 @@ namespace Server.GameEngine.MatchLifecycle
             return matches.ContainsKey(matchId);
         }
 
-        public IEnumerable<Match> GetAllMatches()
+        public IEnumerable<MatchSimulation> GetAllMatches()
         {
             return matches.Values;
         }
 
-        public bool TryGetMatch(int matchId, out Match match)
+        public bool TryGetMatch(int matchId, out MatchSimulation match)
         {
             return matches.TryGetValue(matchId, out match);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Server.GameEngine.MatchLifecycle;
+using SharedSimulationCode;
 using Vector2 = NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages.Vector2;
 
 namespace Server.GameEngine.MessageSorters
@@ -70,7 +71,7 @@ namespace Server.GameEngine.MessageSorters
                 ushort playerId = pair.Key;
                 T value = pair.Value.Item2;
 
-                if (matchStorage.TryGetMatch(matchId, out Match match))
+                if (matchStorage.TryGetMatch(matchId, out MatchSimulation match))
                 {
                     match.AddInputEntity(playerId, action, value);    
                 }

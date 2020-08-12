@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Code.Common;
 using Server.GameEngine.MatchLifecycle;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MessageSorters
 {
@@ -38,7 +39,7 @@ namespace Server.GameEngine.MessageSorters
                 ushort playerId = pair.Value;
 
 
-                if (matchStorage.TryGetMatch(matchId, out Match match))
+                if (matchStorage.TryGetMatch(matchId, out MatchSimulation match))
                 {
                     match.AddInputEntity(playerId, inputEntity => inputEntity.isLeftTheGame = true);
                 } 

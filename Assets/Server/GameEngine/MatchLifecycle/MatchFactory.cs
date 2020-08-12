@@ -3,6 +3,7 @@ using NetworkLibrary.NetworkLibrary.Http;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -27,7 +28,7 @@ namespace Server.GameEngine.MatchLifecycle
             this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public Match Create(BattleRoyaleMatchModel matchModel)
+        public MatchSimulation Create(BattleRoyaleMatchModel matchModel)
         {
             ipAddressesStorage.AddMatch(matchModel);
 
@@ -37,8 +38,13 @@ namespace Server.GameEngine.MatchLifecycle
                 messagesPackIdFactory.AddPlayer(matchModel.MatchId, playerId);
             }
             
-            Match match = new Match(matchModel.MatchId, matchRemover, matchmakerNotifier);
-            match.ConfigureSystems(matchModel, udpSendUtils, ipAddressesStorage);
+            MatchSimulation match = new MatchSimulation(
+                matchModel.MatchId,
+                matchModel,
+                udpSendUtils,
+                ipAddressesStorage,
+                matchRemover,
+                matchmakerNotifier);
             return match;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
@@ -23,12 +24,13 @@ namespace Server.GameEngine.Experimental.Systems
 
         protected override void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities)
         {
-            var visibleDict = entities.ToDictionary(e => e.id.value,
-                e => new ViewTransform(e.position.value,
-                    e.direction.angle,
-                    e.viewType.id));
-
-            udpSendUtils.SendPositions(matchId, playerId, visibleDict);
+            throw new NotImplementedException();
+            // var visibleDict = entities.ToDictionary(e => e.id.value,
+            //     e => new ViewTransform(e.position.value,
+            //         e.direction.angle,
+            //         e.viewType.id));
+            //
+            // udpSendUtils.SendPositions(matchId, playerId, visibleDict);
         }
     }
 }

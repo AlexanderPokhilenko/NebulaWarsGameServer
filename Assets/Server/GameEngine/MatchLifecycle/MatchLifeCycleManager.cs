@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Code.Common;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -22,7 +23,7 @@ namespace Server.GameEngine.MatchLifecycle
 
         public void UpdateMatchesLifeStatus()
         {
-            List<Match> createdMatches = matchCreator.CreateMatches();
+            List<MatchSimulation> createdMatches = matchCreator.CreateMatches();
             foreach (var match in createdMatches)
             {
                 matchStorage.AddMatch(match);

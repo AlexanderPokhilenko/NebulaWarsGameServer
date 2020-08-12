@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class ServerController : MonoBehaviour
 {
-    private readonly ILog log = LogManager.CreateLogger(typeof(ServerController));
     private Startup startup;
+    private readonly ILog log = LogManager.CreateLogger(typeof(ServerController));
 
     private void Awake()
     {
