@@ -1,4 +1,5 @@
 ﻿using Entitas;
+using Server.GameEngine.Chronometers;
 using UnityEngine;
 
 namespace SharedSimulationCode
@@ -19,28 +20,33 @@ namespace SharedSimulationCode
         {
             foreach (InputEntity inputEntity in inputGroup)
             {
-                float direction = inputEntity.attack.direction;
+                float desiredAngle = inputEntity.attack.direction;
                 ushort playerId = inputEntity.player.id;
                 GameEntity playerEntity = gameContext.GetEntityWithPlayer(playerId);
                 if (playerEntity == null)
                 {
-                    Debug.LogWarning($"Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
-                    return;
+                    Debug.LogError($"Нет такого игрока. {nameof(playerId)} {playerId}");
+                    continue;
                 }
 
-                if (playerEntity.hasRigidbody)
+                if (!playerEntity.hasRigidbody)
                 {
-                    const float rotationSpeed = 5f;
-                    var eulerAngles = playerEntity.transform.value.eulerAngles;
-                    
-                    var desiredRotQ = Quaternion.Euler(eulerAngles.x, direction, eulerAngles.z);
-                    var actualRot = Quaternion.Lerp(playerEntity.transform.value.rotation, desiredRotQ, Time.deltaTime * rotationSpeed);
-                    
-                    playerEntity.rigidbody.value.MoveRotation(actualRot);
-                    
-                    // Debug.LogError($"input x {playerJoystickInput.x} y {playerJoystickInput.x}");
-                    // Debug.LogError($"force x {force.x} y {force.y} z {force.z}");
+                    Debug.LogError($"Нет rigidbody");
+                    continue;
                 }
+                
+                if (float.IsNaN(desiredAngle))
+                {
+                    playerEntity.rigidbody.value.angularVelocity = Vector3.zero;
+                    continue;
+                }
+                
+                float angularVelocity = 15;
+                Quaternion currentRotation = playerEntity.rigidbody.value.rotation;
+                Quaternion desiredRotation = Quaternion.Euler(0,desiredAngle,0);
+                Quaternion actualRotQ = Quaternion
+                    .RotateTowards(currentRotation, desiredRotation, angularVelocity); 
+                playerEntity.rigidbody.value.MoveRotation(actualRotQ);
             }
         }
     }

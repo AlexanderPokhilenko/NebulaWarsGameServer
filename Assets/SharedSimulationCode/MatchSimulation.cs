@@ -25,8 +25,12 @@ namespace SharedSimulationCode
             systems = new Systems()
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
+                    
                     .Add(new MovementSystem(contexts))
-                    .Add(new PositionSenderSystem(matchId, contexts, udpSendUtils))
+                    .Add(new RotationSystem(contexts))
+                    
+                    
+                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils))
                     
                     .Add(new InputClearSystem(contexts))
                     

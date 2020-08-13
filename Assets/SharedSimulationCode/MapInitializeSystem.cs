@@ -27,19 +27,20 @@ namespace SharedSimulationCode
         public void Initialize()
         {
             Vector3 position = new Vector3();
-            var firstPlayer = matchModel.GameUnits.Players.First();
-            CreatePlayer(position, firstPlayer.TemporaryId, firstPlayer.AccountId);
             
-            // foreach (var player in matchModel.GameUnits.Players)
-            // {
-            //     CreatePlayer(position, player.TemporaryId, player.AccountId);
-            //     position = position + new Vector3(15, 0,15);
-            // }
-            // foreach (var botModel in matchModel.GameUnits.Bots)
-            // {
-            //     CreateBot(position, botModel.TemporaryId, -botModel.TemporaryId);
-            //     position = position + new Vector3(15, 0,15);
-            // }
+            // var firstPlayer = matchModel.GameUnits.Players.First();
+            // CreatePlayer(position, firstPlayer.TemporaryId, firstPlayer.AccountId);
+            
+            foreach (var player in matchModel.GameUnits.Players)
+            {
+                CreatePlayer(position, player.TemporaryId, player.AccountId);
+                position = position + new Vector3(15, 0,15);
+            }
+            foreach (var botModel in matchModel.GameUnits.Bots)
+            {
+                CreateBot(position, botModel.TemporaryId, -botModel.TemporaryId);
+                position = position + new Vector3(15, 0,15);
+            }
         }
 
         private void CreatePlayer(Vector3 position, ushort playerId, int accountId)

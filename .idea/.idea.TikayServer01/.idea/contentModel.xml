@@ -441,8 +441,8 @@
           </e>
           <e p="PlayersSendingSystem.cs" t="Include" />
           <e p="PositionCheckSystem.cs" t="Include" />
-          <e p="PositionSenderSystem.cs" t="Include" />
           <e p="RotationSystem.cs" t="Include" />
+          <e p="TransformSenderSystem.cs" t="Include" />
         </e>
         <e p="Sources" t="Include">
           <e p="Components" t="Include">

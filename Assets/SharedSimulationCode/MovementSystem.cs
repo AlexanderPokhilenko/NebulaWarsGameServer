@@ -1,4 +1,5 @@
-﻿using Entitas;
+﻿using System.Collections.Concurrent;
+using Entitas;
 using UnityEngine;
 
 namespace SharedSimulationCode
@@ -20,7 +21,7 @@ namespace SharedSimulationCode
         
         public void Execute()
         {
-            const float maxSpeed = 5f;
+            const float maxSpeed = 10f;
             foreach (InputEntity inputEntity in inputGroup)
             {
                 Vector2 playerJoystickInput = inputEntity.movement.value;
@@ -28,21 +29,21 @@ namespace SharedSimulationCode
                 GameEntity playerEntity = gameContext.GetEntityWithPlayer(playerId);
                 if (playerEntity == null)
                 {
-                    Debug.LogWarning($"Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
+                    Debug.LogError($"Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
                     return;
                 }
 
-                if (playerEntity.hasRigidbody)
+                if (!playerEntity.hasRigidbody)
                 {
-                    Vector3 force = new Vector3(playerJoystickInput.x, 0, playerJoystickInput.y)*10;
-                    playerEntity.rigidbody.value.AddForce(force);
-                    
-                    if(playerEntity.rigidbody.value.velocity.magnitude > maxSpeed)
-                    {
-                        playerEntity.rigidbody.value.velocity = playerEntity.rigidbody.value.velocity.normalized * maxSpeed;
-                    }
-                    // Debug.LogError($"input x {playerJoystickInput.x} y {playerJoystickInput.x}");
-                    // Debug.LogError($"force x {force.x} y {force.y} z {force.z}");
+                    Debug.LogError("Нет rigidbody");
+                    continue;
+                }
+
+                Vector3 force = new Vector3(playerJoystickInput.x, 0, playerJoystickInput.y)*10;
+                playerEntity.rigidbody.value.AddForce(force);
+                if(playerEntity.rigidbody.value.velocity.magnitude > maxSpeed)
+                {
+                    playerEntity.rigidbody.value.velocity = playerEntity.rigidbody.value.velocity.normalized * maxSpeed;
                 }
             }
         }

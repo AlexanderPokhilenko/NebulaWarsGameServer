@@ -9,14 +9,14 @@ namespace SharedSimulationCode
     /// <summary>
     /// Кажному игроку отправляет все позиции.
     /// </summary>
-    public class PositionSenderSystem : IExecuteSystem
+    public class TransformSenderSystem : IExecuteSystem
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> allWithView;
         private readonly IGroup<GameEntity> alivePlayers;
 
-        public PositionSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils)
+        public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
@@ -32,8 +32,7 @@ namespace SharedSimulationCode
                 var position = entity.transform.value.position;
                 float x = position.x;
                 float z = position.z;
-                Debug.LogError($"x {x} z {z}");
-                float angle = entity.transform.value.rotation.y;
+                float angle = entity.transform.value.rotation.eulerAngles.y;
                 ViewTypeId viewTypeId = entity.viewType.id;
                 ViewTransform viewTransform = new ViewTransform(x, z, angle, viewTypeId);
                 allGos.Add(entity.id.value, viewTransform);
