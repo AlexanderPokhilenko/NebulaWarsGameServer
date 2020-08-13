@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -185,7 +185,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages
             : this(position.X, position.Y, angle, typeId)
         { }
 
-        public Vector2 GetPosition() => new Vector2(X, Z);
+        public Vector3 GetPosition() => new Vector3(X, 0, Z);
 
         public static ViewTransform operator +(ViewTransform t1, ViewTransform t2)
         {

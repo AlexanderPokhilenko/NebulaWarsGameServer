@@ -32,6 +32,7 @@ namespace SharedSimulationCode
                 var position = entity.transform.value.position;
                 float x = position.x;
                 float z = position.z;
+                Debug.LogError($"x {x} z {z}");
                 float angle = entity.transform.value.rotation.y;
                 ViewTypeId viewTypeId = entity.viewType.id;
                 ViewTransform viewTransform = new ViewTransform(x, z, angle, viewTypeId);
