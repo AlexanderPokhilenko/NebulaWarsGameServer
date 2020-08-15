@@ -34,9 +34,10 @@ namespace Server.GameEngine.MessageSorters
             {
                 int matchId = pair.Item1;
                 ushort playerId = pair.Item2;
-                if (matchStorage.TryGetMatch(matchId, out MatchSimulation match))
+                InputReceiver inputReceiver = null;
+                if (matchStorage.TryGetMatchInputReceiver(matchId, ref inputReceiver))
                 {
-                    match.AddExit(playerId);
+                    inputReceiver.AddExit(playerId);
                 } 
             }   
             

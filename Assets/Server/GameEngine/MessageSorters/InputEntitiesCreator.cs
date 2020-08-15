@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
 using Server.GameEngine.MatchLifecycle;
+using SharedSimulationCode;
 
 namespace Server.GameEngine.MessageSorters
 {
@@ -24,15 +25,16 @@ namespace Server.GameEngine.MessageSorters
 
         public void Create()
         {
-            while (inputMessages.TryPop(out var inputMessage))
+            while (inputMessages.TryPop(out PlayerInputMessage inputMessage))
             {
-                if (matchStorage.TryGetMatch(inputMessage.MatchId, out var match))
+                InputReceiver inputReceiver = null;
+                if (matchStorage.TryGetMatchInputReceiver(inputMessage.MatchId, ref inputReceiver))
                 {
-                    match.AddMovement(inputMessage.TemporaryId, inputMessage.GetVector2());
-                    match.AddAttack(inputMessage.TemporaryId, inputMessage.Angle);
+                    inputReceiver.AddMovement(inputMessage.TemporaryId, inputMessage.GetVector2());
+                    inputReceiver.AddAttack(inputMessage.TemporaryId, inputMessage.Angle);
                     if (inputMessage.UseAbility)
                     {
-                        match.AddAbility(inputMessage.TemporaryId);
+                        inputReceiver.AddAbility(inputMessage.TemporaryId);
                     }
                 }
             }

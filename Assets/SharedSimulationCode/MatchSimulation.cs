@@ -5,6 +5,7 @@ using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SharedSimulationCode
 {
@@ -12,29 +13,57 @@ namespace SharedSimulationCode
     {
         public readonly int matchId;
         private readonly Systems systems;
-        private readonly Contexts contexts;
+        private readonly InputReceiver inputReceiver;
 
         public MatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier)
         {
+            
+            //Создание физической сцены для комнаты
+            var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
+            Scene matchScene = SceneManager.LoadScene("EmptyScene", loadSceneParameters);
+            var physicsScene = matchScene.GetPhysicsScene();
+            PhysicsRaycaster physicsRaycaster = new PhysicsRaycaster(physicsScene);
+            
+                
+            //Создание разных штук
             this.matchId = matchId;
             var playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils, ipAddressesStorage);
-            contexts = new Contexts();
+            var contexts = new Contexts();
+            var physicsSpawner = new PhysicsSpawner(matchScene);
+            inputReceiver = new InputReceiver(contexts);
+            
+            //Автоматическое добавление id при создании сущности
             contexts.SubscribeId();
+            
+            //Создание систем
             systems = new Systems()
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
+
+
+                    .Add(new ShootingSystem(contexts))
+                    
+                    
+                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner))
+                    .Add(new SpawnForceSystem(contexts))
                     
                     .Add(new MovementSystem(contexts))
                     .Add(new RotationSystem(contexts))
                     
+                    .Add(new HitDetectionSystem(contexts, physicsRaycaster))
+                    
+                    //Все создания/пердвижения/удаления должны произойти до этой системы
+                    .Add(new PhysicsSimulateSystem(physicsScene))
                     
                     .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils))
                     
                     .Add(new InputClearSystem(contexts))
                     
+                    
                     .Add(new PositionCheckSystem(contexts))
+                    
                 ;
         }
 
@@ -55,52 +84,10 @@ namespace SharedSimulationCode
             systems.TearDown();
             systems.ClearReactiveSystems();
         }
-        
-        public void AddMovement(ushort playerId, Vector2 vector2)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.ReplaceMovement(vector2);
-            }
-        }
-        public void AddAttack(ushort playerId, float attackAngle)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.ReplaceAttack(attackAngle);
-            }
-        }
-        
-        public void AddExit(ushort playerId)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.isLeftTheGame = true;
-            }
-        }
-        
-        public void AddAbility(ushort playerId)
-        {
-            if (contexts != null)
-            {
-                var inputEntity = GetEntityForPlayer(playerId);
-                inputEntity.isTryingToUseAbility = true;
-            }
-        }
 
-        private InputEntity GetEntityForPlayer(ushort playerId)
+        public InputReceiver GetInputReceiver()
         {
-            var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
-            if (inputEntity == null)
-            {
-                inputEntity = contexts.input.CreateEntity();
-                inputEntity.AddPlayer(playerId);
-            }
-
-            return inputEntity;
+            return inputReceiver;
         }
     }
 }

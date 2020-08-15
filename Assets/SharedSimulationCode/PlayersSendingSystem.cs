@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entitas;
 using Server.Udp.Sending;
+using UnityEngine;
 
 namespace SharedSimulationCode
 {
@@ -35,13 +36,20 @@ namespace SharedSimulationCode
         protected override void Execute(List<GameEntity> entities)
         {
             var allPlayers =  allPlayersGroup.GetEntities();
+            if (allPlayers.Length == 0)
+            {
+                throw new Exception("Нет игроков");
+            }
+            
             Dictionary<int, ushort> dictionary = allPlayers
                 .ToDictionary(item => item.account.id,
                             item => item.id.value);
             
+            
             foreach (var entity in alivePlayers)
             {
-                udpSendUtils.SendPlayerInfo(matchId, entity.player.id, dictionary);
+                ushort tmpPlayerId = entity.player.id;
+                udpSendUtils.SendPlayerInfo(matchId, tmpPlayerId, dictionary);
             }
         }
     }

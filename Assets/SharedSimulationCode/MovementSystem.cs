@@ -39,8 +39,9 @@ namespace SharedSimulationCode
                     continue;
                 }
 
+                // Debug.LogError("Добавление силы");
                 Vector3 force = new Vector3(playerJoystickInput.x, 0, playerJoystickInput.y)*10;
-                playerEntity.rigidbody.value.AddForce(force);
+                playerEntity.rigidbody.value.AddForce(force, ForceMode.VelocityChange);
                 if(playerEntity.rigidbody.value.velocity.magnitude > maxSpeed)
                 {
                     playerEntity.rigidbody.value.velocity = playerEntity.rigidbody.value.velocity.normalized * maxSpeed;

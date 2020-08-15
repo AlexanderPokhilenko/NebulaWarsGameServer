@@ -27,6 +27,12 @@ namespace SharedSimulationCode
         public void Execute()
         {
             Dictionary<ushort, ViewTransform> allGos = new Dictionary<ushort, ViewTransform>();
+
+            if (allWithView.count == 0)
+            {
+                Debug.LogError("Нет объектов с моделями");
+                return;
+            }
             foreach (var entity in allWithView)
             {
                 var position = entity.transform.value.position;
@@ -36,6 +42,12 @@ namespace SharedSimulationCode
                 ViewTypeId viewTypeId = entity.viewType.id;
                 ViewTransform viewTransform = new ViewTransform(x, z, angle, viewTypeId);
                 allGos.Add(entity.id.value, viewTransform);
+            }
+
+            if (allGos.Count == 0)
+            {
+                Debug.LogError("Пустые координаты");
+                return;
             }
             
             //отправить всем игрокам позиции всех объектов

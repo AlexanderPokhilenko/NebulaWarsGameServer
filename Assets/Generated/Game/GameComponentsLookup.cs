@@ -71,24 +71,29 @@ public static class GameComponentsLookup {
     public const int RectangleCollider = 60;
     public const int Rigidbody = 61;
     public const int Round = 62;
-    public const int SingleTargeting = 63;
-    public const int Skin = 64;
-    public const int SpecialShooter = 65;
-    public const int TargetChanging = 66;
-    public const int Target = 67;
-    public const int TargetingParameters = 68;
-    public const int TargetMovingPoint = 69;
-    public const int TargetScaling = 70;
-    public const int Team = 71;
-    public const int Transform = 72;
-    public const int TryingToShoot = 73;
-    public const int TryingToUseAbility = 74;
-    public const int Unmovable = 75;
-    public const int Velocity = 76;
-    public const int ViewType = 77;
-    public const int Zone = 78;
+    public const int ShootingPoints = 63;
+    public const int SingleTargeting = 64;
+    public const int Skin = 65;
+    public const int SpawnBullet = 66;
+    public const int SpawnForce = 67;
+    public const int SpawnPosition = 68;
+    public const int SpawnWarship = 69;
+    public const int SpecialShooter = 70;
+    public const int TargetChanging = 71;
+    public const int Target = 72;
+    public const int TargetingParameters = 73;
+    public const int TargetMovingPoint = 74;
+    public const int TargetScaling = 75;
+    public const int Team = 76;
+    public const int Transform = 77;
+    public const int TryingToShoot = 78;
+    public const int TryingToUseAbility = 79;
+    public const int Unmovable = 80;
+    public const int Velocity = 81;
+    public const int ViewType = 82;
+    public const int Zone = 83;
 
-    public const int TotalComponents = 79;
+    public const int TotalComponents = 84;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -154,8 +159,13 @@ public static class GameComponentsLookup {
         "RectangleCollider",
         "Rigidbody",
         "Round",
+        "ShootingPoints",
         "SingleTargeting",
         "Skin",
+        "SpawnBullet",
+        "SpawnForce",
+        "SpawnPosition",
+        "SpawnWarship",
         "SpecialShooter",
         "TargetChanging",
         "Target",
@@ -236,8 +246,13 @@ public static class GameComponentsLookup {
         typeof(RectangleColliderComponent),
         typeof(RigidbodyComponent),
         typeof(RoundComponent),
+        typeof(ShootingPointsComponent),
         typeof(SingleTargetingComponent),
         typeof(SkinComponent),
+        typeof(SpawnBulletComponent),
+        typeof(SpawnForceComponent),
+        typeof(SpawnPositionComponent),
+        typeof(SpawnWarshipComponent),
         typeof(SpecialShooterComponent),
         typeof(TargetChangingComponent),
         typeof(TargetComponent),

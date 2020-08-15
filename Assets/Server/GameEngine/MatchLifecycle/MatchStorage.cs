@@ -64,9 +64,15 @@ namespace Server.GameEngine.MatchLifecycle
             return matches.Values;
         }
 
-        public bool TryGetMatch(int matchId, out MatchSimulation match)
+        public bool TryGetMatchInputReceiver(int matchId, ref InputReceiver inputReceiver)
         {
-            return matches.TryGetValue(matchId, out match);
+            if (matches.TryGetValue(matchId, out var match))
+            {
+                inputReceiver = match.GetInputReceiver();
+                return true;
+            }
+
+            return false;
         }
     }
 }

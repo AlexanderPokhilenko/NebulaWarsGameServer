@@ -19,7 +19,7 @@ namespace SharedSimulationCode
             {
                 if (Mathf.Abs(entity.transform.value.position.y) > 0.1f)
                 {
-                    throw new Exception("y != 0");
+                    throw new Exception("y != 0 "+entity.transform.value.position.y);
                 }
             }    
         }
