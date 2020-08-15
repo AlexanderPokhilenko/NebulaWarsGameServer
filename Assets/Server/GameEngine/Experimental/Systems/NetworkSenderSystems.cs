@@ -21,6 +21,8 @@ namespace Server.GameEngine.Experimental.Systems
             Add(new HealthUpdaterSystem(contexts, matchId, udpSendUtils));
             Add(new MaxHpUpdaterSystem(contexts, matchId, udpSendUtils));
 
+            Add(new TeamsUpdaterSystem(contexts, matchId, udpSendUtils));
+
             Add(new CooldownInfoUpdaterSystem(contexts, matchId, udpSendUtils));
             Add(new CooldownUpdaterSystem(contexts, matchId, udpSendUtils));
 

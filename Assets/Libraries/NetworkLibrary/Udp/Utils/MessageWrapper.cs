@@ -48,6 +48,7 @@ namespace NetworkLibrary.NetworkLibrary.Udp
         Detaches = 25,
         Destroys = 26,
         Hides = 27,
-        FrameRate = 28
+        FrameRate = 28,
+        Teams = 29
     }
 }

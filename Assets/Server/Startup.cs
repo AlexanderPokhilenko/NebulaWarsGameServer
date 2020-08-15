@@ -57,7 +57,7 @@ namespace Server
             IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
             SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu, shittyUdpMediator, messagesPackIdFactory);
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleMessagesPacker, ipAddressesStorage);
-            UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
+            UdpSendUtils udpSendUtils = new UdpSendUtils(byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
             MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, 
                 byteArrayRudpStorage, 
                 // udpSendUtils,

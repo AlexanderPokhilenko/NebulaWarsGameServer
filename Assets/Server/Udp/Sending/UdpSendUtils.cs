@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Common;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
@@ -7,7 +8,6 @@ using NetworkLibrary.NetworkLibrary.Udp;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.GameEngine;
 using Server.GameEngine.Rudp;
-using Server.Udp.Storage;
 
 namespace Server.Udp.Sending
 {
@@ -18,7 +18,7 @@ namespace Server.Udp.Sending
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(UdpSendUtils));
 
-        public UdpSendUtils(IpAddressesStorage ipAddressesStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
+        public UdpSendUtils(ByteArrayRudpStorage byteArrayRudpStorage, 
             OutgoingMessagesStorage outgoingMessagesStorage, MessageFactory messageFactory)
         {
             rudpStorage = byteArrayRudpStorage;
@@ -30,10 +30,16 @@ namespace Server.Udp.Sending
         {
             outgoingMessagesStorage.AddMessage(matchId, playerId, serializedMessage);
         }
-        
+
         public void SendPlayerInfo(int matchId, ushort playerId, Dictionary<int, ushort> entityIds)
         {
             var message = new PlayerInfoMessage(entityIds);
+            SendUdp(matchId, playerId, message, true);
+        }
+
+        public void SendTeams(int matchId, ushort playerId, Dictionary<ushort, byte> teams)
+        {
+            var message = new TeamsMessage(teams);
             SendUdp(matchId, playerId, message, true);
         }
 

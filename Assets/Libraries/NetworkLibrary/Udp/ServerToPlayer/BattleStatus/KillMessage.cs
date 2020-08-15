@@ -41,4 +41,20 @@ namespace Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus
             return MessageType.PlayerInfo;
         }
     }
+
+    [ZeroFormattable]
+    public struct TeamsMessage : ITypedMessage
+    {
+        [Index(0)] public readonly Dictionary<ushort, byte> Teams;
+
+        public TeamsMessage(Dictionary<ushort, byte> teams)
+        {
+            Teams = teams;
+        }
+
+        public MessageType GetMessageType()
+        {
+            return MessageType.Teams;
+        }
+    }
 }
