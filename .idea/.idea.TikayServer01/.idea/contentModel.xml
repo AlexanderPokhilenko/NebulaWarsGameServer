@@ -411,6 +411,7 @@
               <e p="MessageProcessor.cs" t="Include" />
             </e>
             <e p="Sending" t="Include">
+              <e p="IHealthPointsPackSender.cs" t="Include" />
               <e p="IUdpSender.cs" t="Include" />
               <e p="KillData.cs" t="Include" />
               <e p="MessageFactory.cs" t="Include" />
@@ -429,6 +430,7 @@
         <e p="ServerController.cs" t="Include" />
         <e p="SharedSimulationCode" t="Include">
           <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
+          <e p="HealthSenderSystem.cs" t="Include" />
           <e p="HitDetectionSystem.cs" t="Include" />
           <e p="InputClearSystem.cs" t="Include" />
           <e p="InputReceiver.cs" t="Include" />
@@ -443,6 +445,8 @@
           </e>
           <e p="MapInitializeSystem.cs" t="Include" />
           <e p="MatchSimulation.cs" t="Include" />
+          <e p="MaxHealthSenderSystem.cs" t="Include" />
+          <e p="MaxHpSenderSystem.cs" t="Include" />
           <e p="MovementSystem.cs" t="Include" />
           <e p="PhysicsRaycaster.cs" t="Include" />
           <e p="PhysicsSceneTesting" t="Include">

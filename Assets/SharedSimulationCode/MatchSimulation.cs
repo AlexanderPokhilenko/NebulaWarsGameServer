@@ -59,9 +59,11 @@ namespace SharedSimulationCode
                     
                     .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils))
                     
+                    
+                    .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
+                    .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
+                    
                     .Add(new InputClearSystem(contexts))
-                    
-                    
                     .Add(new PositionCheckSystem(contexts))
                     
                 ;

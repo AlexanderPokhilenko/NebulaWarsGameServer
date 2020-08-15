@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// #define ONE_PLAYER
+
+using System.Linq;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using UnityEngine;
@@ -20,11 +22,12 @@ namespace SharedSimulationCode
         {
             Vector3 position = new Vector3();
             
-            // var firstPlayer = matchModel.GameUnits.Players.First();
-            // Debug.LogError($"TemporaryId = "+firstPlayer.TemporaryId);
-            // Debug.LogError($"AccountId = "+firstPlayer.AccountId);
-            // CreatePlayer(position, firstPlayer.TemporaryId, firstPlayer.AccountId);
-            
+#if ONE_PLAYER
+            var firstPlayer = matchModel.GameUnits.Players.First();
+            Debug.LogError($"TemporaryId = "+firstPlayer.TemporaryId);
+            Debug.LogError($"AccountId = "+firstPlayer.AccountId);
+            CreatePlayer(position, firstPlayer.TemporaryId, firstPlayer.AccountId);
+#else
             foreach (var player in matchModel.GameUnits.Players)
             {
                 CreatePlayer(position, player.TemporaryId, player.AccountId);
@@ -36,6 +39,7 @@ namespace SharedSimulationCode
                 bot.isBot = true;
                 position = position + new Vector3(15, 0,15);
             }
+#endif
         }
 
         private GameEntity CreatePlayer(Vector3 position, ushort playerId, int accountId)
@@ -43,7 +47,7 @@ namespace SharedSimulationCode
             GameEntity entity = contexts.game.CreateEntity();
             entity.AddPlayer(playerId);
             entity.AddAccount(accountId);
-            entity.AddHealthPoints(2000);
+            entity.AddHealthPoints(1999);
             entity.AddMaxHealthPoints(2000);
             entity.AddTeam((byte)(playerId+1));
             entity.AddViewType(ViewTypeId.StarSparrow);

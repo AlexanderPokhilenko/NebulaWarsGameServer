@@ -12,7 +12,7 @@ using Server.Udp.Storage;
 
 namespace Server.Udp.Sending
 {
-    public class UdpSendUtils
+    public class UdpSendUtils:IHealthPointsPackSender, IMaxHealthPointsPackSender
     {
         private readonly MessageFactory messageFactory;
         private readonly ByteArrayRudpStorage rudpStorage;
@@ -127,12 +127,12 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
         
-        public void SendHealthPoints(int matchId, ushort targetPlayerId, float healthPoints)
-        {
-            var playerId = targetPlayerId;
-            var message = new HealthPointsMessage(healthPoints);
-            SendUdp(matchId, playerId, message);
-        }
+        // public void SendHealthPoints(int matchId, ushort targetPlayerId, float healthPoints)
+        // {
+        //     var playerId = targetPlayerId;
+        //     var message = new HealthPointsMessage(healthPoints);
+        //     SendUdp(matchId, playerId, message);
+        // }
         
         public void SendMaxHealthPoints(int matchId, ushort playerId, float maxHealthPoints)
         {
@@ -176,6 +176,24 @@ namespace Server.Udp.Sending
             var message = new FrameRateMessage(deltaTime);
             SendUdp(matchId, playerId, message, true);
         }
+        
+        public void SendHealthPointsPack(int matchId, ushort tmpPlayerId, Dictionary<ushort, float> entityIdToValue)
+        {
+            var message = new HealthPointsMessagePack(entityIdToValue);
+            SendUdp(matchId, tmpPlayerId, message, true);
+        }
+        
+        public void SendMaxHealthPointsPack(int matchId, ushort tmpPlayerId, Dictionary<ushort, float> entityIdToValue)
+        {
+            var message = new MaxHealthPointsMessagePack(entityIdToValue);
+            SendUdp(matchId, tmpPlayerId, message, true);
+        }
+        
+        // public void SendFrameRate(int matchId, ushort playerId, float deltaTime)
+        // {
+        //     var message = new FrameRateMessage(deltaTime);
+        //     SendUdp(matchId, playerId, message, true);
+        // }
 
         public void SendDeliveryConfirmationMessage(int matchId, ushort playerId, uint messageNumberThatConfirms)
         {
@@ -199,5 +217,7 @@ namespace Server.Udp.Sending
                 rudpStorage.AddReliableMessage(matchId, playerId, messageId, serializedMessage);
             }
         }
+
+      
     }
 }

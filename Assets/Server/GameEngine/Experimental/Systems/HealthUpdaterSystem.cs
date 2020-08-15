@@ -21,10 +21,10 @@ namespace Server.GameEngine.Experimental.Systems
         
         public void Execute()
         {
-            foreach (var playerWithHp in playersWithHp)
-            {
-                udpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
-            }
+            // foreach (var playerWithHp in playersWithHp)
+            // {
+            //     udpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
+            // }
         }
     }
 }
