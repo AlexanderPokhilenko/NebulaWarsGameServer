@@ -5,6 +5,25 @@ using UnityEngine;
 [Game]
 public class SpawnTransformComponent:IComponent
 {
+    public Transform transform;
+}
+
+
+[Game]
+public class ParentWarshipComponent:IComponent
+{
+    public GameEntity entity;
+}
+
+[Game]
+public class WarshipCollidersComponent:IComponent
+{
+    public Collider[] colliders;
+}
+
+[Game]
+public class SpawnPointComponent:IComponent
+{
     public Vector3 position;
     public Quaternion rotation;
 }

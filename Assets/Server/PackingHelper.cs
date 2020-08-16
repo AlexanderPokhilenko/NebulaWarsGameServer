@@ -8,7 +8,7 @@ namespace Server
     public static class PackingHelper
     {
         public const int Mtu = 1200;
-        public const int MaxSingleMessageSize = Mtu - (MessagesPack.IndexLength + 4)-20;
+        public const int MaxSingleMessageSize = Mtu - (MessagesPack.IndexLength + 4 + 20);
 
         public static int GetByteLength(Dictionary<ushort, ViewTransform> dict) => 4 + dict.Count * (2 + 7);
         public static int GetByteLength(Dictionary<ushort, ushort> dict) => 4 + dict.Count * (2 + 2);

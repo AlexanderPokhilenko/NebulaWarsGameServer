@@ -75,6 +75,7 @@
               <e p="GameParentComponent.cs" t="Include" />
               <e p="GameParentDependentComponent.cs" t="Include" />
               <e p="GameParentFixedComponent.cs" t="Include" />
+              <e p="GameParentWarshipComponent.cs" t="Include" />
               <e p="GamePassingThroughComponent.cs" t="Include" />
               <e p="GamePathColliderComponent.cs" t="Include" />
               <e p="GamePlayerComponent.cs" t="Include" />
@@ -86,6 +87,7 @@
               <e p="GameSingleTargetingComponent.cs" t="Include" />
               <e p="GameSkinComponent.cs" t="Include" />
               <e p="GameSpawnForceComponent.cs" t="Include" />
+              <e p="GameSpawnPointComponent.cs" t="Include" />
               <e p="GameSpawnProjectileComponent.cs" t="Include" />
               <e p="GameSpawnTransformComponent.cs" t="Include" />
               <e p="GameSpawnWarshipComponent.cs" t="Include" />
@@ -102,6 +104,7 @@
               <e p="GameUnmovableComponent.cs" t="Include" />
               <e p="GameVelocityComponent.cs" t="Include" />
               <e p="GameViewTypeComponent.cs" t="Include" />
+              <e p="GameWarshipCollidersComponent.cs" t="Include" />
               <e p="GameZoneComponent.cs" t="Include" />
             </e>
             <e p="GameAttribute.cs" t="Include" />
@@ -252,6 +255,7 @@
           <e p="ContextsCollectorsExtensions.cs" t="Include" />
           <e p="ContextsIdExtensions.cs" t="Include" />
           <e p="CoordinatesExtensions.cs" t="Include" />
+          <e p="LoggerController.cs" t="Include" />
           <e p="ParentsExtensions.cs" t="Include" />
           <e p="PartObject.cs" t="Include" />
           <e p="ProbabilityObject.cs" t="Include" />
@@ -551,7 +555,7 @@
               <e p="SpecialShooterComponent.cs" t="Include" />
               <e p="TryingToShootComponent.cs" t="Include" />
             </e>
-            <e p="SpawnTransformComponent.cs" t="Include" />
+            <e p="SpawnPointComponent.cs" t="Include" />
             <e p="TargetingComponents" t="Include">
               <e p="BotComponent.cs" t="Include" />
               <e p="ChaserComponent.cs" t="Include" />

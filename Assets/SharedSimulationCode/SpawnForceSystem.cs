@@ -23,7 +23,7 @@ namespace SharedSimulationCode
             {
                 Rigidbody rigidbody = entity.rigidbody.value;
                 var forceVector = entity.spawnForce.vector3;
-                rigidbody.AddForce(forceVector);
+                rigidbody.AddForce(forceVector, ForceMode.VelocityChange);
             }
         }
 

@@ -61,8 +61,7 @@ namespace SharedSimulationCode
                     
                     //До этого места должно быть создание GameObject-ов
                     .Add(new SpawnForceSystem(contexts))
-                    
-                    
+
                     //Все создания/пердвижения/удаления gameObj должны произойти до этой системы
                     .Add(new PhysicsSimulateSystem(physicsScene))
                     

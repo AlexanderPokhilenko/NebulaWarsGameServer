@@ -49,20 +49,22 @@ namespace SharedSimulationCode
                 // Debug.LogError("выстрел");
                 var warshipTransform = playerEntity.transform.value;
                 List<Transform> shootingPoints = playerEntity.shootingPoints.values;
-                foreach (var shootingPoint in shootingPoints)
+                playerEntity.ReplaceCannonCooldown(0.5f);
+                foreach (var shootingTransform in shootingPoints)
                 {
-                    playerEntity.ReplaceCannonCooldown(1f);
                 
                     //спавн пуль
-                    var bulletEntity = gameContext.CreateEntity();
-                    bulletEntity.AddDamage(10);
-                    bulletEntity.AddViewType(ViewTypeId.DefaultShoot);
-                    bulletEntity.isSpawnProjectile = true;
-                    var position = shootingPoint.position;
-                    Debug.LogError($"shootingPoint.position {position.x} {position.y} {position.z}");
-                    Vector3 spawnPosition = warshipTransform.position + position;
-                    bulletEntity.AddSpawnTransform(spawnPosition, warshipTransform.transform.rotation);
-                    bulletEntity.AddSpawnForce(new Vector3(0, 0, 50));
+                    var projectileEntity = gameContext.CreateEntity();
+                    projectileEntity.AddDamage(10);
+                    projectileEntity.AddViewType(ViewTypeId.DefaultShoot);
+                    projectileEntity.isSpawnProjectile = true;
+                    var position = shootingTransform.position;
+                    // Debug.LogError($"shootingPoint.position {position.x} {position.y} {position.z}");
+                    Vector3 spawnPosition = warshipTransform.localPosition + position;
+                    projectileEntity.AddSpawnTransform(shootingTransform);
+                    var direction = shootingTransform.transform.rotation *Vector3.forward;
+                    projectileEntity.AddSpawnForce(direction.normalized * 20f);
+                    projectileEntity.AddParentWarship(playerEntity);
                 }
             }
         }

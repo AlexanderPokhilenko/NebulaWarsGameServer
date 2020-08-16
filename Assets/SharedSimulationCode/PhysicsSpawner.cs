@@ -15,6 +15,17 @@ namespace SharedSimulationCode
             this.scene = scene;
         }
 
+        public void Ignore(Collider[] colliders1, Collider[] colliders2)
+        {
+            foreach (var collider1 in colliders1)
+            {
+                foreach (var collider2 in colliders2)
+                {
+                    Physics.IgnoreCollision(collider1, collider2);
+                }
+            }
+        }
+        
         public GameObject Spawn(GameObject prefab, Vector3 position)
         {
             GameObject go = Object.Instantiate(prefab, position, Quaternion.identity);

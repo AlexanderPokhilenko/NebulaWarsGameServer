@@ -51,7 +51,7 @@ namespace SharedSimulationCode
             entity.AddMaxHealthPoints(2000);
             entity.AddTeam((byte)(playerId+1));
             entity.AddViewType(ViewTypeId.StarSparrow);
-            entity.AddSpawnTransform(position, Quaternion.identity);
+            entity.AddSpawnPoint(position, Quaternion.identity);
             entity.isSpawnWarship = true;
             return entity;
         }

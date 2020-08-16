@@ -26,14 +26,21 @@ namespace SharedSimulationCode
             {
                 // Debug.LogError("Создание снаряда");
                 ViewTypeId viewType = entity.viewType.id;
-                Vector3 spawnPosition = entity.spawnTransform.position;
-                Quaternion spawnRotation = entity.spawnTransform.rotation;
+                Vector3 spawnPosition = entity.spawnTransform.transform.position;
+                Quaternion spawnRotation = entity.spawnTransform.transform.rotation;
                 string path = projectileViewTypePathStorage.GetPath(viewType);
                 GameObject prefab = Resources.Load<GameObject>(path);
                 GameObject go = physicsSpawner.Spawn(prefab, spawnPosition, spawnRotation);
                 entity.AddTransform(go.transform);
                 Rigidbody rigidbody = go.GetComponent<Rigidbody>();
                 entity.AddRigidbody(rigidbody);
+                
+                if (entity.hasParentWarship)
+                {
+                    var projectileCollider = go.GetComponent<Collider>();
+                    Collider[] warshipColliders = entity.parentWarship.entity.warshipColliders.colliders;
+                    physicsSpawner.Ignore(new[]{projectileCollider}, warshipColliders );
+                }
             }
         }
 

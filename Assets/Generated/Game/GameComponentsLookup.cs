@@ -64,36 +64,39 @@ public static class GameComponentsLookup {
     public const int Parent = 53;
     public const int ParentDependent = 54;
     public const int ParentFixed = 55;
-    public const int PassingThrough = 56;
-    public const int PathCollider = 57;
-    public const int Player = 58;
-    public const int Position = 59;
-    public const int RectangleCollider = 60;
-    public const int Rigidbody = 61;
-    public const int Round = 62;
-    public const int ShootingPoints = 63;
-    public const int SingleTargeting = 64;
-    public const int Skin = 65;
-    public const int SpawnForce = 66;
-    public const int SpawnProjectile = 67;
-    public const int SpawnTransform = 68;
-    public const int SpawnWarship = 69;
-    public const int SpecialShooter = 70;
-    public const int TargetChanging = 71;
-    public const int Target = 72;
-    public const int TargetingParameters = 73;
-    public const int TargetMovingPoint = 74;
-    public const int TargetScaling = 75;
-    public const int Team = 76;
-    public const int Transform = 77;
-    public const int TryingToShoot = 78;
-    public const int TryingToUseAbility = 79;
-    public const int Unmovable = 80;
-    public const int Velocity = 81;
-    public const int ViewType = 82;
-    public const int Zone = 83;
+    public const int ParentWarship = 56;
+    public const int PassingThrough = 57;
+    public const int PathCollider = 58;
+    public const int Player = 59;
+    public const int Position = 60;
+    public const int RectangleCollider = 61;
+    public const int Rigidbody = 62;
+    public const int Round = 63;
+    public const int ShootingPoints = 64;
+    public const int SingleTargeting = 65;
+    public const int Skin = 66;
+    public const int SpawnForce = 67;
+    public const int SpawnPoint = 68;
+    public const int SpawnProjectile = 69;
+    public const int SpawnTransform = 70;
+    public const int SpawnWarship = 71;
+    public const int SpecialShooter = 72;
+    public const int TargetChanging = 73;
+    public const int Target = 74;
+    public const int TargetingParameters = 75;
+    public const int TargetMovingPoint = 76;
+    public const int TargetScaling = 77;
+    public const int Team = 78;
+    public const int Transform = 79;
+    public const int TryingToShoot = 80;
+    public const int TryingToUseAbility = 81;
+    public const int Unmovable = 82;
+    public const int Velocity = 83;
+    public const int ViewType = 84;
+    public const int WarshipColliders = 85;
+    public const int Zone = 86;
 
-    public const int TotalComponents = 84;
+    public const int TotalComponents = 87;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -152,6 +155,7 @@ public static class GameComponentsLookup {
         "Parent",
         "ParentDependent",
         "ParentFixed",
+        "ParentWarship",
         "PassingThrough",
         "PathCollider",
         "Player",
@@ -163,6 +167,7 @@ public static class GameComponentsLookup {
         "SingleTargeting",
         "Skin",
         "SpawnForce",
+        "SpawnPoint",
         "SpawnProjectile",
         "SpawnTransform",
         "SpawnWarship",
@@ -179,6 +184,7 @@ public static class GameComponentsLookup {
         "Unmovable",
         "Velocity",
         "ViewType",
+        "WarshipColliders",
         "Zone"
     };
 
@@ -239,6 +245,7 @@ public static class GameComponentsLookup {
         typeof(ParentComponent),
         typeof(ParentDependentComponent),
         typeof(ParentFixedComponent),
+        typeof(ParentWarshipComponent),
         typeof(PassingThroughComponent),
         typeof(PathColliderComponent),
         typeof(PlayerComponent),
@@ -250,6 +257,7 @@ public static class GameComponentsLookup {
         typeof(SingleTargetingComponent),
         typeof(SkinComponent),
         typeof(SpawnForceComponent),
+        typeof(SpawnPointComponent),
         typeof(SpawnProjectileComponent),
         typeof(SpawnTransformComponent),
         typeof(SpawnWarshipComponent),
@@ -266,6 +274,7 @@ public static class GameComponentsLookup {
         typeof(UnmovableComponent),
         typeof(VelocityComponent),
         typeof(ViewTypeComponent),
+        typeof(WarshipCollidersComponent),
         typeof(ZoneComponent)
     };
 }

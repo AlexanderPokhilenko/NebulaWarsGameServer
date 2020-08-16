@@ -18,7 +18,7 @@ namespace SharedSimulationCode
         {
             this.physicsSpawner = physicsSpawner;
             needSpawnWarships = contexts.game.GetGroup(GameMatcher
-                .AllOf(GameMatcher.ViewType, GameMatcher.SpawnTransform, GameMatcher.SpawnWarship));
+                .AllOf(GameMatcher.ViewType, GameMatcher.SpawnPoint, GameMatcher.SpawnWarship));
             viewTypeStorage = new ViewTypePathStorage();
         }
         
@@ -27,17 +27,19 @@ namespace SharedSimulationCode
             foreach (var entity in needSpawnWarships)
             {
                 var viewType = entity.viewType.id;
-                var spawnPosition = entity.spawnTransform.position;
-                //todo не забыть про вращение
-                var spawnRotation = entity.spawnTransform.rotation;
+                var spawnPosition = entity.spawnPoint.position;
+                var spawnRotation = entity.spawnPoint.rotation;
                 string path = viewTypeStorage.GetPath(viewType);
                 GameObject prefab = Resources.Load<GameObject>(path);
                 var go = physicsSpawner.Spawn(prefab, spawnPosition);
+                go.transform.rotation = spawnRotation;
                 entity.AddTransform(go.transform);
                 var rigidbody = go.GetComponent<Rigidbody>();
                 entity.AddRigidbody(rigidbody);
                 List<Transform> shootingPoints = GetShootingPoints(go.transform);
                 entity.AddShootingPoints(shootingPoints);
+                Collider[] colliders = go.GetComponentsInChildren<Collider>();
+                entity.AddWarshipColliders(colliders);
             }
         }
 
@@ -54,7 +56,7 @@ namespace SharedSimulationCode
             for (int i = 0; i < entities.Length; i++)
             {
                 var entity = entities[i];
-                entity.RemoveSpawnTransform();
+                entity.RemoveSpawnPoint();
             }
         }
     }

@@ -11,19 +11,17 @@ public partial class GameEntity {
     public SpawnTransformComponent spawnTransform { get { return (SpawnTransformComponent)GetComponent(GameComponentsLookup.SpawnTransform); } }
     public bool hasSpawnTransform { get { return HasComponent(GameComponentsLookup.SpawnTransform); } }
 
-    public void AddSpawnTransform(UnityEngine.Vector3 newPosition, UnityEngine.Quaternion newRotation) {
+    public void AddSpawnTransform(UnityEngine.Transform newTransform) {
         var index = GameComponentsLookup.SpawnTransform;
         var component = (SpawnTransformComponent)CreateComponent(index, typeof(SpawnTransformComponent));
-        component.position = newPosition;
-        component.rotation = newRotation;
+        component.transform = newTransform;
         AddComponent(index, component);
     }
 
-    public void ReplaceSpawnTransform(UnityEngine.Vector3 newPosition, UnityEngine.Quaternion newRotation) {
+    public void ReplaceSpawnTransform(UnityEngine.Transform newTransform) {
         var index = GameComponentsLookup.SpawnTransform;
         var component = (SpawnTransformComponent)CreateComponent(index, typeof(SpawnTransformComponent));
-        component.position = newPosition;
-        component.rotation = newRotation;
+        component.transform = newTransform;
         ReplaceComponent(index, component);
     }
 

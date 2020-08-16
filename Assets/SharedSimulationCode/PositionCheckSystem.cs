@@ -17,7 +17,7 @@ namespace SharedSimulationCode
         {
             foreach (var entity in transformGroup)
             {
-                if (Mathf.Abs(entity.transform.value.position.y) > 0.1f)
+                if (Mathf.Abs(entity.transform.value.position.y) > 0.3f)
                 {
                     var position = entity.transform.value.position;
                     Debug.LogError($"entity.hasPlayer = "+entity.hasPlayer);
