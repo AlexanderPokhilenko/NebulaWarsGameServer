@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace SharedSimulationCode
 {
+    /// <summary>
+    /// Отправляет пары accountId-entityId всем игрокам при создании игроков.
+    /// </summary>
     public class PlayersSendingSystem : ReactiveSystem<GameEntity>
     {
         private readonly int matchId;

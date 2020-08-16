@@ -8,18 +8,18 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly SpawnBulletComponent spawnBulletComponent = new SpawnBulletComponent();
+    static readonly SpawnProjectileComponent spawnProjectileComponent = new SpawnProjectileComponent();
 
-    public bool isSpawnBullet {
-        get { return HasComponent(GameComponentsLookup.SpawnBullet); }
+    public bool isSpawnProjectile {
+        get { return HasComponent(GameComponentsLookup.SpawnProjectile); }
         set {
-            if (value != isSpawnBullet) {
-                var index = GameComponentsLookup.SpawnBullet;
+            if (value != isSpawnProjectile) {
+                var index = GameComponentsLookup.SpawnProjectile;
                 if (value) {
                     var componentPool = GetComponentPool(index);
                     var component = componentPool.Count > 0
                             ? componentPool.Pop()
-                            : spawnBulletComponent;
+                            : spawnProjectileComponent;
 
                     AddComponent(index, component);
                 } else {
@@ -40,17 +40,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherSpawnBullet;
+    static Entitas.IMatcher<GameEntity> _matcherSpawnProjectile;
 
-    public static Entitas.IMatcher<GameEntity> SpawnBullet {
+    public static Entitas.IMatcher<GameEntity> SpawnProjectile {
         get {
-            if (_matcherSpawnBullet == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.SpawnBullet);
+            if (_matcherSpawnProjectile == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.SpawnProjectile);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherSpawnBullet = matcher;
+                _matcherSpawnProjectile = matcher;
             }
 
-            return _matcherSpawnBullet;
+            return _matcherSpawnProjectile;
         }
     }
 }

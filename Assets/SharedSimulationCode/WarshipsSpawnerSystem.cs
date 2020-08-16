@@ -17,9 +17,8 @@ namespace SharedSimulationCode
         public WarshipsSpawnerSystem(Contexts contexts, PhysicsSpawner physicsSpawner)
         {
             this.physicsSpawner = physicsSpawner;
-            needSpawnWarships = contexts.game
-                .GetGroup(GameMatcher.AllOf(GameMatcher.ViewType, GameMatcher.SpawnPosition, 
-                    GameMatcher.SpawnWarship));
+            needSpawnWarships = contexts.game.GetGroup(GameMatcher
+                .AllOf(GameMatcher.ViewType, GameMatcher.SpawnTransform, GameMatcher.SpawnWarship));
             viewTypeStorage = new ViewTypePathStorage();
         }
         
@@ -28,7 +27,9 @@ namespace SharedSimulationCode
             foreach (var entity in needSpawnWarships)
             {
                 var viewType = entity.viewType.id;
-                var spawnPosition = entity.spawnPosition.vector3;
+                var spawnPosition = entity.spawnTransform.position;
+                //todo не забыть про вращение
+                var spawnRotation = entity.spawnTransform.rotation;
                 string path = viewTypeStorage.GetPath(viewType);
                 GameObject prefab = Resources.Load<GameObject>(path);
                 var go = physicsSpawner.Spawn(prefab, spawnPosition);
@@ -53,7 +54,7 @@ namespace SharedSimulationCode
             for (int i = 0; i < entities.Length; i++)
             {
                 var entity = entities[i];
-                entity.RemoveSpawnPosition();
+                entity.RemoveSpawnTransform();
             }
         }
     }

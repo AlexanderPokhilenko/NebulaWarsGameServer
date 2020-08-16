@@ -1,11 +1,11 @@
-﻿using Entitas;
-using Server.GameEngine.Chronometers;
+﻿using System.Collections.Generic;
+using Entitas;
 using UnityEngine;
 
 namespace SharedSimulationCode
 {
     /// <summary>
-    /// Создаёт сущности для пуль/снарядов обычной атаки
+    /// Создаёт сущности для пуль/снарядов обычной атаки по вводу игрока
     /// </summary>
     public class ShootingSystem : IExecuteSystem
     {
@@ -28,27 +28,42 @@ namespace SharedSimulationCode
 
                 if (playerEntity.hasCannonCooldown)
                 {
-                    if (playerEntity.cannonCooldown.value > 0)
-                    {
-                        playerEntity.cannonCooldown.value = playerEntity.cannonCooldown.value - Chronometer.DeltaTime; 
-                        continue;    
-                    }
-                }
-                
-                float attackStickDirection = inputEntity.attack.direction;
-                if (float.IsNaN(attackStickDirection))
-                {
+                    // Debug.LogError("перезарядка");
                     continue;
                 }
 
-                playerEntity.ReplaceCannonCooldown(1f);
+                float attackStickDirection = inputEntity.attack.direction;
+                if (float.IsNaN(attackStickDirection))
+                {
+                    // Debug.LogError("нет направления атаки");
+                    continue;
+                }
+
+                if (!playerEntity.hasShootingPoints)
+                {
+                    Debug.LogError("Если есть Attack то должен быть ShootingPoints");
+                    continue;
+                }
+
+                //выстрел
+                // Debug.LogError("выстрел");
+                var warshipTransform = playerEntity.transform.value;
+                List<Transform> shootingPoints = playerEntity.shootingPoints.values;
+                foreach (var shootingPoint in shootingPoints)
+                {
+                    playerEntity.ReplaceCannonCooldown(1f);
                 
-                //спавн пуль
-                var bulletEntity = gameContext.CreateEntity();
-                bulletEntity.AddDamage(10);
-                bulletEntity.AddViewType(ViewTypeId.DefaultShoot);
-                bulletEntity.AddSpawnPosition(new Vector3(0, 0, 0));
-                bulletEntity.AddSpawnForce(new Vector3(0, 0, 20));
+                    //спавн пуль
+                    var bulletEntity = gameContext.CreateEntity();
+                    bulletEntity.AddDamage(10);
+                    bulletEntity.AddViewType(ViewTypeId.DefaultShoot);
+                    bulletEntity.isSpawnProjectile = true;
+                    var position = shootingPoint.position;
+                    Debug.LogError($"shootingPoint.position {position.x} {position.y} {position.z}");
+                    Vector3 spawnPosition = warshipTransform.position + position;
+                    bulletEntity.AddSpawnTransform(spawnPosition, warshipTransform.transform.rotation);
+                    bulletEntity.AddSpawnForce(new Vector3(0, 0, 50));
+                }
             }
         }
     }

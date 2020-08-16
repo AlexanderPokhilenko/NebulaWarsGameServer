@@ -3,9 +3,10 @@ using Entitas;
 using UnityEngine;
 
 [Game]
-public class SpawnPositionComponent:IComponent
+public class SpawnTransformComponent:IComponent
 {
-    public Vector3 vector3;
+    public Vector3 position;
+    public Quaternion rotation;
 }
 
 [Game]
@@ -27,7 +28,7 @@ public class SpawnWarshipComponent:IComponent
 }
 
 [Game]
-public class SpawnBulletComponent:IComponent
+public class SpawnProjectileComponent:IComponent
 {
     
 }

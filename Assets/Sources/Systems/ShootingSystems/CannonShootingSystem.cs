@@ -14,7 +14,9 @@ public class CannonShootingSystem : IExecuteSystem
     {
         random = new System.Random();
         gameContext = contexts.game;
-        var matcher = GameMatcher.AllOf(GameMatcher.TryingToShoot, GameMatcher.Cannon).NoneOf(GameMatcher.CannonCooldown);
+        var matcher = GameMatcher
+            .AllOf(GameMatcher.TryingToShoot, GameMatcher.Cannon)
+            .NoneOf(GameMatcher.CannonCooldown);
         shootingGroup = contexts.game.GetGroup(matcher);
     }
 

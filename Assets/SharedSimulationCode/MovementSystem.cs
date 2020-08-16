@@ -29,7 +29,7 @@ namespace SharedSimulationCode
                 GameEntity playerEntity = gameContext.GetEntityWithPlayer(playerId);
                 if (playerEntity == null)
                 {
-                    Debug.LogError($"Пришло сообщение о движении от игрока, которого (уже) нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
+                    Debug.LogError($"Пришло сообщение о движении от игрока, которого нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
                     return;
                 }
 

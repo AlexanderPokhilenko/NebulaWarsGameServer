@@ -19,7 +19,11 @@ namespace SharedSimulationCode
             {
                 if (Mathf.Abs(entity.transform.value.position.y) > 0.1f)
                 {
-                    throw new Exception("y != 0 "+entity.transform.value.position.y);
+                    var position = entity.transform.value.position;
+                    Debug.LogError($"entity.hasPlayer = "+entity.hasPlayer);
+                    Debug.LogError($"position = {position.x} {position.y} {position.z}");
+                    Debug.LogError($"position = {position.x} {position.y} {position.z}");
+                    throw new Exception("y != 0 "+position.y);
                 }
             }    
         }

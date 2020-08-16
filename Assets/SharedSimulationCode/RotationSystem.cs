@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace SharedSimulationCode
 {
+    /// <summary>
+    /// По вводу игрока поворачивает его с ограничением скорости
+    /// </summary>
     public class RotationSystem : IExecuteSystem
     {
         private readonly GameContext gameContext;

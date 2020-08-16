@@ -39,31 +39,45 @@ namespace SharedSimulationCode
             
             //Создание систем
             systems = new Systems()
+                    
+                    //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
-                    .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
-
-
-                    .Add(new ShootingSystem(contexts))
                     
                     
-                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner))
-                    .Add(new SpawnForceSystem(contexts))
-                    
+                    //Ввод игрока
                     .Add(new MovementSystem(contexts))
                     .Add(new RotationSystem(contexts))
+                    .Add(new ShootingSystem(contexts))
+
+
+                    //Куда это сдвинуть?
+                    .Add(new CannonCooldownDecreasingSystem(contexts))
+
+
+                    //Создаёт GameObj для кораблей
+                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner))
+                    //Создаёт GameObj для снарядов
+                    .Add(new ProjectileSpawnerSystem(contexts, physicsSpawner))
                     
-                    .Add(new HitDetectionSystem(contexts, physicsRaycaster))
+                    //До этого места должно быть создание GameObject-ов
+                    .Add(new SpawnForceSystem(contexts))
                     
-                    //Все создания/пердвижения/удаления должны произойти до этой системы
+                    
+                    //Все создания/пердвижения/удаления gameObj должны произойти до этой системы
                     .Add(new PhysicsSimulateSystem(physicsScene))
                     
+                    //Обнаруживает попадания снарядов
+                    .Add(new HitDetectionSystem(contexts, physicsRaycaster))
+                    
+                    //Отправка текущего состояния мира
+                    .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
                     .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils))
-                    
-                    
                     .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
                     .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
                     
+                    //Очистка
                     .Add(new InputClearSystem(contexts))
+                    //Проверки
                     .Add(new PositionCheckSystem(contexts))
                     
                 ;

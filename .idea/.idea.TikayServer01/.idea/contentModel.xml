@@ -85,9 +85,9 @@
               <e p="GameShootingPointsComponent.cs" t="Include" />
               <e p="GameSingleTargetingComponent.cs" t="Include" />
               <e p="GameSkinComponent.cs" t="Include" />
-              <e p="GameSpawnBulletComponent.cs" t="Include" />
               <e p="GameSpawnForceComponent.cs" t="Include" />
-              <e p="GameSpawnPositionComponent.cs" t="Include" />
+              <e p="GameSpawnProjectileComponent.cs" t="Include" />
+              <e p="GameSpawnTransformComponent.cs" t="Include" />
               <e p="GameSpawnWarshipComponent.cs" t="Include" />
               <e p="GameSpecialShooterComponent.cs" t="Include" />
               <e p="GameTargetChangingComponent.cs" t="Include" />
@@ -429,6 +429,7 @@
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
         <e p="SharedSimulationCode" t="Include">
+          <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
           <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
           <e p="HealthSenderSystem.cs" t="Include" />
           <e p="HitDetectionSystem.cs" t="Include" />
@@ -456,6 +457,8 @@
           <e p="PhysicsSpawner.cs" t="Include" />
           <e p="PlayersSendingSystem.cs" t="Include" />
           <e p="PositionCheckSystem.cs" t="Include" />
+          <e p="ProjectileSpawnerSystem.cs" t="Include" />
+          <e p="ProjectileViewTypePathStorage.cs" t="Include" />
           <e p="RotationSystem.cs" t="Include" />
           <e p="ShootingSystem.cs" t="Include" />
           <e p="SpawnForceSystem.cs" t="Include" />
@@ -548,7 +551,7 @@
               <e p="SpecialShooterComponent.cs" t="Include" />
               <e p="TryingToShootComponent.cs" t="Include" />
             </e>
-            <e p="SpawnPositionComponent.cs" t="Include" />
+            <e p="SpawnTransformComponent.cs" t="Include" />
             <e p="TargetingComponents" t="Include">
               <e p="BotComponent.cs" t="Include" />
               <e p="ChaserComponent.cs" t="Include" />

@@ -74,9 +74,9 @@ public static class GameComponentsLookup {
     public const int ShootingPoints = 63;
     public const int SingleTargeting = 64;
     public const int Skin = 65;
-    public const int SpawnBullet = 66;
-    public const int SpawnForce = 67;
-    public const int SpawnPosition = 68;
+    public const int SpawnForce = 66;
+    public const int SpawnProjectile = 67;
+    public const int SpawnTransform = 68;
     public const int SpawnWarship = 69;
     public const int SpecialShooter = 70;
     public const int TargetChanging = 71;
@@ -162,9 +162,9 @@ public static class GameComponentsLookup {
         "ShootingPoints",
         "SingleTargeting",
         "Skin",
-        "SpawnBullet",
         "SpawnForce",
-        "SpawnPosition",
+        "SpawnProjectile",
+        "SpawnTransform",
         "SpawnWarship",
         "SpecialShooter",
         "TargetChanging",
@@ -249,9 +249,9 @@ public static class GameComponentsLookup {
         typeof(ShootingPointsComponent),
         typeof(SingleTargetingComponent),
         typeof(SkinComponent),
-        typeof(SpawnBulletComponent),
         typeof(SpawnForceComponent),
-        typeof(SpawnPositionComponent),
+        typeof(SpawnProjectileComponent),
+        typeof(SpawnTransformComponent),
         typeof(SpawnWarshipComponent),
         typeof(SpecialShooterComponent),
         typeof(TargetChangingComponent),
