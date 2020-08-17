@@ -1,7 +1,7 @@
 ﻿namespace SharedSimulationCode.LagCompensation
 {
     /// <summary>
-    /// Хранит transform всех обьектов для тика
+    /// Хранит transform всех обьектов
     /// </summary>
     public class GameState
     {
