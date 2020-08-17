@@ -24,5 +24,5 @@ MonoBehaviour:
   shooter: {fileID: 0}
   angularVelocity: 0
   outerRadius: Infinity
-  damage: 1000
+  damage: 250
   scalingSpeed: -0.16666667
