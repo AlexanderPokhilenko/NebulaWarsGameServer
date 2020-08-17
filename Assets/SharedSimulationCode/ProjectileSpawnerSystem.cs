@@ -1,4 +1,5 @@
 ﻿using Entitas;
+using Entitas.Unity;
 using UnityEngine;
 
 namespace SharedSimulationCode
@@ -30,15 +31,20 @@ namespace SharedSimulationCode
                 Quaternion spawnRotation = entity.spawnTransform.transform.rotation;
                 string path = projectileViewTypePathStorage.GetPath(viewType);
                 GameObject prefab = Resources.Load<GameObject>(path);
-                GameObject go = physicsSpawner.Spawn(prefab, spawnPosition, spawnRotation);
+                GameObject go = physicsSpawner.SpawnProjectile(prefab, spawnPosition, spawnRotation);
                 entity.AddTransform(go.transform);
                 Rigidbody rigidbody = go.GetComponent<Rigidbody>();
                 entity.AddRigidbody(rigidbody);
+                go.Link(entity);
                 
                 if (entity.hasParentWarship)
                 {
                     var projectileCollider = go.GetComponent<Collider>();
                     Collider[] warshipColliders = entity.parentWarship.entity.warshipColliders.colliders;
+
+
+                    Vector3 parentVelocity = entity.parentWarship.entity.rigidbody.value.velocity;
+                    rigidbody.velocity = parentVelocity;
                     physicsSpawner.Ignore(new[]{projectileCollider}, warshipColliders );
                 }
             }

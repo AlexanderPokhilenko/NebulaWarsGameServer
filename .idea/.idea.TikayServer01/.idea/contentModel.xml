@@ -52,6 +52,7 @@
               <e p="GameGlobalTransformComponent.cs" t="Include" />
               <e p="GameGrandOwnerComponent.cs" t="Include" />
               <e p="GameHealthPointsComponent.cs" t="Include" />
+              <e p="GameHitComponent.cs" t="Include" />
               <e p="GameIdComponent.cs" t="Include" />
               <e p="GameIgnoringParentCollisionComponent.cs" t="Include" />
               <e p="GameInitialDirectionSaverComponent.cs" t="Include" />
@@ -255,7 +256,7 @@
           <e p="ContextsCollectorsExtensions.cs" t="Include" />
           <e p="ContextsIdExtensions.cs" t="Include" />
           <e p="CoordinatesExtensions.cs" t="Include" />
-          <e p="LoggerController.cs" t="Include" />
+          <e p="EntityIdBehaviour.cs" t="Include" />
           <e p="ParentsExtensions.cs" t="Include" />
           <e p="PartObject.cs" t="Include" />
           <e p="ProbabilityObject.cs" t="Include" />
@@ -435,8 +436,10 @@
         <e p="SharedSimulationCode" t="Include">
           <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
           <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
+          <e p="DestroyEntitySystem.cs" t="Include" />
           <e p="HealthSenderSystem.cs" t="Include" />
           <e p="HitDetectionSystem.cs" t="Include" />
+          <e p="HitHandlingSystem.cs" t="Include" />
           <e p="InputClearSystem.cs" t="Include" />
           <e p="InputReceiver.cs" t="Include" />
           <e p="LagCompensation" t="Include">
@@ -453,6 +456,7 @@
           <e p="MaxHealthSenderSystem.cs" t="Include" />
           <e p="MaxHpSenderSystem.cs" t="Include" />
           <e p="MovementSystem.cs" t="Include" />
+          <e p="PhysicsDestroyer.cs" t="Include" />
           <e p="PhysicsRaycaster.cs" t="Include" />
           <e p="PhysicsSceneTesting" t="Include">
             <e p="PhysicsSceneTest.cs" t="Include" />

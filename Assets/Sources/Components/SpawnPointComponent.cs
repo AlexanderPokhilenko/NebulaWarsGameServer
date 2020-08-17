@@ -52,3 +52,10 @@ public class SpawnProjectileComponent:IComponent
     
 }
 
+[Game]
+public class HitComponent:IComponent
+{
+    public GameEntity projectileEntity;
+    public GameEntity warshipEntity;
+}
+

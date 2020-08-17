@@ -1,20 +1,24 @@
-﻿using UnityEngine;
+﻿using Code.Common;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SharedSimulationCode
 {
     public class PhysicsRaycaster
     {
+        private readonly Scene scene;
         private readonly PhysicsScene physicsScene;
+        private readonly ILog log = LogManager.CreateLogger(typeof(PhysicsRaycaster));
 
-        public PhysicsRaycaster(PhysicsScene physicsScene)
+        public PhysicsRaycaster(Scene scene)
         {
-            this.physicsScene = physicsScene;
+            this.scene = scene;
+            physicsScene = scene.GetPhysicsScene();
         }
         
-        public RaycastHit[] Raycast(Vector3 origin, Vector3 direction, float maxDistance, RaycastHit[] raycastHits)
+        public bool Raycast(Vector3 origin, Vector3 direction, float maxDistance, out RaycastHit raycastHit)
         {
-            int count =  physicsScene.Raycast(origin, direction,raycastHits, maxDistance);
-            return raycastHits;
+            return physicsScene.Raycast(origin, direction, out raycastHit, maxDistance);
         }
     }
 }

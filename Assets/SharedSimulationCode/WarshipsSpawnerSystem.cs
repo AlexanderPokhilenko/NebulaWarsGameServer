@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entitas;
+using Entitas.Unity;
 using UnityEngine;
 
 namespace SharedSimulationCode
@@ -32,13 +33,15 @@ namespace SharedSimulationCode
                 string path = viewTypeStorage.GetPath(viewType);
                 GameObject prefab = Resources.Load<GameObject>(path);
                 var go = physicsSpawner.Spawn(prefab, spawnPosition);
+
+                go.Link(entity);
                 go.transform.rotation = spawnRotation;
                 entity.AddTransform(go.transform);
                 var rigidbody = go.GetComponent<Rigidbody>();
                 entity.AddRigidbody(rigidbody);
                 List<Transform> shootingPoints = GetShootingPoints(go.transform);
                 entity.AddShootingPoints(shootingPoints);
-                Collider[] colliders = go.GetComponentsInChildren<Collider>();
+                Collider[] colliders = go.GetComponents<Collider>();
                 entity.AddWarshipColliders(colliders);
             }
         }

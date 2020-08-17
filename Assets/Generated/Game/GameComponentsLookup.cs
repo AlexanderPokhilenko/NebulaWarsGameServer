@@ -41,62 +41,63 @@ public static class GameComponentsLookup {
     public const int GlobalTransform = 30;
     public const int GrandOwner = 31;
     public const int HealthPoints = 32;
-    public const int Id = 33;
-    public const int IgnoringParentCollision = 34;
-    public const int InitialDirectionSaver = 35;
-    public const int Invulnerable = 36;
-    public const int KilledBy = 37;
-    public const int Lifetime = 38;
-    public const int LocalDirectionTargeting = 39;
-    public const int LongParent = 40;
-    public const int Mass = 41;
-    public const int MaxAngularVelocity = 42;
-    public const int MaxHealthPoints = 43;
-    public const int MaxVelocity = 44;
-    public const int MovementFrames = 45;
-    public const int Moving = 46;
-    public const int NoncollinearAxises = 47;
-    public const int NonstandardRadius = 48;
-    public const int NotDecelerating = 49;
-    public const int OnHealthDropDestroying = 50;
-    public const int Owner = 51;
-    public const int Parasite = 52;
-    public const int Parent = 53;
-    public const int ParentDependent = 54;
-    public const int ParentFixed = 55;
-    public const int ParentWarship = 56;
-    public const int PassingThrough = 57;
-    public const int PathCollider = 58;
-    public const int Player = 59;
-    public const int Position = 60;
-    public const int RectangleCollider = 61;
-    public const int Rigidbody = 62;
-    public const int Round = 63;
-    public const int ShootingPoints = 64;
-    public const int SingleTargeting = 65;
-    public const int Skin = 66;
-    public const int SpawnForce = 67;
-    public const int SpawnPoint = 68;
-    public const int SpawnProjectile = 69;
-    public const int SpawnTransform = 70;
-    public const int SpawnWarship = 71;
-    public const int SpecialShooter = 72;
-    public const int TargetChanging = 73;
-    public const int Target = 74;
-    public const int TargetingParameters = 75;
-    public const int TargetMovingPoint = 76;
-    public const int TargetScaling = 77;
-    public const int Team = 78;
-    public const int Transform = 79;
-    public const int TryingToShoot = 80;
-    public const int TryingToUseAbility = 81;
-    public const int Unmovable = 82;
-    public const int Velocity = 83;
-    public const int ViewType = 84;
-    public const int WarshipColliders = 85;
-    public const int Zone = 86;
+    public const int Hit = 33;
+    public const int Id = 34;
+    public const int IgnoringParentCollision = 35;
+    public const int InitialDirectionSaver = 36;
+    public const int Invulnerable = 37;
+    public const int KilledBy = 38;
+    public const int Lifetime = 39;
+    public const int LocalDirectionTargeting = 40;
+    public const int LongParent = 41;
+    public const int Mass = 42;
+    public const int MaxAngularVelocity = 43;
+    public const int MaxHealthPoints = 44;
+    public const int MaxVelocity = 45;
+    public const int MovementFrames = 46;
+    public const int Moving = 47;
+    public const int NoncollinearAxises = 48;
+    public const int NonstandardRadius = 49;
+    public const int NotDecelerating = 50;
+    public const int OnHealthDropDestroying = 51;
+    public const int Owner = 52;
+    public const int Parasite = 53;
+    public const int Parent = 54;
+    public const int ParentDependent = 55;
+    public const int ParentFixed = 56;
+    public const int ParentWarship = 57;
+    public const int PassingThrough = 58;
+    public const int PathCollider = 59;
+    public const int Player = 60;
+    public const int Position = 61;
+    public const int RectangleCollider = 62;
+    public const int Rigidbody = 63;
+    public const int Round = 64;
+    public const int ShootingPoints = 65;
+    public const int SingleTargeting = 66;
+    public const int Skin = 67;
+    public const int SpawnForce = 68;
+    public const int SpawnPoint = 69;
+    public const int SpawnProjectile = 70;
+    public const int SpawnTransform = 71;
+    public const int SpawnWarship = 72;
+    public const int SpecialShooter = 73;
+    public const int TargetChanging = 74;
+    public const int Target = 75;
+    public const int TargetingParameters = 76;
+    public const int TargetMovingPoint = 77;
+    public const int TargetScaling = 78;
+    public const int Team = 79;
+    public const int Transform = 80;
+    public const int TryingToShoot = 81;
+    public const int TryingToUseAbility = 82;
+    public const int Unmovable = 83;
+    public const int Velocity = 84;
+    public const int ViewType = 85;
+    public const int WarshipColliders = 86;
+    public const int Zone = 87;
 
-    public const int TotalComponents = 87;
+    public const int TotalComponents = 88;
 
     public static readonly string[] componentNames = {
         "Ability",
@@ -132,6 +133,7 @@ public static class GameComponentsLookup {
         "GlobalTransform",
         "GrandOwner",
         "HealthPoints",
+        "Hit",
         "Id",
         "IgnoringParentCollision",
         "InitialDirectionSaver",
@@ -222,6 +224,7 @@ public static class GameComponentsLookup {
         typeof(GlobalTransformComponent),
         typeof(GrandOwnerComponent),
         typeof(HealthPointsComponent),
+        typeof(HitComponent),
         typeof(IdComponent),
         typeof(IgnoringParentCollisionComponent),
         typeof(InitialDirectionSaverComponent),

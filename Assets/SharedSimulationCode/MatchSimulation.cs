@@ -1,4 +1,5 @@
-﻿using Entitas;
+﻿using System;
+using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.MatchLifecycle;
 using Server.Http;
@@ -9,6 +10,9 @@ using UnityEngine.SceneManagement;
 
 namespace SharedSimulationCode
 {
+    /// <summary>
+    /// Управляет ecs системами для каждого матча отдельно.
+    /// </summary>
     public class MatchSimulation
     {
         public readonly int matchId;
@@ -24,14 +28,15 @@ namespace SharedSimulationCode
             var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
             Scene matchScene = SceneManager.LoadScene("EmptyScene", loadSceneParameters);
             var physicsScene = matchScene.GetPhysicsScene();
-            PhysicsRaycaster physicsRaycaster = new PhysicsRaycaster(physicsScene);
-            
+            PhysicsSpawner physicsSpawner = new PhysicsSpawner(matchScene);
+            PhysicsRaycaster physicsRaycaster = new PhysicsRaycaster(matchScene);
+            PhysicsDestroyer physicsDestroyer = new PhysicsDestroyer();
                 
             //Создание разных штук
             this.matchId = matchId;
             var playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils, ipAddressesStorage);
             var contexts = new Contexts();
-            var physicsSpawner = new PhysicsSpawner(matchScene);
+            
             inputReceiver = new InputReceiver(contexts);
             
             //Автоматическое добавление id при создании сущности
@@ -67,6 +72,7 @@ namespace SharedSimulationCode
                     
                     //Обнаруживает попадания снарядов
                     .Add(new HitDetectionSystem(contexts, physicsRaycaster))
+                    .Add(new HitHandlingSystem(contexts))
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
@@ -76,6 +82,7 @@ namespace SharedSimulationCode
                     
                     //Очистка
                     .Add(new InputClearSystem(contexts))
+                    .Add(new DestroyEntitySystem(contexts, physicsDestroyer))
                     //Проверки
                     .Add(new PositionCheckSystem(contexts))
                     
