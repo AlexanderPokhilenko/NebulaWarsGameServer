@@ -1,17 +1,26 @@
+#define ENABLE_LOGS
+// #undef ENABLE_LOGS
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Code.Common;
 using UnityEngine;
-using Logger = Libraries.Logger.Logger;
 
-namespace Code.Common
+namespace Libraries.Logger
 {
+    /// <summary>
+    /// 1) Применяет конфиг к логгеру.
+    /// 2) Создаёт логгеры для разных классов.
+    /// 3) Принимает сообщения от логгеров и хранит их.
+    /// 4) Печатает сообщения в файл.
+    /// </summary>
     public class LogManager
     {
-        private static readonly Lazy<LogManager> lazy = new Lazy<LogManager>(() => new LogManager());
+        private static readonly Lazy<LogManager> Lazy = new Lazy<LogManager>(() => new LogManager());
         
-        private static readonly object lockObj = new object();
+        private static readonly object LockObj = new object();
         private readonly List<string> logs = new List<string>();
         
         private LoggerConfig config;
@@ -24,17 +33,40 @@ namespace Code.Common
 
         public static bool TrySetConfig(LoggerConfig loggerConfig)
         {
-            return lazy.Value.TrySetConfiguration(loggerConfig);
+            return Lazy.Value.TrySetConfiguration(loggerConfig);
+        }
+
+        private void LogFromUnity(string condition, string stacktrace, LogType type)
+        {
+#if ENABLE_LOGS
+            if (!logs.Contains(condition))
+            {
+                string logType;
+                if (type == LogType.Exception)
+                {
+                    logType = LogType.Error.ToString();
+                }
+                else
+                {
+                    logType = type.ToString();
+                }
+
+                string time = DateTime.Now.ToLongTimeString();
+                
+                AddLog($"{time} UNITY LOG {logType} {nameof(condition)} {condition} {nameof(stacktrace)} {stacktrace}");
+            }
+#endif
         }
 
         public static ILog CreateLogger(Type type)
         {
-            return new Logger(lazy.Value, type);
+            return new Logger(Lazy.Value, type);
         }
 
         public void AddLog(string message)
         {
-            lock (lockObj)
+#if ENABLE_LOGS
+            lock (LockObj)
             {
                 logs.Add(message);
                 if (logPrinter != null && config.MaxNumberOfRecordsToPrint <= logs.Count)
@@ -43,16 +75,19 @@ namespace Code.Common
                     logs.Clear();
                 }
             }
+#endif
         }
-
+        
         public static void Print()
         {
-            lazy.Value.PrintAll();
+            Lazy.Value.PrintAll();
         }
 
         private void PrintAll()
         {
+#if ENABLE_LOGS
             Print(logs);
+#endif
         }
         
         private bool TrySetConfiguration(LoggerConfig loggerConfig)
@@ -62,7 +97,9 @@ namespace Code.Common
                 return false;
             }
             
-            lock (lockObj)
+            Application.logMessageReceivedThreaded += Lazy.Value.LogFromUnity;
+            AddLog(loggerConfig.ToString());
+            lock (LockObj)
             {
                 config = loggerConfig;
                 logPrinter = new LogPrinter(loggerConfig.PersistentDataPath);
@@ -72,6 +109,10 @@ namespace Code.Common
             return true;
         }
         
+        /// <summary>
+        /// Бесконечно дописывает логи в файл.
+        /// </summary>
+        /// <param name="state"></param>
         private async void ThreadWork(object state)
         {
             try
@@ -80,7 +121,7 @@ namespace Code.Common
                 {
                     await Task.Delay(maxPrintingPeriodMs);
                     string[] logsCopy = new string[logs.Count];
-                    lock (lockObj)
+                    lock (LockObj)
                     {
                         if (logs.Count > 0)
                         {
@@ -104,20 +145,28 @@ namespace Code.Common
         
         private void Print(List<string> messages)
         {
-            lock (lockObj)
+#if ENABLE_LOGS
+            lock (LockObj)
             {
+                if (messages.Count == 0)
+                {
+                    return;
+                }
                 logPrinter.Print(messages);
             }
+#endif
         }
         
         private void Print(string[] messages)
         {
+#if ENABLE_LOGS
             if (messages.Length == 0)
             {
                 return;
             }
             
             logPrinter.Print(messages);
+#endif 
         }
     }
 }

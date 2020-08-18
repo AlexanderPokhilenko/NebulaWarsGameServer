@@ -103,8 +103,7 @@ namespace SharedSimulationCode
                     .Add(new ProjectileTickNumberUpdaterSystem(contexts))
                     
                     //Обнаруживает попадания снарядов
-                    // .Add(new HitDetectionSystem(contexts, physicsRaycaster))
-                    // .Add(new HitHandlingSystem(contexts))
+                    .Add(new HitHandlingSystem(contexts))
                     
                     
                     //Отправка текущего состояния мира

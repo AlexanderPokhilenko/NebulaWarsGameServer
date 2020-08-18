@@ -1,4 +1,4 @@
-namespace Code.Common
+namespace Libraries.Logger
 {
     public interface ILog
     {

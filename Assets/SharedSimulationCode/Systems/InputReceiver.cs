@@ -31,6 +31,7 @@ namespace SharedSimulationCode.Systems
         {
             var inputEntity = GetOrCreateInputEntityForPlayer(playerId);
             inputEntity.ReplaceAttack(attackAngle);
+            inputEntity.ReplaceCreationTickNumber(tickNumber);
         }
         
         public void AddExit(ushort playerId)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Code.Common
+namespace Libraries.Logger
 {
     /// <summary>
     /// Тут два одинаковых метода потому, что с одним методом с аргументом

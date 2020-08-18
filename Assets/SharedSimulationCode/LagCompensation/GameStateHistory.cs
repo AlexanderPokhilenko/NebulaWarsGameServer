@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Code.Common;
-using UnityEngine;
+using Libraries.Logger;
 
 namespace SharedSimulationCode.LagCompensation
 {
@@ -24,13 +22,12 @@ namespace SharedSimulationCode.LagCompensation
 
         public GameState Get(int tickNumber)
         {
-            Debug.LogError($"tickNumber = {tickNumber}");
             return list[tickNumber];
         }
         
-        public int GetTickNumber()
+        public int GetLastTickNumber()
         {
-            return list.Count;
+            return list.Count-1;
         }
     }
 }

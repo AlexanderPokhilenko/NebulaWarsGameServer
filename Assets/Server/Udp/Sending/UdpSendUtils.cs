@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Common;
+using Libraries.Logger;
 using Libraries.NetworkLibrary.Udp.Common;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;

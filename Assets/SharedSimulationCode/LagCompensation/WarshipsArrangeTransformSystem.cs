@@ -29,6 +29,7 @@ namespace SharedSimulationCode.LagCompensation
                 else
                 {
                     //передвинуть если этот объект был
+                    warship.transform.value.gameObject.SetActive(true);
                     Transform transform = GameState.transforms[warship.id.value];
                     warship.transform.value = transform;
                 }

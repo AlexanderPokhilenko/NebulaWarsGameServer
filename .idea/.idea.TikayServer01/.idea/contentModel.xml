@@ -245,10 +245,6 @@
           </e>
           <e p="UnityThread.cs" t="Include" />
         </e>
-        <e p="Logs" t="Include">
-          <e p="LoggingConfiguration.cs" t="Include" />
-          <e p="UnityDebugAppender.cs" t="Include" />
-        </e>
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using Code.Common;
 using Entitas;
+using Libraries.Logger;
 
 namespace SharedSimulationCode.Systems.Hits
 {

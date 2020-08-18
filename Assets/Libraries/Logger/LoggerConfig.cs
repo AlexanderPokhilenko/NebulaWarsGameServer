@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace Code.Common
+namespace Libraries.Logger
 {
     public class LoggerConfig
     {

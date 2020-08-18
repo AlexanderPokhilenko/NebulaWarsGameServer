@@ -37,7 +37,7 @@ namespace SharedSimulationCode.LagCompensation
 
             //В конце лагкомпенсации мы восстанавливаем физический мир 
             //в исходное состояние
-            int tickNumber = gameStateHistory.GetTickNumber();
+            int tickNumber = gameStateHistory.GetLastTickNumber();
             timeMachine.TravelToTime(tickNumber);
         }
 

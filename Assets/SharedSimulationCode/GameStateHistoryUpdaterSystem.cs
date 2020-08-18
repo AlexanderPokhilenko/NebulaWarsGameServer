@@ -21,7 +21,7 @@ namespace SharedSimulationCode
 
         public void Execute()
         {
-            int tickNumber = history.GetTickNumber();
+            int tickNumber = history.GetLastTickNumber();
             Dictionary<ushort, Transform> dictionary = new Dictionary<ushort, Transform>();
             foreach (var entity in warshipsGroup)
             {

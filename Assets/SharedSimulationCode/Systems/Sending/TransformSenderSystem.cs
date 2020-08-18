@@ -61,7 +61,7 @@ namespace SharedSimulationCode.Systems.Sending
             //отправить всем игрокам позиции всех объектов
             foreach (var entity in alivePlayers)
             {
-                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, gameStateHistory.GetTickNumber());
+                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, gameStateHistory.GetLastTickNumber());
             }
         }
     }

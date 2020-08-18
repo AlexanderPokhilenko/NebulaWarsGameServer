@@ -3,7 +3,7 @@
     public interface IGameStateHistory
     {
         GameState Get(int tickNumber);
-        int GetTickNumber();
+        int GetLastTickNumber();
         void Add(GameState gameState);
         GameState GetActualGameState();
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Code.Common;
+using Libraries.Logger;
 
 namespace SharedSimulationCode.Systems
 {

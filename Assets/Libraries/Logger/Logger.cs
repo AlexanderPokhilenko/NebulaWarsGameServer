@@ -3,6 +3,9 @@ using Code.Common;
 
 namespace Libraries.Logger
 {
+    /// <summary>
+    /// Все методы могут вызываться из разных потоков.
+    /// </summary>
     public class Logger :ILog
     {
         private readonly string typeName;
@@ -19,7 +22,7 @@ namespace Libraries.Logger
             const string levelName = " "+nameof(Debug)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.LogError(log);
+            UnityThread.Execute(()=>UnityEngine.Debug.LogError(log));
         }
 
         public void Debug(object message)
@@ -32,7 +35,7 @@ namespace Libraries.Logger
             const string levelName = " "+nameof(Info)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.Log(log);
+            UnityThread.Execute(()=>UnityEngine.Debug.Log(log));
         }
 
         public void Info(object message)
@@ -45,7 +48,7 @@ namespace Libraries.Logger
             const string levelName = " "+nameof(Warn)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.LogWarning(log);
+            UnityThread.Execute(()=>UnityEngine.Debug.LogWarning(log));
         }
 
         public void Warn(object message)
@@ -58,7 +61,7 @@ namespace Libraries.Logger
             const string levelName = " "+nameof(Error)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.LogError(log);
+            UnityThread.Execute(()=>UnityEngine.Debug.LogError(log));
         }
 
         public void Error(object message)
@@ -71,7 +74,7 @@ namespace Libraries.Logger
             const string levelName = " "+nameof(Fatal)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.LogError(log);
+            UnityThread.Execute(()=>UnityEngine.Debug.LogError(log));
         }
 
         public void Fatal(object message)
