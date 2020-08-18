@@ -12,11 +12,10 @@ namespace Server.GameEngine.MessageSorters
     /// </summary>
     public class ExitEntitiesCreator
     {
+        private readonly MatchesStorage matchesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(ExitEntitiesCreator));
-        
         //matchId, playerId
         private readonly ConcurrentStack<Tuple<int, ushort>> stack = new ConcurrentStack<Tuple<int, ushort>>();
-        private readonly MatchesStorage matchesStorage;
         
         public ExitEntitiesCreator(MatchesStorage matchesStorage)
         {

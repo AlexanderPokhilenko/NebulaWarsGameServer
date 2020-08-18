@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Entitas;
 
 namespace SharedSimulationCode.LagCompensation
@@ -6,61 +6,62 @@ namespace SharedSimulationCode.LagCompensation
     /// <summary>
     /// Откатывает время на время ввода игроков и вычисляет коллизии
     /// </summary>
-    public sealed class LagCompensationSystemGroup : IExecuteSystem
+    public class LagCompensationSystemGroup:IExecuteSystem
     {
-        //Машина времени
+        private readonly Contexts contexts;
         private readonly ITimeMachine timeMachine;
-
-        //Набор систем лагкомпенсации
-        private readonly LagCompensationSystem[] lagCompensationSystems;
-     
-        //Наша реализация кластеризатора
+        private readonly IGameStateHistory gameStateHistory;
         private readonly TimeTravelMap travelMap = new TimeTravelMap();
+        private readonly LagCompensationSystem[] lagCompensationSystems;
 
-        public LagCompensationSystemGroup(ITimeMachine timeMachine, 
-            LagCompensationSystem[] lagCompensationSystems)
+        public LagCompensationSystemGroup(Contexts contexts, ITimeMachine timeMachine,
+            LagCompensationSystem[] lagCompensationSystems, IGameStateHistory gameStateHistory)
         {
+            this.contexts = contexts;
             this.timeMachine = timeMachine;
             this.lagCompensationSystems = lagCompensationSystems;
+            this.gameStateHistory = gameStateHistory;
         }
         
-        public void Execute(GameState gs)
+        public void Execute()
         {
-            //На вход кластеризатор принимает текущее игровое состояние,
-            //а на выход выдает набор «корзин». В каждой корзине лежат энтити,
-            //которым для лагкомпенсации нужно одно и то же время из истории.
-            var buckets = travelMap.RefillBuckets(gs);
-
+            timeMachine.SetActualGameState(gameStateHistory.GetActualGameState());
+            
+            
+            List<TimeTravelMap.Bucket> buckets = travelMap.RefillBuckets(contexts);
             for (int bucketIndex = 0; bucketIndex < buckets.Count; bucketIndex++)
             {
-                ProcessBucket(gs, buckets[bucketIndex]);
+                TimeTravelMap.Bucket bucket = buckets[bucketIndex];
+                ProcessBucket(bucket);
             }
 
             //В конце лагкомпенсации мы восстанавливаем физический мир 
             //в исходное состояние
-            timeMachine.TravelToTime(gs.time);
+            int tickNumber = gameStateHistory.GetTickNumber();
+            timeMachine.TravelToTime(tickNumber);
         }
 
-        private void ProcessBucket(GameState presentState, TimeTravelMap.Bucket bucket)
+        private void ProcessBucket(
+            // GameState presentState,
+            TimeTravelMap.Bucket bucket)
         {
             //Откатываем время один раз для каждой корзины
-            GameState pastState = timeMachine.TravelToTime(bucket.Time);
+            // GameState pastState =
+            
+            //Сдвигает 3d модели к определённому моменту времени в прошлое
+            timeMachine.TravelToTime(bucket.TickNumber);
 
             foreach (var lagCompensationSystem in lagCompensationSystems)
             {
-                lagCompensationSystem.PastState = pastState;
-                lagCompensationSystem.PresentState = presentState;
+                //todo зачем это нужно?
+                // lagCompensationSystem.PastState = pastState;
+                // lagCompensationSystem.PresentState = presentState;
 
-                foreach (var entity in bucket)
+                foreach (GameEntity entity in bucket.GameEntities)
                 {
                     lagCompensationSystem.Execute(entity);
                 }
             }
-        }
-
-        public void Execute()
-        {
-            throw new NotImplementedException();
         }
     }
 }

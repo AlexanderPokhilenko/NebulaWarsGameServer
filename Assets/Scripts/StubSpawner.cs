@@ -29,7 +29,7 @@ public class StubSpawner : MonoBehaviour
         systems = new Systems()
                 .Add(new ParentsSystems(contexts))
                 .Add(new AISystems(contexts))
-                .Add(new MovementSystems(contexts))
+                // .Add(new MovementSystems(contexts))
                 .Add(new GlobalTransformSystem(contexts))
                 .Add(new ShootingSystems(contexts))
                 .Add(new UpdatePositionChunksSystem(contexts, chunks))

@@ -2,6 +2,7 @@
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
+using SharedSimulationCode.LagCompensation;
 using UnityEngine;
 
 namespace SharedSimulationCode.Systems.Sending
@@ -19,13 +20,14 @@ namespace SharedSimulationCode.Systems.Sending
         private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> allWithView;
         private readonly IGroup<GameEntity> alivePlayers;
-        private readonly ITickNumberStorage tickNumberStorage;
+        private readonly IGameStateHistory gameStateHistory;
 
-        public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils, ITickNumberStorage tickNumberStorage)
+        public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils,
+            IGameStateHistory gameStateHistory)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            this.tickNumberStorage = tickNumberStorage;
+            this.gameStateHistory = gameStateHistory;
             alivePlayers = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             allWithView = contexts.game.GetGroup(GameMatcher.Transform);
         }
@@ -59,7 +61,7 @@ namespace SharedSimulationCode.Systems.Sending
             //отправить всем игрокам позиции всех объектов
             foreach (var entity in alivePlayers)
             {
-                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, tickNumberStorage.GetTickNumber());
+                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, gameStateHistory.GetTickNumber());
             }
         }
     }

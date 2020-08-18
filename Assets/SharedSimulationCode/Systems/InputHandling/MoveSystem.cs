@@ -6,12 +6,12 @@ namespace SharedSimulationCode.Systems.InputHandling
     /// <summary>
     /// По вводу игрока добавляет силу в направлении ввода
     /// </summary>
-    public class MovementSystem : IExecuteSystem
+    public class MoveSystem : IExecuteSystem
     {
         private readonly GameContext gameContext;
         private readonly IGroup<InputEntity> inputGroup;
 
-        public MovementSystem(Contexts contexts)
+        public MoveSystem(Contexts contexts)
         {
             gameContext = contexts.game;
             inputGroup = contexts.input
@@ -28,7 +28,8 @@ namespace SharedSimulationCode.Systems.InputHandling
                 GameEntity playerEntity = gameContext.GetEntityWithPlayer(playerId);
                 if (playerEntity == null)
                 {
-                    Debug.LogError($"Пришло сообщение о движении от игрока, которого нет в комнате. Данные игнорируются. {nameof(playerId)} {playerId}");
+                    Debug.LogError($"Пришло сообщение о движении от игрока, которого нет в комнате. " +
+                                   $"Данные игнорируются. {nameof(playerId)} {playerId}");
                     return;
                 }
 

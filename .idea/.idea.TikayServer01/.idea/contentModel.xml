@@ -99,6 +99,7 @@
               <e p="GameTargetMovingPointComponent.cs" t="Include" />
               <e p="GameTargetScalingComponent.cs" t="Include" />
               <e p="GameTeamComponent.cs" t="Include" />
+              <e p="GameTickNumberComponent.cs" t="Include" />
               <e p="GameTransformComponent.cs" t="Include" />
               <e p="GameTryingToShootComponent.cs" t="Include" />
               <e p="GameTryingToUseAbilityComponent.cs" t="Include" />
@@ -117,6 +118,7 @@
           <e p="Input" t="Include">
             <e p="Components" t="Include">
               <e p="InputAttackComponent.cs" t="Include" />
+              <e p="InputCreationTickNumberComponent.cs" t="Include" />
               <e p="InputIdComponent.cs" t="Include" />
               <e p="InputLeftTheGameComponent.cs" t="Include" />
               <e p="InputMovementComponent.cs" t="Include" />
@@ -434,14 +436,19 @@
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
         <e p="SharedSimulationCode" t="Include">
+          <e p="GameStateHistoryUpdaterSystem.cs" t="Include" />
           <e p="LagCompensation" t="Include">
+            <e p="ArrangeTransformSystem.cs" t="Include" />
             <e p="GameState.cs" t="Include" />
+            <e p="GameStateHistory.cs" t="Include" />
             <e p="IGameStateHistory.cs" t="Include" />
             <e p="ITimeMachine.cs" t="Include" />
             <e p="LagCompensationSystem.cs" t="Include" />
             <e p="LagCompensationSystemGroup.cs" t="Include" />
+            <e p="StubLagCompensation.cs" t="Include" />
             <e p="TimeMachine.cs" t="Include" />
             <e p="TimeTravelMap.cs" t="Include" />
+            <e p="WarshipsArrangeTransformSystem.cs" t="Include" />
           </e>
           <e p="MatchSimulation.cs" t="Include" />
           <e p="Physics" t="Include">
@@ -450,6 +457,7 @@
             <e p="PhysicsSimulateSystem.cs" t="Include" />
             <e p="PhysicsSpawner.cs" t="Include" />
           </e>
+          <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
           <e p="Systems" t="Include">
             <e p="Check" t="Include">
               <e p="PositionCheckSystem.cs" t="Include" />
@@ -466,10 +474,11 @@
               <e p="HitHandlingSystem.cs" t="Include" />
             </e>
             <e p="InputHandling" t="Include">
-              <e p="MovementSystem.cs" t="Include" />
+              <e p="MoveSystem.cs" t="Include" />
               <e p="RotationSystem.cs" t="Include" />
               <e p="ShootingSystem.cs" t="Include" />
             </e>
+            <e p="InputMessagesMetaHistory.cs" t="Include" />
             <e p="InputReceiver.cs" t="Include" />
             <e p="MapInitialization" t="Include">
               <e p="MapInitializeSystem.cs" t="Include" />
@@ -709,6 +718,7 @@
           <e p="DatagramPackingTests.cs" t="Include" />
           <e p="IpAddressesStorageTests.cs" t="Include" />
           <e p="readme.txt" t="Include" />
+          <e p="ReflectionTest.cs" t="Include" />
           <e p="RudpTests.cs" t="Include" />
           <e p="Tests.asmdef" t="Include" />
           <e p="ZeroFormatterMessagesSizeTests" t="Include">

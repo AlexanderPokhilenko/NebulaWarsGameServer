@@ -1,15 +1,17 @@
-﻿namespace SharedSimulationCode.LagCompensation
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace SharedSimulationCode.LagCompensation
 {
-    /// <summary>
-    /// Хранит transform всех обьектов
-    /// </summary>
     public class GameState
     {
-        public readonly int time;
-
-        public GameState(int time)
+        public readonly int tickNumber;
+        public readonly Dictionary<ushort, Transform> transforms;
+        
+        public GameState(int tickNumber, Dictionary<ushort, Transform> transforms)
         {
-            this.time = time;
+            this.tickNumber = tickNumber;
+            this.transforms = transforms;
         }
     }
 }

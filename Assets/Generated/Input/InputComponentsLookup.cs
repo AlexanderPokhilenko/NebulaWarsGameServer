@@ -9,16 +9,18 @@
 public static class InputComponentsLookup {
 
     public const int Attack = 0;
-    public const int Id = 1;
-    public const int LeftTheGame = 2;
-    public const int Movement = 3;
-    public const int Player = 4;
-    public const int TryingToUseAbility = 5;
+    public const int CreationTickNumber = 1;
+    public const int Id = 2;
+    public const int LeftTheGame = 3;
+    public const int Movement = 4;
+    public const int Player = 5;
+    public const int TryingToUseAbility = 6;
 
-    public const int TotalComponents = 6;
+    public const int TotalComponents = 7;
 
     public static readonly string[] componentNames = {
         "Attack",
+        "CreationTickNumber",
         "Id",
         "LeftTheGame",
         "Movement",
@@ -28,6 +30,7 @@ public static class InputComponentsLookup {
 
     public static readonly System.Type[] componentTypes = {
         typeof(AttackComponent),
+        typeof(CreationTickNumberComponent),
         typeof(IdComponent),
         typeof(LeftTheGame),
         typeof(MovementComponent),

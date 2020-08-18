@@ -44,11 +44,11 @@ namespace Server.GameEngine.MessageSorters
                             //Сообщение старое или уже обработано
                             continue;
                         }
-                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2());
-                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle);
+                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
+                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
                         if (inputModel.UseAbility)
                         {
-                            inputReceiver.AddAbility(playerTmpId);
+                            inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
                         }
                     }
                     

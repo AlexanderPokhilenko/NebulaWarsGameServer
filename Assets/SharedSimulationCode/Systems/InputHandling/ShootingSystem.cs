@@ -28,14 +28,12 @@ namespace SharedSimulationCode.Systems.InputHandling
 
                 if (playerEntity.hasCannonCooldown)
                 {
-                    // Debug.LogError("перезарядка");
                     continue;
                 }
 
                 float attackStickDirection = inputEntity.attack.direction;
                 if (float.IsNaN(attackStickDirection))
                 {
-                    // Debug.LogError("нет направления атаки");
                     continue;
                 }
 
@@ -46,15 +44,14 @@ namespace SharedSimulationCode.Systems.InputHandling
                 }
 
                 //выстрел
-                // Debug.LogError("выстрел");
                 var warshipTransform = playerEntity.transform.value;
                 List<Transform> shootingPoints = playerEntity.shootingPoints.values;
                 playerEntity.ReplaceCannonCooldown(0.5f);
                 foreach (var shootingTransform in shootingPoints)
                 {
-                
                     //спавн пуль
                     var projectileEntity = gameContext.CreateEntity();
+                    projectileEntity.AddTickNumber(inputEntity.creationTickNumber.value);
                     projectileEntity.AddDamage(10);
                     projectileEntity.AddViewType(ViewTypeId.DefaultShoot);
                     projectileEntity.isSpawnProjectile = true;

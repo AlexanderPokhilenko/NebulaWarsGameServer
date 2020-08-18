@@ -1,6 +1,7 @@
 using System;
+using Code.Common;
 
-namespace Code.Common
+namespace Libraries.Logger
 {
     public class Logger :ILog
     {
@@ -18,7 +19,7 @@ namespace Code.Common
             const string levelName = " "+nameof(Debug)+" ";
             string log = DateTime.Now.ToLongTimeString() + levelName + typeName + message;
             logManager.AddLog(log);
-            UnityEngine.Debug.Log(log);
+            UnityEngine.Debug.LogError(log);
         }
 
         public void Debug(object message)

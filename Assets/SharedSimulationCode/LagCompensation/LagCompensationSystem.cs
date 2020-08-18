@@ -3,14 +3,11 @@ using System.Collections;
 
 namespace SharedSimulationCode.LagCompensation
 {
-    public class LagCompensationSystem
+    public abstract class LagCompensationSystem
     {
-        public GameState PastState { get; set; }
-        public GameState PresentState { get; set; }
+        // public abstract GameState PastState { get; set; }
+        // public abstract GameState PresentState { get; set; }
 
-        public void Execute(object entity)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Execute(GameEntity entity);
     }
 }

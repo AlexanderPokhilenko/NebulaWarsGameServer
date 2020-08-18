@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using SharedSimulationCode.LagCompensation;
 using SharedSimulationCode.Physics;
 using SharedSimulationCode.Systems;
 using SharedSimulationCode.Systems.Check;
@@ -28,7 +28,7 @@ namespace SharedSimulationCode
         public readonly int matchId;
         private readonly Entitas.Systems systems;
         private readonly InputReceiver inputReceiver;
-        private readonly TickCounter tickCounter = new TickCounter();
+        private readonly IGameStateHistory gameStateHistory = new GameStateHistory();
 
         public MatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
@@ -56,15 +56,26 @@ namespace SharedSimulationCode
             //Автоматическое добавление id при создании сущности
             contexts.SubscribeId();
             
-            //Создание систем
+            
+            ArrangeTransformSystem[] arrangeCollidersSystems = {
+                new WarshipsArrangeTransformSystem(contexts)
+            };
+            ITimeMachine timeMachine = new TimeMachine(gameStateHistory, arrangeCollidersSystems);
+            LagCompensationSystem[] lagCompensationSystems = {
+                new HitDetectionSystem(contexts, physicsRaycaster), 
+            }; 
+            
+            
+            
             systems = new Entitas.Systems()
-                    
+                    //Создаёт новое состояние
+                    .Add(new GameStateHistoryUpdaterSystem(contexts, gameStateHistory))
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
                     
                     
                     //Ввод игрока
-                    .Add(new MovementSystem(contexts))
+                    .Add(new MoveSystem(contexts))
                     .Add(new RotationSystem(contexts))
                     .Add(new ShootingSystem(contexts))
 
@@ -81,16 +92,24 @@ namespace SharedSimulationCode
                     //До этого места должно быть создание GameObject-ов
                     .Add(new SpawnForceSystem(contexts))
 
-                    //Все создания/пердвижения/удаления gameObj должны произойти до этой системы
+                    //Все создания/пердвижения gameObj должны произойти до этой системы
                     .Add(new PhysicsSimulateSystem(physicsScene))
                     
+                    
+                    //неведомая дичь
+                    .Add(new LagCompensationSystemGroup(contexts, timeMachine, lagCompensationSystems, gameStateHistory))
+
+
+                    .Add(new ProjectileTickNumberUpdaterSystem(contexts))
+                    
                     //Обнаруживает попадания снарядов
-                    .Add(new HitDetectionSystem(contexts, physicsRaycaster))
-                    .Add(new HitHandlingSystem(contexts))
+                    // .Add(new HitDetectionSystem(contexts, physicsRaycaster))
+                    // .Add(new HitHandlingSystem(contexts))
+                    
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
-                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils, tickCounter))
+                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils, gameStateHistory))
                     .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
                     .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
                     
@@ -99,7 +118,6 @@ namespace SharedSimulationCode
                     .Add(new DestroyEntitySystem(contexts, physicsDestroyer))
                     //Проверки
                     .Add(new PositionCheckSystem(contexts))
-                    
                 ;
         }
 
@@ -110,7 +128,6 @@ namespace SharedSimulationCode
 
         public void Tick()
         {
-            tickCounter.AddTick();
             systems.Execute();
             systems.Cleanup();
         }
