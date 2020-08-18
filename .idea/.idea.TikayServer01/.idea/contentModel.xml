@@ -468,6 +468,7 @@
           <e p="ProjectileSpawnerSystem.cs" t="Include" />
           <e p="ProjectileViewTypePathStorage.cs" t="Include" />
           <e p="RotationSystem.cs" t="Include" />
+          <e p="ShootingAdvancedSystem.cs" t="Include" />
           <e p="ShootingSystem.cs" t="Include" />
           <e p="SpawnForceSystem.cs" t="Include" />
           <e p="TransformExtension.cs" t="Include" />
