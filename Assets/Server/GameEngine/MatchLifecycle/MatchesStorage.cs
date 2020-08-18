@@ -10,13 +10,13 @@ namespace Server.GameEngine.MatchLifecycle
     /// <summary>
     /// Хранит таблицу текущих матчей.
     /// </summary>
-    public class MatchStorage
+    public class MatchesStorage
     {
         //matchId match
         private readonly ConcurrentDictionary<int, MatchSimulation> matches;
-        private readonly ILog log = LogManager.CreateLogger(typeof(MatchStorage));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchesStorage));
       
-        public MatchStorage()
+        public MatchesStorage()
         {
             matches = new ConcurrentDictionary<int, MatchSimulation>();
         }

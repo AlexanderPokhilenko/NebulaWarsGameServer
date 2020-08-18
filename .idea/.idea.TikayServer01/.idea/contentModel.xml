@@ -363,10 +363,10 @@
             <e p="MatchLifecycle" t="Include">
               <e p="Match.cs" t="Include" />
               <e p="MatchCreator.cs" t="Include" />
+              <e p="MatchesStorage.cs" t="Include" />
               <e p="MatchFactory.cs" t="Include" />
               <e p="MatchLifeCycleManager.cs" t="Include" />
               <e p="MatchRemover.cs" t="Include" />
-              <e p="MatchStorage.cs" t="Include" />
               <e p="PlayerDeathHandler.cs" t="Include" />
               <e p="PlayersMatchFinishNotifier.cs" t="Include" />
             </e>
@@ -471,6 +471,7 @@
           <e p="ShootingAdvancedSystem.cs" t="Include" />
           <e p="ShootingSystem.cs" t="Include" />
           <e p="SpawnForceSystem.cs" t="Include" />
+          <e p="TickCounter.cs" t="Include" />
           <e p="TransformExtension.cs" t="Include" />
           <e p="TransformSenderSystem.cs" t="Include" />
           <e p="ViewTypePathStorage.cs" t="Include" />

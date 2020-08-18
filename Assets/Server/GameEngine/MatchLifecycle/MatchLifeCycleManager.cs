@@ -9,14 +9,14 @@ namespace Server.GameEngine.MatchLifecycle
     /// </summary>
     public class MatchLifeCycleManager
     {
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         private readonly MatchCreator matchCreator;
         private readonly MatchRemover matchRemover;
         private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchLifeCycleManager));
         
-        public MatchLifeCycleManager(MatchStorage matchStorage, MatchCreator matchCreator, MatchRemover matchRemover)
+        public MatchLifeCycleManager(MatchesStorage matchesStorage, MatchCreator matchCreator, MatchRemover matchRemover)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
             this.matchCreator = matchCreator;
             this.matchRemover = matchRemover;
         }
@@ -26,7 +26,7 @@ namespace Server.GameEngine.MatchLifecycle
             List<MatchSimulation> createdMatches = matchCreator.CreateMatches();
             foreach (var match in createdMatches)
             {
-                matchStorage.AddMatch(match);
+                matchesStorage.AddMatch(match);
             }
             matchRemover.DeleteFinishedMatches();
         }

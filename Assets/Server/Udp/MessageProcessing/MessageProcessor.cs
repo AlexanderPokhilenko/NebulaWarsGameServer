@@ -43,7 +43,7 @@ namespace Server.Udp.MessageProcessing
 
             switch (messageWrapper.MessageType)
             {
-                case MessageType.PlayerInput:
+                case MessageType.PlayerInputMessagesPack:
                     inputMessageHandler.Handle(messageWrapper, sender);
                     break;
                 case MessageType.PlayerPing:

@@ -12,18 +12,18 @@ namespace Server.GameEngine
     /// </summary>
     public class GameEngineTicker
     {
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         private readonly RudpMessagesSender rudpMessagesSender;
         private readonly ExitEntitiesCreator exitEntitiesCreator;
         private readonly InputEntitiesCreator inputEntitiesCreator;
         private readonly MatchLifeCycleManager matchLifeCycleManager;
         private readonly OutgoingMessagesStorage outgoingMessagesStorage;
 
-        public GameEngineTicker(MatchStorage matchStorage, MatchLifeCycleManager matchLifeCycleManager,
+        public GameEngineTicker(MatchesStorage matchesStorage, MatchLifeCycleManager matchLifeCycleManager,
             InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
             RudpMessagesSender rudpMessagesSender, OutgoingMessagesStorage outgoingMessagesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
             this.rudpMessagesSender = rudpMessagesSender;
             this.exitEntitiesCreator = exitEntitiesCreator;
             this.inputEntitiesCreator = inputEntitiesCreator;
@@ -37,7 +37,7 @@ namespace Server.GameEngine
             exitEntitiesCreator.Create();
             
             //Перемещение игровых сущностей и создание сообщений с новым состоянием игрового мира
-            foreach (var match in matchStorage.GetAllMatches())
+            foreach (var match in matchesStorage.GetAllMatches())
             {
                 match.Tick();
             }

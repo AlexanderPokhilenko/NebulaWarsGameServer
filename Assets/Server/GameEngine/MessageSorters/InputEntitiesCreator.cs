@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
 using Server.GameEngine.MatchLifecycle;
 using SharedSimulationCode;
+using UnityEditor.Experimental.GraphView;
 
 namespace Server.GameEngine.MessageSorters
 {
@@ -10,32 +12,45 @@ namespace Server.GameEngine.MessageSorters
     /// </summary>
     public class InputEntitiesCreator
     {
-        private readonly MatchStorage matchStorage;
-        private readonly ConcurrentStack<PlayerInputMessage> inputMessages = new ConcurrentStack<PlayerInputMessage>();
+        private readonly MatchesStorage matchesStorage;
+        private readonly ConcurrentStack<InputMessagesPack> inputMessages = new ConcurrentStack<InputMessagesPack>();
 
-        public InputEntitiesCreator(MatchStorage matchStorage)
+        public InputEntitiesCreator(MatchesStorage matchesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
         }
 
-        public void AddInputMessage(PlayerInputMessage message)
+        public void AddInputMessage(InputMessagesPack message)
         {
             inputMessages.Push(message);
         }
 
         public void Create()
         {
-            while (inputMessages.TryPop(out PlayerInputMessage inputMessage))
+            while (inputMessages.TryPop(out InputMessagesPack inputMessagesPack))
             {
                 InputReceiver inputReceiver = null;
-                if (matchStorage.TryGetMatchInputReceiver(inputMessage.MatchId, ref inputReceiver))
+                ushort playerTmpId = inputMessagesPack.TemporaryId;
+                if (matchesStorage.TryGetMatchInputReceiver(inputMessagesPack.MatchId, ref inputReceiver))
                 {
-                    inputReceiver.AddMovement(inputMessage.TemporaryId, inputMessage.GetVector2());
-                    inputReceiver.AddAttack(inputMessage.TemporaryId, inputMessage.Angle);
-                    if (inputMessage.UseAbility)
+                    foreach (KeyValuePair<int, InputMessageModel> keyValuePair in inputMessagesPack.History)
                     {
-                        inputReceiver.AddAbility(inputMessage.TemporaryId);
+                        int inputMessageId = keyValuePair.Key;
+                        InputMessageModel inputModel = keyValuePair.Value;
+
+                        if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
+                        {
+                            //Сообщение старое или уже обработано
+                            continue;
+                        }
+                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2());
+                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle);
+                        if (inputModel.UseAbility)
+                        {
+                            inputReceiver.AddAbility(playerTmpId);
+                        }
                     }
+                    
                 }
             }
             

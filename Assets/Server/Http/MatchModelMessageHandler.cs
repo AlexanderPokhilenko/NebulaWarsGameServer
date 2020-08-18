@@ -13,10 +13,10 @@ namespace Server.Http
         private readonly MatchModelValidator matchModelValidator;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
         
-        public MatchModelMessageHandler(MatchCreator matchCreator, MatchStorage matchStorage)
+        public MatchModelMessageHandler(MatchCreator matchCreator, MatchesStorage matchesStorage)
         {
             this.matchCreator = matchCreator;
-            matchModelValidator = new MatchModelValidator(matchStorage);
+            matchModelValidator = new MatchModelValidator(matchesStorage);
         }
         
         public GameRoomValidationResult Handle(BattleRoyaleMatchModel matchModel)

@@ -24,8 +24,9 @@ namespace Server.Udp.MessageProcessing.Handlers
         
         public void Handle(MessageWrapper messageWrapper, IPEndPoint sender)
         {
-            PlayerInputMessage message =
-                ZeroFormatterSerializer.Deserialize<PlayerInputMessage>(messageWrapper.SerializedMessage);
+            InputMessagesPack message =
+                ZeroFormatterSerializer.Deserialize<InputMessagesPack>(messageWrapper.SerializedMessage);
+            //todo понять какие сообщения больше не нужны
             inputEntitiesCreator.AddInputMessage(message);
         }
     }

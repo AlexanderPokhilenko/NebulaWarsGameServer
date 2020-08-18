@@ -13,16 +13,16 @@ namespace Server.GameEngine.Rudp
     /// </summary>
     public class RudpMessagesSender
     {
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         private readonly UdpSendUtils udpSendUtils;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(RudpMessagesSender));
 
-        public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchStorage matchStorage, 
+        public RudpMessagesSender(ByteArrayRudpStorage byteArrayRudpStorage, MatchesStorage matchesStorage, 
             UdpSendUtils udpSendUtils, IpAddressesStorage ipAddressesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
             this.udpSendUtils = udpSendUtils;
             this.ipAddressesStorage = ipAddressesStorage;
             this.byteArrayRudpStorage = byteArrayRudpStorage;
@@ -33,7 +33,7 @@ namespace Server.GameEngine.Rudp
             List<(int matchId, ushort playerId)> pairs = new List<(int matchId, ushort playerId)>();
             
             //получить пары matchId playerId из хранилища матчей
-            foreach (MatchSimulation match in matchStorage.GetAllMatches())
+            foreach (MatchSimulation match in matchesStorage.GetAllMatches())
             {
                 int matchId = match.matchId;
                 List<ushort> players = ipAddressesStorage.GetActivePlayersIds(matchId);

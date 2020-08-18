@@ -20,7 +20,7 @@ namespace Server
     /// </summary>
     public class Startup
     {
-        private MatchStorage matchStorage;
+        private MatchesStorage matchesStorage;
         private MatchRemover matchRemover;
         private const int UdpPort = 48956;
         private const int HttpPort = 14065;
@@ -40,14 +40,14 @@ namespace Server
             matchmakerNotifierCts = notifier.StartThread();
             
             //Создание структур данных для матчей
-            matchStorage = new MatchStorage();
+            matchesStorage = new MatchesStorage();
 
 
             MessageIdFactory messageIdFactory = new MessageIdFactory();
             MessageFactory messageFactory = new MessageFactory(messageIdFactory);
             
-            InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchStorage);
-            ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchStorage);
+            InputEntitiesCreator inputEntitiesCreator = new InputEntitiesCreator(matchesStorage);
+            ExitEntitiesCreator exitEntitiesCreator = new ExitEntitiesCreator(matchesStorage);
             
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
 
@@ -65,14 +65,14 @@ namespace Server
             
             shittyUdpMediator.SetProcessor(messageProcessor);
             
-            matchRemover = new MatchRemover(matchStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
+            matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
-                new MatchLifeCycleManager(matchStorage, matchCreator, matchRemover);
+                new MatchLifeCycleManager(matchesStorage, matchCreator, matchRemover);
             
             //Старт прослушки матчмейкера
-            MatchModelMessageHandler matchModelMessageHandler = new MatchModelMessageHandler(matchCreator, matchStorage);
+            MatchModelMessageHandler matchModelMessageHandler = new MatchModelMessageHandler(matchCreator, matchesStorage);
             MatchmakerListener matchmakerListener = new MatchmakerListener(matchModelMessageHandler, HttpPort);
             matchmakerListenerCts = matchmakerListener.StartThread();
             
@@ -81,8 +81,8 @@ namespace Server
                 .SetupConnection(UdpPort)
                 .StartReceiveThread();
 
-            RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchStorage, udpSendUtils, ipAddressesStorage);
-            GameEngineTicker gameEngineTicker = new GameEngineTicker(matchStorage, matchLifeCycleManager,
+            RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchesStorage, udpSendUtils, ipAddressesStorage);
+            GameEngineTicker gameEngineTicker = new GameEngineTicker(matchesStorage, matchLifeCycleManager,
                 inputEntitiesCreator, exitEntitiesCreator, rudpMessagesSender, outgoingMessagesStorage);
             
             //Старт тиков
@@ -95,7 +95,7 @@ namespace Server
             //TODO возможно lock поможет от одновременного вызова систем
             lock (matchRemover)
             {
-                foreach (var match in matchStorage.GetAllMatches())
+                foreach (var match in matchesStorage.GetAllMatches())
                 {
                     matchRemover.MarkMatchAsFinished(match.matchId);
                 }

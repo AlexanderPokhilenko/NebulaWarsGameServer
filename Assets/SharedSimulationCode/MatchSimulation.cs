@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Entitas;
 using NetworkLibrary.NetworkLibrary.Http;
 using Server.GameEngine.MatchLifecycle;
@@ -18,6 +18,7 @@ namespace SharedSimulationCode
         public readonly int matchId;
         private readonly Systems systems;
         private readonly InputReceiver inputReceiver;
+        private readonly TickCounter tickCounter = new TickCounter();
 
         public MatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
@@ -36,8 +37,11 @@ namespace SharedSimulationCode
             this.matchId = matchId;
             var playerDeathHandler = new PlayerDeathHandler(matchmakerNotifier, udpSendUtils, ipAddressesStorage);
             var contexts = new Contexts();
-            
-            inputReceiver = new InputReceiver(contexts);
+
+            List<ushort> playerTmpIds = matchModelArg.GetPlayerTmpIds();
+            int maxInputLength = 60;
+            InputMessagesMetaHistory history = new InputMessagesMetaHistory(maxInputLength, playerTmpIds);
+            inputReceiver = new InputReceiver(contexts, history);
             
             //Автоматическое добавление id при создании сущности
             contexts.SubscribeId();
@@ -76,7 +80,7 @@ namespace SharedSimulationCode
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
-                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils))
+                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils, tickCounter))
                     .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
                     .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
                     
@@ -96,6 +100,7 @@ namespace SharedSimulationCode
 
         public void Tick()
         {
+            tickCounter.AddTick();
             systems.Execute();
             systems.Cleanup();
         }

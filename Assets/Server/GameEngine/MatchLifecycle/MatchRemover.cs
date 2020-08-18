@@ -16,7 +16,7 @@ namespace Server.GameEngine.MatchLifecycle
     /// </summary>
     public class MatchRemover
     {
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         private readonly MessageIdFactory messageIdFactory;
         /// <summary>
         /// Очередь на удаление матча.
@@ -29,12 +29,12 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly PlayersMatchFinishNotifier playersMatchFinishNotifier;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchRemover));
 
-        public MatchRemover(MatchStorage matchStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
+        public MatchRemover(MatchesStorage matchesStorage, ByteArrayRudpStorage byteArrayRudpStorage, 
             UdpSendUtils udpSendUtils, MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
             MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory)
         {
             this.messagesPackIdFactory = messagesPackIdFactory;
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
             this.byteArrayRudpStorage = byteArrayRudpStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
@@ -74,7 +74,7 @@ namespace Server.GameEngine.MatchLifecycle
         /// </summary>
         private void DeleteMatch(int matchId)
         {
-            MatchSimulation match = matchStorage.DequeueMatch(matchId);
+            MatchSimulation match = matchesStorage.DequeueMatch(matchId);
             if (match == null)
             {
                 log.Error($"Матч уже был удалён. {nameof(matchId)} {matchId}");

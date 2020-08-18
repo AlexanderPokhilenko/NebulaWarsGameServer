@@ -15,11 +15,11 @@ namespace Server.GameEngine.MessageSorters
         
         //matchId, playerId
         private readonly ConcurrentStack<Tuple<int, ushort>> stack = new ConcurrentStack<Tuple<int, ushort>>();
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         
-        public ExitEntitiesCreator(MatchStorage matchStorage)
+        public ExitEntitiesCreator(MatchesStorage matchesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
         }
         
         public void AddExitMessage(int matchId, ushort playerId)
@@ -35,7 +35,7 @@ namespace Server.GameEngine.MessageSorters
                 int matchId = pair.Item1;
                 ushort playerId = pair.Item2;
                 InputReceiver inputReceiver = null;
-                if (matchStorage.TryGetMatchInputReceiver(matchId, ref inputReceiver))
+                if (matchesStorage.TryGetMatchInputReceiver(matchId, ref inputReceiver))
                 {
                     inputReceiver.AddExit(playerId);
                 } 

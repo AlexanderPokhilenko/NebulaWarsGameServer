@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace SharedSimulationCode
 {
+    public interface ITickNumberStorage
+    {
+        int GetTickNumber();
+    }
     /// <summary>
     /// Кажному игроку отправляет все позиции.
     /// </summary>
@@ -15,11 +19,13 @@ namespace SharedSimulationCode
         private readonly UdpSendUtils udpSendUtils;
         private readonly IGroup<GameEntity> allWithView;
         private readonly IGroup<GameEntity> alivePlayers;
+        private readonly ITickNumberStorage tickNumberStorage;
 
-        public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils)
+        public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils, ITickNumberStorage tickNumberStorage)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
+            this.tickNumberStorage = tickNumberStorage;
             alivePlayers = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
             allWithView = contexts.game.GetGroup(GameMatcher.Transform);
         }
@@ -53,7 +59,7 @@ namespace SharedSimulationCode
             //отправить всем игрокам позиции всех объектов
             foreach (var entity in alivePlayers)
             {
-                udpSendUtils.SendPositions(matchId, entity.player.id, allGos);
+                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, tickNumberStorage.GetTickNumber());
             }
         }
     }

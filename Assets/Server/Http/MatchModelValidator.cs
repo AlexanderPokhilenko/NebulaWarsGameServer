@@ -14,12 +14,12 @@ namespace Server.Http
     public class MatchModelValidator
     {
         //todo переписать это
-        private readonly MatchStorage matchStorage;
+        private readonly MatchesStorage matchesStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchModelMessageHandler));
 
-        public MatchModelValidator(MatchStorage matchStorage)
+        public MatchModelValidator(MatchesStorage matchesStorage)
         {
-            this.matchStorage = matchStorage;
+            this.matchesStorage = matchesStorage;
         }
         
         public GameRoomValidationResult Validate(BattleRoyaleMatchModel matchModel)
@@ -51,7 +51,7 @@ namespace Server.Http
 
         private bool CheckMatchId(BattleRoyaleMatchModel matchModel)
         {
-            return !matchStorage.HasMatch(matchModel.MatchId);
+            return !matchesStorage.HasMatch(matchModel.MatchId);
         }
         
         private static GameRoomValidationResult GetValidationResult(bool roomWithThisNumberDoesNotExist)
