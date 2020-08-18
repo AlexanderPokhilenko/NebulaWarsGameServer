@@ -245,20 +245,6 @@
           </e>
           <e p="UnityThread.cs" t="Include" />
         </e>
-        <e p="Plugins" t="Include">
-          <e p="submodules" t="Include">
-            <e p="NebulaWarsSharedCode" t="Include">
-              <e p="Assets" t="Include">
-                <e p="SharedCode" t="Include">
-                  <e p="TestSharing.cs" t="Include" />
-                </e>
-              </e>
-              <e p="ProjectSettings" t="Include">
-                <e p="ProjectVersion.txt" t="Include" />
-              </e>
-            </e>
-          </e>
-        </e>
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />
