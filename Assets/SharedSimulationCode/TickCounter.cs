@@ -1,4 +1,6 @@
-﻿namespace SharedSimulationCode
+﻿using SharedSimulationCode.Systems.Sending;
+
+namespace SharedSimulationCode
 {
     public class TickCounter:ITickNumberStorage
     {

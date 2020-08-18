@@ -5,6 +5,16 @@ using Server.GameEngine.MatchLifecycle;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using SharedSimulationCode.Physics;
+using SharedSimulationCode.Systems;
+using SharedSimulationCode.Systems.Check;
+using SharedSimulationCode.Systems.Clean;
+using SharedSimulationCode.Systems.Cooldown;
+using SharedSimulationCode.Systems.Hits;
+using SharedSimulationCode.Systems.InputHandling;
+using SharedSimulationCode.Systems.MapInitialization;
+using SharedSimulationCode.Systems.Sending;
+using SharedSimulationCode.Systems.Spawn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +26,7 @@ namespace SharedSimulationCode
     public class MatchSimulation
     {
         public readonly int matchId;
-        private readonly Systems systems;
+        private readonly Entitas.Systems systems;
         private readonly InputReceiver inputReceiver;
         private readonly TickCounter tickCounter = new TickCounter();
 
@@ -47,7 +57,7 @@ namespace SharedSimulationCode
             contexts.SubscribeId();
             
             //Создание систем
-            systems = new Systems()
+            systems = new Entitas.Systems()
                     
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg))

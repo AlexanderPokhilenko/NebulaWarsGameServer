@@ -434,14 +434,6 @@
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
         <e p="SharedSimulationCode" t="Include">
-          <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
-          <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
-          <e p="DestroyEntitySystem.cs" t="Include" />
-          <e p="HealthSenderSystem.cs" t="Include" />
-          <e p="HitDetectionSystem.cs" t="Include" />
-          <e p="HitHandlingSystem.cs" t="Include" />
-          <e p="InputClearSystem.cs" t="Include" />
-          <e p="InputReceiver.cs" t="Include" />
           <e p="LagCompensation" t="Include">
             <e p="GameState.cs" t="Include" />
             <e p="IGameStateHistory.cs" t="Include" />
@@ -451,31 +443,57 @@
             <e p="TimeMachine.cs" t="Include" />
             <e p="TimeTravelMap.cs" t="Include" />
           </e>
-          <e p="MapInitializeSystem.cs" t="Include" />
           <e p="MatchSimulation.cs" t="Include" />
-          <e p="MaxHealthSenderSystem.cs" t="Include" />
-          <e p="MaxHpSenderSystem.cs" t="Include" />
-          <e p="MovementSystem.cs" t="Include" />
-          <e p="PhysicsDestroyer.cs" t="Include" />
-          <e p="PhysicsRaycaster.cs" t="Include" />
-          <e p="PhysicsSceneTesting" t="Include">
-            <e p="PhysicsSceneTest.cs" t="Include" />
+          <e p="Physics" t="Include">
+            <e p="PhysicsDestroyer.cs" t="Include" />
+            <e p="PhysicsRaycaster.cs" t="Include" />
+            <e p="PhysicsSimulateSystem.cs" t="Include" />
+            <e p="PhysicsSpawner.cs" t="Include" />
           </e>
-          <e p="PhysicsSimulateSystem.cs" t="Include" />
-          <e p="PhysicsSpawner.cs" t="Include" />
-          <e p="PlayersSendingSystem.cs" t="Include" />
-          <e p="PositionCheckSystem.cs" t="Include" />
-          <e p="ProjectileSpawnerSystem.cs" t="Include" />
-          <e p="ProjectileViewTypePathStorage.cs" t="Include" />
-          <e p="RotationSystem.cs" t="Include" />
-          <e p="ShootingAdvancedSystem.cs" t="Include" />
-          <e p="ShootingSystem.cs" t="Include" />
-          <e p="SpawnForceSystem.cs" t="Include" />
+          <e p="Systems" t="Include">
+            <e p="Check" t="Include">
+              <e p="PositionCheckSystem.cs" t="Include" />
+            </e>
+            <e p="Clean" t="Include">
+              <e p="DestroyEntitySystem.cs" t="Include" />
+              <e p="InputClearSystem.cs" t="Include" />
+            </e>
+            <e p="Cooldown" t="Include">
+              <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
+            </e>
+            <e p="Hits" t="Include">
+              <e p="HitDetectionSystem.cs" t="Include" />
+              <e p="HitHandlingSystem.cs" t="Include" />
+            </e>
+            <e p="InputHandling" t="Include">
+              <e p="MovementSystem.cs" t="Include" />
+              <e p="RotationSystem.cs" t="Include" />
+              <e p="ShootingSystem.cs" t="Include" />
+            </e>
+            <e p="InputReceiver.cs" t="Include" />
+            <e p="MapInitialization" t="Include">
+              <e p="MapInitializeSystem.cs" t="Include" />
+            </e>
+            <e p="Sending" t="Include">
+              <e p="HealthSenderSystem.cs" t="Include" />
+              <e p="MaxHealthSenderSystem.cs" t="Include" />
+              <e p="MaxHpSenderSystem.cs" t="Include" />
+              <e p="PlayersSendingSystem.cs" t="Include" />
+              <e p="TransformSenderSystem.cs" t="Include" />
+            </e>
+            <e p="ShootingAdvancedSystem.cs" t="Include" />
+            <e p="Spawn" t="Include">
+              <e p="ProjectileSpawnerSystem.cs" t="Include" />
+              <e p="ProjectileViewTypePathStorage.cs" t="Include" />
+              <e p="SpawnForceSystem.cs" t="Include" />
+              <e p="ViewTypePathStorage.cs" t="Include" />
+              <e p="WarshipsSpawnerSystem.cs" t="Include" />
+            </e>
+            <e p="Statistics" t="Include">
+              <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
+            </e>
+          </e>
           <e p="TickCounter.cs" t="Include" />
-          <e p="TransformExtension.cs" t="Include" />
-          <e p="TransformSenderSystem.cs" t="Include" />
-          <e p="ViewTypePathStorage.cs" t="Include" />
-          <e p="WarshipsSpawnerSystem.cs" t="Include" />
         </e>
         <e p="Sources" t="Include">
           <e p="Components" t="Include">
@@ -697,6 +715,7 @@
             <e p="ZeroFormatterTests.cs" t="Include" />
           </e>
         </e>
+        <e p="TransformExtension.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
