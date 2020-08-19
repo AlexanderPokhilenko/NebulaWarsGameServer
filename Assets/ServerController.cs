@@ -1,4 +1,5 @@
-﻿using Plugins.submodules.SharedCode.Logger;
+﻿using Plugins.submodules.SharedCode;
+using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using Server;
 using UnityEngine;
@@ -14,7 +15,8 @@ public class ServerController : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = (int) ServerTimeConstants.MaxFps;
-        LoggerConfig config = new LoggerConfig(100, 10_000, 
+        UnityThread.InitUnityThread();
+        LoggerConfig config = new LoggerConfig(100, 1000, 
             Application.persistentDataPath);
         if (LogManager.TrySetConfig(config))
         {

@@ -272,6 +272,8 @@
                     <e p="MatchRewardTypeEnum.cs" t="Include" />
                     <e p="MatchType.cs" t="Include" />
                   </e>
+                  <e p="UsernameValidationResult.cs" t="Include" />
+                  <e p="UsernameValidationResultEnum.cs" t="Include" />
                   <e p="Utils" t="Include">
                     <e p="CaesarExtension.cs" t="Include" />
                   </e>

@@ -64,8 +64,7 @@ namespace Server
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleMessagesPacker, ipAddressesStorage);
             UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
             MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, 
-                byteArrayRudpStorage, 
-                // udpSendUtils,
+                byteArrayRudpStorage,
                 ipAddressesStorage);
             
             shittyUdpMediator.SetProcessor(messageProcessor);
