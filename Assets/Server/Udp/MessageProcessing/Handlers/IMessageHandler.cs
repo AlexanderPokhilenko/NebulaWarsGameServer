@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using NetworkLibrary.NetworkLibrary.Udp;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 
 namespace Server.Udp.MessageProcessing.Handlers
 {

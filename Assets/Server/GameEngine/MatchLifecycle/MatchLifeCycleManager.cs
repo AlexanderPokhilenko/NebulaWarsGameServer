@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Code.Common;
-using Code.Common.Logger;
-using SharedSimulationCode;
+using Plugins.submodules.SharedCode.Logger;
 
 namespace Server.GameEngine.MatchLifecycle
 {

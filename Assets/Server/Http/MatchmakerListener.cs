@@ -3,10 +3,8 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Code.Common;
-using Code.Common.Logger;
-
 using NetworkLibrary.NetworkLibrary.Http;
+using Plugins.submodules.SharedCode.Logger;
 using ZeroFormatter;
 
 namespace Server.Http
@@ -15,7 +13,7 @@ namespace Server.Http
     {
         private readonly HttpListener listener;
         private readonly MatchModelMessageHandler matchModelMessageHandler;
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(MatchmakerListener));
+        private readonly ILog log = LogManager.CreateLogger(typeof(MatchmakerListener));
 
         public MatchmakerListener(MatchModelMessageHandler matchModelMessageHandler, int port)
         {
@@ -70,7 +68,7 @@ namespace Server.Http
                 {
                     if (result.ResultEnum != GameRoomValidationResultEnum.Ok)
                     {
-                        Log.Error(result.ResultEnum);
+                        log.Error(result.ResultEnum);
                     }
                     byte[] responseData = ZeroFormatterSerializer.Serialize(result);
                     context.Response.StatusCode = 200;
@@ -85,7 +83,7 @@ namespace Server.Http
             }
             catch (Exception e)
             {
-                Log.Error("Брошено исключение при обработке http запроса "+e.Message);
+                log.Error("Брошено исключение при обработке http запроса "+e.Message);
             }
         }
     }

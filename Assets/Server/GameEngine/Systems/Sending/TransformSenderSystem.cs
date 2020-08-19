@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entitas;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
 using SharedSimulationCode.LagCompensation;
 using UnityEngine;

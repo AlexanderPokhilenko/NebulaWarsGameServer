@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using NetworkLibrary.NetworkLibrary.Udp;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 using ZeroFormatter;
 
 namespace Server.Udp.Sending

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using NetworkLibrary.NetworkLibrary.Udp.PlayerToServer.UserInputMessage;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.PlayerToServer;
 using Server.GameEngine.MatchLifecycle;
 using SharedSimulationCode;
 using SharedSimulationCode.Systems;

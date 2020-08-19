@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetworkLibrary.NetworkLibrary.Udp;
-using NetworkLibrary.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 
 namespace Server
 {

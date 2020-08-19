@@ -11,6 +11,8 @@ using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Server
 {
@@ -20,8 +22,8 @@ namespace Server
     /// </summary>
     public class Startup
     {
-        private MatchesStorage matchesStorage;
         private MatchRemover matchRemover;
+        private MatchesStorage matchesStorage;
         private const int UdpPort = 48956;
         private const int HttpPort = 14065;
         private ShittyUdpMediator shittyUdpMediator;
@@ -34,8 +36,8 @@ namespace Server
             {
                 throw new Exception("Сервер уже запущен");
             }
-            
-            Chronometer chronometer = new Chronometer();
+
+            Chronometer chronometer = Object.FindObjectOfType<Chronometer>();
             
 
             //Старт уведомления матчмейкера о смертях игроков и окончании матчей

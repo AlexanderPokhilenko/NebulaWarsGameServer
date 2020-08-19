@@ -1,6 +1,5 @@
-﻿using Code.Common;
-using Code.Common.Logger;
-using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
+﻿using Plugins.submodules.SharedCode.Logger;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
 using Server;
 using UnityEngine;
 

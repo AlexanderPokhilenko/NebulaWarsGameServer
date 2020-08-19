@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Code.Common;
-using Code.Common.Logger;
 using Entitas;
+using Plugins.submodules.SharedCode.Logger;
 
 
 namespace Server.GameEngine.Systems
@@ -9,7 +8,7 @@ namespace Server.GameEngine.Systems
     public class PlayerAbilityHandlerSystem : ReactiveSystem<InputEntity>
     {
         private readonly GameContext gameContext;
-        private static readonly ILog Log = LogManager.CreateLogger(typeof(PlayerAbilityHandlerSystem));
+        private readonly ILog log = LogManager.CreateLogger(typeof(PlayerAbilityHandlerSystem));
         
         public PlayerAbilityHandlerSystem(Contexts contexts) : base(contexts.input)
         {
@@ -36,7 +35,7 @@ namespace Server.GameEngine.Systems
 
                 if (gamePlayer == null)
                 {
-                    Log.Warn("Пришло сообщение о способности от игрока, которого (уже) нет в комнате. Данные игнорируются.");
+                    log.Warn("Пришло сообщение о способности от игрока, которого (уже) нет в комнате. Данные игнорируются.");
                     return;
                 }
 

@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Code.Common;
-using Code.Common.Logger;
-
+using Plugins.submodules.SharedCode.Logger;
 
 namespace Server.Http
 {

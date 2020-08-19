@@ -3,9 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Code.Common;
-using Code.Common.Logger;
-
+using Plugins.submodules.SharedCode.Logger;
 using Server.Udp.Sending;
 
 namespace Server.Udp.Connection
@@ -16,10 +14,10 @@ namespace Server.Udp.Connection
     /// </summary>
     public abstract class UdpClientWrapper:IUdpSender
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(UdpClientWrapper));
         private UdpClient udpClient;
         private Thread receiveThread;
         private bool isThreadRunning;
+        private readonly ILog log = LogManager.CreateLogger(typeof(UdpClientWrapper));
         
         public UdpClientWrapper SetupConnection(int listenPort)
         {

@@ -2,9 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Code.Common;
-using Code.Common.Logger;
 using JetBrains.Annotations;
+using Plugins.submodules.SharedCode.Logger;
 
 
 //TODO убрать lock и выяснить в чём проблема

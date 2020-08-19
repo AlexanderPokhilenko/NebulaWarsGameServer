@@ -1,9 +1,7 @@
 ﻿using System.Net;
-using Code.Common;
-using Code.Common.Logger;
-
-using Libraries.NetworkLibrary.Udp.Common;
-using NetworkLibrary.NetworkLibrary.Udp;
+using Plugins.submodules.SharedCode.Logger;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Common;
+using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 using Server.GameEngine.Rudp;
 using ZeroFormatter;
 

@@ -16,10 +16,6 @@
             <e p="Entitas.xml" t="Include" />
             <e p="LICENSE.txt" t="Include" />
           </e>
-          <e p="Unity_Releases_1.6.4" t="Include">
-            <e p="ZeroFormatterGenerated.cs" t="Include" />
-            <e p="ZeroFormatterInitializer.cs" t="Include" />
-          </e>
         </e>
         <e p="Plugins" t="Include">
           <e p="submodules" t="Include">
@@ -316,8 +312,6 @@
                   <e p="Utils" t="Include">
                     <e p="MessagesPack.cs" t="Include" />
                     <e p="MessageWrapper.cs" t="Include" />
-                    <e p="TestMessageClass1.cs" t="Include" />
-                    <e p="TestMessageStruct1.cs" t="Include" />
                     <e p="ViewTypeId.cs" t="Include" />
                   </e>
                 </e>
@@ -368,6 +362,10 @@
                 </e>
               </e>
               <e p="TransformExtension.cs" t="Include" />
+              <e p="Unity_Releases_1.6.4" t="Include">
+                <e p="ZeroFormatterGenerated.cs" t="Include" />
+                <e p="ZeroFormatterInitializer.cs" t="Include" />
+              </e>
               <e p="UnityThread.cs" t="Include" />
             </e>
           </e>
@@ -574,6 +572,7 @@
           <e p="RudpTests.cs" t="Include" />
           <e p="Tests.asmdef" t="Include" />
           <e p="ZeroFormatterMessagesSizeTests" t="Include">
+            <e p="Test1.cs" t="Include" />
             <e p="ZeroFormatterTests.cs" t="Include" />
           </e>
         </e>
