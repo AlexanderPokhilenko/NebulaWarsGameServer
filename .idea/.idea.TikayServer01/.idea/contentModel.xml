@@ -279,6 +279,7 @@
                   </e>
                 </e>
                 <e p="Udp" t="Include">
+                  <e p="CaesarExtension.cs" t="Include" />
                   <e p="Common" t="Include">
                     <e p="DeliveryConfirmationMessage.cs" t="Include" />
                   </e>
@@ -375,6 +376,45 @@
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />
+          <e p="Shared" t="Include">
+            <e p="Archanor" t="Include">
+              <e p="Sci-Fi Arsenal" t="Include">
+                <e p="InteractiveDemo" t="Include">
+                  <e p="Demo Scripts" t="Include">
+                    <e p="MySciFiProjectileScript.cs" t="Include" />
+                    <e p="SciFiBeamScript.cs" t="Include" />
+                    <e p="SciFiButtonScript.cs" t="Include" />
+                    <e p="SciFiDragMouseOrbit.cs" t="Include" />
+                    <e p="SciFiFireProjectile.cs" t="Include" />
+                    <e p="SciFiLoadSceneOnClick.cs" t="Include" />
+                    <e p="SciFiLoopScript.cs" t="Include" />
+                    <e p="SciFiProjectileScript.cs" t="Include" />
+                  </e>
+                </e>
+                <e p="Sci-Fi Effects" t="Include">
+                  <e p="Scripts" t="Include">
+                    <e p="SciFiBeamStatic.cs" t="Include" />
+                    <e p="SciFiLightFade.cs" t="Include" />
+                    <e p="SciFiLightFlicker.cs" t="Include" />
+                    <e p="SciFiPitchRandomizer.cs" t="Include" />
+                    <e p="SciFiRotation.cs" t="Include" />
+                  </e>
+                </e>
+              </e>
+            </e>
+            <e p="StarSparrow" t="Include">
+              <e p="Readme" t="Include">
+                <e p="Readme Files" t="Include">
+                  <e p="Scripts" t="Include">
+                    <e p="Editor" t="Include">
+                      <e p="ReadmeStarSparrowEditor.cs" t="Include" />
+                    </e>
+                    <e p="ReadmeStarSparrow.cs" t="Include" />
+                  </e>
+                </e>
+              </e>
+            </e>
+          </e>
         </e>
         <e p="Scripts" t="Include">
           <e p="CollidersDrawer.cs" t="Include" />
