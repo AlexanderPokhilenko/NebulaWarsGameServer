@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Code.Common;
+using Code.Common.Logger;
 using JetBrains.Annotations;
-using Libraries.Logger;
+
 
 //TODO убрать lock и выяснить в чём проблема
 //конкурентной коллекции должно быть достаточно 

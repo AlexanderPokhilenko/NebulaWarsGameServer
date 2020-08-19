@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using Libraries.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
+using SharedSimulationCode.Physics;
 using UnityEngine;
 
 namespace Server.GameEngine.Chronometers
@@ -8,7 +10,7 @@ namespace Server.GameEngine.Chronometers
     /// <summary>
     /// Оно тикает.
     /// </summary>
-    public class Chronometer: MonoBehaviour
+    public class Chronometer: ITickDeltaTimeStorage
     {
         private Action callback;
         private const float MaxDelay = ServerTimeConstants.MinDeltaTime;
@@ -33,7 +35,7 @@ namespace Server.GameEngine.Chronometers
             }
         }
         
-        private IEnumerator MakeTicks()
+        private async Task MakeTicks()
         {
             //Время "виртуального" предыдущего кадра
             var prevTickStartTime = Time.time - MaxDelay;
@@ -57,12 +59,11 @@ namespace Server.GameEngine.Chronometers
 
                 if (sleepDelay > 0f)
                 {
-                    yield return new WaitForSeconds(sleepDelay);
+                    await Task.Delay((int)(sleepDelay * 1000));
                 }
                 else
                 {
                     Debug.LogWarning(nameof(Chronometer) + ": Опаздываем, сервер не успел отработать тик за положенное время.");
-                    yield return null;
                 }
                 
             }
@@ -71,7 +72,12 @@ namespace Server.GameEngine.Chronometers
 
         public void StartEndlessLoop()
         {
-            StartCoroutine(nameof(MakeTicks));
+            MakeTicks().Wait();
+        }
+
+        public float GetDeltaTime()
+        {
+            return DeltaTime;
         }
     }
 }

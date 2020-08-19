@@ -27,15 +27,15 @@ namespace Server.GameEngine.MatchLifecycle
             matchesToCreate.Enqueue(battleRoyaleMatchModel);
         }
         
-        public List<MatchSimulation> CreateMatches()
+        public List<ServerMatchSimulation> CreateMatches()
         {
-            List<MatchSimulation> result = new List<MatchSimulation>();
+            List<ServerMatchSimulation> result = new List<ServerMatchSimulation>();
             while (!matchesToCreate.IsEmpty)
             {
                 if (matchesToCreate.TryDequeue(out BattleRoyaleMatchModel matchModel))
                 {
-                    MatchSimulation match = matchFactory.Create(matchModel);
-                    result.Add(match);
+                    ServerMatchSimulation serverMatch = matchFactory.Create(matchModel);
+                    result.Add(serverMatch);
                 }
             }
 

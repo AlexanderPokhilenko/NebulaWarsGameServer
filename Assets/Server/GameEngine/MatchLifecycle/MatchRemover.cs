@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Code.Common;
-using Libraries.Logger;
+using Code.Common.Logger;
 using Server.GameEngine.Rudp;
 using Server.Http;
 using Server.Udp.Sending;
@@ -75,15 +75,15 @@ namespace Server.GameEngine.MatchLifecycle
         /// </summary>
         private void DeleteMatch(int matchId)
         {
-            MatchSimulation match = matchesStorage.DequeueMatch(matchId);
-            if (match == null)
+            ServerMatchSimulation serverMatch = matchesStorage.DequeueMatch(matchId);
+            if (serverMatch == null)
             {
                 log.Error($"Матч уже был удалён. {nameof(matchId)} {matchId}");
                 return;
             }
             
-            playersMatchFinishNotifier.Notify(match);
-            match.TearDown();
+            playersMatchFinishNotifier.Notify(serverMatch);
+            serverMatch.TearDown();
             matchmakerNotifier.MarkMatchAsFinished(matchId);
             
             Task.Run(async () =>

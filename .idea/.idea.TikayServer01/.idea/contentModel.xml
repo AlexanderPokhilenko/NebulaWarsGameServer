@@ -7,131 +7,6 @@
     <e p="C:\Users\staro\AppData\Roaming\JetBrains\Rider2020.1\extensions" t="IncludeRecursive" />
     <e p="C:\Users\staro\RiderProjects\TikayServer01" t="IncludeRecursive">
       <e p="Assets" t="Include">
-        <e p="Generated" t="Include">
-          <e p="Components" t="Include">
-            <e p="Interfaces" t="Include">
-              <e p="IIdEntity.cs" t="Include" />
-              <e p="IPlayerEntity.cs" t="Include" />
-              <e p="ITryingToUseAbilityEntity.cs" t="Include" />
-            </e>
-          </e>
-          <e p="Contexts.cs" t="Include" />
-          <e p="Feature.cs" t="Include" />
-          <e p="Game" t="Include">
-            <e p="Components" t="Include">
-              <e p="GameAbilityComponent.cs" t="Include" />
-              <e p="GameAbilityCooldownComponent.cs" t="Include" />
-              <e p="GameAccountComponent.cs" t="Include" />
-              <e p="GameActionBonusComponent.cs" t="Include" />
-              <e p="GameAngularVelocityComponent.cs" t="Include" />
-              <e p="GameAttackIncreasingComponent.cs" t="Include" />
-              <e p="GameAuraComponent.cs" t="Include" />
-              <e p="GameBonusAdderComponent.cs" t="Include" />
-              <e p="GameBonusPickableComponent.cs" t="Include" />
-              <e p="GameBonusTargetComponent.cs" t="Include" />
-              <e p="GameBotComponent.cs" t="Include" />
-              <e p="GameCannonComponent.cs" t="Include" />
-              <e p="GameCannonCooldownComponent.cs" t="Include" />
-              <e p="GameChaserComponent.cs" t="Include" />
-              <e p="GameCircleColliderComponent.cs" t="Include" />
-              <e p="GameCircleScalingComponent.cs" t="Include" />
-              <e p="GameCollapsesComponent.cs" t="Include" />
-              <e p="GameCollidableComponent.cs" t="Include" />
-              <e p="GameCollidedComponent.cs" t="Include" />
-              <e p="GameCollisionVectorComponent.cs" t="Include" />
-              <e p="GameConcaveComponent.cs" t="Include" />
-              <e p="GameDamageComponent.cs" t="Include" />
-              <e p="GameDestroyedComponent.cs" t="Include" />
-              <e p="GameDirectionComponent.cs" t="Include" />
-              <e p="GameDirectionSaverComponent.cs" t="Include" />
-              <e p="GameDirectionTargetingComponent.cs" t="Include" />
-              <e p="GameDirectionTargetingShootingComponent.cs" t="Include" />
-              <e p="GameDropComponent.cs" t="Include" />
-              <e p="GameGlobalNoncollinearAxisesComponent.cs" t="Include" />
-              <e p="GameGlobalPathColliderComponent.cs" t="Include" />
-              <e p="GameGlobalTransformComponent.cs" t="Include" />
-              <e p="GameGrandOwnerComponent.cs" t="Include" />
-              <e p="GameHealthPointsComponent.cs" t="Include" />
-              <e p="GameHitComponent.cs" t="Include" />
-              <e p="GameIdComponent.cs" t="Include" />
-              <e p="GameIgnoringParentCollisionComponent.cs" t="Include" />
-              <e p="GameInitialDirectionSaverComponent.cs" t="Include" />
-              <e p="GameInvulnerableComponent.cs" t="Include" />
-              <e p="GameKilledByComponent.cs" t="Include" />
-              <e p="GameLifetimeComponent.cs" t="Include" />
-              <e p="GameLocalDirectionTargetingComponent.cs" t="Include" />
-              <e p="GameLongParentComponent.cs" t="Include" />
-              <e p="GameMassComponent.cs" t="Include" />
-              <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
-              <e p="GameMaxHealthPointsComponent.cs" t="Include" />
-              <e p="GameMaxVelocityComponent.cs" t="Include" />
-              <e p="GameMovementFramesComponent.cs" t="Include" />
-              <e p="GameMovingComponent.cs" t="Include" />
-              <e p="GameNoncollinearAxisesComponent.cs" t="Include" />
-              <e p="GameNonstandardRadiusComponent.cs" t="Include" />
-              <e p="GameNotDeceleratingComponent.cs" t="Include" />
-              <e p="GameOnHealthDropDestroyingComponent.cs" t="Include" />
-              <e p="GameOwnerComponent.cs" t="Include" />
-              <e p="GameParasiteComponent.cs" t="Include" />
-              <e p="GameParentComponent.cs" t="Include" />
-              <e p="GameParentDependentComponent.cs" t="Include" />
-              <e p="GameParentFixedComponent.cs" t="Include" />
-              <e p="GameParentWarshipComponent.cs" t="Include" />
-              <e p="GamePassingThroughComponent.cs" t="Include" />
-              <e p="GamePathColliderComponent.cs" t="Include" />
-              <e p="GamePlayerComponent.cs" t="Include" />
-              <e p="GamePositionComponent.cs" t="Include" />
-              <e p="GameRectangleColliderComponent.cs" t="Include" />
-              <e p="GameRigidbodyComponent.cs" t="Include" />
-              <e p="GameRoundComponent.cs" t="Include" />
-              <e p="GameShootingPointsComponent.cs" t="Include" />
-              <e p="GameSingleTargetingComponent.cs" t="Include" />
-              <e p="GameSkinComponent.cs" t="Include" />
-              <e p="GameSpawnForceComponent.cs" t="Include" />
-              <e p="GameSpawnPointComponent.cs" t="Include" />
-              <e p="GameSpawnProjectileComponent.cs" t="Include" />
-              <e p="GameSpawnTransformComponent.cs" t="Include" />
-              <e p="GameSpawnWarshipComponent.cs" t="Include" />
-              <e p="GameSpecialShooterComponent.cs" t="Include" />
-              <e p="GameTargetChangingComponent.cs" t="Include" />
-              <e p="GameTargetComponent.cs" t="Include" />
-              <e p="GameTargetingParametersComponent.cs" t="Include" />
-              <e p="GameTargetMovingPointComponent.cs" t="Include" />
-              <e p="GameTargetScalingComponent.cs" t="Include" />
-              <e p="GameTeamComponent.cs" t="Include" />
-              <e p="GameTickNumberComponent.cs" t="Include" />
-              <e p="GameTransformComponent.cs" t="Include" />
-              <e p="GameTryingToShootComponent.cs" t="Include" />
-              <e p="GameTryingToUseAbilityComponent.cs" t="Include" />
-              <e p="GameUnmovableComponent.cs" t="Include" />
-              <e p="GameVelocityComponent.cs" t="Include" />
-              <e p="GameViewTypeComponent.cs" t="Include" />
-              <e p="GameWarshipCollidersComponent.cs" t="Include" />
-              <e p="GameZoneComponent.cs" t="Include" />
-            </e>
-            <e p="GameAttribute.cs" t="Include" />
-            <e p="GameComponentsLookup.cs" t="Include" />
-            <e p="GameContext.cs" t="Include" />
-            <e p="GameEntity.cs" t="Include" />
-            <e p="GameMatcher.cs" t="Include" />
-          </e>
-          <e p="Input" t="Include">
-            <e p="Components" t="Include">
-              <e p="InputAttackComponent.cs" t="Include" />
-              <e p="InputCreationTickNumberComponent.cs" t="Include" />
-              <e p="InputIdComponent.cs" t="Include" />
-              <e p="InputLeftTheGameComponent.cs" t="Include" />
-              <e p="InputMovementComponent.cs" t="Include" />
-              <e p="InputPlayerComponent.cs" t="Include" />
-              <e p="InputTryingToUseAbilityComponent.cs" t="Include" />
-            </e>
-            <e p="InputAttribute.cs" t="Include" />
-            <e p="InputComponentsLookup.cs" t="Include" />
-            <e p="InputContext.cs" t="Include" />
-            <e p="InputEntity.cs" t="Include" />
-            <e p="InputMatcher.cs" t="Include" />
-          </e>
-        </e>
         <e p="Globals.cs" t="Include" />
         <e p="Libraries" t="Include">
           <e p="DesperateDevs" t="Include">
@@ -141,109 +16,361 @@
             <e p="Entitas.xml" t="Include" />
             <e p="LICENSE.txt" t="Include" />
           </e>
-          <e p="Logger" t="Include">
-            <e p="ILog.cs" t="Include" />
-            <e p="Logger.cs" t="Include" />
-            <e p="LoggerConfig.cs" t="Include" />
-            <e p="LogManager.cs" t="Include" />
-            <e p="LogPrinter.cs" t="Include" />
-          </e>
-          <e p="NetworkLibrary" t="Include">
-            <e p="Http" t="Include">
-              <e p="Lobby" t="Include">
-                <e p="AccountModel.cs" t="Include" />
-                <e p="LobbyModel.cs" t="Include" />
-                <e p="LootboxModel.cs" t="Include" />
-                <e p="RewardsThatHaveNotBeenShown.cs" t="Include" />
-                <e p="Shop" t="Include">
-                  <e p="CostTypeEnum.cs" t="Include" />
-                  <e p="DiscountPrice.cs" t="Include" />
-                  <e p="ForeignServiceProduct.cs" t="Include" />
-                  <e p="MarkType.cs" t="Include" />
-                  <e p="ProductMark.cs" t="Include" />
-                  <e p="ProductModel.cs" t="Include" />
-                  <e p="ProductSizeEnum.cs" t="Include" />
-                  <e p="SectionModel.cs" t="Include" />
-                  <e p="ShopModel.cs" t="Include" />
-                  <e p="TransactionTypeEnum.cs" t="Include" />
-                  <e p="WarshipModel.cs" t="Include" />
-                  <e p="WarshipPowerPointsProduct.cs" t="Include" />
-                </e>
-                <e p="WarshipImprovementModel.cs" t="Include" />
-                <e p="WarshipModel.cs" t="Include" />
-                <e p="WarshipPowerScale.cs" t="Include" />
-                <e p="WarshipRatingScaleModel.cs" t="Include" />
-                <e p="WarshipTypeEnum.cs" t="Include" />
-              </e>
-              <e p="Match" t="Include">
-                <e p="GameRoomValidationResult.cs" t="Include" />
-                <e p="Matchmker" t="Include">
-                  <e p="MatchmakerResponse.cs" t="Include" />
-                </e>
-                <e p="MatchModel" t="Include">
-                  <e p="BattleRoyaleClientMatchModel.cs" t="Include" />
-                  <e p="BattleRoyaleMatchModel.cs" t="Include" />
-                  <e p="BattleRoyalePlayerModel.cs" t="Include" />
-                  <e p="BotModel.cs" t="Include" />
-                  <e p="GameUnits.cs" t="Include" />
-                  <e p="PlayerInfoForMatch.cs" t="Include" />
-                </e>
-                <e p="MatchResultDto.cs" t="Include" />
-                <e p="MatchRewardTypeEnum.cs" t="Include" />
-                <e p="MatchType.cs" t="Include" />
-              </e>
-              <e p="Utils" t="Include">
-                <e p="CaesarExtension.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Udp" t="Include">
-              <e p="Common" t="Include">
-                <e p="DeliveryConfirmationMessage.cs" t="Include" />
-              </e>
-              <e p="PlayerToServer" t="Include">
-                <e p="BattleExitMessage.cs" t="Include" />
-                <e p="PlayerInputMessage.cs" t="Include" />
-                <e p="PlayerPingMessage.cs" t="Include" />
-              </e>
-              <e p="ServerToPlayer" t="Include">
-                <e p="BattleStatus" t="Include">
-                  <e p="FrameRateMessage.cs" t="Include" />
-                  <e p="KillMessage.cs" t="Include" />
-                  <e p="PlayerTrackingMessage.cs" t="Include" />
-                  <e p="PointTrackingMessage.cs" t="Include" />
-                  <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
-                </e>
-                <e p="Cooldown" t="Include">
-                  <e p="CooldownsMessage.cs" t="Include" />
-                  <e p="MaxCooldownsMessage.cs" t="Include" />
-                </e>
-                <e p="Health" t="Include">
-                  <e p="HealthPointsMessage.cs" t="Include" />
-                  <e p="MaxHealthPointsMessage.cs" t="Include" />
-                </e>
-                <e p="PositionMessages" t="Include">
-                  <e p="PositionsMessage.cs" t="Include" />
-                </e>
-                <e p="Shield" t="Include">
-                  <e p="MaxShieldPointsMessage.cs" t="Include" />
-                  <e p="ShieldPointsMessage.cs" t="Include" />
-                </e>
-              </e>
-              <e p="Utils" t="Include">
-                <e p="MessagesPack.cs" t="Include" />
-                <e p="MessageWrapper.cs" t="Include" />
-                <e p="TestMessageClass1.cs" t="Include" />
-                <e p="TestMessageStruct1.cs" t="Include" />
-                <e p="ViewTypeId.cs" t="Include" />
-              </e>
-            </e>
-            <e p="WarshipImprovementConstants.cs" t="Include" />
-          </e>
           <e p="Unity_Releases_1.6.4" t="Include">
             <e p="ZeroFormatterGenerated.cs" t="Include" />
             <e p="ZeroFormatterInitializer.cs" t="Include" />
           </e>
-          <e p="UnityThread.cs" t="Include" />
+        </e>
+        <e p="Plugins" t="Include">
+          <e p="submodules" t="Include">
+            <e p="SharedCode" t="Include">
+              <e p="Components" t="Include">
+                <e p="EffectsComponents" t="Include">
+                  <e p="AbilityComponent.cs" t="Include" />
+                  <e p="AbilityCooldownComponent.cs" t="Include" />
+                  <e p="AttackIncreasingComponent.cs" t="Include" />
+                  <e p="AuraComponent.cs" t="Include" />
+                  <e p="CircleScalingComponent.cs" t="Include" />
+                  <e p="DropComponent.cs" t="Include" />
+                  <e p="OnHealthDropDestroyingComponent.cs" t="Include" />
+                  <e p="TargetScalingComponent.cs" t="Include" />
+                </e>
+                <e p="GroupsComponents" t="Include">
+                  <e p="GrandOwnerComponent.cs" t="Include" />
+                  <e p="LongParentComponent.cs" t="Include" />
+                  <e p="OwnerComponent.cs" t="Include" />
+                  <e p="ParentComponent.cs" t="Include" />
+                  <e p="ParentDependentComponent.cs" t="Include" />
+                  <e p="ParentFixedComponent.cs" t="Include" />
+                  <e p="TeamComponent.cs" t="Include" />
+                </e>
+                <e p="HealthComponents" t="Include">
+                  <e p="DestroyedComponent.cs" t="Include" />
+                  <e p="HealthPointsComponent.cs" t="Include" />
+                  <e p="InvulnerableComponent.cs" t="Include" />
+                  <e p="KilledByComponent.cs" t="Include" />
+                  <e p="MaxHealthPointsComponent.cs" t="Include" />
+                </e>
+                <e p="IdComponent.cs" t="Include" />
+                <e p="MovementComponents" t="Include">
+                  <e p="AngularVelocityComponent.cs" t="Include" />
+                  <e p="DirectionComponent.cs" t="Include" />
+                  <e p="DirectionSaverComponent.cs" t="Include" />
+                  <e p="GlobalTransformComponent.cs" t="Include" />
+                  <e p="InitialDirectionSaverComponent.cs" t="Include" />
+                  <e p="MaxAngularVelocityComponent.cs" t="Include" />
+                  <e p="MaxVelocityComponent.cs" t="Include" />
+                  <e p="MovingComponent.cs" t="Include" />
+                  <e p="NotDeceleratingComponent.cs" t="Include" />
+                  <e p="PositionComponent.cs" t="Include" />
+                  <e p="UnmovableComponent.cs" t="Include" />
+                  <e p="VelocityComponent.cs" t="Include" />
+                </e>
+                <e p="PlayerComponents" t="Include">
+                  <e p="AccountComponent.cs" t="Include" />
+                  <e p="AttackComponent.cs" t="Include" />
+                  <e p="LeftTheGame.cs" t="Include" />
+                  <e p="MovementComponent.cs" t="Include" />
+                  <e p="PlayerComponent.cs" t="Include" />
+                  <e p="TryingToUseAbilityComponent.cs" t="Include" />
+                </e>
+                <e p="ShellsComponents" t="Include">
+                  <e p="CollapsesComponent.cs" t="Include" />
+                  <e p="DamageComponent.cs" t="Include" />
+                </e>
+                <e p="ShootingComponents" t="Include">
+                  <e p="CannonComponent.cs" t="Include" />
+                  <e p="CannonCooldownComponent.cs" t="Include" />
+                  <e p="SpecialShooterComponent.cs" t="Include" />
+                  <e p="TryingToShootComponent.cs" t="Include" />
+                </e>
+                <e p="SpawnPointComponent.cs" t="Include" />
+                <e p="TargetingComponents" t="Include">
+                  <e p="BotComponent.cs" t="Include" />
+                  <e p="ChaserComponent.cs" t="Include" />
+                  <e p="DirectionTargetingComponent.cs" t="Include" />
+                  <e p="DirectionTargetingShootingComponent.cs" t="Include" />
+                  <e p="LocalDirectionTargetingComponent.cs" t="Include" />
+                  <e p="MovementFramesComponent.cs" t="Include" />
+                  <e p="SingleTargetingComponent.cs" t="Include" />
+                  <e p="TargetChangingComponent.cs" t="Include" />
+                  <e p="TargetComponent.cs" t="Include" />
+                  <e p="TargetingParametersComponent.cs" t="Include" />
+                  <e p="TargetMovingPointComponent.cs" t="Include" />
+                </e>
+                <e p="TimeComponents" t="Include">
+                  <e p="LifetimeComponent.cs" t="Include" />
+                </e>
+                <e p="TransformComponent.cs" t="Include" />
+                <e p="ViewComponents" t="Include">
+                  <e p="NonstandardRadiusComponent.cs" t="Include" />
+                  <e p="SkinComponent.cs" t="Include" />
+                  <e p="ViewTypeComponent.cs" t="Include" />
+                </e>
+                <e p="ZoneComponent.cs" t="Include" />
+              </e>
+              <e p="GameStateHistoryUpdaterSystem.cs" t="Include" />
+              <e p="Generated" t="Include">
+                <e p="Components" t="Include">
+                  <e p="Interfaces" t="Include">
+                    <e p="IIdEntity.cs" t="Include" />
+                    <e p="IPlayerEntity.cs" t="Include" />
+                    <e p="ITryingToUseAbilityEntity.cs" t="Include" />
+                  </e>
+                </e>
+                <e p="Contexts.cs" t="Include" />
+                <e p="Feature.cs" t="Include" />
+                <e p="Game" t="Include">
+                  <e p="Components" t="Include">
+                    <e p="GameAbilityComponent.cs" t="Include" />
+                    <e p="GameAbilityCooldownComponent.cs" t="Include" />
+                    <e p="GameAccountComponent.cs" t="Include" />
+                    <e p="GameAngularVelocityComponent.cs" t="Include" />
+                    <e p="GameAttackIncreasingComponent.cs" t="Include" />
+                    <e p="GameAuraComponent.cs" t="Include" />
+                    <e p="GameBotComponent.cs" t="Include" />
+                    <e p="GameCannonCooldownComponent.cs" t="Include" />
+                    <e p="GameChaserComponent.cs" t="Include" />
+                    <e p="GameCircleScalingComponent.cs" t="Include" />
+                    <e p="GameCollapsesComponent.cs" t="Include" />
+                    <e p="GameDamageComponent.cs" t="Include" />
+                    <e p="GameDestroyedComponent.cs" t="Include" />
+                    <e p="GameDirectionComponent.cs" t="Include" />
+                    <e p="GameDirectionSaverComponent.cs" t="Include" />
+                    <e p="GameDirectionTargetingComponent.cs" t="Include" />
+                    <e p="GameDirectionTargetingShootingComponent.cs" t="Include" />
+                    <e p="GameGlobalTransformComponent.cs" t="Include" />
+                    <e p="GameGrandOwnerComponent.cs" t="Include" />
+                    <e p="GameHealthPointsComponent.cs" t="Include" />
+                    <e p="GameHitComponent.cs" t="Include" />
+                    <e p="GameIdComponent.cs" t="Include" />
+                    <e p="GameInitialDirectionSaverComponent.cs" t="Include" />
+                    <e p="GameInvulnerableComponent.cs" t="Include" />
+                    <e p="GameKilledByComponent.cs" t="Include" />
+                    <e p="GameLifetimeComponent.cs" t="Include" />
+                    <e p="GameLocalDirectionTargetingComponent.cs" t="Include" />
+                    <e p="GameLongParentComponent.cs" t="Include" />
+                    <e p="GameMaxAngularVelocityComponent.cs" t="Include" />
+                    <e p="GameMaxHealthPointsComponent.cs" t="Include" />
+                    <e p="GameMaxVelocityComponent.cs" t="Include" />
+                    <e p="GameMovementFramesComponent.cs" t="Include" />
+                    <e p="GameMovingComponent.cs" t="Include" />
+                    <e p="GameNonstandardRadiusComponent.cs" t="Include" />
+                    <e p="GameNotDeceleratingComponent.cs" t="Include" />
+                    <e p="GameOnHealthDropDestroyingComponent.cs" t="Include" />
+                    <e p="GameOwnerComponent.cs" t="Include" />
+                    <e p="GameParentComponent.cs" t="Include" />
+                    <e p="GameParentDependentComponent.cs" t="Include" />
+                    <e p="GameParentFixedComponent.cs" t="Include" />
+                    <e p="GameParentWarshipComponent.cs" t="Include" />
+                    <e p="GamePlayerComponent.cs" t="Include" />
+                    <e p="GamePositionComponent.cs" t="Include" />
+                    <e p="GameRigidbodyComponent.cs" t="Include" />
+                    <e p="GameShootingPointsComponent.cs" t="Include" />
+                    <e p="GameSingleTargetingComponent.cs" t="Include" />
+                    <e p="GameSpawnForceComponent.cs" t="Include" />
+                    <e p="GameSpawnPointComponent.cs" t="Include" />
+                    <e p="GameSpawnProjectileComponent.cs" t="Include" />
+                    <e p="GameSpawnTransformComponent.cs" t="Include" />
+                    <e p="GameSpawnWarshipComponent.cs" t="Include" />
+                    <e p="GameTargetChangingComponent.cs" t="Include" />
+                    <e p="GameTargetComponent.cs" t="Include" />
+                    <e p="GameTargetingParametersComponent.cs" t="Include" />
+                    <e p="GameTargetMovingPointComponent.cs" t="Include" />
+                    <e p="GameTargetScalingComponent.cs" t="Include" />
+                    <e p="GameTeamComponent.cs" t="Include" />
+                    <e p="GameTickNumberComponent.cs" t="Include" />
+                    <e p="GameTransformComponent.cs" t="Include" />
+                    <e p="GameTryingToShootComponent.cs" t="Include" />
+                    <e p="GameTryingToUseAbilityComponent.cs" t="Include" />
+                    <e p="GameUnmovableComponent.cs" t="Include" />
+                    <e p="GameVelocityComponent.cs" t="Include" />
+                    <e p="GameViewTypeComponent.cs" t="Include" />
+                    <e p="GameWarshipCollidersComponent.cs" t="Include" />
+                    <e p="GameZoneComponent.cs" t="Include" />
+                  </e>
+                  <e p="GameAttribute.cs" t="Include" />
+                  <e p="GameComponentsLookup.cs" t="Include" />
+                  <e p="GameContext.cs" t="Include" />
+                  <e p="GameEntity.cs" t="Include" />
+                  <e p="GameMatcher.cs" t="Include" />
+                </e>
+                <e p="Input" t="Include">
+                  <e p="Components" t="Include">
+                    <e p="InputAttackComponent.cs" t="Include" />
+                    <e p="InputCreationTickNumberComponent.cs" t="Include" />
+                    <e p="InputIdComponent.cs" t="Include" />
+                    <e p="InputLeftTheGameComponent.cs" t="Include" />
+                    <e p="InputMovementComponent.cs" t="Include" />
+                    <e p="InputPlayerComponent.cs" t="Include" />
+                    <e p="InputTryingToUseAbilityComponent.cs" t="Include" />
+                  </e>
+                  <e p="InputAttribute.cs" t="Include" />
+                  <e p="InputComponentsLookup.cs" t="Include" />
+                  <e p="InputContext.cs" t="Include" />
+                  <e p="InputEntity.cs" t="Include" />
+                  <e p="InputMatcher.cs" t="Include" />
+                </e>
+              </e>
+              <e p="LagCompensation" t="Include">
+                <e p="ArrangeTransformSystem.cs" t="Include" />
+                <e p="GameState.cs" t="Include" />
+                <e p="GameStateHistory.cs" t="Include" />
+                <e p="IGameStateHistory.cs" t="Include" />
+                <e p="ITimeMachine.cs" t="Include" />
+                <e p="LagCompensationSystem.cs" t="Include" />
+                <e p="LagCompensationSystemGroup.cs" t="Include" />
+                <e p="StubLagCompensation.cs" t="Include" />
+                <e p="TimeMachine.cs" t="Include" />
+                <e p="TimeTravelMap.cs" t="Include" />
+                <e p="WarshipsArrangeTransformSystem.cs" t="Include" />
+              </e>
+              <e p="Logger" t="Include">
+                <e p="ILog.cs" t="Include" />
+                <e p="Logger.cs" t="Include" />
+                <e p="LoggerConfig.cs" t="Include" />
+                <e p="LogManager.cs" t="Include" />
+                <e p="LogPrinter.cs" t="Include" />
+              </e>
+              <e p="NetworkLibrary" t="Include">
+                <e p="Http" t="Include">
+                  <e p="Lobby" t="Include">
+                    <e p="AccountModel.cs" t="Include" />
+                    <e p="LobbyModel.cs" t="Include" />
+                    <e p="LootboxModel.cs" t="Include" />
+                    <e p="RewardsThatHaveNotBeenShown.cs" t="Include" />
+                    <e p="Shop" t="Include">
+                      <e p="CostTypeEnum.cs" t="Include" />
+                      <e p="DiscountPrice.cs" t="Include" />
+                      <e p="ForeignServiceProduct.cs" t="Include" />
+                      <e p="MarkType.cs" t="Include" />
+                      <e p="ProductMark.cs" t="Include" />
+                      <e p="ProductModel.cs" t="Include" />
+                      <e p="ProductSizeEnum.cs" t="Include" />
+                      <e p="SectionModel.cs" t="Include" />
+                      <e p="ShopModel.cs" t="Include" />
+                      <e p="TransactionTypeEnum.cs" t="Include" />
+                      <e p="WarshipModel.cs" t="Include" />
+                      <e p="WarshipPowerPointsProduct.cs" t="Include" />
+                    </e>
+                    <e p="WarshipImprovementModel.cs" t="Include" />
+                    <e p="WarshipModel.cs" t="Include" />
+                    <e p="WarshipPowerScale.cs" t="Include" />
+                    <e p="WarshipRatingScaleModel.cs" t="Include" />
+                    <e p="WarshipTypeEnum.cs" t="Include" />
+                  </e>
+                  <e p="Match" t="Include">
+                    <e p="GameRoomValidationResult.cs" t="Include" />
+                    <e p="Matchmker" t="Include">
+                      <e p="MatchmakerResponse.cs" t="Include" />
+                    </e>
+                    <e p="MatchModel" t="Include">
+                      <e p="BattleRoyaleClientMatchModel.cs" t="Include" />
+                      <e p="BattleRoyaleMatchModel.cs" t="Include" />
+                      <e p="BattleRoyalePlayerModel.cs" t="Include" />
+                      <e p="BotModel.cs" t="Include" />
+                      <e p="GameUnits.cs" t="Include" />
+                      <e p="PlayerInfoForMatch.cs" t="Include" />
+                    </e>
+                    <e p="MatchResultDto.cs" t="Include" />
+                    <e p="MatchRewardTypeEnum.cs" t="Include" />
+                    <e p="MatchType.cs" t="Include" />
+                  </e>
+                  <e p="Utils" t="Include">
+                    <e p="CaesarExtension.cs" t="Include" />
+                  </e>
+                </e>
+                <e p="Udp" t="Include">
+                  <e p="Common" t="Include">
+                    <e p="DeliveryConfirmationMessage.cs" t="Include" />
+                  </e>
+                  <e p="PlayerToServer" t="Include">
+                    <e p="BattleExitMessage.cs" t="Include" />
+                    <e p="PlayerInputMessage.cs" t="Include" />
+                    <e p="PlayerPingMessage.cs" t="Include" />
+                  </e>
+                  <e p="ServerToPlayer" t="Include">
+                    <e p="BattleStatus" t="Include">
+                      <e p="FrameRateMessage.cs" t="Include" />
+                      <e p="KillMessage.cs" t="Include" />
+                      <e p="PlayerTrackingMessage.cs" t="Include" />
+                      <e p="PointTrackingMessage.cs" t="Include" />
+                      <e p="ShowPlayerAchievementsMessage.cs" t="Include" />
+                    </e>
+                    <e p="Cooldown" t="Include">
+                      <e p="CooldownsMessage.cs" t="Include" />
+                      <e p="MaxCooldownsMessage.cs" t="Include" />
+                    </e>
+                    <e p="Health" t="Include">
+                      <e p="HealthPointsMessage.cs" t="Include" />
+                      <e p="MaxHealthPointsMessage.cs" t="Include" />
+                    </e>
+                    <e p="PositionMessages" t="Include">
+                      <e p="PositionsMessage.cs" t="Include" />
+                    </e>
+                    <e p="Shield" t="Include">
+                      <e p="MaxShieldPointsMessage.cs" t="Include" />
+                      <e p="ShieldPointsMessage.cs" t="Include" />
+                    </e>
+                  </e>
+                  <e p="Utils" t="Include">
+                    <e p="MessagesPack.cs" t="Include" />
+                    <e p="MessageWrapper.cs" t="Include" />
+                    <e p="TestMessageClass1.cs" t="Include" />
+                    <e p="TestMessageStruct1.cs" t="Include" />
+                    <e p="ViewTypeId.cs" t="Include" />
+                  </e>
+                </e>
+                <e p="WarshipImprovementConstants.cs" t="Include" />
+              </e>
+              <e p="Physics" t="Include">
+                <e p="PhysicsDestroyer.cs" t="Include" />
+                <e p="PhysicsRaycaster.cs" t="Include" />
+                <e p="PhysicsSimulateSystem.cs" t="Include" />
+                <e p="PhysicsSpawner.cs" t="Include" />
+              </e>
+              <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
+              <e p="Systems" t="Include">
+                <e p="Check" t="Include">
+                  <e p="PositionCheckSystem.cs" t="Include" />
+                </e>
+                <e p="Clean" t="Include">
+                  <e p="DestroyEntitySystem.cs" t="Include" />
+                  <e p="InputClearSystem.cs" t="Include" />
+                </e>
+                <e p="Cooldown" t="Include">
+                  <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
+                </e>
+                <e p="Hits" t="Include">
+                  <e p="HitDetectionSystem.cs" t="Include" />
+                  <e p="HitHandlingSystem.cs" t="Include" />
+                </e>
+                <e p="InputHandling" t="Include">
+                  <e p="MoveSystem.cs" t="Include" />
+                  <e p="RotationSystem.cs" t="Include" />
+                  <e p="ShootingSystem.cs" t="Include" />
+                </e>
+                <e p="InputMessagesMetaHistory.cs" t="Include" />
+                <e p="InputReceiver.cs" t="Include" />
+                <e p="MapInitialization" t="Include">
+                  <e p="MapInitializeSystem.cs" t="Include" />
+                </e>
+                <e p="ShootingAdvancedSystem.cs" t="Include" />
+                <e p="Spawn" t="Include">
+                  <e p="ProjectileSpawnerSystem.cs" t="Include" />
+                  <e p="ProjectileViewTypePathStorage.cs" t="Include" />
+                  <e p="SpawnForceSystem.cs" t="Include" />
+                  <e p="ViewTypePathStorage.cs" t="Include" />
+                  <e p="WarshipsSpawnerSystem.cs" t="Include" />
+                </e>
+                <e p="Statistics" t="Include">
+                  <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
+                </e>
+              </e>
+              <e p="TransformExtension.cs" t="Include" />
+              <e p="UnityThread.cs" t="Include" />
+            </e>
+          </e>
         </e>
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
@@ -377,8 +504,16 @@
               <e p="ByteArrayRudpStorage.cs" t="Include" />
               <e p="RudpMessagesSender.cs" t="Include" />
             </e>
+            <e p="ServerMatchSimulation.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
+              <e p="PlayersSendingSystem.cs" t="Include" />
+              <e p="Sending" t="Include">
+                <e p="HealthSenderSystem.cs" t="Include" />
+                <e p="MaxHealthSenderSystem.cs" t="Include" />
+                <e p="MaxHpSenderSystem.cs" t="Include" />
+                <e p="TransformSenderSystem.cs" t="Include" />
+              </e>
             </e>
           </e>
           <e p="Http" t="Include">
@@ -431,285 +566,6 @@
         </e>
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
-        <e p="SharedSimulationCode" t="Include">
-          <e p="GameStateHistoryUpdaterSystem.cs" t="Include" />
-          <e p="LagCompensation" t="Include">
-            <e p="ArrangeTransformSystem.cs" t="Include" />
-            <e p="GameState.cs" t="Include" />
-            <e p="GameStateHistory.cs" t="Include" />
-            <e p="IGameStateHistory.cs" t="Include" />
-            <e p="ITimeMachine.cs" t="Include" />
-            <e p="LagCompensationSystem.cs" t="Include" />
-            <e p="LagCompensationSystemGroup.cs" t="Include" />
-            <e p="StubLagCompensation.cs" t="Include" />
-            <e p="TimeMachine.cs" t="Include" />
-            <e p="TimeTravelMap.cs" t="Include" />
-            <e p="WarshipsArrangeTransformSystem.cs" t="Include" />
-          </e>
-          <e p="MatchSimulation.cs" t="Include" />
-          <e p="Physics" t="Include">
-            <e p="PhysicsDestroyer.cs" t="Include" />
-            <e p="PhysicsRaycaster.cs" t="Include" />
-            <e p="PhysicsSimulateSystem.cs" t="Include" />
-            <e p="PhysicsSpawner.cs" t="Include" />
-          </e>
-          <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
-          <e p="Systems" t="Include">
-            <e p="Check" t="Include">
-              <e p="PositionCheckSystem.cs" t="Include" />
-            </e>
-            <e p="Clean" t="Include">
-              <e p="DestroyEntitySystem.cs" t="Include" />
-              <e p="InputClearSystem.cs" t="Include" />
-            </e>
-            <e p="Cooldown" t="Include">
-              <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
-            </e>
-            <e p="Hits" t="Include">
-              <e p="HitDetectionSystem.cs" t="Include" />
-              <e p="HitHandlingSystem.cs" t="Include" />
-            </e>
-            <e p="InputHandling" t="Include">
-              <e p="MoveSystem.cs" t="Include" />
-              <e p="RotationSystem.cs" t="Include" />
-              <e p="ShootingSystem.cs" t="Include" />
-            </e>
-            <e p="InputMessagesMetaHistory.cs" t="Include" />
-            <e p="InputReceiver.cs" t="Include" />
-            <e p="MapInitialization" t="Include">
-              <e p="MapInitializeSystem.cs" t="Include" />
-            </e>
-            <e p="Sending" t="Include">
-              <e p="HealthSenderSystem.cs" t="Include" />
-              <e p="MaxHealthSenderSystem.cs" t="Include" />
-              <e p="MaxHpSenderSystem.cs" t="Include" />
-              <e p="PlayersSendingSystem.cs" t="Include" />
-              <e p="TransformSenderSystem.cs" t="Include" />
-            </e>
-            <e p="ShootingAdvancedSystem.cs" t="Include" />
-            <e p="Spawn" t="Include">
-              <e p="ProjectileSpawnerSystem.cs" t="Include" />
-              <e p="ProjectileViewTypePathStorage.cs" t="Include" />
-              <e p="SpawnForceSystem.cs" t="Include" />
-              <e p="ViewTypePathStorage.cs" t="Include" />
-              <e p="WarshipsSpawnerSystem.cs" t="Include" />
-            </e>
-            <e p="Statistics" t="Include">
-              <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
-            </e>
-          </e>
-          <e p="TickCounter.cs" t="Include" />
-        </e>
-        <e p="Sources" t="Include">
-          <e p="Components" t="Include">
-            <e p="BonusesComponents" t="Include">
-              <e p="ActionBonusComponent.cs" t="Include" />
-              <e p="BonusAdderComponent.cs" t="Include" />
-              <e p="BonusPickableComponent.cs" t="Include" />
-              <e p="BonusTargetComponent.cs" t="Include" />
-              <e p="ParasiteComponent.cs" t="Include" />
-            </e>
-            <e p="CollisionComponents" t="Include">
-              <e p="CircleColliderComponent.cs" t="Include" />
-              <e p="CollidableComponent.cs" t="Include" />
-              <e p="CollidedComponent.cs" t="Include" />
-              <e p="CollisionVectorComponent.cs" t="Include" />
-              <e p="ConcaveComponent.cs" t="Include" />
-              <e p="GlobalNoncollinearAxisesComponent.cs" t="Include" />
-              <e p="GlobalPathColliderComponent.cs" t="Include" />
-              <e p="IgnoringParentCollisionComponent.cs" t="Include" />
-              <e p="MassComponent.cs" t="Include" />
-              <e p="NoncollinearAxisesComponent.cs" t="Include" />
-              <e p="PassingThroughComponent.cs" t="Include" />
-              <e p="PathColliderComponent.cs" t="Include" />
-              <e p="RectangleColliderComponent.cs" t="Include" />
-              <e p="RoundComponent.cs" t="Include" />
-            </e>
-            <e p="EffectsComponents" t="Include">
-              <e p="AbilityComponent.cs" t="Include" />
-              <e p="AbilityCooldownComponent.cs" t="Include" />
-              <e p="AttackIncreasingComponent.cs" t="Include" />
-              <e p="AuraComponent.cs" t="Include" />
-              <e p="CircleScalingComponent.cs" t="Include" />
-              <e p="DropComponent.cs" t="Include" />
-              <e p="OnHealthDropDestroyingComponent.cs" t="Include" />
-              <e p="TargetScalingComponent.cs" t="Include" />
-            </e>
-            <e p="GroupsComponents" t="Include">
-              <e p="GrandOwnerComponent.cs" t="Include" />
-              <e p="LongParentComponent.cs" t="Include" />
-              <e p="OwnerComponent.cs" t="Include" />
-              <e p="ParentComponent.cs" t="Include" />
-              <e p="ParentDependentComponent.cs" t="Include" />
-              <e p="ParentFixedComponent.cs" t="Include" />
-              <e p="TeamComponent.cs" t="Include" />
-            </e>
-            <e p="HealthComponents" t="Include">
-              <e p="DestroyedComponent.cs" t="Include" />
-              <e p="HealthPointsComponent.cs" t="Include" />
-              <e p="InvulnerableComponent.cs" t="Include" />
-              <e p="KilledByComponent.cs" t="Include" />
-              <e p="MaxHealthPointsComponent.cs" t="Include" />
-            </e>
-            <e p="IdComponent.cs" t="Include" />
-            <e p="MovementComponents" t="Include">
-              <e p="AngularVelocityComponent.cs" t="Include" />
-              <e p="DirectionComponent.cs" t="Include" />
-              <e p="DirectionSaverComponent.cs" t="Include" />
-              <e p="GlobalTransformComponent.cs" t="Include" />
-              <e p="InitialDirectionSaverComponent.cs" t="Include" />
-              <e p="MaxAngularVelocityComponent.cs" t="Include" />
-              <e p="MaxVelocityComponent.cs" t="Include" />
-              <e p="MovingComponent.cs" t="Include" />
-              <e p="NotDeceleratingComponent.cs" t="Include" />
-              <e p="PositionComponent.cs" t="Include" />
-              <e p="UnmovableComponent.cs" t="Include" />
-              <e p="VelocityComponent.cs" t="Include" />
-            </e>
-            <e p="PlayerComponents" t="Include">
-              <e p="AccountComponent.cs" t="Include" />
-              <e p="AttackComponent.cs" t="Include" />
-              <e p="LeftTheGame.cs" t="Include" />
-              <e p="MovementComponent.cs" t="Include" />
-              <e p="PlayerComponent.cs" t="Include" />
-              <e p="TryingToUseAbilityComponent.cs" t="Include" />
-            </e>
-            <e p="ShellsComponents" t="Include">
-              <e p="CollapsesComponent.cs" t="Include" />
-              <e p="DamageComponent.cs" t="Include" />
-            </e>
-            <e p="ShootingComponents" t="Include">
-              <e p="CannonComponent.cs" t="Include" />
-              <e p="CannonCooldownComponent.cs" t="Include" />
-              <e p="SpecialShooterComponent.cs" t="Include" />
-              <e p="TryingToShootComponent.cs" t="Include" />
-            </e>
-            <e p="SpawnPointComponent.cs" t="Include" />
-            <e p="TargetingComponents" t="Include">
-              <e p="BotComponent.cs" t="Include" />
-              <e p="ChaserComponent.cs" t="Include" />
-              <e p="DirectionTargetingComponent.cs" t="Include" />
-              <e p="DirectionTargetingShootingComponent.cs" t="Include" />
-              <e p="LocalDirectionTargetingComponent.cs" t="Include" />
-              <e p="MovementFramesComponent.cs" t="Include" />
-              <e p="SingleTargetingComponent.cs" t="Include" />
-              <e p="TargetChangingComponent.cs" t="Include" />
-              <e p="TargetComponent.cs" t="Include" />
-              <e p="TargetingParametersComponent.cs" t="Include" />
-              <e p="TargetMovingPointComponent.cs" t="Include" />
-            </e>
-            <e p="TimeComponents" t="Include">
-              <e p="LifetimeComponent.cs" t="Include" />
-            </e>
-            <e p="TransformComponent.cs" t="Include" />
-            <e p="ViewComponents" t="Include">
-              <e p="NonstandardRadiusComponent.cs" t="Include" />
-              <e p="SkinComponent.cs" t="Include" />
-              <e p="ViewTypeComponent.cs" t="Include" />
-            </e>
-            <e p="ZoneComponent.cs" t="Include" />
-          </e>
-          <e p="Systems" t="Include">
-            <e p="AISystems" t="Include">
-              <e p="AISystems.cs" t="Include" />
-              <e p="AngularVelocityTargetingSystem.cs" t="Include" />
-              <e p="BotAbilityUsingSystem.cs" t="Include" />
-              <e p="BotsFrameMovingControlSystem.cs" t="Include" />
-              <e p="BotsMovingSystem.cs" t="Include" />
-              <e p="BotsOnHealthMoveChangingSystem.cs" t="Include" />
-              <e p="ChaserTargetPointUpdaterSystem.cs" t="Include" />
-              <e p="DirectionShootingSystem.cs" t="Include" />
-              <e p="DirectionTargetingSystem.cs" t="Include" />
-              <e p="LocalTargetingSystem.cs" t="Include" />
-              <e p="MovementSystems.cs" t="Include" />
-              <e p="MovingFramesDecreaseSystem.cs" t="Include" />
-              <e p="RemoveDistantTargetSystem.cs" t="Include" />
-              <e p="RemoveTargetForChangingSystem.cs" t="Include" />
-              <e p="RemoveTargetForSingleTargetingSystem.cs" t="Include" />
-              <e p="TargetDetectionSystem.cs" t="Include" />
-              <e p="TargetPointMovingSystem.cs" t="Include" />
-              <e p="TargetShootingSystem.cs" t="Include" />
-            </e>
-            <e p="CollisionSystems" t="Include">
-              <e p="AddCollidersToCircleSystem.cs" t="Include" />
-              <e p="AddCollidersToPathSystem.cs" t="Include" />
-              <e p="AddCollidersToRectSystem.cs" t="Include" />
-              <e p="AddGlobalCollisionComponentsSystem.cs" t="Include" />
-              <e p="CollisionDetectionSystem.cs" t="Include" />
-              <e p="CollisionFixedPenetrationDetectionSystem.cs" t="Include" />
-              <e p="CollisionPenetrationAvoidanceSystem.cs" t="Include" />
-              <e p="CollisionSystems.cs" t="Include" />
-              <e p="ConcaveColliderDetectionSystem.cs" t="Include" />
-              <e p="UpdateGlobalCollisionComponentsSystem.cs" t="Include" />
-            </e>
-            <e p="DestroySystems" t="Include">
-              <e p="CollapsingSystem.cs" t="Include" />
-              <e p="DeleteSystem.cs" t="Include" />
-              <e p="DestroySystems.cs" t="Include" />
-              <e p="DropSystem.cs" t="Include" />
-              <e p="LowHealthSystem.cs" t="Include" />
-              <e p="LowLifetimeSystem.cs" t="Include" />
-              <e p="ParentDependentDeletingSystem.cs" t="Include" />
-              <e p="ParentLinkDeletingSystem.cs" t="Include" />
-              <e p="TargetLinkDeletingSystem.cs" t="Include" />
-            </e>
-            <e p="EffectsSystems" t="Include">
-              <e p="AuraDamageSystem.cs" t="Include" />
-              <e p="BonusActingSystem.cs" t="Include" />
-              <e p="BonusApplyingSystem.cs" t="Include" />
-              <e p="CircleScalingSystem.cs" t="Include" />
-              <e p="CircleTargetScalingCheckerSystem.cs" t="Include" />
-              <e p="DirectionSaverRemoverSystem.cs" t="Include" />
-              <e p="EffectsSystems.cs" t="Include" />
-              <e p="RemovingNegativeAbilityCooldownSystem.cs" t="Include" />
-            </e>
-            <e p="GlobalSystems" t="Include">
-              <e p="GlobalTransformSystem.cs" t="Include" />
-              <e p="UpdatePositionChunksSystem.cs" t="Include" />
-            </e>
-            <e p="InitializeSystems" t="Include">
-              <e p="AsteroidsInitSystem.cs" t="Include" />
-              <e p="BonusesInitSystem.cs" t="Include" />
-              <e p="SpaceStationsInitSystem.cs" t="Include" />
-              <e p="ZoneInitSystem.cs" t="Include" />
-            </e>
-            <e p="MovementSystems" t="Include">
-              <e p="AngularVelocityCheckerSystem.cs" t="Include" />
-              <e p="DecelerateSystem.cs" t="Include" />
-              <e p="DirectionSaverCheckerSystem.cs" t="Include" />
-              <e p="InitialDirectionSaverCheckerSystem.cs" t="Include" />
-              <e p="MoveSystem.cs" t="Include" />
-              <e p="MovingCheckerSystem.cs" t="Include" />
-              <e p="RotatingSystem.cs" t="Include" />
-              <e p="UnmovableCheckerSystem.cs" t="Include" />
-              <e p="VelocityCheckerSystem.cs" t="Include" />
-            </e>
-            <e p="ParentsSystems" t="Include">
-              <e p="LongParentSystem.cs" t="Include" />
-              <e p="ParentFixedCheckerSystem.cs" t="Include" />
-              <e p="ParentFixedRemoverSystem.cs" t="Include" />
-              <e p="ParentsRecursionPreventionSystem.cs" t="Include" />
-              <e p="ParentsSystems.cs" t="Include" />
-              <e p="UpdateGrandOwnerSystem.cs" t="Include" />
-            </e>
-            <e p="ShootingSystems" t="Include">
-              <e p="AbilityUsageRemoverSystem.cs" t="Include" />
-              <e p="AbilityUsingSystem.cs" t="Include" />
-              <e p="AddingCannonCooldownSystem.cs" t="Include" />
-              <e p="CannonShootingSystem.cs" t="Include" />
-              <e p="CannonShootRemoverSystem.cs" t="Include" />
-              <e p="RemovingNegativeCannonCooldownSystem.cs" t="Include" />
-              <e p="ShootingSystems.cs" t="Include" />
-            </e>
-            <e p="TimeSystems" t="Include">
-              <e p="AbilityCooldownSubtractionSystem.cs" t="Include" />
-              <e p="CannonCooldownSubtractionSystem.cs" t="Include" />
-              <e p="DirectionSaverSubtractionSystem.cs" t="Include" />
-              <e p="LifetimeSubtractionSystem.cs" t="Include" />
-              <e p="TimeSystems.cs" t="Include" />
-            </e>
-          </e>
-        </e>
         <e p="Tests" t="Include">
           <e p="DatagramPackingTests.cs" t="Include" />
           <e p="IpAddressesStorageTests.cs" t="Include" />
@@ -721,7 +577,6 @@
             <e p="ZeroFormatterTests.cs" t="Include" />
           </e>
         </e>
-        <e p="TransformExtension.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />

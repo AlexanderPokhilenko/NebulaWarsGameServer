@@ -2,8 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Code.Common;
+using Code.Common.Logger;
 using JetBrains.Annotations;
-using Libraries.Logger;
 using SharedSimulationCode;
 using SharedSimulationCode.Systems;
 
@@ -15,17 +15,17 @@ namespace Server.GameEngine.MatchLifecycle
     public class MatchesStorage
     {
         //matchId match
-        private readonly ConcurrentDictionary<int, MatchSimulation> matches;
+        private readonly ConcurrentDictionary<int, ServerMatchSimulation> matches;
         private readonly ILog log = LogManager.CreateLogger(typeof(MatchesStorage));
       
         public MatchesStorage()
         {
-            matches = new ConcurrentDictionary<int, MatchSimulation>();
+            matches = new ConcurrentDictionary<int, ServerMatchSimulation>();
         }
 
-        public void AddMatch(MatchSimulation match)
+        public void AddMatch(ServerMatchSimulation serverMatch)
         {
-            if (matches.TryAdd(match.matchId, match))
+            if (matches.TryAdd(serverMatch.matchId, serverMatch))
             {
                 //ignore
             }
@@ -40,10 +40,10 @@ namespace Server.GameEngine.MatchLifecycle
         /// Удаляет матч из коллекции.
         /// </summary>
         [CanBeNull]
-        public MatchSimulation DequeueMatch(int matchId)
+        public ServerMatchSimulation DequeueMatch(int matchId)
         {
             log.Info("Попытка удалить матч "+matchId);
-            if (matches.TryRemove(matchId, out MatchSimulation match))
+            if (matches.TryRemove(matchId, out ServerMatchSimulation match))
             {
                 log.Info($"Матч удалён {nameof(matchId)} {matchId}.");
                 return match;
@@ -61,7 +61,7 @@ namespace Server.GameEngine.MatchLifecycle
             return matches.ContainsKey(matchId);
         }
 
-        public IEnumerable<MatchSimulation> GetAllMatches()
+        public IEnumerable<ServerMatchSimulation> GetAllMatches()
         {
             return matches.Values;
         }

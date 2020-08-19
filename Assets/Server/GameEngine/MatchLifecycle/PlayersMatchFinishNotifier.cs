@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Code.Common;
-using Libraries.Logger;
+using Code.Common.Logger;
+
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using SharedSimulationCode;
@@ -22,9 +23,9 @@ namespace Server.GameEngine.MatchLifecycle
             this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public void Notify(MatchSimulation match)
+        public void Notify(ServerMatchSimulation serverMatch)
         {
-            List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(match.matchId);
+            List<ushort> activePlayersIds = ipAddressesStorage.GetActivePlayersIds(serverMatch.matchId);
             if (activePlayersIds == null || activePlayersIds.Count == 0)
             {
                 log.Info("Список активных игроков пуст. Некого уведомлять о окончании матча.");
@@ -35,7 +36,7 @@ namespace Server.GameEngine.MatchLifecycle
                 foreach (ushort playerId in activePlayersIds)
                 {
                     log.Info($"Отправка уведомления о завершении боя игроку {nameof(playerId)} {playerId}");
-                    udpSendUtils.SendShowAchievementsMessage(match.matchId, playerId);
+                    udpSendUtils.SendShowAchievementsMessage(serverMatch.matchId, playerId);
                 }
                 log.Info(" Конец уведомления игроков про окончание матча");
             }

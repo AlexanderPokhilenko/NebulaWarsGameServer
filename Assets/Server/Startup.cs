@@ -34,6 +34,9 @@ namespace Server
             {
                 throw new Exception("Сервер уже запущен");
             }
+            
+            Chronometer chronometer = new Chronometer();
+            
 
             //Старт уведомления матчмейкера о смертях игроков и окончании матчей
             MatchmakerNotifier notifier = new MatchmakerNotifier();
@@ -66,7 +69,7 @@ namespace Server
             shittyUdpMediator.SetProcessor(messageProcessor);
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchesStorage, matchCreator, matchRemover);
@@ -86,7 +89,8 @@ namespace Server
                 inputEntitiesCreator, exitEntitiesCreator, rudpMessagesSender, outgoingMessagesStorage);
             
             //Старт тиков
-            Chronometer chronometer = ChronometerFactory.Create(gameEngineTicker.Tick);
+            
+            chronometer.SetCallback(gameEngineTicker.Tick);
             chronometer.StartEndlessLoop();
         }
         

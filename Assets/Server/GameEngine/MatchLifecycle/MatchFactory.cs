@@ -4,6 +4,7 @@ using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using SharedSimulationCode;
+using SharedSimulationCode.Physics;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -15,20 +16,23 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly MessagesPackIdFactory messagesPackIdFactory;
+        private readonly ITickDeltaTimeStorage tickDeltaTimeStorage;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
-            MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory)
+            MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory,
+            ITickDeltaTimeStorage tickDeltaTimeStorage)
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
             this.messageIdFactory = messageIdFactory;
             this.messagesPackIdFactory = messagesPackIdFactory;
+            this.tickDeltaTimeStorage = tickDeltaTimeStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
         }
         
-        public MatchSimulation Create(BattleRoyaleMatchModel matchModel)
+        public ServerMatchSimulation Create(BattleRoyaleMatchModel matchModel)
         {
             ipAddressesStorage.AddMatch(matchModel);
 
@@ -38,16 +42,17 @@ namespace Server.GameEngine.MatchLifecycle
                 messagesPackIdFactory.AddPlayer(matchModel.MatchId, playerId);
             }
             
-            MatchSimulation match = new MatchSimulation(
+            ServerMatchSimulation serverMatch = new ServerMatchSimulation(
                 matchModel.MatchId,
                 matchModel,
                 udpSendUtils,
                 ipAddressesStorage,
                 matchRemover,
-                matchmakerNotifier);
+                matchmakerNotifier,
+                tickDeltaTimeStorage);
             
-            match.Initialize();
-            return match;
+            serverMatch.Initialize();
+            return serverMatch;
         }
     }
 }

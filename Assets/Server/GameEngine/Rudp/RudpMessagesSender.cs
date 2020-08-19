@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Code.Common;
-using Libraries.Logger;
+using Code.Common.Logger;
+
 using Server.GameEngine.MatchLifecycle;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
@@ -34,7 +35,7 @@ namespace Server.GameEngine.Rudp
             List<(int matchId, ushort playerId)> pairs = new List<(int matchId, ushort playerId)>();
             
             //получить пары matchId playerId из хранилища матчей
-            foreach (MatchSimulation match in matchesStorage.GetAllMatches())
+            foreach (ServerMatchSimulation match in matchesStorage.GetAllMatches())
             {
                 int matchId = match.matchId;
                 List<ushort> players = ipAddressesStorage.GetActivePlayersIds(matchId);
