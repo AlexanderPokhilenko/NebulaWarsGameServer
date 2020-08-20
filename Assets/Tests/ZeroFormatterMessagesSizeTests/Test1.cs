@@ -12,24 +12,24 @@ namespace Tests.ZeroFormatterMessagesSizeTests
         [Test]
         public void Test1SimplePasses()
         {
-            PositionsMessage positionsMessage = new PositionsMessage()
-            {
-                entitiesInfo = new Dictionary<ushort, ViewTransform>()
-                {
-                    {2, new ViewTransform(1, 9, ViewTypeId.Asteroid100)},
-                    {1, new ViewTransform(1, 9, ViewTypeId.Asteroid100)},
-                    {32, new ViewTransform(1, 9, ViewTypeId.Asteroid100)},
-                    {26, new ViewTransform(1, 9, ViewTypeId.Asteroid100)}
-                },
-                TickNumber = 654
-            };
-
-            byte[] serialized = ZeroFormatterSerializer.Serialize(positionsMessage);
-
-            var restored = ZeroFormatterSerializer.Deserialize<PositionsMessage>(serialized);
-            
-            Assert.AreEqual(positionsMessage.TickNumber, restored.TickNumber);
-            CollectionAssert.AreEqual(positionsMessage.entitiesInfo, restored.entitiesInfo);
+            // TransformPackMessage positionsMessage = new TransformPackMessage()
+            // {
+            //     transform = new Dictionary<ushort, ViewTransformCompressed>()
+            //     {
+            //         {2, new ViewTransformCompressed(1, 9, ViewTypeId.Asteroid100)},
+            //         {1, new ViewTransformCompressed(1, 9, ViewTypeId.Asteroid100)},
+            //         {32, new ViewTransformCompressed(1, 9, ViewTypeId.Asteroid100)},
+            //         {26, new ViewTransformCompressed(1, 9, ViewTypeId.Asteroid100)}
+            //     },
+            //     TickNumber = 654
+            // };
+            //
+            // byte[] serialized = ZeroFormatterSerializer.Serialize(positionsMessage);
+            //
+            // var restored = ZeroFormatterSerializer.Deserialize<TransformPackMessage>(serialized);
+            //
+            // Assert.AreEqual(positionsMessage.TickNumber, restored.TickNumber);
+            // CollectionAssert.AreEqual(positionsMessage.transform, restored.transform);
         }
     }
 }

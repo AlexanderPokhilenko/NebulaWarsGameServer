@@ -3,7 +3,7 @@ using Entitas;
 using Server.Udp.Sending;
 using UnityEngine;
 
-namespace SharedSimulationCode.Systems.Sending
+namespace Server.GameEngine.Systems.Sending
 {
     /// <summary>
     /// Каждый кадр отправляет значение hp для всех игроков

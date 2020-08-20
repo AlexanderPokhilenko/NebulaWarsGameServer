@@ -45,7 +45,7 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
 
-        public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransform> entitiesInfo, int tickNumber)
+        public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransformCompressed> entitiesInfo, int tickNumber)
         {
             var length = PackingHelper.GetByteLength(entitiesInfo);
             if (length > PackingHelper.MaxSingleMessageSize)
@@ -55,13 +55,13 @@ namespace Server.Udp.Sending
                 var dictionaries = entitiesInfo.Split(messagesCount);
                 for (var i = 0; i < dictionaries.Length; i++)
                 {
-                    var message = new PositionsMessage(dictionaries[i], tickNumber);
+                    var message = new TransformPackMessage(dictionaries[i], tickNumber);
                     SendUdp(matchId, playerId, message, false);
                 }
             }
             else
             {
-                var message = new PositionsMessage(entitiesInfo, tickNumber);
+                var message = new TransformPackMessage(entitiesInfo, tickNumber);
                 SendUdp(matchId, playerId, message, false);
             }
         }

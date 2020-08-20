@@ -1,20 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
+using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
-using Server.GameEngine.Chronometers;
+using Plugins.submodules.SharedCode.Physics;
+using Plugins.submodules.SharedCode.Systems;
+using Plugins.submodules.SharedCode.Systems.Check;
+using Plugins.submodules.SharedCode.Systems.Clean;
+using Plugins.submodules.SharedCode.Systems.Cooldown;
+using Plugins.submodules.SharedCode.Systems.Hits;
+using Plugins.submodules.SharedCode.Systems.InputHandling;
+using Plugins.submodules.SharedCode.Systems.Spawn;
 using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.Systems;
+using Server.GameEngine.Systems.Sending;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
-using SharedSimulationCode;
 using SharedSimulationCode.LagCompensation;
 using SharedSimulationCode.Physics;
 using SharedSimulationCode.Systems;
-using SharedSimulationCode.Systems.Check;
-using SharedSimulationCode.Systems.Clean;
-using SharedSimulationCode.Systems.Cooldown;
-using SharedSimulationCode.Systems.Hits;
 using SharedSimulationCode.Systems.InputHandling;
 using SharedSimulationCode.Systems.MapInitialization;
 using SharedSimulationCode.Systems.Sending;
@@ -120,6 +125,7 @@ namespace Server.GameEngine
                     .Add(new DestroyEntitySystem(contexts, physicsDestroyer))
                     //Проверки
                     .Add(new PositionCheckSystem(contexts))
+                    
                 ;
         }
 
@@ -144,6 +150,30 @@ namespace Server.GameEngine
         public InputReceiver GetInputReceiver()
         {
             return inputReceiver;
+        }
+    }
+
+    public class GameStateHistory : IGameStateHistory
+    {
+        private Dictionary<int, ServerGameState> history = new Dictionary<int, ServerGameState>();
+        public ServerGameState Get(int tickNumber)
+        {
+            return history[tickNumber];
+        }
+
+        public int GetLastTickNumber()
+        {
+            return history.Keys.Max();
+        }
+
+        public void Add(ServerGameState serverGameState)
+        {
+            history.Add(serverGameState.tickNumber, serverGameState);
+        }
+
+        public ServerGameState GetActualGameState()
+        {
+            return history[GetLastTickNumber()];
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entitas;
+using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
 using SharedSimulationCode.LagCompensation;
@@ -21,6 +23,7 @@ namespace SharedSimulationCode.Systems.Sending
         private readonly IGroup<GameEntity> allWithView;
         private readonly IGroup<GameEntity> alivePlayers;
         private readonly IGameStateHistory gameStateHistory;
+        private readonly ILog log = LogManager.CreateLogger(typeof(TransformSenderSystem));
 
         public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils,
             IGameStateHistory gameStateHistory)
@@ -34,7 +37,7 @@ namespace SharedSimulationCode.Systems.Sending
 
         public void Execute()
         {
-            Dictionary<ushort, ViewTransform> allGos = new Dictionary<ushort, ViewTransform>();
+            Dictionary<ushort, ViewTransformCompressed> allGos = new Dictionary<ushort, ViewTransformCompressed>();
 
             if (allWithView.count == 0)
             {
@@ -43,12 +46,16 @@ namespace SharedSimulationCode.Systems.Sending
             }
             foreach (var entity in allWithView)
             {
+                if (entity.transform.value == null)
+                {
+                    throw new Exception("transform пуст id = "+entity.id.value);
+                }
                 var position = entity.transform.value.position;
                 float x = position.x;
                 float z = position.z;
                 float angle = entity.transform.value.rotation.eulerAngles.y;
                 ViewTypeId viewTypeId = entity.viewType.id;
-                ViewTransform viewTransform = new ViewTransform(x, z, angle, viewTypeId);
+                ViewTransformCompressed viewTransform = new ViewTransformCompressed(x, z, angle, viewTypeId);
                 allGos.Add(entity.id.value, viewTransform);
             }
 

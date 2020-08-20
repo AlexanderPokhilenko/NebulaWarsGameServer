@@ -105,6 +105,7 @@
                 </e>
                 <e p="ZoneComponent.cs" t="Include" />
               </e>
+              <e p="ExceptionExtension.cs" t="Include" />
               <e p="GameStateHistoryUpdaterSystem.cs" t="Include" />
               <e p="Generated" t="Include">
                 <e p="Components" t="Include">
@@ -305,7 +306,7 @@
                       <e p="MaxHealthPointsMessage.cs" t="Include" />
                     </e>
                     <e p="PositionMessages" t="Include">
-                      <e p="PositionsMessage.cs" t="Include" />
+                      <e p="TransformPackMessage.cs" t="Include" />
                     </e>
                     <e p="Shield" t="Include">
                       <e p="MaxShieldPointsMessage.cs" t="Include" />
@@ -326,6 +327,7 @@
                 <e p="PhysicsSimulateSystem.cs" t="Include" />
                 <e p="PhysicsSpawner.cs" t="Include" />
               </e>
+              <e p="PrefabLightmapData.cs" t="Include" />
               <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="Check" t="Include">
@@ -401,6 +403,9 @@
                   </e>
                 </e>
               </e>
+            </e>
+            <e p="PM_VoyagerTurretPack" t="Include">
+              <e p="READ ME!.txt" t="Include" />
             </e>
             <e p="StarSparrow" t="Include">
               <e p="Readme" t="Include">
