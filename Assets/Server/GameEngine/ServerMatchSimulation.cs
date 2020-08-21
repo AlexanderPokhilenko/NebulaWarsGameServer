@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
 using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
@@ -11,6 +10,7 @@ using Plugins.submodules.SharedCode.Systems.Cooldown;
 using Plugins.submodules.SharedCode.Systems.Hits;
 using Plugins.submodules.SharedCode.Systems.InputHandling;
 using Plugins.submodules.SharedCode.Systems.Spawn;
+using Server.GameEngine.Chronometers;
 using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Sending;
@@ -22,7 +22,6 @@ using SharedSimulationCode.Physics;
 using SharedSimulationCode.Systems;
 using SharedSimulationCode.Systems.InputHandling;
 using SharedSimulationCode.Systems.MapInitialization;
-using SharedSimulationCode.Systems.Sending;
 using SharedSimulationCode.Systems.Spawn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,7 +40,8 @@ namespace Server.GameEngine
 
         public ServerMatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
-            MatchmakerNotifier  matchmakerNotifier, ITickDeltaTimeStorage tickDeltaTimeStorage)
+            MatchmakerNotifier  matchmakerNotifier, ITickDeltaTimeStorage tickDeltaTimeStorage,
+            ITickStartTimeStorage tickStartTimeStorage)
         {
             //Создание физической сцены для комнаты
             var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
@@ -77,7 +77,7 @@ namespace Server.GameEngine
             
             systems = new Entitas.Systems()
                     //Создаёт новое состояние
-                    .Add(new GameStateHistoryUpdaterSystem(contexts, gameStateHistory))
+                    .Add(new GameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg))
                     
@@ -150,30 +150,6 @@ namespace Server.GameEngine
         public InputReceiver GetInputReceiver()
         {
             return inputReceiver;
-        }
-    }
-
-    public class GameStateHistory : IGameStateHistory
-    {
-        private Dictionary<int, ServerGameState> history = new Dictionary<int, ServerGameState>();
-        public ServerGameState Get(int tickNumber)
-        {
-            return history[tickNumber];
-        }
-
-        public int GetLastTickNumber()
-        {
-            return history.Keys.Max();
-        }
-
-        public void Add(ServerGameState serverGameState)
-        {
-            history.Add(serverGameState.tickNumber, serverGameState);
-        }
-
-        public ServerGameState GetActualGameState()
-        {
-            return history[GetLastTickNumber()];
         }
     }
 }

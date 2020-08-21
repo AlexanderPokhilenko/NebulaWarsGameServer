@@ -16,7 +16,7 @@ public class ServerController : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = (int) ServerTimeConstants.MaxFps;
+        Application.targetFrameRate = 200;
         UnityThread.InitUnityThread();
         LoggerConfig config = new LoggerConfig(100, 1000, 
             Application.persistentDataPath);

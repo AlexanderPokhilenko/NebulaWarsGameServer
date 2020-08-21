@@ -209,14 +209,15 @@
                   <e p="InputMatcher.cs" t="Include" />
                 </e>
               </e>
+              <e p="ITickStartTimeStorage.cs" t="Include" />
               <e p="LagCompensation" t="Include">
                 <e p="ArrangeTransformSystem.cs" t="Include" />
-                <e p="GameState.cs" t="Include" />
                 <e p="GameStateHistory.cs" t="Include" />
                 <e p="IGameStateHistory.cs" t="Include" />
                 <e p="ITimeMachine.cs" t="Include" />
                 <e p="LagCompensationSystem.cs" t="Include" />
                 <e p="LagCompensationSystemGroup.cs" t="Include" />
+                <e p="ServerGameState.cs" t="Include" />
                 <e p="StubLagCompensation.cs" t="Include" />
                 <e p="TimeMachine.cs" t="Include" />
                 <e p="TimeTravelMap.cs" t="Include" />
@@ -530,6 +531,7 @@
               </e>
             </e>
             <e p="GameEngineTicker.cs" t="Include" />
+            <e p="GameStateHistory.cs" t="Include" />
             <e p="MatchLifecycle" t="Include">
               <e p="Match.cs" t="Include" />
               <e p="MatchCreator.cs" t="Include" />
@@ -611,6 +613,7 @@
         </e>
         <e p="Server.asmdef" t="Include" />
         <e p="ServerController.cs" t="Include" />
+        <e p="Test244.cs" t="Include" />
         <e p="Tests" t="Include">
           <e p="DatagramPackingTests.cs" t="Include" />
           <e p="IpAddressesStorageTests.cs" t="Include" />

@@ -70,7 +70,7 @@ namespace Server
             shittyUdpMediator.SetProcessor(messageProcessor);
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer, chronometer);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchesStorage, matchCreator, matchRemover);

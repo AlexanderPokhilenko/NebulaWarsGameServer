@@ -45,23 +45,27 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
 
-        public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransformCompressed> entitiesInfo, int tickNumber)
+        public void SendPositions(int matchId, ushort playerId,
+            Dictionary<ushort, ViewTransformCompressed> entitiesInfo, int tickNumber, float tickTime)
         {
-            var length = PackingHelper.GetByteLength(entitiesInfo);
+            int length = PackingHelper.GetByteLength(entitiesInfo);
             if (length > PackingHelper.MaxSingleMessageSize)
             {
-                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                string warn = $"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в " +
+                                 $"{nameof(SendPositions)} ({length} из {PackingHelper.MaxSingleMessageSize}), " +
+                                 $"выполняется разделение сообщения.";
+                log.Warn(warn);
                 var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
                 var dictionaries = entitiesInfo.Split(messagesCount);
                 for (var i = 0; i < dictionaries.Length; i++)
                 {
-                    var message = new TransformPackMessage(dictionaries[i], tickNumber);
+                    var message = new TransformPackMessage(dictionaries[i], tickNumber, tickTime);
                     SendUdp(matchId, playerId, message, false);
                 }
             }
             else
             {
-                var message = new TransformPackMessage(entitiesInfo, tickNumber);
+                var message = new TransformPackMessage(entitiesInfo, tickNumber, tickTime);
                 SendUdp(matchId, playerId, message, false);
             }
         }

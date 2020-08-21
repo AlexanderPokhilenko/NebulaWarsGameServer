@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using NetworkLibrary.NetworkLibrary.Http;
+using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.Physics;
+using Server.GameEngine.Chronometers;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
@@ -16,19 +18,21 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly MessageIdFactory messageIdFactory;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
-        private readonly MessagesPackIdFactory messagesPackIdFactory;
+        private readonly ITickStartTimeStorage tickStartTimeStorage;
         private readonly ITickDeltaTimeStorage tickDeltaTimeStorage;
+        private readonly MessagesPackIdFactory messagesPackIdFactory;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
             MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory,
-            ITickDeltaTimeStorage tickDeltaTimeStorage)
+            ITickDeltaTimeStorage tickDeltaTimeStorage, ITickStartTimeStorage tickStartTimeStorage)
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
             this.messageIdFactory = messageIdFactory;
             this.messagesPackIdFactory = messagesPackIdFactory;
             this.tickDeltaTimeStorage = tickDeltaTimeStorage;
+            this.tickStartTimeStorage = tickStartTimeStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
         }
@@ -50,7 +54,8 @@ namespace Server.GameEngine.MatchLifecycle
                 ipAddressesStorage,
                 matchRemover,
                 matchmakerNotifier,
-                tickDeltaTimeStorage);
+                tickDeltaTimeStorage,
+                tickStartTimeStorage);
             
             serverMatch.Initialize();
             return serverMatch;

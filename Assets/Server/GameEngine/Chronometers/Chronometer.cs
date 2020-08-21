@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
+using System.Threading.Tasks;
+using Plugins.submodules.SharedCode;
+using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.Physics;
-using SharedSimulationCode.Physics;
 using UnityEngine;
 
 namespace Server.GameEngine.Chronometers
@@ -10,74 +11,86 @@ namespace Server.GameEngine.Chronometers
     /// <summary>
     /// Оно тикает.
     /// </summary>
-    public class Chronometer: MonoBehaviour, ITickDeltaTimeStorage
+    public class Chronometer: MonoBehaviour, ITickDeltaTimeStorage, ITickStartTimeStorage
     {
         private Action callback;
-        private const float MaxDelay = ServerTimeConstants.MinDeltaTime;
-
-        /// <summary>
-        /// Время в секундах, которое потребовалось для обработки последнего тика.
-        /// </summary>
-        /// <remarks>
-        /// Это НЕ постоянная величина и она может изменяться из-за нагрузки на сервер.
-        /// </remarks>
-        public static float DeltaTime { get; private set; } = ServerTimeConstants.MinDeltaTime;
+        private DateTime prevTickStartTime;
+        private const int TargetTickRatePerSecond = 10;
+        [SerializeField] private float tickStartDeltaTimeSec;
+        [SerializeField] private float sleepDelaySec;
+        [SerializeField] private float tickExecutionTimeSec;
+        private readonly ILog log = LogManager.CreateLogger(typeof(Chronometer));
+        private readonly TimeSpan maxTickStartDelay = TimeSpan.FromSeconds(1f/TargetTickRatePerSecond);
         
-        public void SetCallback(Action actionArg)
+
+        public void SetCallback(Action callbackArg)
         {
-            if (callback != null)
-            {
-                throw new Exception("Повторная инициализация таймера.");
-            }
-            else
-            {
-                callback = actionArg;
-            }
+            callback = callbackArg;
         }
         
-        private IEnumerator MakeTicks()
-        {
-            //Время "виртуального" предыдущего кадра
-            var prevTickStartTime = Time.time - MaxDelay;
-
-            while (true)
-            {
-                var tickStartTime = Time.time;
-                
-                //Время между началами кадров.
-                DeltaTime = tickStartTime - prevTickStartTime;
-                prevTickStartTime = tickStartTime;
-
-                callback.Invoke();
-
-                var tickEndTime = Time.time;
-
-                // Время обработки кадра
-                var tickDelta = tickEndTime - tickStartTime;
-
-                var sleepDelay = MaxDelay - tickDelta;
-
-                if (sleepDelay > 0f)
-                {
-                    yield return new WaitForSeconds(sleepDelay);
-                }
-                else
-                {
-                    Debug.LogWarning(nameof(Chronometer) + ": Опаздываем, сервер не успел отработать тик за положенное время.");
-                }
-                
-            }
-            // ReSharper disable once IteratorNeverReturns
-        }
-
         public void StartEndlessLoop()
         {
             StartCoroutine(MakeTicks());
         }
-
-        public float GetDeltaTime()
+        
+        public float GetDeltaTimeSec()
         {
-            return DeltaTime;
+            return tickStartDeltaTimeSec;
         }
+        
+        public DateTime GetTickStartTime()
+        {
+            return prevTickStartTime;
+        }
+        
+        private IEnumerator MakeTicks()
+        {
+            prevTickStartTime = DateTime.UtcNow - maxTickStartDelay;
+            while (true)
+            {
+                DateTime currentTickStartTime = DateTime.UtcNow;
+                tickStartDeltaTimeSec = (float) (currentTickStartTime - prevTickStartTime).TotalSeconds;
+                
+                try
+                {
+                    //Обработка игровой логики
+                    callback.Invoke();
+                }
+                catch (Exception e)
+                {
+                    log.Error(e.FullMessage());
+                }
+    
+                TimeSpan tickExecutionTime = DateTime.UtcNow - currentTickStartTime;
+                if (maxTickStartDelay.TotalSeconds + 0.020f < tickExecutionTime.TotalSeconds)
+                {
+                    log.Error("Слишком долгая обработка " +
+                              $"tickExecutionTime.TotalSeconds = {tickExecutionTime.TotalSeconds} " +
+                              $"maxTickStartDelay.TotalSeconds = {maxTickStartDelay.TotalSeconds}");
+                }
+
+                //Выполнение Update других скриптов
+                yield return null;
+                
+                //Ожидание если есть запас времени
+                TimeSpan tickAndUnityUpdateExecutionTime = (DateTime.UtcNow - currentTickStartTime);
+                TimeSpan sleepDelay = maxTickStartDelay - tickAndUnityUpdateExecutionTime;
+                sleepDelaySec = (float) sleepDelay.TotalSeconds;
+                tickExecutionTimeSec = (float) tickExecutionTime.TotalSeconds;    
+                if (sleepDelay.TotalSeconds > 0)
+                {
+                    Task.Delay(sleepDelay).Wait();
+                }
+                else
+                {
+                    log.Error($"Опаздываем. Логика = {tickExecutionTime.TotalSeconds} " +
+                              $"Логика + update = {tickAndUnityUpdateExecutionTime.TotalSeconds}");
+                }
+                
+                prevTickStartTime = currentTickStartTime;
+            }
+        }
+
+       
     }
 }

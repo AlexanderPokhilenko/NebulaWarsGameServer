@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entitas;
+using Plugins.submodules.SharedCode.LagCompensation;
 using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
 using Server.Udp.Sending;
 using SharedSimulationCode.LagCompensation;
 using UnityEngine;
 
-namespace SharedSimulationCode.Systems.Sending
+namespace Server.GameEngine.Systems.Sending
 {
-    public interface ITickNumberStorage
-    {
-        int GetTickNumber();
-    }
     /// <summary>
-    /// Кажному игроку отправляет все позиции.
+    /// Каждому игроку отправляет все позиции.
     /// </summary>
     public class TransformSenderSystem : IExecuteSystem
     {
@@ -68,7 +65,13 @@ namespace SharedSimulationCode.Systems.Sending
             //отправить всем игрокам позиции всех объектов
             foreach (var entity in alivePlayers)
             {
-                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, gameStateHistory.GetLastTickNumber());
+                int tickNumber = gameStateHistory.GetLastTickNumber();
+                float tickTime = gameStateHistory.GetLastTickTime();
+                if (tickNumber!=0 && Math.Abs(tickTime) < 0.01)
+                {
+                    log.Debug($"Пустое время tickNumber = {tickNumber} tickTime = {tickTime}");
+                }
+                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, tickNumber, tickTime);
             }
         }
     }
