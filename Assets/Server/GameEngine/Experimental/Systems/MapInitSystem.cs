@@ -92,7 +92,6 @@ namespace Server.GameEngine.Experimental.Systems
 
             var step = 360f / matchModel.GameUnits.Count();
             var halfStep = step * 0.5f;
-            var offset = step / 2f;
 
             GameUnitsFactory factory = new GameUnitsFactory();
             List<GameUnitModel> gameUnits = factory.Create(matchModel);
@@ -100,7 +99,7 @@ namespace Server.GameEngine.Experimental.Systems
             for(int gameUnitIndex = 0; gameUnitIndex < gameUnits.Count; gameUnitIndex++)
             {
                 GameUnitModel gameUnit = gameUnits[gameUnitIndex];
-                float angle = gameUnitIndex * step + offset;
+                float angle = gameUnitIndex * step + halfStep;
                 Vector2 position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * 40f;
                 GameEntity playerEntity = PlayerPrototypes[gameUnit.WarshipName.ToLower()]
                     .CreateEntity(gameContext, position, 180f + angle, (byte)(gameUnitIndex+1));
