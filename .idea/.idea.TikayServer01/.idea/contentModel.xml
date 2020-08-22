@@ -8,6 +8,7 @@
     <e p="C:\Users\staro\RiderProjects\TikayServer01" t="IncludeRecursive">
       <e p="Assets" t="Include">
         <e p="Globals.cs" t="Include" />
+        <e p="JitterSimulation.cs" t="Include" />
         <e p="Libraries" t="Include">
           <e p="DesperateDevs" t="Include">
             <e p="Compile.cs" t="Include" />
@@ -532,6 +533,7 @@
             </e>
             <e p="GameEngineTicker.cs" t="Include" />
             <e p="GameStateHistory.cs" t="Include" />
+            <e p="HealthCheckerSystem.cs" t="Include" />
             <e p="MatchLifecycle" t="Include">
               <e p="Match.cs" t="Include" />
               <e p="MatchCreator.cs" t="Include" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
 using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
@@ -113,6 +114,9 @@ namespace Server.GameEngine
                     //Обнаруживает попадания снарядов
                     .Add(new HitHandlingSystem(contexts))
                     
+                    
+                    .Add(new HealthCheckerSystem(contexts))
+                    //todo добавить системы для уведомления о смерти игрока
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))

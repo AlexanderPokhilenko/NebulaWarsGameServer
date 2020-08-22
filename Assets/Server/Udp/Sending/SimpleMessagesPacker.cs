@@ -9,6 +9,14 @@ using ZeroFormatter;
 
 namespace Server.Udp.Sending
 {
+    public class ServerSendingJitterSimulation:IUdpSender
+    {
+        public void Send(byte[] serializedContainer, IPEndPoint endPoint)
+        {
+            
+        }
+    }
+
     public class SimpleMessagesPacker
     {
         private readonly int mtu;

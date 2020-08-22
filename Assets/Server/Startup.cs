@@ -56,7 +56,7 @@ namespace Server
             
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
 
-            var byteArrayHandler = new ByteArrayHandler();
+            
             
             udpClientWrapper = new UdpClientWrapper();
             MessagesPackIdFactory messagesPackIdFactory = new MessagesPackIdFactory();
@@ -68,7 +68,11 @@ namespace Server
                 byteArrayRudpStorage,
                 ipAddressesStorage);
             
-            byteArrayHandler.SetMessageWrapperHandler(messageWrapperHandler);
+            IByteArrayHandler byteArrayHandler = new ByteArrayHandler(messageWrapperHandler);
+
+#if UNITY_EDITOR
+            byteArrayHandler = new JitterSimulation(byteArrayHandler, udpClientWrapper, 50, 100); 
+#endif
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer, chronometer);

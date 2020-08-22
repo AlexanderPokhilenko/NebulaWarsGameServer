@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using Plugins.submodules.SharedCode;
+﻿using System.Net;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 using Server.Udp.MessageProcessing;
 using ZeroFormatter;
@@ -12,18 +10,11 @@ namespace Server.Udp.Connection
     /// </summary>
     public class ByteArrayHandler:IByteArrayHandler
     {
-        private MessageWrapperHandler messageWrapperHandler;
+        private readonly MessageWrapperHandler messageWrapperHandler;
 
-        public void SetMessageWrapperHandler(MessageWrapperHandler messageWrapperHandlerArg)
+        public ByteArrayHandler(MessageWrapperHandler messageWrapperHandler)
         {
-            if (messageWrapperHandler == null)
-            {
-                messageWrapperHandler = messageWrapperHandlerArg;
-            }
-            else
-            {
-                throw new Exception("Обработчик пакетов уже был установлен.");
-            }
+            this.messageWrapperHandler = messageWrapperHandler;
         }
         
         public void HandleBytes(byte[] data, IPEndPoint endPoint)
