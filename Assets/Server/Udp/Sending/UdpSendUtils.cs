@@ -131,17 +131,46 @@ namespace Server.Udp.Sending
             SendUdp(matchId, playerId, message, true);
         }
         
-        public void SendHealthPoints(int matchId, ushort targetPlayerId, float healthPoints)
+        public void SendHealthPoints(int matchId, ushort playerId, Dictionary<ushort, ushort> healthPoints, bool rudp = false)
         {
-            var playerId = targetPlayerId;
-            var message = new HealthPointsMessage(healthPoints);
-            SendUdp(matchId, playerId, message);
+            var length = PackingHelper.GetByteLength(healthPoints);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendHealthPoints)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var dictionaries = healthPoints.Split(messagesCount);
+                for (var i = 0; i < dictionaries.Length; i++)
+                {
+                    var message = new HealthPointsMessage(dictionaries[i]);
+                    SendUdp(matchId, playerId, message, rudp);
+                }
+            }
+            else
+            {
+                var message = new HealthPointsMessage(healthPoints);
+                SendUdp(matchId, playerId, message, rudp);
+            }
         }
         
-        public void SendMaxHealthPoints(int matchId, ushort playerId, float maxHealthPoints)
+        public void SendMaxHealthPoints(int matchId, ushort playerId, Dictionary<ushort, ushort> maxHealthPoints)
         {
-            var message = new MaxHealthPointsMessage(maxHealthPoints);
-            SendUdp(matchId, playerId, message, true);
+            var length = PackingHelper.GetByteLength(maxHealthPoints);
+            if (length > PackingHelper.MaxSingleMessageSize)
+            {
+                log.Warn($"MatchId {matchId}, playerId {playerId}: превышение размера сообщения в {nameof(SendMaxHealthPoints)} ({length} из {PackingHelper.MaxSingleMessageSize}), выполняется разделение сообщения.");
+                var messagesCount = (length - 1) / PackingHelper.MaxSingleMessageSize + 1;
+                var dictionaries = maxHealthPoints.Split(messagesCount);
+                for (var i = 0; i < dictionaries.Length; i++)
+                {
+                    var message = new MaxHealthPointsMessage(dictionaries[i]);
+                    SendUdp(matchId, playerId, message, true);
+                }
+            }
+            else
+            {
+                var message = new MaxHealthPointsMessage(maxHealthPoints);
+                SendUdp(matchId, playerId, message, true);
+            }
         }
 
         public void SendCooldown(int matchId, ushort targetPlayerId, float ability, float[] weapons)
@@ -154,18 +183,6 @@ namespace Server.Udp.Sending
         public void SendCooldownInfo(int matchId, ushort playerId, float abilityCooldown, WeaponInfo[] weaponsInfos)
         {
             var message = new CooldownsInfosMessage(abilityCooldown, weaponsInfos);
-            SendUdp(matchId, playerId, message, true);
-        }
-
-        public void SendShieldPoints(int matchId, ushort playerId, float shieldPoints)
-        {
-            var message = new ShieldPointsMessage(shieldPoints);
-            SendUdp(matchId, playerId, message);
-        }
-
-        public void SendMaxShieldPoints(int matchId, ushort playerId, float maxShieldPoints)
-        {
-            var message = new MaxShieldPointsMessage(maxShieldPoints);
             SendUdp(matchId, playerId, message, true);
         }
 

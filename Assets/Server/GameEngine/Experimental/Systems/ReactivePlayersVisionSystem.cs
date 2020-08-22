@@ -32,6 +32,11 @@ namespace Server.GameEngine.Experimental.Systems
 
         private List<GameEntity> GetVisibleObjects(PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<GameEntity> entities)
         {
+            return GetVisibleObjects(viewAreas, viewArea, entities);
+        }
+
+        public static List<GameEntity> GetVisibleObjects(PlayersViewAreas viewAreas, PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<GameEntity> entities)
+        {
             if (viewAreas.sendAll) return entities.ToList();
 
             var playerVisible = viewArea.lastVisible;

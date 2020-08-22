@@ -7,10 +7,12 @@ namespace Server.GameEngine.Experimental
     {
         public const float VisibleAreaRadius = 15f;
         private readonly Dictionary<ushort, PlayerViewAreaInfo> areas;
+        public readonly int Count;
         public bool sendAll = false;
 
         public PlayersViewAreas(int playersCount)
         {
+            Count = playersCount;
             areas = new Dictionary<ushort, PlayerViewAreaInfo>(playersCount);
         }
         

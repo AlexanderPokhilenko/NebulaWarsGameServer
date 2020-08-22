@@ -18,15 +18,13 @@ namespace Server.GameEngine.Experimental.Systems
             Add(new ParentsSenderSystem(contexts, matchId, udpSendUtils));
             Add(new DetachesSenderSystem(contexts, matchId, udpSendUtils));
 
-            Add(new HealthUpdaterSystem(contexts, matchId, udpSendUtils));
-            Add(new MaxHpUpdaterSystem(contexts, matchId, udpSendUtils));
+            Add(new HealthUpdaterSystem(contexts, matchId, udpSendUtils, viewAreas));
+            Add(new MaxHpUpdaterSystem(contexts, matchId, udpSendUtils, viewAreas));
 
             Add(new TeamsUpdaterSystem(contexts, matchId, udpSendUtils));
 
             Add(new CooldownInfoUpdaterSystem(contexts, matchId, udpSendUtils));
             Add(new CooldownUpdaterSystem(contexts, matchId, udpSendUtils));
-
-            Add(new ShieldPointsUpdaterSystem(contexts, matchId, udpSendUtils));
 
             Add(new DestroysSenderSystem(contexts, matchId, udpSendUtils));
         }

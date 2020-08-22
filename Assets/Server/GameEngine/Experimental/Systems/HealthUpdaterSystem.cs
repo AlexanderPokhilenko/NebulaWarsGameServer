@@ -1,30 +1,38 @@
 ﻿using Entitas;
 using Server.Udp.Sending;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.GameEngine.Experimental.Systems
 {
-    public class HealthUpdaterSystem : IExecuteSystem
+    //TODO: система не учитывает, что пакеты могут быть потеряны
+    public class HealthUpdaterSystem : ReactivePlayersVisionSystem
     {
-        private readonly int matchId;
-        private readonly UdpSendUtils udpSendUtils;
-        private readonly IGroup<GameEntity> playersWithHp;
+        public HealthUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas) : base(contexts, matchId, udpSendUtils, playersViewAreas)
+        { }
 
-        public HealthUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
+        protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
         {
-            this.matchId = matchId;
-            this.udpSendUtils = udpSendUtils;
-            var gameContext = contexts.game;
-            playersWithHp = gameContext.GetGroup(GameMatcher
-                .AllOf(GameMatcher.Player, GameMatcher.HealthPoints)
-                .NoneOf(GameMatcher.Bot));
+            return context.CreateCollector(GameMatcher.HealthPoints);
         }
-        
-        public void Execute()
+
+        protected override bool Filter(GameEntity entity)
         {
-            foreach (var playerWithHp in playersWithHp)
+            return entity.hasHealthPoints && entity.hasViewType && !entity.isDestroyed;
+        }
+
+        protected override void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities)
+        {
+            var dict = entities.ToDictionary(e => e.id.value, e =>
             {
-                udpSendUtils.SendHealthPoints(matchId, playerWithHp.player.id, playerWithHp.healthPoints.value);
-            }
+                var hp = e.healthPoints.value;
+                if (hp > 0f)
+                {
+                    return (ushort) hp;
+                }
+                return (ushort)0;
+            });
+            udpSendUtils.SendHealthPoints(matchId, playerId, dict);
         }
     }
 }
