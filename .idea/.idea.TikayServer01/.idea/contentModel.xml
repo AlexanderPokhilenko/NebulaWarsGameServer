@@ -581,7 +581,8 @@
           <e p="Startup.cs" t="Include" />
           <e p="Udp" t="Include">
             <e p="Connection" t="Include">
-              <e p="ShittyUdpMediator.cs" t="Include" />
+              <e p="ByteArrayHandler.cs" t="Include" />
+              <e p="IByteArrayHandler.cs" t="Include" />
               <e p="UdpClientWrapper.cs" t="Include" />
             </e>
             <e p="MessageProcessing" t="Include">
@@ -593,7 +594,7 @@
                 <e p="RudpConfirmationReceiver.cs" t="Include" />
                 <e p="RudpConfirmationSender.cs" t="Include" />
               </e>
-              <e p="MessageProcessor.cs" t="Include" />
+              <e p="MessageWrapperHandler.cs" t="Include" />
             </e>
             <e p="Sending" t="Include">
               <e p="IHealthPointsPackSender.cs" t="Include" />

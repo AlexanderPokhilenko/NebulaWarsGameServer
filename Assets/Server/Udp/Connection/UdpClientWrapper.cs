@@ -12,7 +12,7 @@ namespace Server.Udp.Connection
     /// Прослушивает указанный порт. При получении сообщения вызывает свой метод HandleBytes.
     /// Может отправлять дейтаграммы.
     /// </summary>
-    public abstract class UdpClientWrapper:IUdpSender
+    public class UdpClientWrapper:IUdpSender
     {
         private UdpClient udpClient;
         private Thread receiveThread;
@@ -40,11 +40,11 @@ namespace Server.Udp.Connection
             return this;
         }
      
-        public void StartReceiveThread()
+        public void StartReceiveThread(IByteArrayHandler byteArrayHandler)
         {
             if (udpClient != null)
             {
-                receiveThread = new Thread(async () => await StartEndlessLoop(udpClient));
+                receiveThread = new Thread(async () => await StartEndlessLoop(udpClient, byteArrayHandler));
                 isThreadRunning = true;
                 receiveThread.Start();
             }
@@ -54,7 +54,7 @@ namespace Server.Udp.Connection
             }
         }
      
-        private async Task StartEndlessLoop(UdpClient client)
+        private async Task StartEndlessLoop(UdpClient client, IByteArrayHandler handler)
         {
             while (isThreadRunning)
             {
@@ -64,7 +64,7 @@ namespace Server.Udp.Connection
                     {
                         UdpReceiveResult result = await client.ReceiveAsync();
                         byte[] data = result.Buffer;
-                        HandleBytes(data, result.RemoteEndPoint);   
+                        handler.HandleBytes(data, result.RemoteEndPoint);   
                     }
                 }
                 catch (SocketException)
@@ -77,10 +77,6 @@ namespace Server.Udp.Connection
                     log.Info("Error receiving serializedContainer from udp client: " + e.Message+" "+e.StackTrace);
                 }
             }
-        }
-        
-        protected virtual void HandleBytes(byte[] data, IPEndPoint endPoint)
-        {
         }
 
         public void Send(byte[] serializedContainer, IPEndPoint endPoint)

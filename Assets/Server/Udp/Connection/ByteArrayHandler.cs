@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 using Server.Udp.MessageProcessing;
 using ZeroFormatter;
@@ -9,15 +10,15 @@ namespace Server.Udp.Connection
     /// <summary>
     /// Принимает все udp сообщения от игроков.
     /// </summary>
-    public class ShittyUdpMediator:UdpClientWrapper
+    public class ByteArrayHandler:IByteArrayHandler
     {
-        private MessageProcessor messageProcessor;
+        private MessageWrapperHandler messageWrapperHandler;
 
-        public void SetProcessor(MessageProcessor messageProcessorArg)
+        public void SetMessageWrapperHandler(MessageWrapperHandler messageWrapperHandlerArg)
         {
-            if (messageProcessor == null)
+            if (messageWrapperHandler == null)
             {
-                messageProcessor = messageProcessorArg;
+                messageWrapperHandler = messageWrapperHandlerArg;
             }
             else
             {
@@ -25,10 +26,10 @@ namespace Server.Udp.Connection
             }
         }
         
-        protected override void HandleBytes(byte[] data, IPEndPoint endPoint)
+        public void HandleBytes(byte[] data, IPEndPoint endPoint)
         {
             MessageWrapper messageWrapper = ZeroFormatterSerializer.Deserialize<MessageWrapper>(data);
-            messageProcessor.Handle(messageWrapper, endPoint);
+            messageWrapperHandler.Handle(messageWrapper, endPoint);
         }
     }
 }

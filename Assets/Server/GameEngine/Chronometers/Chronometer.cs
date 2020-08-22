@@ -17,8 +17,8 @@ namespace Server.GameEngine.Chronometers
         private DateTime prevTickStartTime;
         private const int TargetTickRatePerSecond = 10;
         [SerializeField] private float tickStartDeltaTimeSec;
-        [SerializeField] private float sleepDelaySec;
-        [SerializeField] private float tickExecutionTimeSec;
+        [SerializeField] private string sleepDelaySec;
+        [SerializeField] private string tickExecutionTimeSec;
         private readonly ILog log = LogManager.CreateLogger(typeof(Chronometer));
         private readonly TimeSpan maxTickStartDelay = TimeSpan.FromSeconds(1f/TargetTickRatePerSecond);
         
@@ -75,8 +75,8 @@ namespace Server.GameEngine.Chronometers
                 //Ожидание если есть запас времени
                 TimeSpan tickAndUnityUpdateExecutionTime = (DateTime.UtcNow - currentTickStartTime);
                 TimeSpan sleepDelay = maxTickStartDelay - tickAndUnityUpdateExecutionTime;
-                sleepDelaySec = (float) sleepDelay.TotalSeconds;
-                tickExecutionTimeSec = (float) tickExecutionTime.TotalSeconds;    
+                sleepDelaySec =$"{sleepDelay.TotalSeconds:0.000}";
+                tickExecutionTimeSec =$"{tickExecutionTime.TotalSeconds:0.000}";
                 if (sleepDelay.TotalSeconds > 0)
                 {
                     Task.Delay(sleepDelay).Wait();

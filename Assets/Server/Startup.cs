@@ -26,9 +26,9 @@ namespace Server
         private MatchesStorage matchesStorage;
         private const int UdpPort = 48956;
         private const int HttpPort = 14065;
-        private ShittyUdpMediator shittyUdpMediator;
         private CancellationTokenSource matchmakerNotifierCts;
         private CancellationTokenSource matchmakerListenerCts;
+        private UdpClientWrapper udpClientWrapper;
 
         public void Run()
         {
@@ -56,18 +56,19 @@ namespace Server
             
             ByteArrayRudpStorage byteArrayRudpStorage = new ByteArrayRudpStorage();
 
-            shittyUdpMediator = new ShittyUdpMediator();
+            var byteArrayHandler = new ByteArrayHandler();
             
+            udpClientWrapper = new UdpClientWrapper();
             MessagesPackIdFactory messagesPackIdFactory = new MessagesPackIdFactory();
             IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
-            SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu, shittyUdpMediator, messagesPackIdFactory);
+            SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu, udpClientWrapper, messagesPackIdFactory);
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleMessagesPacker, ipAddressesStorage);
             UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
-            MessageProcessor messageProcessor = new MessageProcessor(inputEntitiesCreator, exitEntitiesCreator, 
+            MessageWrapperHandler messageWrapperHandler = new MessageWrapperHandler(inputEntitiesCreator, exitEntitiesCreator, 
                 byteArrayRudpStorage,
                 ipAddressesStorage);
             
-            shittyUdpMediator.SetProcessor(messageProcessor);
+            byteArrayHandler.SetMessageWrapperHandler(messageWrapperHandler);
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer, chronometer);
@@ -81,9 +82,9 @@ namespace Server
             matchmakerListenerCts = matchmakerListener.StartThread();
             
             //Старт прослушки игроков
-            shittyUdpMediator
+            udpClientWrapper
                 .SetupConnection(UdpPort)
-                .StartReceiveThread();
+                .StartReceiveThread(byteArrayHandler);
 
             RudpMessagesSender rudpMessagesSender = new RudpMessagesSender(byteArrayRudpStorage, matchesStorage, udpSendUtils, ipAddressesStorage);
             GameEngineTicker gameEngineTicker = new GameEngineTicker(matchesStorage, matchLifeCycleManager,
@@ -112,7 +113,7 @@ namespace Server
         
         public void StopAllThreads()
         {
-            shittyUdpMediator.Stop();
+            udpClientWrapper.Stop();
             matchmakerNotifierCts.Cancel();
             matchmakerListenerCts.Cancel();
         }

@@ -11,7 +11,7 @@ namespace Server.Udp.MessageProcessing
     /// <summary>
     /// Перенаправляет все сообщения от игроков по обработчикам.
     /// </summary>
-    public class MessageProcessor
+    public class MessageWrapperHandler
     {
         private readonly PingMessageHandler pingMessageHandler;
         private readonly InputMessageHandler inputMessageHandler;
@@ -19,7 +19,7 @@ namespace Server.Udp.MessageProcessing
         // private readonly RudpConfirmationSender rudpConfirmationSender;
         private readonly RudpConfirmationReceiver rudpConfirmationHandler;
 
-        public MessageProcessor(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
+        public MessageWrapperHandler(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
              ByteArrayRudpStorage byteArrayRudpStorage,
              // UdpSendUtils udpSendUtils,
              IpAddressesStorage ipAddressesStorage)
