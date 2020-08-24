@@ -17,7 +17,7 @@ namespace Server.GameEngine.Experimental.Systems
 
         public void Initialize()
         {
-            var playerIds = players.AsEnumerable().Select(player => player.player.id);
+            var playerIds = players.AsEnumerable().Select(player => player.player.playerId);
             viewAreas.Initialize(playerIds);
         }
     }

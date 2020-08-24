@@ -50,7 +50,7 @@ namespace Server.GameEngine.Systems
             
             foreach (var entity in alivePlayers)
             {
-                ushort tmpPlayerId = entity.player.id;
+                ushort tmpPlayerId = entity.player.playerId;
                 udpSendUtils.SendPlayerInfo(matchId, tmpPlayerId, dictionary);
             }
         }

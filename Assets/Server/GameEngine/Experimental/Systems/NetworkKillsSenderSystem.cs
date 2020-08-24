@@ -64,7 +64,7 @@ namespace Server.GameEngine.Experimental.Systems
 
                     KillData killData = new KillData
                     {
-                        TargetPlayerTmpId = alivePlayer.player.id,
+                        TargetPlayerTmpId = alivePlayer.player.playerId,
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
                         VictimType = killedEntity.viewType.value,
@@ -75,7 +75,7 @@ namespace Server.GameEngine.Experimental.Systems
 
                     if (!killedEntity.isBot)
                     {
-                        var temporaryId = killedEntity.player.id;
+                        var temporaryId = killedEntity.player.playerId;
                         var accountId = killedEntity.account.id;
                         var placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                             killedEntityIndex);

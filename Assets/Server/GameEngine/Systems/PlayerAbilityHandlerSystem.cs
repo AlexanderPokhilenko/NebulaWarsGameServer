@@ -22,17 +22,15 @@ namespace Server.GameEngine.Systems
 
         protected override bool Filter(ServerInputEntity entity)
         {
-            return entity.isTryingToUseAbility && entity.hasPlayer;
+            return entity.isTryingToUseAbility && entity.hasPlayerInput;
         }
 
         protected override void Execute(List<ServerInputEntity> entities)
         {
             foreach (var inputEntity in entities)
             {
-                var playerId = inputEntity.player.id;
-
-                var gamePlayer = gameContext.GetEntityWithPlayer(playerId);
-
+                ushort playerId = inputEntity.playerInput.playerEntityId;
+                ServerGameEntity gamePlayer = gameContext.GetEntityWithAccount(playerId);
                 if (gamePlayer == null)
                 {
                     log.Warn("Пришло сообщение о способности от игрока, которого (уже) нет в комнате. Данные игнорируются.");

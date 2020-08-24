@@ -45,7 +45,7 @@ namespace Server.GameEngine.Experimental.Systems
 
         protected override bool Filter(ServerInputEntity entity)
         {
-            return entity.isLeftTheGame && entity.hasPlayer;
+            return entity.isLeftTheGame && entity.hasPlayerInput;
         }
 
         protected override void Execute(List<ServerInputEntity> entities)
@@ -53,8 +53,8 @@ namespace Server.GameEngine.Experimental.Systems
             log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)
             {
-                var temporaryId = inputEntity.player.id;
-                var playerEntity = gameContext.GetEntityWithPlayer(temporaryId);
+                var temporaryId = inputEntity.playerInput.playerEntityId;
+                var playerEntity = gameContext.GetEntityWithAccount(temporaryId);
                 if (playerEntity == null || !playerEntity.hasAccount)
                 {
                     log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
@@ -76,7 +76,7 @@ namespace Server.GameEngine.Experimental.Systems
 
         private void TurnIntoBot(ushort playerId)
         {
-            var playerEntity = gameContext.GetEntityWithPlayer(playerId);
+            var playerEntity = gameContext.GetEntityWithAccount(playerId);
             if (playerEntity != null && !playerEntity.isBot)
             {
                 throw new NotImplementedException();

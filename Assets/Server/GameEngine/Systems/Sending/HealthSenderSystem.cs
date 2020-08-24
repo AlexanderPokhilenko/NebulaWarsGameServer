@@ -48,7 +48,7 @@ namespace Server.GameEngine.Systems.Sending
             
             foreach (var entity in players)
             {
-                ushort tmpPlayerId = entity.player.id;
+                ushort tmpPlayerId = entity.player.playerId;
                 healthPointsPackSender.SendHealthPointsPack(matchId, tmpPlayerId, entityIdToHealthValue);
             }
         }

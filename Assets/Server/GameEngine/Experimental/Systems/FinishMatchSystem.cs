@@ -69,15 +69,15 @@ namespace Server.GameEngine.Experimental.Systems
         private void LogKilledEntities(List<ServerGameEntity> entities)
         {
             log.Info($" {nameof(matchId)} {matchId} Погибло игровых сущностей: {entities.Count}. ");
-            foreach (var ServerGameEntity in entities)
+            foreach (var serverGameEntity in entities)
             {
-                if (ServerGameEntity.isBot)
+                if (serverGameEntity.isBot)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {ServerGameEntity.viewType.value}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {serverGameEntity.viewType.value}");
                 }
-                else if(ServerGameEntity.hasPlayer)
+                else if(serverGameEntity.hasPlayer)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {ServerGameEntity.player.id}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {serverGameEntity.player.playerId}");
                 }
                 else
                 {

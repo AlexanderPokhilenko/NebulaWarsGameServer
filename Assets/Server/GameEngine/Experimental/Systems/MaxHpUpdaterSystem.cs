@@ -22,9 +22,9 @@ namespace Server.GameEngine.Experimental.Systems
 
         public void Initialize()
         {
-            foreach (var ServerGameEntity in playersWithHpGroup)
+            foreach (var serverGameEntity in playersWithHpGroup)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, ServerGameEntity.player.id, ServerGameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.playerId, serverGameEntity.maxHealthPoints.value);
             }
         }
 
@@ -40,9 +40,9 @@ namespace Server.GameEngine.Experimental.Systems
 
         protected override void Execute(List<ServerGameEntity> entities)
         {
-            foreach (var ServerGameEntity in entities)
+            foreach (var serverGameEntity in entities)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, ServerGameEntity.player.id, ServerGameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.playerId, serverGameEntity.maxHealthPoints.value);
             }
         }
     }

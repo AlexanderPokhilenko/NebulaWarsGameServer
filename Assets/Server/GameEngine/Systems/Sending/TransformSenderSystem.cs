@@ -71,7 +71,7 @@ namespace Server.GameEngine.Systems.Sending
                 {
                     log.Debug($"Пустое время tickNumber = {tickNumber} tickTime = {tickTime}");
                 }
-                udpSendUtils.SendPositions(matchId, entity.player.id, allGos, tickNumber, tickTime);
+                udpSendUtils.SendPositions(matchId, entity.player.playerId, allGos, tickNumber, tickTime);
             }
         }
     }

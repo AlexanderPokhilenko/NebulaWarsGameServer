@@ -13,7 +13,7 @@
           <e p="submodules" t="Include">
             <e p="EntitasCore" t="Include">
               <e p="Entitas" t="Include">
-                <e p="Components" t="Include">
+                <e p="GameComponents" t="Include">
                   <e p="Components.cs" t="Include" />
                   <e p="ControlPoint.cs" t="Include" />
                   <e p="EffectsComponents" t="Include">
@@ -31,6 +31,7 @@
                     <e p="MaxHealthPointsComponent.cs" t="Include" />
                   </e>
                   <e p="IdComponent.cs" t="Include" />
+                  <e p="MyComponents.cs" t="Include" />
                   <e p="PlayerComponents" t="Include">
                     <e p="AccountComponent.cs" t="Include" />
                     <e p="AttackComponent.cs" t="Include" />
@@ -73,17 +74,6 @@
                     <e p="ViewTypeComponent.cs" t="Include" />
                   </e>
                 </e>
-                <e p="Components.cs" t="Include" />
-                <e p="Components2" t="Include">
-                  <e p="WppAccrualAlphaComponent.cs" t="Include" />
-                  <e p="WppAccrualImageComponent.cs" t="Include" />
-                  <e p="WppAccrualMovingIconComponent.cs" t="Include" />
-                  <e p="WppAccrualPositionComponent.cs" t="Include" />
-                  <e p="WppAccrualScaleComponent.cs" t="Include" />
-                  <e p="WppAccrualViewComponent.cs" t="Include" />
-                  <e p="WppAccrualWarshipPowerPointsComponent.cs" t="Include" />
-                </e>
-                <e p="Components65.cs" t="Include" />
                 <e p="Generated" t="Include">
                   <e p="Components" t="Include">
                     <e p="Interfaces" t="Include">
@@ -91,7 +81,6 @@
                       <e p="IIdEntity.cs" t="Include" />
                       <e p="IImageEntity.cs" t="Include" />
                       <e p="IMovingIconEntity.cs" t="Include" />
-                      <e p="IPlayerEntity.cs" t="Include" />
                       <e p="IPositionEntity.cs" t="Include" />
                       <e p="IScaleEntity.cs" t="Include" />
                       <e p="ITryingToUseAbilityEntity.cs" t="Include" />
@@ -193,6 +182,7 @@
                       <e p="ServerGameLocalDirectionTargetingComponent.cs" t="Include" />
                       <e p="ServerGameMaxHealthPointsComponent.cs" t="Include" />
                       <e p="ServerGameMovementFramesComponent.cs" t="Include" />
+                      <e p="ServerGameNeedHealthBarComponent.cs" t="Include" />
                       <e p="ServerGameNonstandardRadiusComponent.cs" t="Include" />
                       <e p="ServerGameParentWarshipComponent.cs" t="Include" />
                       <e p="ServerGamePlayerComponent.cs" t="Include" />
@@ -230,7 +220,7 @@
                       <e p="ServerInputIdComponent.cs" t="Include" />
                       <e p="ServerInputLeftTheGameComponent.cs" t="Include" />
                       <e p="ServerInputMovementComponent.cs" t="Include" />
-                      <e p="ServerInputPlayerComponent.cs" t="Include" />
+                      <e p="ServerInputPlayerInputComponent.cs" t="Include" />
                       <e p="ServerInputTryingToUseAbilityComponent.cs" t="Include" />
                     </e>
                     <e p="ServerInputAttribute.cs" t="Include" />
@@ -257,6 +247,19 @@
                   </e>
                 </e>
                 <e p="ILootboxOpeningController.cs" t="Include" />
+                <e p="LootboxComponents" t="Include">
+                  <e p="Components.cs" t="Include" />
+                </e>
+                <e p="WppComponents" t="Include">
+                  <e p="WarshipPowerPointsComponent.cs" t="Include" />
+                  <e p="WppAccrualAlphaComponent.cs" t="Include" />
+                  <e p="WppAccrualImageComponent.cs" t="Include" />
+                  <e p="WppAccrualMovingIconComponent.cs" t="Include" />
+                  <e p="WppAccrualPositionComponent.cs" t="Include" />
+                  <e p="WppAccrualScaleComponent.cs" t="Include" />
+                  <e p="WppAccrualViewComponent.cs" t="Include" />
+                  <e p="WppAccrualWarshipPowerPointsComponent.cs" t="Include" />
+                </e>
               </e>
               <e p="Libraries" t="Include">
                 <e p="DesperateDevs" t="Include">
