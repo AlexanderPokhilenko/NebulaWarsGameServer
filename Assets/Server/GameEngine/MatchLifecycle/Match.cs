@@ -92,7 +92,7 @@
 //         }
 //         
 //         //TODO убрать отсюда
-//         public static void MakeBot(GameEntity entity)
+//         public static void MakeBot(ServerGameEntity entity)
 //         {
 //             entity.AddTargetingParameters(false, 13f, false);
 //             entity.isTargetChanging = true;
@@ -103,10 +103,10 @@
 //         {
 //             if (contexts != null)
 //             {
-//                 var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+//                 var inputEntity = contexts.serverInput.GetEntityWithPlayer(playerId);
 //                 if (inputEntity == null)
 //                 {
-//                     inputEntity = contexts.input.CreateEntity();
+//                     inputEntity = contexts.serverInput.CreateEntity();
 //                     inputEntity.AddPlayer(playerId);
 //                 }
 //                 action(inputEntity, value);
@@ -117,10 +117,10 @@
 //         {
 //             if (contexts != null)
 //             {
-//                 var inputEntity = contexts.input.GetEntityWithPlayer(playerId);
+//                 var inputEntity = contexts.serverInput.GetEntityWithPlayer(playerId);
 //                 if (inputEntity == null)
 //                 {
-//                     inputEntity = contexts.input.CreateEntity();
+//                     inputEntity = contexts.serverInput.CreateEntity();
 //                     inputEntity.AddPlayer(playerId);
 //                 }
 //                 action(inputEntity);

@@ -7,12 +7,12 @@
 //     [Min(0)]
 //     public float percentage;
 //
-//     protected override bool Check(GameEntity entity)
+//     protected override bool Check(ServerGameEntity entity)
 //     {
 //         return entity.hasHealthPoints && entity.hasMaxHealthPoints;
 //     }
 //
-//     protected override void Action(GameEntity entity)
+//     protected override void Action(ServerGameEntity entity)
 //     {
 //         var deltaHealth = entity.maxHealthPoints.value * percentage;
 //

@@ -39,7 +39,7 @@
 //             }
 //         }
 //
-//         public void Fill(List<GameEntity> entities, GameContext context)
+//         public void Fill(List<ServerGameEntity> entities, ServerGameContext context)
 //         {
 //             Clear();
 //

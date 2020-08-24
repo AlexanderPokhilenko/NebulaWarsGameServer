@@ -9,33 +9,33 @@ namespace Server.GameEngine.Systems
     /// <summary>
     /// Отправляет пары accountId-entityId всем игрокам при создании игроков.
     /// </summary>
-    public class PlayersSendingSystem : ReactiveSystem<GameEntity>
+    public class PlayersSendingSystem : ReactiveSystem<ServerGameEntity>
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly IGroup<GameEntity> alivePlayers;
-        private readonly IGroup<GameEntity> allPlayersGroup;
+        private readonly IGroup<ServerGameEntity> alivePlayers;
+        private readonly IGroup<ServerGameEntity> allPlayersGroup;
 
         public PlayersSendingSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils) 
-            : base(contexts.game)
+            : base(contexts.serverGame)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            alivePlayers = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            allPlayersGroup = contexts.game.GetGroup(GameMatcher.Player);
+            alivePlayers = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
+            allPlayersGroup = contexts.serverGame.GetGroup(ServerGameMatcher.Player);
         }
         
-        protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
+        protected override ICollector<ServerGameEntity> GetTrigger(IContext<ServerGameEntity> context)
         {
-            return context.CreateCollector(GameMatcher.Player);
+            return context.CreateCollector(ServerGameMatcher.Player);
         }
 
-        protected override bool Filter(GameEntity entity)
+        protected override bool Filter(ServerGameEntity entity)
         {
             return entity.hasPlayer;
         }
 
-        protected override void Execute(List<GameEntity> entities)
+        protected override void Execute(List<ServerGameEntity> entities)
         {
             var allPlayers =  allPlayersGroup.GetEntities();
             if (allPlayers.Length == 0)

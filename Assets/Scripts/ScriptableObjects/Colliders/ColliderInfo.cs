@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class ColliderInfo : ScriptableObject
 {
-    public abstract void AddColliderToEntity(GameEntity entity);
+    public abstract void AddColliderToEntity(ServerGameEntity entity);
 }

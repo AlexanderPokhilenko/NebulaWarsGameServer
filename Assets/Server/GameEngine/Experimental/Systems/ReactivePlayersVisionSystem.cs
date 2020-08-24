@@ -5,22 +5,22 @@ using Server.Udp.Sending;
 
 namespace Server.GameEngine.Experimental.Systems
 {
-    public abstract class ReactivePlayersVisionSystem : ReactiveSystem<GameEntity>
+    public abstract class ReactivePlayersVisionSystem : ReactiveSystem<ServerGameEntity>
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
         private readonly PlayersViewAreas viewAreas;
 
-        protected ReactivePlayersVisionSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas) : base(contexts.game)
+        protected ReactivePlayersVisionSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas) : base(contexts.serverGame)
         {
             this.matchId = matchId;
             viewAreas = playersViewAreas;
             this.udpSendUtils = udpSendUtils;
         }
 
-        protected abstract void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<GameEntity> entities);
+        protected abstract void SendData(UdpSendUtils udpSendUtils, int matchId, ushort playerId, IEnumerable<ServerGameEntity> entities);
 
-        protected sealed override void Execute(List<GameEntity> entities)
+        protected sealed override void Execute(List<ServerGameEntity> entities)
         {
             foreach (var pair in viewAreas)
             {
@@ -30,7 +30,7 @@ namespace Server.GameEngine.Experimental.Systems
             }
         }
 
-        private List<GameEntity> GetVisibleObjects(PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<GameEntity> entities)
+        private List<ServerGameEntity> GetVisibleObjects(PlayersViewAreas.PlayerViewAreaInfo viewArea, IEnumerable<ServerGameEntity> entities)
         {
             if (viewAreas.sendAll) return entities.ToList();
 

@@ -2,5 +2,5 @@
 
 public abstract class AbilityInfo : ScriptableObject
 {
-    public abstract void AddAbilityToEntity(GameEntity entity);
+    public abstract void AddAbilityToEntity(ServerGameEntity entity);
 }

@@ -11,7 +11,7 @@
 //     public bool detachable = true;
 //     public bool parentDependent;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.isCollapses = isCollapses;

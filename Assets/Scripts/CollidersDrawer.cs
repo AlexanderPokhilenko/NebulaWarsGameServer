@@ -19,13 +19,13 @@
 //     [SerializeField, Min(0)] private int contextIndex = 0;
 //
 //     public static List<Contexts> contextsList = new List<Contexts>();
-//     private GameContext currentGameContext;
-//     private IGroup<GameEntity> collidableGroup;
-//     private IMatcher<GameEntity> matcher = GameMatcher.AllOf(GameMatcher.Position).AnyOf(GameMatcher.CircleCollider, GameMatcher.PathCollider, GameMatcher.NoncollinearAxises, GameMatcher.Cannon, GameMatcher.TargetingParameters, GameMatcher.Target);
+//     private ServerGameContext currentGameContext;
+//     private IGroup<ServerGameEntity> collidableGroup;
+//     private IMatcher<ServerGameEntity> matcher = ServerGameMatcher.AllOf(ServerGameMatcher.Position).AnyOf(ServerGameMatcher.CircleCollider, ServerGameMatcher.PathCollider, ServerGameMatcher.NoncollinearAxises, ServerGameMatcher.Cannon, ServerGameMatcher.TargetingParameters, ServerGameMatcher.Target);
 //
 //     private static readonly ILog Log = LogManager.CreateLogger(typeof(CollidersDrawer));
 //
-//     public bool ChangeContext(GameContext gameContext)
+//     public bool ChangeContext(ServerGameContext gameContext)
 //     {
 //         currentGameContext = gameContext;
 //         if (currentGameContext == null) return false;

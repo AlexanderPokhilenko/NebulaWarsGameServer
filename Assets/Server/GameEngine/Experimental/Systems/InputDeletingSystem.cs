@@ -4,11 +4,11 @@ namespace Server.GameEngine.Experimental.Systems
 {
     public class InputDeletingSystem : ICleanupSystem, ITearDownSystem
     {
-        private readonly InputContext inputContext;
+        private readonly ServerInputContext inputContext;
 
         public InputDeletingSystem(Contexts contexts)
         {
-            inputContext = contexts.input;
+            inputContext = contexts.serverInput;
         }
         
         public void Cleanup()

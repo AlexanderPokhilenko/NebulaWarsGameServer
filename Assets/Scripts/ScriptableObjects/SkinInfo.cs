@@ -26,7 +26,7 @@
 //
 //     public ViewTypeId Apply(ViewTypeId oldId) => dictionary.TryGetValue(oldId, out var newId) ? newId : oldId;
 //
-//     public void AddSkin(GameEntity entity, GameContext gameContext)
+//     public void AddSkin(ServerGameEntity entity, ServerGameContext gameContext)
 //     {
 //         var children = entity.GetAllChildrenGameEntities(gameContext);
 //         foreach (var child in children)

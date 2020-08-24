@@ -11,19 +11,19 @@ namespace Server.GameEngine
     {
         private readonly PhysicsSpawner physicsSpawner;
         private readonly PrefabsStorage prefabsStorage;
-        private readonly IGroup<GameEntity> spawnAsteroidGroup;
+        private readonly IGroup<ServerGameEntity> spawnAsteroidGroup;
 
         public AsteroidsSpawnerSystem(Contexts contexts,
             PhysicsSpawner physicsSpawner, PrefabsStorage prefabsStorage)
         {
             this.physicsSpawner = physicsSpawner;
             this.prefabsStorage = prefabsStorage;
-            spawnAsteroidGroup = contexts.game.GetGroup(GameMatcher.SpawnAsteroid);
+            spawnAsteroidGroup = contexts.serverGame.GetGroup(ServerGameMatcher.SpawnAsteroid);
         }
 
         public void Execute()
         {
-            foreach (GameEntity entity in spawnAsteroidGroup)
+            foreach (ServerGameEntity entity in spawnAsteroidGroup)
             {
                 ViewTypeEnum viewType = entity.viewType.value;
                 Vector3 spawnPosition = entity.spawnTransform.position;

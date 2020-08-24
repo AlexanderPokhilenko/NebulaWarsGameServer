@@ -13,42 +13,42 @@ namespace Server.GameEngine.Experimental.Systems
     /// 2) удалит ip игрока из этого матча, чтобы он мог начать новый матч на этом сервере
     /// 3) передаст бренное тело игрока под управления AI 
     /// </summary>
-    public class PlayerExitSystem:ReactiveSystem<InputEntity>
+    public class PlayerExitSystem:ReactiveSystem<ServerInputEntity>
     {
         private readonly int matchId;
-        private readonly GameContext gameContext;
+        private readonly ServerGameContext gameContext;
         private readonly MatchRemover matchRemover;
-        private readonly IGroup<InputEntity> playerExitGroup;
-        private readonly IGroup<GameEntity> alivePlayersGroup;
+        private readonly IGroup<ServerInputEntity> playerExitGroup;
+        private readonly IGroup<ServerGameEntity> alivePlayersGroup;
         private readonly PlayerDeathHandler playerDeathHandler;
-        private readonly IGroup<GameEntity> alivePlayerAndBotsGroup;
+        private readonly IGroup<ServerGameEntity> alivePlayerAndBotsGroup;
         private readonly ILog log = LogManager.CreateLogger(typeof(PlayerExitSystem));
 
         public PlayerExitSystem(Contexts contexts, int matchId, PlayerDeathHandler playerDeathHandler,
             MatchRemover matchRemover)
-            :base(contexts.input)
+            :base(contexts.serverInput)
         {
-            gameContext = contexts.game;
-            alivePlayerAndBotsGroup = gameContext.GetGroup(GameMatcher.Player);
+            gameContext = contexts.serverGame;
+            alivePlayerAndBotsGroup = gameContext.GetGroup(ServerGameMatcher.Player);
             this.matchId = matchId;
             this.playerDeathHandler = playerDeathHandler;
             this.matchRemover = matchRemover;
-            alivePlayersGroup = contexts.game.GetGroup(
-                GameMatcher.AllOf(GameMatcher.Player).
-                    NoneOf(GameMatcher.KilledBy, GameMatcher.Bot));
+            alivePlayersGroup = contexts.serverGame.GetGroup(
+                ServerGameMatcher.AllOf(ServerGameMatcher.Player).
+                    NoneOf(ServerGameMatcher.KilledBy, ServerGameMatcher.Bot));
         }
 
-        protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
+        protected override ICollector<ServerInputEntity> GetTrigger(IContext<ServerInputEntity> context)
         {
-            return context.CreateCollector(InputMatcher.LeftTheGame.Added());
+            return context.CreateCollector(ServerInputMatcher.LeftTheGame.Added());
         }
 
-        protected override bool Filter(InputEntity entity)
+        protected override bool Filter(ServerInputEntity entity)
         {
             return entity.isLeftTheGame && entity.hasPlayer;
         }
 
-        protected override void Execute(List<InputEntity> entities)
+        protected override void Execute(List<ServerInputEntity> entities)
         {
             log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)

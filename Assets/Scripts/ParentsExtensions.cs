@@ -7,7 +7,7 @@
 //
 // public static class ParentsExtensions
 // {
-//     public static bool IsParentOf(this GameEntity e1, GameEntity e2, GameContext context)
+//     public static bool IsParentOf(this ServerGameEntity e1, ServerGameEntity e2, ServerGameContext context)
 //     {
 //         var firstParent = e2;
 //         while (firstParent.hasParent)
@@ -19,7 +19,7 @@
 //         return false;
 //     }
 //
-//     public static GameEntity GetGrandParent(this GameEntity entity, GameContext context)
+//     public static ServerGameEntity GetGrandParent(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         var firstParent = entity;
 //         while (firstParent.hasParent)
@@ -30,7 +30,7 @@
 //         return firstParent;
 //     }
 //
-//     public static ushort GetGrandOwnerId(this GameEntity entity, GameContext context)
+//     public static ushort GetGrandOwnerId(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         if (entity.hasGrandOwner) return entity.grandOwner.id;
 //         ushort result = entity.GetGrandParent(context).id.value;
@@ -44,8 +44,8 @@
 //         return result;
 //     }
 //
-//     public static bool TryGetFirstGameEntity(this GameEntity entity, GameContext context, 
-//         Predicate<GameEntity> predicate, out GameEntity result)
+//     public static bool TryGetFirstServerGameEntity(this ServerGameEntity entity, ServerGameContext context, 
+//         Predicate<ServerGameEntity> predicate, out ServerGameEntity result)
 //     {
 //         result = entity;
 //         while (result.hasParent)
@@ -57,27 +57,27 @@
 //         return predicate(result);
 //     }
 //
-//     public static IEnumerable<GameEntity> GetAllChildrenGameEntities(this GameEntity entity, GameContext context, Predicate<GameEntity> predicate)
+//     public static IEnumerable<ServerGameEntity> GetAllChildrenGameEntities(this ServerGameEntity entity, ServerGameContext context, Predicate<ServerGameEntity> predicate)
 //     {
 //         if (predicate(entity)) yield return entity;
 //         var children = context.GetEntitiesWithParent(entity.id.value);
-//         foreach (var childGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context, predicate)))
+//         foreach (var childServerGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context, predicate)))
 //         {
-//             yield return childGameEntity;
+//             yield return childServerGameEntity;
 //         }
 //     }
 //
-//     public static IEnumerable<GameEntity> GetAllChildrenGameEntities(this GameEntity entity, GameContext context)
+//     public static IEnumerable<ServerGameEntity> GetAllChildrenGameEntities(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         yield return entity;
 //         var children = context.GetEntitiesWithParent(entity.id.value);
-//         foreach (var childGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context)))
+//         foreach (var childServerGameEntity in children.SelectMany(child => GetAllChildrenGameEntities(child, context)))
 //         {
-//             yield return childGameEntity;
+//             yield return childServerGameEntity;
 //         }
 //     }
 //
-//     public static IEnumerable<GameEntity> GetCannons(this GameEntity entity, GameContext context)
+//     public static IEnumerable<ServerGameEntity> GetCannons(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         return entity.hasSpecialShooter
 //             ? entity.specialShooter.value.GetCannons(entity, context)

@@ -10,7 +10,7 @@ namespace Server.GameEngine.Experimental.Systems
     /// <summary>
     /// Отвечает за отправку сообщения о смертях, которые произошли за этот кадр.
     /// </summary>
-    public class NetworkKillsSenderSystem : ReactiveSystem<GameEntity>
+    public class NetworkKillsSenderSystem : ReactiveSystem<ServerGameEntity>
     {
         private readonly ILog log = LogManager.CreateLogger(typeof(NetworkKillsSenderSystem));
         
@@ -19,35 +19,35 @@ namespace Server.GameEngine.Experimental.Systems
 
         private readonly UdpSendUtils udpSendUtils;
         
-        readonly IGroup<GameEntity> alivePlayersAndBots;
-        private readonly IGroup<GameEntity> alivePlayers;
+        readonly IGroup<ServerGameEntity> alivePlayersAndBots;
+        private readonly IGroup<ServerGameEntity> alivePlayers;
         private readonly Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfo;
     
         public NetworkKillsSenderSystem(Contexts contexts, 
             Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfos, int matchId, 
             PlayerDeathHandler playerDeathHandler,  UdpSendUtils udpSendUtils)
-            : base(contexts.game)
+            : base(contexts.serverGame)
         {
             killersInfo = killersInfos;
             this.matchId = matchId;
             this.playerDeathHandler = playerDeathHandler;
             this.udpSendUtils = udpSendUtils;
-            var gameContext = contexts.game;
-            alivePlayers = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Account, GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            alivePlayersAndBots = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Account, GameMatcher.Player).NoneOf(GameMatcher.KilledBy));
+            var gameContext = contexts.serverGame;
+            alivePlayers = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Account, ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
+            alivePlayersAndBots = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Account, ServerGameMatcher.Player).NoneOf(ServerGameMatcher.KilledBy));
         }
 
-        protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
+        protected override ICollector<ServerGameEntity> GetTrigger(IContext<ServerGameEntity> context)
         {
-            return context.CreateCollector(GameMatcher.KilledBy.Added());
+            return context.CreateCollector(ServerGameMatcher.KilledBy.Added());
         }
 
-        protected override bool Filter(GameEntity entity)
+        protected override bool Filter(ServerGameEntity entity)
         {
             return entity.hasAccount && entity.hasViewType && entity.hasKilledBy;
         }
 
-        protected override void Execute(List<GameEntity> killedEntities)
+        protected override void Execute(List<ServerGameEntity> killedEntities)
         {
             int countOfAlivePlayersAndBots = alivePlayersAndBots.count;
             int countOfKilledEntities = killedEntities.Count;
@@ -56,7 +56,7 @@ namespace Server.GameEngine.Experimental.Systems
             {
                 for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
                 {
-                    GameEntity killedEntity = killedEntities[killedEntityIndex];
+                    ServerGameEntity killedEntity = killedEntities[killedEntityIndex];
                     if (!killersInfo.TryGetValue(killedEntity.killedBy.id, out var killerInfo))
                     {
                         killerInfo = (0, 0);

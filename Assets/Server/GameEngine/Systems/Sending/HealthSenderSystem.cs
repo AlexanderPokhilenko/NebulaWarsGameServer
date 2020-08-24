@@ -11,8 +11,8 @@ namespace Server.GameEngine.Systems.Sending
     public class HealthSenderSystem : IExecuteSystem
     {
         private readonly int matchId;
-        private readonly IGroup<GameEntity> withHp;
-        private readonly IGroup<GameEntity> players;
+        private readonly IGroup<ServerGameEntity> withHp;
+        private readonly IGroup<ServerGameEntity> players;
         private readonly IHealthPointsPackSender healthPointsPackSender;
 
         public HealthSenderSystem(Contexts contexts, int matchId, IHealthPointsPackSender healthPointsPackSender)
@@ -20,12 +20,12 @@ namespace Server.GameEngine.Systems.Sending
             this.matchId = matchId;
             this.healthPointsPackSender = healthPointsPackSender;
             
-            var gameContext = contexts.game;
-            withHp = gameContext.GetGroup(GameMatcher.HealthPoints);
+            var gameContext = contexts.serverGame;
+            withHp = gameContext.GetGroup(ServerGameMatcher.HealthPoints);
             
-            players = gameContext.GetGroup(GameMatcher
-                .AllOf(GameMatcher.Player)
-                .NoneOf(GameMatcher.Bot));
+            players = gameContext.GetGroup(ServerGameMatcher
+                .AllOf(ServerGameMatcher.Player)
+                .NoneOf(ServerGameMatcher.Bot));
         }
         
         public void Execute()

@@ -8,40 +8,40 @@ namespace Server.GameEngine.Experimental.Systems
     /// <summary>
     /// Вызывает удаление матча, когда остаётся мало игроков
     /// </summary>
-    public class FinishMatchSystem:ReactiveSystem<GameEntity>
+    public class FinishMatchSystem:ReactiveSystem<ServerGameEntity>
     {
         private readonly int matchId;
         private readonly MatchRemover matchRemover;
-        private readonly IGroup<GameEntity> alivePlayersGroup;
-        private readonly IGroup<GameEntity> alivePlayersAndBotsGroup;
+        private readonly IGroup<ServerGameEntity> alivePlayersGroup;
+        private readonly IGroup<ServerGameEntity> alivePlayersAndBotsGroup;
         private readonly ILog log = LogManager.CreateLogger(typeof(FinishMatchSystem));
         
         public FinishMatchSystem(Contexts contexts, MatchRemover matchRemover, int matchId) 
-            : base(contexts.game)
+            : base(contexts.serverGame)
         {
-            alivePlayersGroup = contexts.game.GetGroup(
-                GameMatcher.AllOf(GameMatcher.Player).
-                    NoneOf(GameMatcher.KilledBy, GameMatcher.Bot));
+            alivePlayersGroup = contexts.serverGame.GetGroup(
+                ServerGameMatcher.AllOf(ServerGameMatcher.Player).
+                    NoneOf(ServerGameMatcher.KilledBy, ServerGameMatcher.Bot));
             
-            alivePlayersAndBotsGroup = contexts.game.GetGroup(
-                GameMatcher.AllOf(GameMatcher.Player).
-                    NoneOf(GameMatcher.KilledBy));
+            alivePlayersAndBotsGroup = contexts.serverGame.GetGroup(
+                ServerGameMatcher.AllOf(ServerGameMatcher.Player).
+                    NoneOf(ServerGameMatcher.KilledBy));
             
             this.matchRemover = matchRemover;
             this.matchId = matchId;
         }
 
-        protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
+        protected override ICollector<ServerGameEntity> GetTrigger(IContext<ServerGameEntity> context)
         {
-            return context.CreateCollector(GameMatcher.KilledBy.Added());
+            return context.CreateCollector(ServerGameMatcher.KilledBy.Added());
         }
 
-        protected override bool Filter(GameEntity entity)
+        protected override bool Filter(ServerGameEntity entity)
         {
             return entity.hasKilledBy && entity.hasPlayer;
         }
 
-        protected override void Execute(List<GameEntity> entities)
+        protected override void Execute(List<ServerGameEntity> entities)
         {
             LogKilledEntities(entities);
 
@@ -66,18 +66,18 @@ namespace Server.GameEngine.Experimental.Systems
             }
         }
 
-        private void LogKilledEntities(List<GameEntity> entities)
+        private void LogKilledEntities(List<ServerGameEntity> entities)
         {
             log.Info($" {nameof(matchId)} {matchId} Погибло игровых сущностей: {entities.Count}. ");
-            foreach (var gameEntity in entities)
+            foreach (var ServerGameEntity in entities)
             {
-                if (gameEntity.isBot)
+                if (ServerGameEntity.isBot)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.value}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {ServerGameEntity.viewType.value}");
                 }
-                else if(gameEntity.hasPlayer)
+                else if(ServerGameEntity.hasPlayer)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {gameEntity.player.id}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {ServerGameEntity.player.id}");
                 }
                 else
                 {

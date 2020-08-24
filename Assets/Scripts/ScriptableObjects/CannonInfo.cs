@@ -7,7 +7,7 @@
 //     public float cooldown;
 //     public BulletObject bulletObject;
 //
-//     public void AddCannonToEntity(GameEntity entity)
+//     public void AddCannonToEntity(ServerGameEntity entity)
 //     {
 //         entity.AddCannon(position, cooldown, bulletObject);
 //     }

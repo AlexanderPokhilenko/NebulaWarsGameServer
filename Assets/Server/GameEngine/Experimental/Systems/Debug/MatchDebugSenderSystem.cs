@@ -4,20 +4,20 @@
     // {
     //     private readonly int matchId;
     //     private readonly UdpSendUtils udpSendUtils;
-    //     readonly IGroup<GameEntity> playersGroup;
+    //     readonly IGroup<ServerGameEntity> playersGroup;
     //     
     //     public MatchDebugSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
     //     {
     //         this.matchId = matchId;
     //         this.udpSendUtils = udpSendUtils;
-    //         playersGroup = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+    //         playersGroup = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
     //     }
     //     
     //     public void Execute()
     //     {
-    //         foreach (var playerGameEntity in playersGroup)
+    //         foreach (var playerServerGameEntity in playersGroup)
     //         {
-    //             udpSendUtils.SendMatchId(matchId, playerGameEntity .player.id);
+    //             udpSendUtils.SendMatchId(matchId, playerServerGameEntity .player.id);
     //         }
     //     }
     // }

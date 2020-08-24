@@ -12,7 +12,7 @@
 //     public float direction;
 //     public bool spawnOne;
 //
-//     private GameContext gameContext;
+//     private ServerGameContext gameContext;
 //
 //
 //     // Start is called before the first frame update
@@ -22,7 +22,7 @@
 //
 //         var contexts = Contexts.sharedInstance;
 //         contexts.SubscribeId();
-//         gameContext = contexts.game;
+//         gameContext = contexts.serverGame;
 //
 //         PositionChunks chunks = new PositionChunks(2);
 //

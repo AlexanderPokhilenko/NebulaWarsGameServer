@@ -2,11 +2,11 @@
 //
 // public abstract class SpecialShooter
 // {
-//     private readonly List<GameEntity> cannonsBuffer = new List<GameEntity>();
+//     private readonly List<ServerGameEntity> cannonsBuffer = new List<ServerGameEntity>();
 //
-//     protected abstract IEnumerable<GameEntity> GetSpecialCannons(List<GameEntity> cannons);
+//     protected abstract IEnumerable<ServerGameEntity> GetSpecialCannons(List<ServerGameEntity> cannons);
 //
-//     public IEnumerable<GameEntity> GetCannons(GameEntity entity, GameContext gameContext)
+//     public IEnumerable<ServerGameEntity> GetCannons(ServerGameEntity entity, ServerGameContext gameContext)
 //     {
 //         cannonsBuffer.Clear();
 //
@@ -15,7 +15,7 @@
 //         return GetSpecialCannons(cannonsBuffer);
 //     }
 //
-//     private void FillBuffer(GameEntity entity, GameContext gameContext)
+//     private void FillBuffer(ServerGameEntity entity, ServerGameContext gameContext)
 //     {
 //         if (entity.hasCannon) cannonsBuffer.Add(entity);
 //

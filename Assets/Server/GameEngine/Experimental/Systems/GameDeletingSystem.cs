@@ -4,11 +4,11 @@ namespace Server.GameEngine.Experimental.Systems
 {
     public class GameDeletingSystem : ITearDownSystem
     {
-        private readonly GameContext gameContext;
+        private readonly ServerGameContext gameContext;
 
         public GameDeletingSystem(Contexts contexts)
         {
-            gameContext = contexts.game;
+            gameContext = contexts.serverGame;
         }
 
         public void TearDown()

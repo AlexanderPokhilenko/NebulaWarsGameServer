@@ -11,8 +11,8 @@ namespace Server.GameEngine.Systems.Sending
     public class MaxHealthSenderSystem : IExecuteSystem
     {
         private readonly int matchId;
-        private readonly IGroup<GameEntity> players;
-        private readonly IGroup<GameEntity> withMaxHp;
+        private readonly IGroup<ServerGameEntity> players;
+        private readonly IGroup<ServerGameEntity> withMaxHp;
         private readonly IMaxHealthPointsPackSender maxHealthPointsPackSender;
 
         public MaxHealthSenderSystem(Contexts contexts, int matchId, 
@@ -21,12 +21,12 @@ namespace Server.GameEngine.Systems.Sending
             this.matchId = matchId;
             this.maxHealthPointsPackSender = maxHealthPointsPackSender;
             
-            var gameContext = contexts.game;
-            withMaxHp = gameContext.GetGroup(GameMatcher.MaxHealthPoints);
+            var gameContext = contexts.serverGame;
+            withMaxHp = gameContext.GetGroup(ServerGameMatcher.MaxHealthPoints);
             
-            players = gameContext.GetGroup(GameMatcher
-                .AllOf(GameMatcher.Player)
-                .NoneOf(GameMatcher.Bot));
+            players = gameContext.GetGroup(ServerGameMatcher
+                .AllOf(ServerGameMatcher.Player)
+                .NoneOf(ServerGameMatcher.Bot));
         }
         
         public void Execute()

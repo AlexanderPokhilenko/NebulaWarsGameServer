@@ -8,7 +8,7 @@
 //     [Min(0)]
 //     public float radius;
 //
-//     public override void AddColliderToEntity(GameEntity entity)
+//     public override void AddColliderToEntity(ServerGameEntity entity)
 //     {
 //         entity.AddCircleCollider(radius);
 //     }

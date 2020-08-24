@@ -6,13 +6,13 @@ namespace Server.GameEngine.Experimental.Systems
     public class ViewAreasInitSystem : IInitializeSystem
     {
         private readonly PlayersViewAreas viewAreas;
-        private readonly IGroup<GameEntity> players;
+        private readonly IGroup<ServerGameEntity> players;
 
         public ViewAreasInitSystem(Contexts contexts, PlayersViewAreas playersViewAreas)
         {
             viewAreas = playersViewAreas;
-            var gameContext = contexts.game;
-            players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+            var gameContext = contexts.serverGame;
+            players = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
         }
 
         public void Initialize()

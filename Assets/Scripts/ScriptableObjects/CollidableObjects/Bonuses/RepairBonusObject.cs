@@ -6,13 +6,13 @@
 //     [Range(0, 1)]
 //     public float percentage;
 //
-//     protected override bool Check(GameEntity entity)
+//     protected override bool Check(ServerGameEntity entity)
 //     {
 //         return entity.hasHealthPoints && entity.hasMaxHealthPoints &&
 //                entity.healthPoints.value < entity.maxHealthPoints.value;
 //     }
 //
-//     protected override void Action(GameEntity entity)
+//     protected override void Action(ServerGameEntity entity)
 //     {
 //         var newHealth = entity.maxHealthPoints.value * percentage + entity.healthPoints.value;
 //

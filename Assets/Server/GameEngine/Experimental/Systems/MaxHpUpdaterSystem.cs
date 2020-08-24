@@ -4,45 +4,45 @@ using Server.Udp.Sending;
 
 namespace Server.GameEngine.Experimental.Systems
 {
-    public class MaxHpUpdaterSystem : ReactiveSystem<GameEntity>, IInitializeSystem
+    public class MaxHpUpdaterSystem : ReactiveSystem<ServerGameEntity>, IInitializeSystem
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly IGroup<GameEntity> playersWithHpGroup;
+        private readonly IGroup<ServerGameEntity> playersWithHpGroup;
         
-        public MaxHpUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils) : base(contexts.game)
+        public MaxHpUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils) : base(contexts.serverGame)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            playersWithHpGroup = contexts.game
-                .GetGroup(GameMatcher
-                    .AllOf(GameMatcher.Player, GameMatcher.MaxHealthPoints)
-                    .NoneOf(GameMatcher.Bot));
+            playersWithHpGroup = contexts.serverGame
+                .GetGroup(ServerGameMatcher
+                    .AllOf(ServerGameMatcher.Player, ServerGameMatcher.MaxHealthPoints)
+                    .NoneOf(ServerGameMatcher.Bot));
         }
 
         public void Initialize()
         {
-            foreach (var gameEntity in playersWithHpGroup)
+            foreach (var ServerGameEntity in playersWithHpGroup)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, gameEntity.player.id, gameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, ServerGameEntity.player.id, ServerGameEntity.maxHealthPoints.value);
             }
         }
 
-        protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
+        protected override ICollector<ServerGameEntity> GetTrigger(IContext<ServerGameEntity> context)
         {
-            return context.CreateCollector(GameMatcher.MaxHealthPoints);
+            return context.CreateCollector(ServerGameMatcher.MaxHealthPoints);
         }
 
-        protected override bool Filter(GameEntity entity)
+        protected override bool Filter(ServerGameEntity entity)
         {
             return entity.hasPlayer && !entity.isBot && entity.hasMaxHealthPoints;
         }
 
-        protected override void Execute(List<GameEntity> entities)
+        protected override void Execute(List<ServerGameEntity> entities)
         {
-            foreach (var gameEntity in entities)
+            foreach (var ServerGameEntity in entities)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, gameEntity.player.id, gameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, ServerGameEntity.player.id, ServerGameEntity.maxHealthPoints.value);
             }
         }
     }

@@ -9,7 +9,7 @@
 //     public Vector2 positionVector;
 //     public CannonsDischargeType discharge;
 //
-//     protected override void AbilityAction(GameEntity executor, GameContext gameContext)
+//     protected override void AbilityAction(ServerGameEntity executor, ServerGameContext gameContext)
 //     {
 //         base.AbilityAction(executor, gameContext);
 //

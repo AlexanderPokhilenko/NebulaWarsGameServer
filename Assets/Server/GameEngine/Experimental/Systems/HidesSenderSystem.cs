@@ -12,11 +12,11 @@
 //     {
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
-//         private readonly IGroup<GameEntity> players;
-//         private readonly IGroup<GameEntity> grandObjects;
-//         private readonly IGroup<GameEntity> removedObjects;
-//         private GameEntity zone;
-//         private readonly GameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> players;
+//         private readonly IGroup<ServerGameEntity> grandObjects;
+//         private readonly IGroup<ServerGameEntity> removedObjects;
+//         private ServerGameEntity zone;
+//         private readonly ServerGameContext gameContext;
 //         private readonly List<ushort> removedObjectIdsBuffer;
 //         private readonly PlayersViewAreas viewAreas;
 //         private const float visibleAreaRadius = PlayersViewAreas.VisibleAreaRadius;
@@ -26,12 +26,12 @@
 //             this.matchId = matchId;
 //             this.udpSendUtils = udpSendUtils;
 //             viewAreas = playersViewAreas;
-//             gameContext = contexts.game;
+//             gameContext = contexts.serverGame;
 //             //todo добавить сюда observer
-//             players = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-//             var grandMatcher = GameMatcher.AllOf(GameMatcher.GlobalTransform).NoneOf(GameMatcher.Parent);
+//             players = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
+//             var grandMatcher = ServerGameMatcher.AllOf(ServerGameMatcher.GlobalTransform).NoneOf(ServerGameMatcher.Parent);
 //             grandObjects = gameContext.GetGroup(grandMatcher);
-//             removedObjects = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Destroyed, GameMatcher.Position, GameMatcher.Direction, GameMatcher.ViewType));
+//             removedObjects = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Destroyed, ServerGameMatcher.Position, ServerGameMatcher.Direction, ServerGameMatcher.ViewType));
 //             removedObjectIdsBuffer = new List<ushort>();
 //         }
 //
@@ -71,7 +71,7 @@
 //             }
 //         }
 //
-//         private List<ushort> GetVisible(GameEntity currentPlayer)
+//         private List<ushort> GetVisible(ServerGameEntity currentPlayer)
 //         {
 //             var result = new List<ushort>();
 //             var currentPlayerPosition = currentPlayer.globalTransform.position;

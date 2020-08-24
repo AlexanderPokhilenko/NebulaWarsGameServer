@@ -9,14 +9,14 @@
 //     public class TestEndMatchSystem : IExecuteSystem
 //     {
 //         private readonly Clockwork clockwork;
-//         private readonly IGroup<GameEntity> botsGroup;
-//         private readonly GameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> botsGroup;
+//         private readonly ServerGameContext gameContext;
 //
 //         public TestEndMatchSystem(Contexts contexts)
 //         {
-//             gameContext = contexts.game;
-//             botsGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Bot,
-//                 GameMatcher.HealthPoints));
+//             gameContext = contexts.serverGame;
+//             botsGroup = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Bot,
+//                 ServerGameMatcher.HealthPoints));
 //             TimeSpan delayToKillBots = new TimeSpan(0, 0, 0, 2);
 //             clockwork = new Clockwork(delayToKillBots);
 //         }
@@ -31,7 +31,7 @@
 //
 //         private void KillAllBots()
 //         {
-//             GameEntity zone = gameContext.zone.GetZone(gameContext);
+//             ServerGameEntity zone = gameContext.zone.GetZone(gameContext);
 //             zone.ReplaceCircleCollider(5f);
 //             foreach (var bot in botsGroup)
 //             {

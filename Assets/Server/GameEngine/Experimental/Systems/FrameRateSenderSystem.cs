@@ -10,8 +10,8 @@
 //     {
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
-//         private readonly GameContext gameContext;
-//         private readonly IGroup<GameEntity> playersGroup;
+//         private readonly ServerGameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> playersGroup;
 //         private float sentDeltaTime;
 //         private const float minimumDeltaToSend = 0.01f;
 //
@@ -19,8 +19,8 @@
 //         {
 //             this.matchId = matchId;
 //             this.udpSendUtils = udpSendUtils;
-//             gameContext = contexts.game;
-//             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+//             gameContext = contexts.serverGame;
+//             playersGroup = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
 //             sentDeltaTime = ServerTimeConstants.MinDeltaTime;
 //         }
 //
@@ -29,9 +29,9 @@
 //             if(Mathf.Abs(Chronometer.DeltaTime - sentDeltaTime) < minimumDeltaToSend) return;
 //             sentDeltaTime = Chronometer.DeltaTime;
 //
-//             foreach (var gameEntity in playersGroup)
+//             foreach (var ServerGameEntity in playersGroup)
 //             {
-//                 var playerId = gameEntity.player.id;
+//                 var playerId = ServerGameEntity.player.id;
 //                 udpSendUtils.SendFrameRate(matchId, playerId, sentDeltaTime);
 //             }
 //         }

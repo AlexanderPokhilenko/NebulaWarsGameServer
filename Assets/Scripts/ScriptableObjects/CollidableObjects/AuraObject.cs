@@ -9,7 +9,7 @@
 //     [Min(0)]
 //     public float damage;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.AddAngularVelocity(angularVelocity);

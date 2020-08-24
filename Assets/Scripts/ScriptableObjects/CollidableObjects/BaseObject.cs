@@ -18,7 +18,7 @@
 //     public PartObject[] parts;
 //     public ShooterInfo shooter;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         if(typeId != ViewTypeId.Invisible) entity.AddViewType(typeId);
 //         if (colliderInfo != null)

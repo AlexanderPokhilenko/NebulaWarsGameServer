@@ -14,7 +14,7 @@
 //         maxProbability = objects.Sum(o => o.probability);
 //     }
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         var probability = random.Next(maxProbability);
 //

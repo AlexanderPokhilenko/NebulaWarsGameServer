@@ -4,13 +4,13 @@ using NUnit.Framework;
 
 public class ContextCopyFactory
 {
-    public GameContext Create(GameContext original)
+    public ServerGameContext Create(ServerGameContext original)
     {
-        GameContext copy = new GameContext();
-        foreach (var gameEntity in original.GetEntities())
+        ServerGameContext copy = new ServerGameContext();
+        foreach (var ServerGameEntity in original.GetEntities())
         {
-            GameEntity gameEntityCopy = new GameEntity();
-            gameEntity.CopyPublicMemberValues(gameEntityCopy);
+            ServerGameEntity ServerGameEntityCopy = new ServerGameEntity();
+            ServerGameEntity.CopyPublicMemberValues(ServerGameEntityCopy);
         }
 
         return copy;
@@ -24,8 +24,8 @@ namespace Tests
         [Test]
         public void ReflectionTestSimplePasses()
         {
-            GameContext gameContext = new GameContext();
-            GameEntity entity = gameContext.CreateEntity();
+            var gameContext = new ServerGameContext();
+            ServerGameEntity entity = gameContext.CreateEntity();
             entity.AddDamage(84);
 
             var factory = new ContextCopyFactory();

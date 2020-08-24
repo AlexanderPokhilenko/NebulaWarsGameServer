@@ -19,7 +19,6 @@ using Server.Udp.Sending;
 using Server.Udp.Storage;
 using SharedSimulationCode.LagCompensation;
 using SharedSimulationCode.Systems;
-using SharedSimulationCode.Systems.InputHandling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

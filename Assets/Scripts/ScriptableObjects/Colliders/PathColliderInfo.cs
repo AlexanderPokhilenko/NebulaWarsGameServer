@@ -6,7 +6,7 @@
 // public class PathColliderInfo : ColliderInfo
 // {
 //     public Vector2[] dots;
-//     public override void AddColliderToEntity(GameEntity entity)
+//     public override void AddColliderToEntity(ServerGameEntity entity)
 //     {
 //         entity.AddPathCollider(dots);
 //     }

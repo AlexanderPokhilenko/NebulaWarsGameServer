@@ -17,8 +17,8 @@ namespace Server.GameEngine.Systems.Sending
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly IGroup<GameEntity> allWithView;
-        private readonly IGroup<GameEntity> alivePlayers;
+        private readonly IGroup<ServerGameEntity> allWithView;
+        private readonly IGroup<ServerGameEntity> alivePlayers;
         private readonly IGameStateHistory gameStateHistory;
         private readonly ILog log = LogManager.CreateLogger(typeof(TransformSenderSystem));
 
@@ -28,8 +28,8 @@ namespace Server.GameEngine.Systems.Sending
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
             this.gameStateHistory = gameStateHistory;
-            alivePlayers = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
-            allWithView = contexts.game.GetGroup(GameMatcher.Transform);
+            alivePlayers = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
+            allWithView = contexts.serverGame.GetGroup(ServerGameMatcher.Transform);
         }
 
         public void Execute()

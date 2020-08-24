@@ -11,16 +11,16 @@
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
 //         private readonly Dictionary<int, float> playerMaxShieldPoints;
-//         private readonly GameContext gameContext;
-//         private readonly IGroup<GameEntity> players;
+//         private readonly ServerGameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> players;
 //
 //         public ShieldPointsUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
 //         {
 //             this.matchId = matchId;
 //             this.udpSendUtils = udpSendUtils;
-//             gameContext = contexts.game;
+//             gameContext = contexts.serverGame;
 //             players = gameContext
-//                 .GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+//                 .GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
 //             playerMaxShieldPoints = new Dictionary<int, float>(10);
 //         }
 //

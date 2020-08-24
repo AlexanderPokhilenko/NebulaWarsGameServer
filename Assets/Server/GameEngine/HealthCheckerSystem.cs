@@ -7,16 +7,16 @@ namespace Server.GameEngine
     /// </summary>
     public class HealthCheckerSystem : IExecuteSystem
     {
-        private readonly IGroup<GameEntity> withHealthGroup;
+        private readonly IGroup<ServerGameEntity> withHealthGroup;
 
         public HealthCheckerSystem(Contexts contexts)
         {
-            withHealthGroup = contexts.game.GetGroup(GameMatcher.HealthPoints);
+            withHealthGroup = contexts.serverGame.GetGroup(ServerGameMatcher.HealthPoints);
         }
         
         public void Execute()
         {
-            GameEntity[] entities = withHealthGroup.GetEntities();
+            ServerGameEntity[] entities = withHealthGroup.GetEntities();
             for (int index = 0; index < entities.Length; index++)
             {
                 var entity = entities[index];

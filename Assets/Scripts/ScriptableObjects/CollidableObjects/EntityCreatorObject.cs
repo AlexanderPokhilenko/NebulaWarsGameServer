@@ -2,9 +2,9 @@
 //
 // public abstract class EntityCreatorObject : ScriptableObject
 // {
-//     public abstract void FillEntity(GameContext context, GameEntity entity);
+//     public abstract void FillEntity(ServerGameContext context, ServerGameEntity entity);
 //
-//     public void RefillEntity(GameContext context, GameEntity entity, Vector2 position, float direction)
+//     public void RefillEntity(ServerGameContext context, ServerGameEntity entity, Vector2 position, float direction)
 //     {
 //         var id = entity.id.value;
 //
@@ -18,14 +18,14 @@
 //         FillEntity(context, entity);
 //     }
 //
-//     public GameEntity CreateEntity(GameContext context)
+//     public ServerGameEntity CreateEntity(ServerGameContext context)
 //     {
 //         var entity = context.CreateEntity();
 //         FillEntity(context, entity);
 //         return entity;
 //     }
 //
-//     public GameEntity CreateEntity(GameContext context, Vector2 position, float angle)
+//     public ServerGameEntity CreateEntity(ServerGameContext context, Vector2 position, float angle)
 //     {
 //         var entity = CreateEntity(context);
 //         entity.AddPosition(position);
@@ -34,7 +34,7 @@
 //         return entity;
 //     }
 //
-//     public GameEntity CreateEntity(GameContext context, byte teamId)
+//     public ServerGameEntity CreateEntity(ServerGameContext context, byte teamId)
 //     {
 //         var entity = CreateEntity(context);
 //         foreach (var child in entity.GetAllChildrenGameEntities(context))
@@ -44,7 +44,7 @@
 //         return entity;
 //     }
 //
-//     public GameEntity CreateEntity(GameContext context, Vector2 position, float angle, byte teamId)
+//     public ServerGameEntity CreateEntity(ServerGameContext context, Vector2 position, float angle, byte teamId)
 //     {
 //         var entity = CreateEntity(context, position, angle);
 //         foreach (var child in entity.GetAllChildrenGameEntities(context))

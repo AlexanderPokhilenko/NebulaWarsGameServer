@@ -8,7 +8,7 @@
 //     public Vector2 position;
 //     public float angle;
 //
-//     protected override void AbilityAction(GameEntity executor, GameContext gameContext)
+//     protected override void AbilityAction(ServerGameEntity executor, ServerServerGameContext ServerServerGameContext)
 //     {
 //         base.AbilityAction(executor, gameContext);
 //

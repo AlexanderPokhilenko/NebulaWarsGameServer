@@ -11,7 +11,7 @@
 //     public bool isIgnoringParentCollision;
 //     public bool isParentFixed = true;
 //
-//     public void AddPartToEntity(GameContext context, GameEntity parent)
+//     public void AddPartToEntity(ServerGameContext context, ServerGameEntity parent)
 //     {
 //         var child = baseObject.CreateEntity(context, position, direction);
 //         child.AddParent(parent.id.value);

@@ -8,7 +8,7 @@
 //     public float duration;
 //     public bool colliderInheritance = true;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.AddBonusAdder(bonusObject, duration, colliderInheritance);

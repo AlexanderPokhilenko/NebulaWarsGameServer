@@ -5,27 +5,27 @@ using Plugins.submodules.SharedCode.Logger;
 
 namespace Server.GameEngine.Systems
 {
-    public class PlayerAbilityHandlerSystem : ReactiveSystem<InputEntity>
+    public class PlayerAbilityHandlerSystem : ReactiveSystem<ServerInputEntity>
     {
-        private readonly GameContext gameContext;
+        private readonly ServerGameContext gameContext;
         private readonly ILog log = LogManager.CreateLogger(typeof(PlayerAbilityHandlerSystem));
         
-        public PlayerAbilityHandlerSystem(Contexts contexts) : base(contexts.input)
+        public PlayerAbilityHandlerSystem(Contexts contexts) : base(contexts.serverInput)
         {
-            gameContext = contexts.game;
+            gameContext = contexts.serverGame;
         }
 
-        protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
+        protected override ICollector<ServerInputEntity> GetTrigger(IContext<ServerInputEntity> context)
         {
-            return context.CreateCollector(InputMatcher.TryingToUseAbility.Added());
+            return context.CreateCollector(ServerInputMatcher.TryingToUseAbility.Added());
         }
 
-        protected override bool Filter(InputEntity entity)
+        protected override bool Filter(ServerInputEntity entity)
         {
             return entity.isTryingToUseAbility && entity.hasPlayer;
         }
 
-        protected override void Execute(List<InputEntity> entities)
+        protected override void Execute(List<ServerInputEntity> entities)
         {
             foreach (var inputEntity in entities)
             {

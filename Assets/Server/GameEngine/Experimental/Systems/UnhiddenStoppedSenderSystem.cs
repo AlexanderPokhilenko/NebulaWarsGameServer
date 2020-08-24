@@ -12,23 +12,23 @@
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
 //         private readonly PlayersViewAreas viewAreas;
-//         private readonly GameContext gameContext;
-//         private readonly IGroup<GameEntity> withTransforms;
-//         private readonly IGroup<GameEntity> withRadiuses;
+//         private readonly ServerGameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> withTransforms;
+//         private readonly IGroup<ServerGameEntity> withRadiuses;
 //
 //         public UnhiddenStoppedSenderSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils, PlayersViewAreas playersViewAreas)
 //         {
 //             this.matchId = matchId;
 //             viewAreas = playersViewAreas;
 //             this.udpSendUtils = udpSendUtils;
-//             gameContext = contexts.game;
-//             withTransforms = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.ViewType,
-//                 GameMatcher.Position,
-//                 GameMatcher.Direction).NoneOf(GameMatcher.Moving));
-//             withRadiuses = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.ViewType,
-//                     GameMatcher.CircleCollider,
-//                     GameMatcher.NonstandardRadius)
-//                 .NoneOf(GameMatcher.CircleScaling));
+//             gameContext = contexts.serverGame;
+//             withTransforms = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.ViewType,
+//                 ServerGameMatcher.Position,
+//                 ServerGameMatcher.Direction).NoneOf(ServerGameMatcher.Moving));
+//             withRadiuses = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.ViewType,
+//                     ServerGameMatcher.CircleCollider,
+//                     ServerGameMatcher.NonstandardRadius)
+//                 .NoneOf(ServerGameMatcher.CircleScaling));
 //         }
 //
 //         public void Execute()

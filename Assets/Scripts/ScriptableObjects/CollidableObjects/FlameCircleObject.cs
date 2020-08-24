@@ -5,7 +5,7 @@
 // {
 //     public float scalingSpeed = -1.0f;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.AddCircleScaling(scalingSpeed);

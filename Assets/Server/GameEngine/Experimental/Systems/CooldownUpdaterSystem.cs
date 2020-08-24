@@ -9,26 +9,26 @@
 //     {
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
-//         private readonly GameContext gameContext;
-//         private readonly IGroup<GameEntity> playersGroup;
+//         private readonly ServerGameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> playersGroup;
 //         
 //         public CooldownUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
 //         {
 //             this.matchId = matchId;
 //             this.udpSendUtils = udpSendUtils;
-//             gameContext = contexts.game;
-//             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+//             gameContext = contexts.serverGame;
+//             playersGroup = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
 //         }
 //
 //         public void Execute()
 //         {
-//             foreach (var gameEntity in playersGroup)
+//             foreach (var ServerGameEntity in playersGroup)
 //             {
-//                 var playerId = gameEntity.player.id;
+//                 var playerId = ServerGameEntity.player.id;
 //
-//                 var abilityCooldown = gameEntity.hasAbilityCooldown ? gameEntity.abilityCooldown.value : 0f;
+//                 var abilityCooldown = ServerGameEntity.hasAbilityCooldown ? ServerGameEntity.abilityCooldown.value : 0f;
 //                 
-//                 var weaponCooldowns = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
+//                 var weaponCooldowns = ServerGameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
 //                     .Select(e => e.hasCannonCooldown ? e.cannonCooldown.value : 0f).ToArray();
 //
 //                 udpSendUtils.SendCooldown(matchId, playerId, abilityCooldown, weaponCooldowns);

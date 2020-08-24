@@ -7,16 +7,16 @@ namespace Server.GameEngine.Experimental.Systems
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly IGroup<GameEntity> playersWithHp;
+        private readonly IGroup<ServerGameEntity> playersWithHp;
 
         public HealthUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            var gameContext = contexts.game;
-            playersWithHp = gameContext.GetGroup(GameMatcher
-                .AllOf(GameMatcher.Player, GameMatcher.HealthPoints)
-                .NoneOf(GameMatcher.Bot));
+            var gameContext = contexts.serverGame;
+            playersWithHp = gameContext.GetGroup(ServerGameMatcher
+                .AllOf(ServerGameMatcher.Player, ServerGameMatcher.HealthPoints)
+                .NoneOf(ServerGameMatcher.Bot));
         }
         
         public void Execute()

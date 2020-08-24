@@ -17,7 +17,7 @@
 //         twinGroupCount = 2 * groupCount;
 //     }
 //
-//     protected override IEnumerable<GameEntity> GetSpecialCannons(List<GameEntity> cannons)
+//     protected override IEnumerable<ServerGameEntity> GetSpecialCannons(List<ServerGameEntity> cannons)
 //     {
 //         if (framesCount >= timeDelay / Chronometer.DeltaTime)
 //         {

@@ -11,7 +11,7 @@
 //         return new Vector2(Mathf.Cos(randomRadAngle), Mathf.Sin(randomRadAngle));
 //     }
 //
-//     public static void ToGlobal(this GameEntity entity, GameContext context, out Vector2 position, out float angle, out int layer, out Vector2 velocity, out float angularVelocity)
+//     public static void ToGlobal(this ServerGameEntity entity, ServerGameContext context, out Vector2 position, out float angle, out int layer, out Vector2 velocity, out float angularVelocity)
 //     {
 //         layer = 0;
 //         position = entity.position.value;
@@ -84,20 +84,20 @@
 //         current.Set(-current.x, -current.y);
 //     }
 //
-//     public static Vector2 GetLocalVector(this GameEntity entity, GameContext context, Vector2 globalVector)
+//     public static Vector2 GetLocalVector(this ServerGameEntity entity, ServerGameContext context, Vector2 globalVector)
 //     {
 //         var currentAngle = entity.GetGlobalAngle(context);
 //         if (entity.hasDirection) currentAngle -= entity.direction.angle;
 //         return globalVector.GetRotated(-currentAngle);
 //     }
 //
-//     public static Vector2 GetLocalRotatedVector(this GameEntity entity, GameContext context, Vector2 globalVector)
+//     public static Vector2 GetLocalRotatedVector(this ServerGameEntity entity, ServerGameContext context, Vector2 globalVector)
 //     {
 //         var currentAngle = entity.GetGlobalAngle(context);
 //         return globalVector.GetRotated(-currentAngle);
 //     }
 //
-//     public static float GetGlobalAngle(this GameEntity entity, GameContext context)
+//     public static float GetGlobalAngle(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         if (entity.hasGlobalTransform) return entity.globalTransform.angle;
 //
@@ -118,7 +118,7 @@
 //         return angle;
 //     }
 //
-//     public static Vector2 GetGlobalPositionVector2(this GameEntity entity, GameContext context)
+//     public static Vector2 GetGlobalPositionVector2(this ServerGameEntity entity, ServerGameContext context)
 //     {
 //         if (entity.hasGlobalTransform) return entity.globalTransform.position;
 //

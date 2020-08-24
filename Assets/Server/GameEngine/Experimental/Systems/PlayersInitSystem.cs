@@ -14,7 +14,7 @@
 //     public class PlayersInitSystem:IInitializeSystem
 //     {
 //         private const float Radius = 40f;
-//         private readonly GameContext gameContext;
+//         private readonly ServerGameContext gameContext;
 //         private readonly BattleRoyaleMatchModel matchModel;
 //         private static readonly Dictionary<string, PlayerObject> PlayerPrototypes;
 //         
@@ -34,7 +34,7 @@
 //
 //         public PlayersInitSystem(Contexts contexts, BattleRoyaleMatchModel matchModel)
 //         {
-//             gameContext = contexts.game;
+//             gameContext = contexts.serverGame;
 //             this.matchModel = matchModel;
 //         }
 //         
@@ -63,15 +63,15 @@
 //                 var angle = i * step + offset;
 //                 var position = CoordinatesExtensions.GetRotatedUnitVector2(angle) * Radius;
 //                 //TODO костыль
-//                 var gameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
+//                 var ServerGameEntity = PlayerPrototypes[gameUnit.PrefabName.ToLower()]
 //                     .CreateEntity(gameContext, position, 180f + angle, (ushort)(i+1));
-//                 gameEntity.AddPlayer(gameUnit.TemporaryId);
+//                 ServerGameEntity.AddPlayer(gameUnit.TemporaryId);
 //
 //                 if (gameUnit.IsBot)
 //                 {
-//                     gameEntity.AddTargetingParameters(false, 7.5f, false);
-//                     gameEntity.isTargetChanging = true;
-//                     gameEntity.isBot = true;
+//                     ServerGameEntity.AddTargetingParameters(false, 7.5f, false);
+//                     ServerGameEntity.isTargetChanging = true;
+//                     ServerGameEntity.isBot = true;
 //                 }
 //             }
 //         }
@@ -79,9 +79,9 @@
 //         private void SpawnPlayer(PlayerModel playerModel, int x, int y)
 //         {
 //             ushort teamId = (ushort) (matchModel.GameUnits.Players.Count + matchModel.GameUnits.Bots.Count); 
-//             GameEntity gameEntity = PlayerPrototypes[playerModel.WarshipName.ToLower()]
+//             ServerGameEntity ServerGameEntity = PlayerPrototypes[playerModel.WarshipName.ToLower()]
 //                 .CreateEntity(gameContext, new Vector2(x, y), 180f, teamId);
-//             gameEntity.AddPlayer(playerModel.TemporaryId);
+//             ServerGameEntity.AddPlayer(playerModel.TemporaryId);
 //         }
 //     }
 // }

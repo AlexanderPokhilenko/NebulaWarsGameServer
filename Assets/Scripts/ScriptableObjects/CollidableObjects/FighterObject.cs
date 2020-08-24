@@ -14,7 +14,7 @@
 //     public float lifetime;
 //     public bool useBotAI;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.AddTargetingParameters(useAngularTargeting, detectionRadius, onlyPlayerTargeting);

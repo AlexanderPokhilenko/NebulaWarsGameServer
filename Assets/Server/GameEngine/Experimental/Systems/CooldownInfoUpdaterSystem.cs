@@ -10,16 +10,16 @@
 //     {
 //         private readonly int matchId;
 //         private readonly UdpSendUtils udpSendUtils;
-//         private readonly GameContext gameContext;
-//         private readonly IGroup<GameEntity> playersGroup;
+//         private readonly ServerGameContext gameContext;
+//         private readonly IGroup<ServerGameEntity> playersGroup;
 //         private readonly Dictionary<int, WeaponInfo[]> lastWeaponInfos;
 //         
 //         public CooldownInfoUpdaterSystem(Contexts contexts, int matchId, UdpSendUtils udpSendUtils)
 //         {
 //             this.matchId = matchId;
 //             this.udpSendUtils = udpSendUtils;
-//             gameContext = contexts.game;
-//             playersGroup = gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Player).NoneOf(GameMatcher.Bot));
+//             gameContext = contexts.serverGame;
+//             playersGroup = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
 //             lastWeaponInfos = new Dictionary<int, WeaponInfo[]>(10);
 //         }
 //
@@ -33,22 +33,22 @@
 //
 //         public void Execute()
 //         {
-//             foreach (var gameEntity in playersGroup)
+//             foreach (var ServerGameEntity in playersGroup)
 //             {
-//                 var playerId = gameEntity.player.id;
+//                 var playerId = ServerGameEntity.player.id;
 //
-//                 var abilityCooldown = gameEntity.hasAbility ? gameEntity.ability.cooldown : 0f;
+//                 var abilityCooldown = ServerGameEntity.hasAbility ? ServerGameEntity.ability.cooldown : 0f;
 //
 //                 WeaponInfo[] weaponInfos;
-//                 if (gameEntity.hasSkin)
+//                 if (ServerGameEntity.hasSkin)
 //                 {
-//                     var skin = gameEntity.skin.value;
-//                     weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
+//                     var skin = ServerGameEntity.skin.value;
+//                     weaponInfos = ServerGameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
 //                         .Select(e => new WeaponInfo(skin.Apply(e.cannon.bullet.typeId), e.cannon.cooldown)).ToArray();
 //                 }
 //                 else
 //                 {
-//                     weaponInfos = gameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
+//                     weaponInfos = ServerGameEntity.GetAllChildrenGameEntities(gameContext, c => c.hasCannon)
 //                         .Select(e => new WeaponInfo(e.cannon.bullet.typeId, e.cannon.cooldown)).ToArray();
 //                 }
 //

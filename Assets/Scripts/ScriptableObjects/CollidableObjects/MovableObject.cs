@@ -9,7 +9,7 @@
 //     public float maxAngularVelocity;
 //     public bool isNotDecelerating;
 //
-//     public override void FillEntity(GameContext context, GameEntity entity)
+//     public override void FillEntity(ServerGameContext context, ServerGameEntity entity)
 //     {
 //         base.FillEntity(context, entity);
 //         entity.AddMaxVelocity(maxVelocity);
