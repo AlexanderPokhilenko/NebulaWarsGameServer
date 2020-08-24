@@ -15,19 +15,20 @@ namespace Server.GameEngine.MatchLifecycle
     {
         private readonly MatchRemover matchRemover;
         private readonly UdpSendUtils udpSendUtils;
+        private readonly PrefabsStorage prefabsStorage;
         private readonly MessageIdFactory messageIdFactory;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ITickStartTimeStorage tickStartTimeStorage;
-        private readonly PrefabsStorage prefabsStorage;
         private readonly ITickDeltaTimeStorage tickDeltaTimeStorage;
         private readonly MessagesPackIdFactory messagesPackIdFactory;
+        private readonly WarshipsCharacteristicsStorage warshipsCharacteristicsStorage;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
             MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory,
             ITickDeltaTimeStorage tickDeltaTimeStorage, ITickStartTimeStorage tickStartTimeStorage,
-            PrefabsStorage prefabsStorage)
+            PrefabsStorage prefabsStorage, WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
@@ -36,6 +37,7 @@ namespace Server.GameEngine.MatchLifecycle
             this.tickDeltaTimeStorage = tickDeltaTimeStorage;
             this.tickStartTimeStorage = tickStartTimeStorage;
             this.prefabsStorage = prefabsStorage;
+            this.warshipsCharacteristicsStorage = warshipsCharacteristicsStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
         }
@@ -59,7 +61,8 @@ namespace Server.GameEngine.MatchLifecycle
                 matchmakerNotifier,
                 tickDeltaTimeStorage,
                 tickStartTimeStorage,
-                prefabsStorage);
+                prefabsStorage,
+                warshipsCharacteristicsStorage);
             
             serverMatch.Initialize();
             return serverMatch;

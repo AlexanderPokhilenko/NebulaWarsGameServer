@@ -377,6 +377,8 @@
                 <e p="ZeroFormatterInitializer.cs" t="Include" />
               </e>
               <e p="UnityThread.cs" t="Include" />
+              <e p="WarshipsCharachteristicsStorage.cs" t="Include" />
+              <e p="WarshipsCharacteristicsStorage.cs" t="Include" />
             </e>
           </e>
         </e>

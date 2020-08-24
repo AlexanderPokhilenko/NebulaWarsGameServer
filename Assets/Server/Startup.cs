@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.Systems.Spawn;
 using Server.GameEngine;
 using Server.GameEngine.Chronometers;
@@ -30,7 +31,7 @@ namespace Server
         private CancellationTokenSource matchmakerListenerCts;
         private UdpClientWrapper udpClientWrapper;
 
-        public void Run()
+        public void Run(WarshipsCharacteristicsStorage warshipsCharacteristicsStorage)
         {
             if (matchmakerListenerCts != null)
             {
@@ -78,7 +79,7 @@ namespace Server
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, 
                 ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
             MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage,
-                messageIdFactory, messagesPackIdFactory, chronometer, chronometer, prefabsStorage);
+                messageIdFactory, messagesPackIdFactory, chronometer, chronometer, prefabsStorage, warshipsCharacteristicsStorage);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchesStorage, matchCreator, matchRemover);

@@ -12,6 +12,7 @@ using UnityEngine;
 public class ServerController : MonoBehaviour
 {
     private Startup startup;
+    private WarshipsCharacteristicsStorage warshipsCharacteristicsStorage;
     private readonly ILog log = LogManager.CreateLogger(typeof(ServerController));
 
     private void Awake()
@@ -24,12 +25,14 @@ public class ServerController : MonoBehaviour
         {
             log.Info("Путь к файлу с логами "+config.PersistentDataPath);    
         }
+
+        warshipsCharacteristicsStorage = FindObjectOfType<WarshipsCharacteristicsStorage>();
     }
 
     private void Start()
     {
         startup = new Startup();
-        startup.Run();
+        startup.Run(warshipsCharacteristicsStorage);
     }
     
     private void OnDestroy()
