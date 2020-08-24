@@ -4,8 +4,8 @@
     {
         public ushort TargetPlayerTmpId;
         public int KillerId;
-        public ViewTypeId KillerType;
+        public ViewTypeEnum KillerType;
         public int VictimId;
-        public ViewTypeId VictimType;
+        public ViewTypeEnum VictimType;
     }
 }

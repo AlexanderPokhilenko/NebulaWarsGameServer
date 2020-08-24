@@ -2,12 +2,12 @@
 using NetworkLibrary.NetworkLibrary.Http;
 using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.Physics;
+using Plugins.submodules.SharedCode.Systems.Spawn;
 using Server.GameEngine.Chronometers;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using SharedSimulationCode;
-using SharedSimulationCode.Physics;
 
 namespace Server.GameEngine.MatchLifecycle
 {
@@ -19,13 +19,15 @@ namespace Server.GameEngine.MatchLifecycle
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ITickStartTimeStorage tickStartTimeStorage;
+        private readonly PrefabsStorage prefabsStorage;
         private readonly ITickDeltaTimeStorage tickDeltaTimeStorage;
         private readonly MessagesPackIdFactory messagesPackIdFactory;
 
         public MatchFactory(MatchRemover matchRemover, UdpSendUtils udpSendUtils,
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
             MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory,
-            ITickDeltaTimeStorage tickDeltaTimeStorage, ITickStartTimeStorage tickStartTimeStorage)
+            ITickDeltaTimeStorage tickDeltaTimeStorage, ITickStartTimeStorage tickStartTimeStorage,
+            PrefabsStorage prefabsStorage)
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;
@@ -33,6 +35,7 @@ namespace Server.GameEngine.MatchLifecycle
             this.messagesPackIdFactory = messagesPackIdFactory;
             this.tickDeltaTimeStorage = tickDeltaTimeStorage;
             this.tickStartTimeStorage = tickStartTimeStorage;
+            this.prefabsStorage = prefabsStorage;
             this.matchmakerNotifier = matchmakerNotifier;
             this.ipAddressesStorage = ipAddressesStorage;
         }
@@ -55,7 +58,8 @@ namespace Server.GameEngine.MatchLifecycle
                 matchRemover,
                 matchmakerNotifier,
                 tickDeltaTimeStorage,
-                tickStartTimeStorage);
+                tickStartTimeStorage,
+                prefabsStorage);
             
             serverMatch.Initialize();
             return serverMatch;

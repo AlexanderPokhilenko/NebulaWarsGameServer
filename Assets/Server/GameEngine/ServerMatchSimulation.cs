@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
 using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
@@ -10,8 +9,8 @@ using Plugins.submodules.SharedCode.Systems.Clean;
 using Plugins.submodules.SharedCode.Systems.Cooldown;
 using Plugins.submodules.SharedCode.Systems.Hits;
 using Plugins.submodules.SharedCode.Systems.InputHandling;
+using Plugins.submodules.SharedCode.Systems.MapInitialization;
 using Plugins.submodules.SharedCode.Systems.Spawn;
-using Server.GameEngine.Chronometers;
 using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Sending;
@@ -19,11 +18,8 @@ using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
 using SharedSimulationCode.LagCompensation;
-using SharedSimulationCode.Physics;
 using SharedSimulationCode.Systems;
 using SharedSimulationCode.Systems.InputHandling;
-using SharedSimulationCode.Systems.MapInitialization;
-using SharedSimulationCode.Systems.Spawn;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,7 +38,7 @@ namespace Server.GameEngine
         public ServerMatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier, ITickDeltaTimeStorage tickDeltaTimeStorage,
-            ITickStartTimeStorage tickStartTimeStorage)
+            ITickStartTimeStorage tickStartTimeStorage, PrefabsStorage prefabsStorage)
         {
             //Создание физической сцены для комнаты
             var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
@@ -66,15 +62,17 @@ namespace Server.GameEngine
             contexts.SubscribeId();
             
             
-            ArrangeTransformSystem[] arrangeCollidersSystems = {
+            ArrangeTransformSystem[] arrangeCollidersSystems = 
+            {
                 new WarshipsArrangeTransformSystem(contexts)
             };
             ITimeMachine timeMachine = new TimeMachine(gameStateHistory, arrangeCollidersSystems);
-            LagCompensationSystem[] lagCompensationSystems = {
+            LagCompensationSystem[] lagCompensationSystems = 
+            {
                 new HitDetectionSystem(contexts, physicsRaycaster, tickDeltaTimeStorage), 
-            }; 
-            
-            
+            };
+
+            PhysicsForceManager physicsForceManager = new PhysicsForceManager();
             
             systems = new Entitas.Systems()
                     //Создаёт новое состояние
@@ -84,7 +82,7 @@ namespace Server.GameEngine
                     
                     
                     //Ввод игрока
-                    .Add(new MoveSystem(contexts))
+                    .Add(new MoveSystem(contexts, physicsForceManager))
                     .Add(new RotationSystem(contexts))
                     .Add(new ShootingSystem(contexts))
 
@@ -94,9 +92,11 @@ namespace Server.GameEngine
 
 
                     //Создаёт GameObj для кораблей
-                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner))
+                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
                     //Создаёт GameObj для снарядов
-                    .Add(new ProjectileSpawnerSystem(contexts, physicsSpawner))
+                    .Add(new ProjectileSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
+                    //Создаёт GameObj для астероидов
+                    .Add(new AsteroidsSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
                     
                     //До этого места должно быть создание GameObject-ов
                     .Add(new SpawnForceSystem(contexts))

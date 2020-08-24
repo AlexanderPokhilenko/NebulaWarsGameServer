@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Plugins.submodules.SharedCode.Systems.Spawn;
 using Server.GameEngine;
 using Server.GameEngine.Chronometers;
 using Server.GameEngine.MatchLifecycle;
@@ -11,7 +12,6 @@ using Server.Udp.Connection;
 using Server.Udp.MessageProcessing;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Server
@@ -37,6 +37,7 @@ namespace Server
                 throw new Exception("Сервер уже запущен");
             }
 
+            PrefabsStorage prefabsStorage = new PrefabsStorage();
             Chronometer chronometer = Object.FindObjectOfType<Chronometer>();
             
 
@@ -74,8 +75,10 @@ namespace Server
             byteArrayHandler = new JitterSimulation(byteArrayHandler, udpClientWrapper, 50, 100); 
 #endif
             
-            matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
-            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage, messageIdFactory, messagesPackIdFactory, chronometer, chronometer);
+            matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, 
+                ipAddressesStorage, messageIdFactory, messagesPackIdFactory);
+            MatchFactory matchFactory = new MatchFactory(matchRemover, udpSendUtils, notifier, ipAddressesStorage,
+                messageIdFactory, messagesPackIdFactory, chronometer, chronometer, prefabsStorage);
             MatchCreator matchCreator = new MatchCreator(matchFactory);
             MatchLifeCycleManager matchLifeCycleManager = 
                 new MatchLifeCycleManager(matchesStorage, matchCreator, matchRemover);

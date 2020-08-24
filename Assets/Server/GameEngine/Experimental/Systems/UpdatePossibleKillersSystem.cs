@@ -6,10 +6,10 @@ namespace Server.GameEngine.Experimental.Systems
     public class UpdatePossibleKillersSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     {
         private readonly GameContext gameContext;
-        private readonly Dictionary<int, (int playerId, ViewTypeId type)> ownersInfo;
+        private readonly Dictionary<int, (int playerId, ViewTypeEnum type)> ownersInfo;
 
         public UpdatePossibleKillersSystem(Contexts contexts, 
-            Dictionary<int, (int playerId, ViewTypeId type)> ownersInfos) 
+            Dictionary<int, (int playerId, ViewTypeEnum type)> ownersInfos) 
             : base(contexts.game)
         {
             gameContext = contexts.game;
@@ -19,7 +19,7 @@ namespace Server.GameEngine.Experimental.Systems
         public void Initialize()
         {
             var zone = gameContext.zone.GetZone(gameContext);
-            ownersInfo.Add(zone.id.value, (0, zone.viewType.id));
+            ownersInfo.Add(zone.id.value, (0, zone.viewType.value));
         }
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -42,7 +42,7 @@ namespace Server.GameEngine.Experimental.Systems
                 if (grandOwner != null && grandOwner.hasViewType)
                 {
                     var playerId = 0;
-                    var typeId = grandOwner.viewType.id;
+                    var typeId = grandOwner.viewType.value;
                     if (grandOwner.hasAccount) playerId = grandOwner.account.id;
                     ownersInfo.Add(grandOwnerId, (playerId, typeId));
                 }

@@ -51,8 +51,8 @@ namespace Server.GameEngine.Systems.Sending
                 float x = position.x;
                 float z = position.z;
                 float angle = entity.transform.value.rotation.eulerAngles.y;
-                ViewTypeId viewTypeId = entity.viewType.id;
-                ViewTransformCompressed viewTransform = new ViewTransformCompressed(x, z, angle, viewTypeId);
+                ViewTypeEnum viewTypeEnum = entity.viewType.value;
+                ViewTransformCompressed viewTransform = new ViewTransformCompressed(x, z, angle, viewTypeEnum);
                 allGos.Add(entity.id.value, viewTransform);
             }
 

@@ -73,7 +73,7 @@ namespace Server.GameEngine.Experimental.Systems
             {
                 if (gameEntity.isBot)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.id}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб бот {gameEntity.viewType.value}");
                 }
                 else if(gameEntity.hasPlayer)
                 {

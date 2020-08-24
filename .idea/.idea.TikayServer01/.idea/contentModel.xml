@@ -81,7 +81,7 @@
                   <e p="SpecialShooterComponent.cs" t="Include" />
                   <e p="TryingToShootComponent.cs" t="Include" />
                 </e>
-                <e p="SpawnPointComponent.cs" t="Include" />
+                <e p="SpawnTransformComponent.cs" t="Include" />
                 <e p="TargetingComponents" t="Include">
                   <e p="BotComponent.cs" t="Include" />
                   <e p="ChaserComponent.cs" t="Include" />
@@ -137,7 +137,6 @@
                     <e p="GameDirectionSaverComponent.cs" t="Include" />
                     <e p="GameDirectionTargetingComponent.cs" t="Include" />
                     <e p="GameDirectionTargetingShootingComponent.cs" t="Include" />
-                    <e p="GameGlobalTransformComponent.cs" t="Include" />
                     <e p="GameGrandOwnerComponent.cs" t="Include" />
                     <e p="GameHealthPointsComponent.cs" t="Include" />
                     <e p="GameHitComponent.cs" t="Include" />
@@ -166,8 +165,8 @@
                     <e p="GameRigidbodyComponent.cs" t="Include" />
                     <e p="GameShootingPointsComponent.cs" t="Include" />
                     <e p="GameSingleTargetingComponent.cs" t="Include" />
+                    <e p="GameSpawnAsteroidComponent.cs" t="Include" />
                     <e p="GameSpawnForceComponent.cs" t="Include" />
-                    <e p="GameSpawnPointComponent.cs" t="Include" />
                     <e p="GameSpawnProjectileComponent.cs" t="Include" />
                     <e p="GameSpawnTransformComponent.cs" t="Include" />
                     <e p="GameSpawnWarshipComponent.cs" t="Include" />
@@ -288,6 +287,7 @@
                   </e>
                   <e p="PlayerToServer" t="Include">
                     <e p="BattleExitMessage.cs" t="Include" />
+                    <e p="InputExtension.cs" t="Include" />
                     <e p="PlayerInputMessage.cs" t="Include" />
                     <e p="PlayerPingMessage.cs" t="Include" />
                   </e>
@@ -318,12 +318,13 @@
                   <e p="Utils" t="Include">
                     <e p="MessagesPack.cs" t="Include" />
                     <e p="MessageWrapper.cs" t="Include" />
-                    <e p="ViewTypeId.cs" t="Include" />
+                    <e p="ViewTypeEnum.cs" t="Include" />
                   </e>
                 </e>
                 <e p="WarshipImprovementConstants.cs" t="Include" />
               </e>
               <e p="Physics" t="Include">
+                <e p="ITickDeltaTimeStorage.cs" t="Include" />
                 <e p="PhysicsDestroyer.cs" t="Include" />
                 <e p="PhysicsRaycaster.cs" t="Include" />
                 <e p="PhysicsSimulateSystem.cs" t="Include" />
@@ -348,6 +349,7 @@
                 </e>
                 <e p="InputHandling" t="Include">
                   <e p="MoveSystem.cs" t="Include" />
+                  <e p="PhysicsForceManager.cs" t="Include" />
                   <e p="RotationSystem.cs" t="Include" />
                   <e p="ShootingSystem.cs" t="Include" />
                 </e>
@@ -358,6 +360,7 @@
                 </e>
                 <e p="ShootingAdvancedSystem.cs" t="Include" />
                 <e p="Spawn" t="Include">
+                  <e p="PrefabsStorage.cs" t="Include" />
                   <e p="ProjectileSpawnerSystem.cs" t="Include" />
                   <e p="ProjectileViewTypePathStorage.cs" t="Include" />
                   <e p="SpawnForceSystem.cs" t="Include" />
@@ -485,6 +488,7 @@
         </e>
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
+            <e p="AsteroidsSpawnerSystem.cs" t="Include" />
             <e p="Chronometers" t="Include">
               <e p="Chronometer.cs" t="Include" />
               <e p="ChronometerFactory.cs" t="Include" />
@@ -512,7 +516,6 @@
                 <e p="HidesSenderSystem.cs" t="Include" />
                 <e p="InputDeletingSystem.cs" t="Include" />
                 <e p="IRudpMessagesStorage.cs" t="Include" />
-                <e p="MapInitSystem.cs" t="Include" />
                 <e p="MaxHpUpdaterSystem.cs" t="Include" />
                 <e p="NetworkKillsSenderSystem.cs" t="Include" />
                 <e p="NetworkSenderSystems.cs" t="Include" />

@@ -21,10 +21,10 @@ namespace Server.GameEngine.Experimental.Systems
         
         readonly IGroup<GameEntity> alivePlayersAndBots;
         private readonly IGroup<GameEntity> alivePlayers;
-        private readonly Dictionary<int, (int playerId, ViewTypeId type)> killersInfo;
+        private readonly Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfo;
     
         public NetworkKillsSenderSystem(Contexts contexts, 
-            Dictionary<int, (int playerId, ViewTypeId type)> killersInfos, int matchId, 
+            Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfos, int matchId, 
             PlayerDeathHandler playerDeathHandler,  UdpSendUtils udpSendUtils)
             : base(contexts.game)
         {
@@ -67,7 +67,7 @@ namespace Server.GameEngine.Experimental.Systems
                         TargetPlayerTmpId = alivePlayer.player.id,
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
-                        VictimType = killedEntity.viewType.id,
+                        VictimType = killedEntity.viewType.value,
                         VictimId = killedEntity.account.id
                     };
                 
