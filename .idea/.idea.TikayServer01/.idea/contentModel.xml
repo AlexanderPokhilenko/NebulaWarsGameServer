@@ -13,6 +13,10 @@
           <e p="submodules" t="Include">
             <e p="EntitasCore" t="Include">
               <e p="Entitas" t="Include">
+                <e p="Components" t="Include">
+                  <e p="HealthComponent.cs" t="Include" />
+                  <e p="IdComponent.cs" t="Include" />
+                </e>
                 <e p="GameComponents" t="Include">
                   <e p="Components.cs" t="Include" />
                   <e p="ControlPoint.cs" t="Include" />
@@ -31,6 +35,11 @@
                     <e p="MaxHealthPointsComponent.cs" t="Include" />
                   </e>
                   <e p="IdComponent.cs" t="Include" />
+                  <e p="Input" t="Include">
+                    <e p="AttackComponent.cs" t="Include" />
+                    <e p="MovementComponent.cs" t="Include" />
+                    <e p="TryingToUseAbilityComponent.cs" t="Include" />
+                  </e>
                   <e p="MyComponents.cs" t="Include" />
                   <e p="PlayerComponents" t="Include">
                     <e p="AccountComponent.cs" t="Include" />
@@ -173,6 +182,9 @@
                       <e p="ServerGameDestroyedComponent.cs" t="Include" />
                       <e p="ServerGameDirectionTargetingComponent.cs" t="Include" />
                       <e p="ServerGameDirectionTargetingShootingComponent.cs" t="Include" />
+                      <e p="ServerGameHealthBarComponent.cs" t="Include" />
+                      <e p="ServerGameHealthBarParentComponent.cs" t="Include" />
+                      <e p="ServerGameHealthComponent.cs" t="Include" />
                       <e p="ServerGameHealthPointsComponent.cs" t="Include" />
                       <e p="ServerGameHitComponent.cs" t="Include" />
                       <e p="ServerGameIdComponent.cs" t="Include" />
@@ -180,6 +192,8 @@
                       <e p="ServerGameKilledByComponent.cs" t="Include" />
                       <e p="ServerGameLifetimeComponent.cs" t="Include" />
                       <e p="ServerGameLocalDirectionTargetingComponent.cs" t="Include" />
+                      <e p="ServerGameLocalPredictionComponent.cs" t="Include" />
+                      <e p="ServerGameMaxHealthComponent.cs" t="Include" />
                       <e p="ServerGameMaxHealthPointsComponent.cs" t="Include" />
                       <e p="ServerGameMovementFramesComponent.cs" t="Include" />
                       <e p="ServerGameNeedHealthBarComponent.cs" t="Include" />
@@ -204,6 +218,7 @@
                       <e p="ServerGameTransformComponent.cs" t="Include" />
                       <e p="ServerGameTryingToShootComponent.cs" t="Include" />
                       <e p="ServerGameTryingToUseAbilityComponent.cs" t="Include" />
+                      <e p="ServerGameViewComponent.cs" t="Include" />
                       <e p="ServerGameViewTypeComponent.cs" t="Include" />
                       <e p="ServerGameWarshipCollidersComponent.cs" t="Include" />
                     </e>
