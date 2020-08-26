@@ -30,7 +30,7 @@ namespace Server.GameEngine.Systems
             foreach (var inputEntity in entities)
             {
                 ushort playerId = inputEntity.playerInput.playerEntityId;
-                ServerGameEntity gamePlayer = gameContext.GetEntityWithAccount(playerId);
+                ServerGameEntity gamePlayer = gameContext.GetEntityWithPlayer(playerId);
                 if (gamePlayer == null)
                 {
                     log.Warn("Пришло сообщение о способности от игрока, которого (уже) нет в комнате. Данные игнорируются.");

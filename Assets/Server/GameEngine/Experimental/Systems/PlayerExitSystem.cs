@@ -53,13 +53,13 @@ namespace Server.GameEngine.Experimental.Systems
             log.Warn("Вызов реактивной системы для преждевременном удалении игрока из матча");
             foreach (var inputEntity in entities)
             {
-                var temporaryId = inputEntity.playerInput.playerEntityId;
-                var playerEntity = gameContext.GetEntityWithAccount(temporaryId);
+                ushort temporaryId = inputEntity.playerInput.playerEntityId;
+                var playerEntity = gameContext.GetEntityWithPlayer(temporaryId);
                 if (playerEntity == null || !playerEntity.hasAccount)
                 {
                     log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
                 }
-                var accountId = playerEntity.account.id;
+                var accountId = playerEntity.account.AccountId;
                 log.Warn($"преждевременное удаление игрока из матча {nameof(temporaryId)} {temporaryId} {nameof(accountId)} {accountId}");
                 TurnIntoBot(temporaryId);
                 SendDeathMessage(accountId, temporaryId);
@@ -76,7 +76,7 @@ namespace Server.GameEngine.Experimental.Systems
 
         private void TurnIntoBot(ushort playerId)
         {
-            var playerEntity = gameContext.GetEntityWithAccount(playerId);
+            var playerEntity = gameContext.GetEntityWithPlayer(playerId);
             if (playerEntity != null && !playerEntity.isBot)
             {
                 throw new NotImplementedException();

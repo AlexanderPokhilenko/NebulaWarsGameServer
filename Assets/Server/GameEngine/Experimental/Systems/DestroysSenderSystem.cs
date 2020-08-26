@@ -33,7 +33,7 @@ namespace Server.GameEngine.Experimental.Systems
             var destroys = entities.Select(e => e.id.value).ToArray();
             foreach (var playerEntity in playersGroup)
             {
-                udpSendUtils.SendDestroys(matchId, playerEntity.player.playerId, destroys);
+                udpSendUtils.SendDestroys(matchId, playerEntity.player.tmpPlayerId, destroys);
             }
         }
     }

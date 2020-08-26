@@ -24,7 +24,7 @@ namespace Server.GameEngine.Experimental.Systems
         {
             foreach (var serverGameEntity in playersWithHpGroup)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.playerId, serverGameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.tmpPlayerId, serverGameEntity.maxHealthPoints.value);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Server.GameEngine.Experimental.Systems
         {
             foreach (var serverGameEntity in entities)
             {
-                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.playerId, serverGameEntity.maxHealthPoints.value);
+                udpSendUtils.SendMaxHealthPoints(matchId, serverGameEntity.player.tmpPlayerId, serverGameEntity.maxHealthPoints.value);
             }
         }
     }

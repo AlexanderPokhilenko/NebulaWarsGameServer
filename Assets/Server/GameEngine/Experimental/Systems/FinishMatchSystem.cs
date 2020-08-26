@@ -77,7 +77,7 @@ namespace Server.GameEngine.Experimental.Systems
                 }
                 else if(serverGameEntity.hasPlayer)
                 {
-                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {serverGameEntity.player.playerId}");
+                    log.Info($"{nameof(matchId)} {matchId} Погиб игрок {serverGameEntity.player.tmpPlayerId}");
                 }
                 else
                 {

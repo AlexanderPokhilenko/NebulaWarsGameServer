@@ -64,19 +64,19 @@ namespace Server.GameEngine.Experimental.Systems
 
                     KillData killData = new KillData
                     {
-                        TargetPlayerTmpId = alivePlayer.player.playerId,
+                        TargetPlayerTmpId = alivePlayer.player.tmpPlayerId,
                         KillerId = killerInfo.playerId,
                         KillerType = killerInfo.type,
                         VictimType = killedEntity.viewType.value,
-                        VictimId = killedEntity.account.id
+                        VictimId = killedEntity.account.AccountId
                     };
                 
                     udpSendUtils.SendKill(matchId, killData);
 
                     if (!killedEntity.isBot)
                     {
-                        var temporaryId = killedEntity.player.playerId;
-                        var accountId = killedEntity.account.id;
+                        var temporaryId = killedEntity.player.tmpPlayerId;
+                        var accountId = killedEntity.account.AccountId;
                         var placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
                             killedEntityIndex);
                         

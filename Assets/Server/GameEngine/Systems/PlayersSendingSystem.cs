@@ -16,12 +16,13 @@ namespace Server.GameEngine.Systems
         private readonly IGroup<ServerGameEntity> alivePlayers;
         private readonly IGroup<ServerGameEntity> allPlayersGroup;
 
-        public PlayersSendingSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils) 
+        public     PlayersSendingSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils) 
             : base(contexts.serverGame)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            alivePlayers = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
+            var matcher = ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot);
+            alivePlayers = contexts.serverGame.GetGroup(matcher);
             allPlayersGroup = contexts.serverGame.GetGroup(ServerGameMatcher.Player);
         }
         
@@ -44,13 +45,13 @@ namespace Server.GameEngine.Systems
             }
             
             Dictionary<int, ushort> dictionary = allPlayers
-                .ToDictionary(item => item.account.id,
+                .ToDictionary(item => item.account.AccountId,
                             item => item.id.value);
             
             
             foreach (var entity in alivePlayers)
             {
-                ushort tmpPlayerId = entity.player.playerId;
+                ushort tmpPlayerId = entity.player.tmpPlayerId;
                 udpSendUtils.SendPlayerInfo(matchId, tmpPlayerId, dictionary);
             }
         }

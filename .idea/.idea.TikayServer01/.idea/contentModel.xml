@@ -13,10 +13,6 @@
           <e p="submodules" t="Include">
             <e p="EntitasCore" t="Include">
               <e p="Entitas" t="Include">
-                <e p="Components" t="Include">
-                  <e p="HealthComponent.cs" t="Include" />
-                  <e p="IdComponent.cs" t="Include" />
-                </e>
                 <e p="GameComponents" t="Include">
                   <e p="Components.cs" t="Include" />
                   <e p="ControlPoint.cs" t="Include" />
@@ -27,6 +23,8 @@
                   <e p="GroupsComponents" t="Include">
                     <e p="TeamComponent.cs" t="Include" />
                   </e>
+                  <e p="HealthBarComponent.cs" t="Include" />
+                  <e p="HealthBarParent.cs" t="Include" />
                   <e p="HealthComponents" t="Include">
                     <e p="DestroyedComponent.cs" t="Include" />
                     <e p="HealthPointsComponent.cs" t="Include" />
@@ -40,7 +38,10 @@
                     <e p="MovementComponent.cs" t="Include" />
                     <e p="TryingToUseAbilityComponent.cs" t="Include" />
                   </e>
+                  <e p="LocalPrediction.cs" t="Include" />
+                  <e p="MaxSpeedComponent.cs" t="Include" />
                   <e p="MyComponents.cs" t="Include" />
+                  <e p="NeedHealthBar.cs" t="Include" />
                   <e p="PlayerComponents" t="Include">
                     <e p="AccountComponent.cs" t="Include" />
                     <e p="AttackComponent.cs" t="Include" />
@@ -84,9 +85,71 @@
                   </e>
                 </e>
                 <e p="Generated" t="Include">
+                  <e p="Components" t="Include">
+                    <e p="Interfaces" t="Include">
+                      <e p="IAlphaEntity.cs" t="Include" />
+                      <e p="IIdEntity.cs" t="Include" />
+                      <e p="IImageEntity.cs" t="Include" />
+                      <e p="IMovingIconEntity.cs" t="Include" />
+                      <e p="IPositionEntity.cs" t="Include" />
+                      <e p="IScaleEntity.cs" t="Include" />
+                      <e p="ITryingToUseAbilityEntity.cs" t="Include" />
+                      <e p="IViewEntity.cs" t="Include" />
+                    </e>
+                  </e>
                   <e p="Contexts.cs" t="Include" />
                   <e p="Feature.cs" t="Include" />
                   <e p="LobbyUi" t="Include">
+                    <e p="Components" t="Include">
+                      <e p="LobbyUiAccountRatingComponent.cs" t="Include" />
+                      <e p="LobbyUiAlphaComponent.cs" t="Include" />
+                      <e p="LobbyUiAwardTextComponent.cs" t="Include" />
+                      <e p="LobbyUiBackButtonPressedComponent.cs" t="Include" />
+                      <e p="LobbyUiBattleWaitingUiEnabledComponent.cs" t="Include" />
+                      <e p="LobbyUiBlockWarshipsShiftToTheLeftComponent.cs" t="Include" />
+                      <e p="LobbyUiBlockWarshipsShiftToTheRightComponent.cs" t="Include" />
+                      <e p="LobbyUiBlurImageEnabledComponent.cs" t="Include" />
+                      <e p="LobbyUiBlurValueComponent.cs" t="Include" />
+                      <e p="LobbyUiCancelButtonClickedComponent.cs" t="Include" />
+                      <e p="LobbyUiCommandToCreateAwardImagesComponent.cs" t="Include" />
+                      <e p="LobbyUiCurrentWarshipTypeEnumComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableLobbySceneUiComponent.cs" t="Include" />
+                      <e p="LobbyUiDisablePurchaseConfirmationWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableShopUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableWarshipImprovementModalWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableWarshipListUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableWarshipOverviewModalWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiDisableWarshipOverviewUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableLobbySceneUiComponent.cs" t="Include" />
+                      <e p="LobbyUiEnablePurchaseConfirmationWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableShopUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableWarshipImprovementModalWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableWarshipListUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableWarshipOverviewModalWindowComponent.cs" t="Include" />
+                      <e p="LobbyUiEnableWarshipOverviewUiLayerComponent.cs" t="Include" />
+                      <e p="LobbyUiHardCurrencyComponent.cs" t="Include" />
+                      <e p="LobbyUiImageComponent.cs" t="Include" />
+                      <e p="LobbyUiImproveWarshipButtonPressedComponent.cs" t="Include" />
+                      <e p="LobbyUiMatchLoadingTableEnabledComponent.cs" t="Include" />
+                      <e p="LobbyUiMatchSearchDataForMenuComponent.cs" t="Include" />
+                      <e p="LobbyUiMovingIconComponent.cs" t="Include" />
+                      <e p="LobbyUiPointsForBigLootboxComponent.cs" t="Include" />
+                      <e p="LobbyUiPointsForSmallLootboxComponent.cs" t="Include" />
+                      <e p="LobbyUiPositionComponent.cs" t="Include" />
+                      <e p="LobbyUiScaleComponent.cs" t="Include" />
+                      <e p="LobbyUiShiftSkinLeftComponent.cs" t="Include" />
+                      <e p="LobbyUiShiftSkinRightComponent.cs" t="Include" />
+                      <e p="LobbyUiShiftWarshipsLeftCommandComponent.cs" t="Include" />
+                      <e p="LobbyUiShiftWarshipsRightCommandComponent.cs" t="Include" />
+                      <e p="LobbyUiSoftCurrencyComponent.cs" t="Include" />
+                      <e p="LobbyUiStartButtonClickedComponent.cs" t="Include" />
+                      <e p="LobbyUiTextComponent.cs" t="Include" />
+                      <e p="LobbyUiUsernameComponent.cs" t="Include" />
+                      <e p="LobbyUiViewComponent.cs" t="Include" />
+                      <e p="LobbyUiWarningEnabledComponent.cs" t="Include" />
+                      <e p="LobbyUiWarshipComponent.cs" t="Include" />
+                      <e p="LobbyUiWarshipOverviewCurrentSkinModelComponent.cs" t="Include" />
+                    </e>
                     <e p="LobbyUiAttribute.cs" t="Include" />
                     <e p="LobbyUiComponentsLookup.cs" t="Include" />
                     <e p="LobbyUiContext.cs" t="Include" />
@@ -94,6 +157,14 @@
                     <e p="LobbyUiMatcher.cs" t="Include" />
                   </e>
                   <e p="Lootbox" t="Include">
+                    <e p="Components" t="Include">
+                      <e p="LootboxCanvasClickComponent.cs" t="Include" />
+                      <e p="LootboxDisableItemsLeftMenuComponent.cs" t="Include" />
+                      <e p="LootboxItemsLeftComponent.cs" t="Include" />
+                      <e p="LootboxNeedToOpenLootboxComponent.cs" t="Include" />
+                      <e p="LootboxShowLootboxComponent.cs" t="Include" />
+                      <e p="LootboxShowPrizeComponent.cs" t="Include" />
+                    </e>
                     <e p="LootboxAttribute.cs" t="Include" />
                     <e p="LootboxComponentsLookup.cs" t="Include" />
                     <e p="LootboxContext.cs" t="Include" />
@@ -101,6 +172,59 @@
                     <e p="LootboxMatcher.cs" t="Include" />
                   </e>
                   <e p="ServerGame" t="Include">
+                    <e p="Components" t="Include">
+                      <e p="ServerGameAbilityComponent.cs" t="Include" />
+                      <e p="ServerGameAbilityCooldownComponent.cs" t="Include" />
+                      <e p="ServerGameAccountComponent.cs" t="Include" />
+                      <e p="ServerGameAngularVelocityComponent.cs" t="Include" />
+                      <e p="ServerGameBotComponent.cs" t="Include" />
+                      <e p="ServerGameCannonCooldownComponent.cs" t="Include" />
+                      <e p="ServerGameChaserComponent.cs" t="Include" />
+                      <e p="ServerGameDamageComponent.cs" t="Include" />
+                      <e p="ServerGameDestroyedComponent.cs" t="Include" />
+                      <e p="ServerGameDirectionTargetingComponent.cs" t="Include" />
+                      <e p="ServerGameDirectionTargetingShootingComponent.cs" t="Include" />
+                      <e p="ServerGameForceMagnitudeComponent.cs" t="Include" />
+                      <e p="ServerGameHealthBarComponent.cs" t="Include" />
+                      <e p="ServerGameHealthBarParentComponent.cs" t="Include" />
+                      <e p="ServerGameHealthPointsComponent.cs" t="Include" />
+                      <e p="ServerGameHitComponent.cs" t="Include" />
+                      <e p="ServerGameIdComponent.cs" t="Include" />
+                      <e p="ServerGameInvulnerableComponent.cs" t="Include" />
+                      <e p="ServerGameKilledByComponent.cs" t="Include" />
+                      <e p="ServerGameLifetimeComponent.cs" t="Include" />
+                      <e p="ServerGameLocalDirectionTargetingComponent.cs" t="Include" />
+                      <e p="ServerGameLocalPredictionComponent.cs" t="Include" />
+                      <e p="ServerGameMaxHealthPointsComponent.cs" t="Include" />
+                      <e p="ServerGameMaxSpeedComponent.cs" t="Include" />
+                      <e p="ServerGameMovementFramesComponent.cs" t="Include" />
+                      <e p="ServerGameNeedHealthBarComponent.cs" t="Include" />
+                      <e p="ServerGameNicknameComponent.cs" t="Include" />
+                      <e p="ServerGameNonstandardRadiusComponent.cs" t="Include" />
+                      <e p="ServerGameParentWarshipComponent.cs" t="Include" />
+                      <e p="ServerGamePlayerComponent.cs" t="Include" />
+                      <e p="ServerGamePositionComponent.cs" t="Include" />
+                      <e p="ServerGameRigidbodyComponent.cs" t="Include" />
+                      <e p="ServerGameShootingPointsComponent.cs" t="Include" />
+                      <e p="ServerGameSingleTargetingComponent.cs" t="Include" />
+                      <e p="ServerGameSpawnAsteroidComponent.cs" t="Include" />
+                      <e p="ServerGameSpawnForceComponent.cs" t="Include" />
+                      <e p="ServerGameSpawnProjectileComponent.cs" t="Include" />
+                      <e p="ServerGameSpawnTransformComponent.cs" t="Include" />
+                      <e p="ServerGameSpawnWarshipComponent.cs" t="Include" />
+                      <e p="ServerGameTargetChangingComponent.cs" t="Include" />
+                      <e p="ServerGameTargetComponent.cs" t="Include" />
+                      <e p="ServerGameTargetingParametersComponent.cs" t="Include" />
+                      <e p="ServerGameTargetMovingPointComponent.cs" t="Include" />
+                      <e p="ServerGameTeamComponent.cs" t="Include" />
+                      <e p="ServerGameTickNumberComponent.cs" t="Include" />
+                      <e p="ServerGameTransformComponent.cs" t="Include" />
+                      <e p="ServerGameTryingToShootComponent.cs" t="Include" />
+                      <e p="ServerGameTryingToUseAbilityComponent.cs" t="Include" />
+                      <e p="ServerGameViewComponent.cs" t="Include" />
+                      <e p="ServerGameViewTypeComponent.cs" t="Include" />
+                      <e p="ServerGameWarshipCollidersComponent.cs" t="Include" />
+                    </e>
                     <e p="ServerGameAttribute.cs" t="Include" />
                     <e p="ServerGameComponentsLookup.cs" t="Include" />
                     <e p="ServerGameContext.cs" t="Include" />
@@ -108,6 +232,15 @@
                     <e p="ServerGameMatcher.cs" t="Include" />
                   </e>
                   <e p="ServerInput" t="Include">
+                    <e p="Components" t="Include">
+                      <e p="ServerInputAttackComponent.cs" t="Include" />
+                      <e p="ServerInputCreationTickNumberComponent.cs" t="Include" />
+                      <e p="ServerInputIdComponent.cs" t="Include" />
+                      <e p="ServerInputLeftTheGameComponent.cs" t="Include" />
+                      <e p="ServerInputMovementComponent.cs" t="Include" />
+                      <e p="ServerInputPlayerInputComponent.cs" t="Include" />
+                      <e p="ServerInputTryingToUseAbilityComponent.cs" t="Include" />
+                    </e>
                     <e p="ServerInputAttribute.cs" t="Include" />
                     <e p="ServerInputComponentsLookup.cs" t="Include" />
                     <e p="ServerInputContext.cs" t="Include" />
@@ -115,6 +248,15 @@
                     <e p="ServerInputMatcher.cs" t="Include" />
                   </e>
                   <e p="WppAccrual" t="Include">
+                    <e p="Components" t="Include">
+                      <e p="WppAccrualAlphaComponent.cs" t="Include" />
+                      <e p="WppAccrualImageComponent.cs" t="Include" />
+                      <e p="WppAccrualMovingIconComponent.cs" t="Include" />
+                      <e p="WppAccrualPositionComponent.cs" t="Include" />
+                      <e p="WppAccrualScaleComponent.cs" t="Include" />
+                      <e p="WppAccrualViewComponent.cs" t="Include" />
+                      <e p="WppAccrualWarshipPowerPointsComponent.cs" t="Include" />
+                    </e>
                     <e p="WppAccrualAttribute.cs" t="Include" />
                     <e p="WppAccrualComponentsLookup.cs" t="Include" />
                     <e p="WppAccrualContext.cs" t="Include" />
