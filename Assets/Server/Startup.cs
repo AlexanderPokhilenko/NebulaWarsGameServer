@@ -66,8 +66,11 @@ namespace Server
             SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu, udpClientWrapper, messagesPackIdFactory);
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleMessagesPacker, ipAddressesStorage);
             UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
-            MessageWrapperHandler messageWrapperHandler = new MessageWrapperHandler(inputEntitiesCreator, exitEntitiesCreator, 
+            MessageWrapperHandler messageWrapperHandler = new MessageWrapperHandler(
+                inputEntitiesCreator,
+                exitEntitiesCreator, 
                 byteArrayRudpStorage,
+                udpClientWrapper,
                 ipAddressesStorage);
             
             IByteArrayHandler byteArrayHandler = new ByteArrayHandler(messageWrapperHandler);

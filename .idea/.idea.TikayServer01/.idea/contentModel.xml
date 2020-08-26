@@ -438,6 +438,7 @@
                   <e p="MoveSystem.cs" t="Include" />
                   <e p="PhysicsForceManager.cs" t="Include" />
                   <e p="RotationSystem.cs" t="Include" />
+                  <e p="ShootingHelper.cs" t="Include" />
                   <e p="ShootingSystem.cs" t="Include" />
                 </e>
                 <e p="InputMessagesMetaHistory.cs" t="Include" />
@@ -450,6 +451,7 @@
                   <e p="PrefabsStorage.cs" t="Include" />
                   <e p="ProjectileSpawnerSystem.cs" t="Include" />
                   <e p="ProjectileViewTypePathStorage.cs" t="Include" />
+                  <e p="ShootingPointsHelper.cs" t="Include" />
                   <e p="SpawnForceSystem.cs" t="Include" />
                   <e p="ViewTypePathStorage.cs" t="Include" />
                   <e p="WarshipsSpawnerSystem.cs" t="Include" />

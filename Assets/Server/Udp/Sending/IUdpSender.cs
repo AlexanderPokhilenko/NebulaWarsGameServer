@@ -4,6 +4,6 @@ namespace Server.Udp.Sending
 {
     public interface IUdpSender
     {
-        void Send(byte[] serializedContainer, IPEndPoint endPoint);
+        void Send(byte[] data, IPEndPoint endPoint);
     }
 }

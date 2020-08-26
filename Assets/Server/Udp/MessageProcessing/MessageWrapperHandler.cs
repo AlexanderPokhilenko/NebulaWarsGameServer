@@ -5,6 +5,7 @@ using System.Net;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Utils;
 using Server.GameEngine.MessageSorters;
 using Server.GameEngine.Rudp;
+using Server.Udp.Sending;
 
 namespace Server.Udp.MessageProcessing
 {
@@ -21,10 +22,10 @@ namespace Server.Udp.MessageProcessing
 
         public MessageWrapperHandler(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
              ByteArrayRudpStorage byteArrayRudpStorage,
-             // UdpSendUtils udpSendUtils,
+             IUdpSender udpSender,
              IpAddressesStorage ipAddressesStorage)
         {
-            pingMessageHandler = new PingMessageHandler(ipAddressesStorage);
+            pingMessageHandler = new PingMessageHandler(ipAddressesStorage, udpSender);
             // rudpConfirmationSender = new RudpConfirmationSender(udpSendUtils);
             inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
             exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);

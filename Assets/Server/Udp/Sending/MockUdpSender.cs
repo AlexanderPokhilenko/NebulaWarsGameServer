@@ -10,11 +10,11 @@ namespace Server.Udp.Sending
     {
         private readonly List<MessagesPack> containers = new List<MessagesPack>();
         
-        public void Send(byte[] serializedContainer, IPEndPoint endPoint)
+        public void Send(byte[] data, IPEndPoint endPoint)
         {
-            Console.WriteLine("Отправка контейнера размером "+serializedContainer.Length+"\n\n\n\n");
+            Console.WriteLine("Отправка контейнера размером "+data.Length+"\n\n\n\n");
             MessagesPack container = ZeroFormatterSerializer
-                .Deserialize<MessagesPack>(serializedContainer);
+                .Deserialize<MessagesPack>(data);
             if (container.Messages == null)
             {
                 throw new Exception("Пустой контейнер");

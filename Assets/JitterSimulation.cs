@@ -31,10 +31,10 @@ public class JitterSimulation : IByteArrayHandler, IUdpSender
         new Timer(callback: o => realByteArrayHandler.HandleBytes(data, endPoint), null, delayMs, Timeout.Infinite);
     }
 
-    public void Send(byte[] serializedContainer, IPEndPoint endPoint)
+    public void Send(byte[] data, IPEndPoint endPoint)
     {
         int delayMs = GetRandomDelay();
-        new Timer(callback: o => udpSender.Send(serializedContainer, endPoint), null, delayMs, Timeout.Infinite);
+        new Timer(callback: o => udpSender.Send(data, endPoint), null, delayMs, Timeout.Infinite);
     }
 
     private int GetRandomDelay()

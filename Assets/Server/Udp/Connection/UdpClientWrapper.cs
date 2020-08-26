@@ -79,13 +79,9 @@ namespace Server.Udp.Connection
             }
         }
 
-        public void Send(byte[] serializedContainer, IPEndPoint endPoint)
+        public void Send(byte[] data, IPEndPoint endPoint)
         {
-            int lengthOfTheSentDatagram = udpClient.Send(serializedContainer, serializedContainer.Length, endPoint);
-            if (lengthOfTheSentDatagram != serializedContainer.Length)
-            {
-                log.Warn("Ошибка длины сообщения.");
-            }
+            udpClient.Send(data, data.Length, endPoint);
         }
         
         public void Stop()

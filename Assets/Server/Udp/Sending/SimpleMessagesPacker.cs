@@ -11,7 +11,7 @@ namespace Server.Udp.Sending
 {
     public class ServerSendingJitterSimulation:IUdpSender
     {
-        public void Send(byte[] serializedContainer, IPEndPoint endPoint)
+        public void Send(byte[] data, IPEndPoint endPoint)
         {
             
         }
