@@ -6,9 +6,9 @@ namespace Server.GameEngine
 {
     public class GameStateHistory : IGameStateHistory
     {
-        private readonly Dictionary<int, ServerGameState> history = new Dictionary<int, ServerGameState>();
+        private readonly Dictionary<int, SerializedGameState> history = new Dictionary<int, SerializedGameState>();
         
-        public ServerGameState Get(int tickNumber)
+        public SerializedGameState Get(int tickNumber)
         {
             return history[tickNumber];
         }
@@ -23,19 +23,19 @@ namespace Server.GameEngine
             return history.Keys.Max();
         }
 
-        public void Add(ServerGameState serverGameState)
+        public void Add(SerializedGameState gameState)
         {
-            history.Add(serverGameState.tickNumber, serverGameState);
+            history.Add(gameState.tickNumber, gameState);
         }
 
-        public ServerGameState GetActualGameState()
+        public SerializedGameState GetActualGameState()
         {
             return history[GetLastTickNumber()];
         }
 
         public float GetLastTickTime()
         {
-            return history[GetLastTickNumber()].tickSimulationStartTime;
+            return history[GetLastTickNumber()].tickMatchTimeSec;
         }
     }
 }

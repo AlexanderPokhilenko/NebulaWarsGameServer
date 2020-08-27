@@ -76,7 +76,7 @@ namespace Server
             IByteArrayHandler byteArrayHandler = new ByteArrayHandler(messageWrapperHandler);
 
 #if UNITY_EDITOR
-            byteArrayHandler = new JitterSimulation(byteArrayHandler, udpClientWrapper, 50, 100); 
+            byteArrayHandler = new JitterSimulation(byteArrayHandler, udpClientWrapper, 0, 0); 
 #endif
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, 

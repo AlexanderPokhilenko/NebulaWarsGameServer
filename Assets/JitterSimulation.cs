@@ -34,7 +34,7 @@ public class JitterSimulation : IByteArrayHandler, IUdpSender
     public void Send(byte[] data, IPEndPoint endPoint)
     {
         int delayMs = GetRandomDelay();
-        new Timer(callback: o => udpSender.Send(data, endPoint), null, delayMs, Timeout.Infinite);
+        new Timer(o => udpSender.Send(data, endPoint), null, delayMs, Timeout.Infinite);
     }
 
     private int GetRandomDelay()

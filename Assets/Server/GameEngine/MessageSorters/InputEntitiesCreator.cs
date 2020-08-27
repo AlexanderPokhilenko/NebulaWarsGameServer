@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.PlayerToServer;
 using Plugins.submodules.SharedCode.Systems;
 using Server.GameEngine.MatchLifecycle;
@@ -32,24 +33,23 @@ namespace Server.GameEngine.MessageSorters
                 ushort playerTmpId = inputMessagesPack.TemporaryId;
                 if (matchesStorage.TryGetMatchInputReceiver(inputMessagesPack.MatchId, ref inputReceiver))
                 {
-                    foreach (KeyValuePair<int, InputMessageModel> keyValuePair in inputMessagesPack.History)
-                    {
-                        int inputMessageId = keyValuePair.Key;
-                        InputMessageModel inputModel = keyValuePair.Value;
+                    //беру только последнее сообщение из пришедших
+                    KeyValuePair<int, InputMessageModel> test = inputMessagesPack.History.Last();
+                    int inputMessageId = test.Key;
+                    InputMessageModel inputModel = test.Value;
 
-                        if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
-                        {
-                            //Сообщение старое или уже обработано
-                            continue;
-                        }
-                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
-                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
-                        if (inputModel.UseAbility)
-                        {
-                            inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
-                        }
+                    if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
+                    {
+                        //Сообщение старое или уже обработано
+                        continue;
                     }
-                    
+
+                    inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
+                    inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
+                    if (inputModel.UseAbility)
+                    {
+                        inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
+                    }
                 }
             }
             

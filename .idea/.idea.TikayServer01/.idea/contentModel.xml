@@ -388,8 +388,10 @@
             </e>
             <e p="SharedCode" t="Include">
               <e p="ExceptionExtension.cs" t="Include" />
-              <e p="GameStateHistoryUpdaterSystem.cs" t="Include" />
+              <e p="GameStateFactory.cs" t="Include" />
+              <e p="ITickNumberStorage.cs" t="Include" />
               <e p="ITickStartTimeStorage.cs" t="Include" />
+              <e p="ITransformStorage.cs" t="Include" />
               <e p="LagCompensation" t="Include">
                 <e p="ArrangeTransformSystem.cs" t="Include" />
                 <e p="GameStateHistory.cs" t="Include" />
@@ -397,10 +399,11 @@
                 <e p="ITimeMachine.cs" t="Include" />
                 <e p="LagCompensationSystem.cs" t="Include" />
                 <e p="LagCompensationSystemGroup.cs" t="Include" />
-                <e p="ServerGameState.cs" t="Include" />
+                <e p="SerializedGameState.cs" t="Include" />
                 <e p="StubLagCompensation.cs" t="Include" />
                 <e p="TimeMachine.cs" t="Include" />
                 <e p="TimeTravelMap.cs" t="Include" />
+                <e p="TransformExtension.cs" t="Include" />
                 <e p="WarshipsArrangeTransformSystem.cs" t="Include" />
               </e>
               <e p="Logger" t="Include">
@@ -419,6 +422,7 @@
               </e>
               <e p="PrefabLightmapData.cs" t="Include" />
               <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
+              <e p="ServerGameStateHistoryUpdaterSystem.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="Check" t="Include">
                   <e p="PositionCheckSystem.cs" t="Include" />

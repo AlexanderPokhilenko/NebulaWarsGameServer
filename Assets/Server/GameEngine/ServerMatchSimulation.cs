@@ -37,7 +37,8 @@ namespace Server.GameEngine
         public ServerMatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier, ITickDeltaTimeStorage tickDeltaTimeStorage,
-            ITickStartTimeStorage tickStartTimeStorage, PrefabsStorage prefabsStorage,WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
+            ITickStartTimeStorage tickStartTimeStorage, PrefabsStorage prefabsStorage,
+            WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
         {
             //Создание физической сцены для комнаты
             var loadSceneParameters = new LoadSceneParameters(LoadSceneMode.Additive, LocalPhysicsMode.Physics3D);
@@ -76,7 +77,7 @@ namespace Server.GameEngine
             
             systems = new Entitas.Systems()
                     //Создаёт новое состояние
-                    .Add(new GameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
+                    .Add(new ServerGameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg, warshipsCharacteristicsStorage))
                     
