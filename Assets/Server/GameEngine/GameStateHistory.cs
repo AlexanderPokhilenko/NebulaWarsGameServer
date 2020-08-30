@@ -6,9 +6,10 @@ namespace Server.GameEngine
 {
     public class GameStateHistory : IGameStateHistory
     {
-        private readonly Dictionary<int, SerializedGameState> history = new Dictionary<int, SerializedGameState>();
+        private readonly Dictionary<int, FullSnapshot> history =
+            new Dictionary<int, FullSnapshot>();
         
-        public SerializedGameState Get(int tickNumber)
+        public FullSnapshot Get(int tickNumber)
         {
             return history[tickNumber];
         }
@@ -23,12 +24,12 @@ namespace Server.GameEngine
             return history.Keys.Max();
         }
 
-        public void Add(SerializedGameState gameState)
+        public void Add(FullSnapshot gameState)
         {
             history.Add(gameState.tickNumber, gameState);
         }
 
-        public SerializedGameState GetActualGameState()
+        public FullSnapshot GetActualGameState()
         {
             return history[GetLastTickNumber()];
         }

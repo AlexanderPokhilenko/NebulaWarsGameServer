@@ -17,16 +17,15 @@ namespace Server.Udp.MessageProcessing
         private readonly PingMessageHandler pingMessageHandler;
         private readonly InputMessageHandler inputMessageHandler;
         private readonly PlayerExitMessageHandler exitMessageHandler;
-        // private readonly RudpConfirmationSender rudpConfirmationSender;
         private readonly RudpConfirmationReceiver rudpConfirmationHandler;
 
-        public MessageWrapperHandler(InputEntitiesCreator inputEntitiesCreator, ExitEntitiesCreator exitEntitiesCreator,
+        public MessageWrapperHandler(InputEntitiesCreator inputEntitiesCreator, 
+            ExitEntitiesCreator exitEntitiesCreator,
              ByteArrayRudpStorage byteArrayRudpStorage,
              IUdpSender udpSender,
              IpAddressesStorage ipAddressesStorage)
         {
             pingMessageHandler = new PingMessageHandler(ipAddressesStorage, udpSender);
-            // rudpConfirmationSender = new RudpConfirmationSender(udpSendUtils);
             inputMessageHandler = new InputMessageHandler(inputEntitiesCreator);
             exitMessageHandler = new PlayerExitMessageHandler(exitEntitiesCreator);
             rudpConfirmationHandler = new RudpConfirmationReceiver(byteArrayRudpStorage);

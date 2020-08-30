@@ -52,9 +52,19 @@ namespace Server.GameEngine
                 if(!ipAddressesStorage.TryGetIpEndPoint(matchId, playerId, out var ip))
                 {
                     log.Debug($"Ip игрока {nameof(matchId)} {matchId} {nameof(playerId)} {playerId} нет.");
-                    return;
+                    continue;
                 }
-                simpleMessagesPacker.Send(matchId, playerId, ip, serializedMessages);
+
+                try
+                {
+                    simpleMessagesPacker.Send(matchId, playerId, ip, serializedMessages);
+                }
+                catch (Exception e)
+                {
+                    string message = $"Не удалось отправить сообщение игроку matchId={matchId} playerId={playerId} " +
+                                     $"{e.Message}";
+                    log.Error(message);
+                }
             }
             
             messages.Clear();

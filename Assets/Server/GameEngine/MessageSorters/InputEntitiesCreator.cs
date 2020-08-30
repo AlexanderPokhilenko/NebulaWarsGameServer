@@ -33,22 +33,23 @@ namespace Server.GameEngine.MessageSorters
                 ushort playerTmpId = inputMessagesPack.TemporaryId;
                 if (matchesStorage.TryGetMatchInputReceiver(inputMessagesPack.MatchId, ref inputReceiver))
                 {
-                    //беру только последнее сообщение из пришедших
-                    KeyValuePair<int, InputMessageModel> test = inputMessagesPack.History.Last();
-                    int inputMessageId = test.Key;
-                    InputMessageModel inputModel = test.Value;
-
-                    if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
+                    foreach (var pair in inputMessagesPack.History)
                     {
-                        //Сообщение старое или уже обработано
-                        continue;
-                    }
+                        int inputMessageId = pair.Key;
+                        InputMessageModel inputModel = pair.Value;
 
-                    inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
-                    inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
-                    if (inputModel.UseAbility)
-                    {
-                        inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
+                        if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
+                        {
+                            //Сообщение старое или уже обработано
+                            continue;
+                        }
+
+                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
+                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
+                        if (inputModel.UseAbility)
+                        {
+                            inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
+                        }
                     }
                 }
             }

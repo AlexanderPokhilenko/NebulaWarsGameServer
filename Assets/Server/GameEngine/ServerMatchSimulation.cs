@@ -17,7 +17,6 @@ using Server.GameEngine.Systems.Sending;
 using Server.Http;
 using Server.Udp.Sending;
 using Server.Udp.Storage;
-using SharedSimulationCode.LagCompensation;
 using SharedSimulationCode.Systems;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -64,7 +63,7 @@ namespace Server.GameEngine
             
             ArrangeTransformSystem[] arrangeCollidersSystems = 
             {
-                new WarshipsArrangeTransformSystem(contexts)
+                new WithHpArrangeTransformSystem(contexts)
             };
             ITimeMachine timeMachine = new TimeMachine(gameStateHistory, arrangeCollidersSystems);
             LagCompensationSystem[] lagCompensationSystems = 
@@ -72,18 +71,17 @@ namespace Server.GameEngine
                 new HitDetectionSystem(contexts, physicsRaycaster, tickDeltaTimeStorage), 
             };
             
-
-            PhysicsForceManager physicsForceManager = new PhysicsForceManager();
+            
             
             systems = new Entitas.Systems()
-                    //Создаёт новое состояние
-                    .Add(new ServerGameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
+                    
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg, warshipsCharacteristicsStorage))
                     
                     
-                    //Ввод игрока
-                    .Add(new MoveSystem(contexts, physicsForceManager))
+                    //Ввод игрока    
+                    .Add(new StopWarshipsSystem(contexts))
+                    .Add(new MoveSystem(contexts))
                     .Add(new RotationSystem(contexts))
                     .Add(new ShootingSystem(contexts))
 
@@ -103,13 +101,16 @@ namespace Server.GameEngine
                     .Add(new SpawnForceSystem(contexts))
 
                     //Все создания/пердвижения gameObj должны произойти до этой системы
-                    .Add(new PhysicsSimulateSystem(physicsScene, tickDeltaTimeStorage))
+                    .Add(new PhysicsSimulateSystem(matchScene, tickDeltaTimeStorage))
                     
                     
-                    //неведомая дичь
+                    //Создаёт снимок текущего состояния после симуляции физики
+                    .Add(new ServerGameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
+                    //по истории игровых состояний обнаруживает попадания
                     .Add(new LagCompensationSystemGroup(contexts, timeMachine, lagCompensationSystems, gameStateHistory))
 
 
+                    //Система необходима для правильного отката противников отновительно снарядов
                     .Add(new ProjectileTickNumberUpdaterSystem(contexts))
                     
                     //Обнаруживает попадания снарядов
@@ -117,6 +118,7 @@ namespace Server.GameEngine
                     
                     
                     .Add(new HealthCheckerSystem(contexts))
+                    .Add(new MapBoundsCheckSystem(contexts))
                     //todo добавить системы для уведомления о смерти игрока
                     
                     //Отправка текущего состояния мира

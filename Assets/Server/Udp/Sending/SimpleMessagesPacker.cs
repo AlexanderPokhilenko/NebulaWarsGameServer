@@ -110,12 +110,17 @@ namespace Server.Udp.Sending
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SendDatagram(IPEndPoint ipEndPoint, List<byte[]> messages, int startMessageIndex, 
+        private void SendDatagram(IPEndPoint ipEndPoint, List<byte[]> messages, int startMessageIndex,
             int messagesCount, int packId)
         {
             if (messagesCount == 0)
             {
                 throw new Exception("Нельзя отправлять пустые контейнеры");
+            }
+
+            if (packId == 0)
+            {
+                throw new Exception("Пустой номер сообщения");
             }
             
             //Положить сообщения в контейнер

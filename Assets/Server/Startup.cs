@@ -61,22 +61,32 @@ namespace Server
             
             
             udpClientWrapper = new UdpClientWrapper();
+            IUdpSender udpSender = udpClientWrapper;
+            const int totalDelayMs = 800;
+            const int sendingDelayMs = totalDelayMs/2;
+            const int receivingDelayMs = totalDelayMs/2;
+#if UNITY_EDITOR
+            //искусственная задержка отправки сообщений
+            // udpSender = new UdpSenderJitterSimulation(udpSender, sendingDelayMs,sendingDelayMs);
+#endif
+            
             MessagesPackIdFactory messagesPackIdFactory = new MessagesPackIdFactory();
             IpAddressesStorage ipAddressesStorage = new IpAddressesStorage();
-            SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu, udpClientWrapper, messagesPackIdFactory);
+            SimpleMessagesPacker simpleMessagesPacker = new SimpleMessagesPacker(PackingHelper.Mtu,  udpSender, messagesPackIdFactory);
             OutgoingMessagesStorage outgoingMessagesStorage = new OutgoingMessagesStorage(simpleMessagesPacker, ipAddressesStorage);
             UdpSendUtils udpSendUtils = new UdpSendUtils(ipAddressesStorage, byteArrayRudpStorage, outgoingMessagesStorage, messageFactory);
             MessageWrapperHandler messageWrapperHandler = new MessageWrapperHandler(
                 inputEntitiesCreator,
                 exitEntitiesCreator, 
                 byteArrayRudpStorage,
-                udpClientWrapper,
+                udpSender,
                 ipAddressesStorage);
             
             IByteArrayHandler byteArrayHandler = new ByteArrayHandler(messageWrapperHandler);
 
 #if UNITY_EDITOR
-            byteArrayHandler = new JitterSimulation(byteArrayHandler, udpClientWrapper, 0, 0); 
+            //искусственная задержка чтения сообщений
+            // byteArrayHandler = new UdpReadingSimulation(byteArrayHandler, receivingDelayMs,receivingDelayMs); 
 #endif
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, 
