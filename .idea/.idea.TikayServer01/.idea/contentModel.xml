@@ -8,6 +8,7 @@
     <e p="C:\Users\staro\RiderProjects\TikayServer01" t="IncludeRecursive">
       <e p="Assets" t="Include">
         <e p="Globals.cs" t="Include" />
+        <e p="IgnoreGlobals.cs" t="Include" />
         <e p="JitterSimulation.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="submodules" t="Include">
@@ -192,6 +193,7 @@
                       <e p="ServerGameIdComponent.cs" t="Include" />
                       <e p="ServerGameInvulnerableComponent.cs" t="Include" />
                       <e p="ServerGameKilledByComponent.cs" t="Include" />
+                      <e p="ServerGameLastProcessedInputMessageIdComponent.cs" t="Include" />
                       <e p="ServerGameLifetimeComponent.cs" t="Include" />
                       <e p="ServerGameLocalDirectionTargetingComponent.cs" t="Include" />
                       <e p="ServerGameLocalPredictionComponent.cs" t="Include" />
@@ -236,6 +238,7 @@
                       <e p="ServerInputAttackComponent.cs" t="Include" />
                       <e p="ServerInputCreationTickNumberComponent.cs" t="Include" />
                       <e p="ServerInputIdComponent.cs" t="Include" />
+                      <e p="ServerInputInputMessageIdComponent.cs" t="Include" />
                       <e p="ServerInputLeftTheGameComponent.cs" t="Include" />
                       <e p="ServerInputMovementComponent.cs" t="Include" />
                       <e p="ServerInputPlayerInputComponent.cs" t="Include" />
@@ -388,17 +391,18 @@
             </e>
             <e p="SharedCode" t="Include">
               <e p="ExceptionExtension.cs" t="Include" />
-              <e p="ITickNumberStorage.cs" t="Include" />
               <e p="ITickStartTimeStorage.cs" t="Include" />
               <e p="ITransformStorage.cs" t="Include" />
               <e p="LagCompensation" t="Include">
                 <e p="ArrangeTransformSystem.cs" t="Include" />
-                <e p="FullSnapshot.cs" t="Include" />
                 <e p="GameStateHistory.cs" t="Include" />
-                <e p="IGameStateHistory.cs" t="Include" />
+                <e p="IServerSnapshotHistory.cs" t="Include" />
+                <e p="ISnapshotHistory.cs" t="Include" />
                 <e p="ITimeMachine.cs" t="Include" />
                 <e p="LagCompensationSystem.cs" t="Include" />
                 <e p="LagCompensationSystemGroup.cs" t="Include" />
+                <e p="PredictedSnapshot.cs" t="Include" />
+                <e p="SnapshotWithTime.cs" t="Include" />
                 <e p="StubLagCompensation.cs" t="Include" />
                 <e p="TimeMachine.cs" t="Include" />
                 <e p="TimeTravelMap.cs" t="Include" />
@@ -421,7 +425,8 @@
               </e>
               <e p="PrefabLightmapData.cs" t="Include" />
               <e p="ProjectileTickNumberUpdaterSystem.cs" t="Include" />
-              <e p="ServerGameStateHistoryUpdaterSystem.cs" t="Include" />
+              <e p="ServerSnapshotHistoryUpdaterSystem.cs" t="Include" />
+              <e p="Snapshot.cs" t="Include" />
               <e p="SnapshotFactory.cs" t="Include" />
               <e p="Systems" t="Include">
                 <e p="Check" t="Include">
@@ -440,6 +445,8 @@
                 </e>
                 <e p="InputHandling" t="Include">
                   <e p="MoveSystem.cs" t="Include" />
+                  <e p="PhysicsRotationManager.cs" t="Include" />
+                  <e p="PhysicsVelocityManager.cs" t="Include" />
                   <e p="RotationSystem.cs" t="Include" />
                   <e p="ShootingHelper.cs" t="Include" />
                   <e p="ShootingSystem.cs" t="Include" />
@@ -623,7 +630,6 @@
               </e>
             </e>
             <e p="GameEngineTicker.cs" t="Include" />
-            <e p="GameStateHistory.cs" t="Include" />
             <e p="HealthCheckerSystem.cs" t="Include" />
             <e p="MapBoundsCheckSystem.cs" t="Include" />
             <e p="MatchLifecycle" t="Include">
@@ -646,6 +652,7 @@
               <e p="RudpMessagesSender.cs" t="Include" />
             </e>
             <e p="ServerMatchSimulation.cs" t="Include" />
+            <e p="ServerSnapshotHistory.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="PlayerAbilityHandlerSystem.cs" t="Include" />
               <e p="PlayersSendingSystem.cs" t="Include" />

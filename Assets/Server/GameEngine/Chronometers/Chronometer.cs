@@ -15,12 +15,11 @@ namespace Server.GameEngine.Chronometers
     {
         private Action callback;
         private DateTime prevTickStartTime;
-        private const int TargetTickRatePerSecond = 10;
         [SerializeField] private float tickStartDeltaTimeSec;
         [SerializeField] private string sleepDelaySec;
         [SerializeField] private string tickExecutionTimeSec;
         private readonly ILog log = LogManager.CreateLogger(typeof(Chronometer));
-        private readonly TimeSpan maxTickStartDelay = TimeSpan.FromSeconds(1f/TargetTickRatePerSecond);
+        private readonly TimeSpan maxTickStartDelay = TimeSpan.FromSeconds(1f/Globals.TargetTickRatePerSecond);
         
 
         public void SetCallback(Action callbackArg)

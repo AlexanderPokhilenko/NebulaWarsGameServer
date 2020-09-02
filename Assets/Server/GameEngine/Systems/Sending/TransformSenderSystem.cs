@@ -5,6 +5,7 @@ using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
 using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.PositionMessages;
+using Plugins.submodules.SharedCode.Systems;
 using Server.Udp.Sending;
 using UnityEngine;
 
@@ -17,18 +18,20 @@ namespace Server.GameEngine.Systems.Sending
     {
         private readonly int matchId;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly IGameStateHistory gameStateHistory;
         private readonly IGroup<ServerGameEntity> allWithView;
         private readonly IGroup<ServerGameEntity> alivePlayers;
+        private readonly IServerSnapshotHistory serverSnapshotHistory;
         private readonly VectorValidator vectorValidator = new VectorValidator();
+        private readonly ILastProcessedInputIdStorage lastProcessedInputIdStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(TransformSenderSystem));
 
         public TransformSenderSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils,
-            IGameStateHistory gameStateHistory)
+            IServerSnapshotHistory serverSnapshotHistory, ILastProcessedInputIdStorage lastProcessedInputIdStorage)
         {
             this.matchId = matchId;
             this.udpSendUtils = udpSendUtils;
-            this.gameStateHistory = gameStateHistory;
+            this.serverSnapshotHistory = serverSnapshotHistory;
+            this.lastProcessedInputIdStorage = lastProcessedInputIdStorage;
             var matcher = ServerGameMatcher.AllOf(ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot);
             alivePlayers = contexts.serverGame.GetGroup(matcher);
             allWithView = contexts.serverGame.GetGroup(ServerGameMatcher.Transform);
@@ -77,14 +80,17 @@ namespace Server.GameEngine.Systems.Sending
             //отправить всем игрокам позиции всех объектов
             foreach (var entity in alivePlayers)
             {
-                int tickNumber = gameStateHistory.GetLastTickNumber();
-                float tickTime = gameStateHistory.GetLastTickTime();
+                int tickNumber = serverSnapshotHistory.GetLastTickNumber();
+                float tickTime = serverSnapshotHistory.GetLastTickTime();
                 if (tickNumber!=0 && Math.Abs(tickTime) < 0.01)
                 {
                     log.Debug($"Пустое время tickNumber = {tickNumber} tickTime = {tickTime}");
                 }
-                
-                udpSendUtils.SendPositions(matchId, entity.player.tmpPlayerId, allGos, tickNumber, tickTime);
+
+                ushort playerId = entity.player.tmpPlayerId;
+                uint lastProcessedInputId = lastProcessedInputIdStorage.Get(playerId);
+                udpSendUtils.SendPositions(matchId, entity.player.tmpPlayerId, allGos, tickNumber, tickTime,
+                    lastProcessedInputId);
             }
         }
     }

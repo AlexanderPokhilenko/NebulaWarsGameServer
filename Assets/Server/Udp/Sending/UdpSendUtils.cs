@@ -44,9 +44,9 @@ namespace Server.Udp.Sending
             var message = new HidesMessage(hiddenIds);
             SendUdp(matchId, playerId, message, true);
         }
-
-        public void SendPositions(int matchId, ushort playerId, 
-            Dictionary<ushort, ViewTransformCompressed> dictionary, int tickNumber, float tickTime)
+        
+        public void SendPositions(int matchId, ushort playerId, Dictionary<ushort, ViewTransformCompressed> dictionary,
+            int tickNumber, float tickTime, uint lastProcessedInputId)
         {
             int length = PackingHelper.GetByteLength(dictionary);
             if (length > PackingHelper.MaxSingleMessageSize)
@@ -59,13 +59,13 @@ namespace Server.Udp.Sending
                 var dictionaries = dictionary.Split(messagesCount);
                 for (var i = 0; i < dictionaries.Length; i++)
                 {
-                    var message = new TransformPackMessage(dictionaries[i], tickNumber, tickTime);
+                    var message = new TransformPackMessage(dictionaries[i], tickNumber, tickTime, lastProcessedInputId);
                     SendUdp(matchId, playerId, message);
                 }
             }
             else
             {
-                var message = new TransformPackMessage(dictionary, tickNumber, tickTime);
+                var message = new TransformPackMessage(dictionary, tickNumber, tickTime, lastProcessedInputId);
                 SendUdp(matchId, playerId, message);
             }
         }

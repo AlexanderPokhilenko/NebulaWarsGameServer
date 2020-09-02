@@ -62,12 +62,10 @@ namespace Server
             
             udpClientWrapper = new UdpClientWrapper();
             IUdpSender udpSender = udpClientWrapper;
-            const int totalDelayMs = 800;
-            const int sendingDelayMs = totalDelayMs/2;
-            const int receivingDelayMs = totalDelayMs/2;
 #if UNITY_EDITOR
             //искусственная задержка отправки сообщений
-            // udpSender = new UdpSenderJitterSimulation(udpSender, sendingDelayMs,sendingDelayMs);
+            udpSender = new UdpSenderJitterSimulation(udpSender, Globals.JitterDelayMs,
+                Globals.JitterDelayMs);
 #endif
             
             MessagesPackIdFactory messagesPackIdFactory = new MessagesPackIdFactory();
@@ -86,7 +84,8 @@ namespace Server
 
 #if UNITY_EDITOR
             //искусственная задержка чтения сообщений
-            // byteArrayHandler = new UdpReadingSimulation(byteArrayHandler, receivingDelayMs,receivingDelayMs); 
+            byteArrayHandler = new UdpReadingSimulation(byteArrayHandler, Globals.JitterDelayMs,
+                Globals.JitterDelayMs); 
 #endif
             
             matchRemover = new MatchRemover(matchesStorage, byteArrayRudpStorage, udpSendUtils, notifier, 

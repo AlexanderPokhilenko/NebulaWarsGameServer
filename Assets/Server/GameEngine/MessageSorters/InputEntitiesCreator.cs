@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿﻿using System.Collections.Concurrent;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.PlayerToServer;
 using Plugins.submodules.SharedCode.Systems;
 using Server.GameEngine.MatchLifecycle;
@@ -13,7 +11,8 @@ namespace Server.GameEngine.MessageSorters
     public class InputEntitiesCreator
     {
         private readonly MatchesStorage matchesStorage;
-        private readonly ConcurrentStack<InputMessagesPack> inputMessages = new ConcurrentStack<InputMessagesPack>();
+        private readonly ConcurrentStack<InputMessagesPack> inputMessages = 
+            new ConcurrentStack<InputMessagesPack>();
 
         public InputEntitiesCreator(MatchesStorage matchesStorage)
         {
@@ -35,7 +34,7 @@ namespace Server.GameEngine.MessageSorters
                 {
                     foreach (var pair in inputMessagesPack.History)
                     {
-                        int inputMessageId = pair.Key;
+                        uint inputMessageId = pair.Key;
                         InputMessageModel inputModel = pair.Value;
 
                         if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))

@@ -91,7 +91,7 @@ namespace Tests.ZeroFormatterMessagesSizeTests
                 dictionary.Add(i, viewTransform);
             }
 
-            TransformPackMessage message = new TransformPackMessage(dictionary, 0, 0);
+            TransformPackMessage message = new TransformPackMessage(dictionary, 0, 0, 0);
             byte[] data = ZeroFormatterSerializer.Serialize(message);
             TransformPackMessage restored = ZeroFormatterSerializer.Deserialize<TransformPackMessage>(data);
 

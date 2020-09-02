@@ -17,7 +17,7 @@ namespace Server.Http
             string query = $"?accountId={playerDeathData.PlayerAccountId}" +
                            $"&placeInBattle={playerDeathData.PlaceInBattle}" +
                            $"&MatchId={playerDeathData.MatchId}" +
-                           $"&secret={Globals.GameServerSecret}";
+                           $"&secret={IgnoreGlobals.GameServerSecret}";
             return await httpWrapper.HttpDelete(pathname, query);
         }
     }

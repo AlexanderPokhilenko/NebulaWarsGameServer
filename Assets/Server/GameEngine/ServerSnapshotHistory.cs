@@ -4,12 +4,12 @@ using Plugins.submodules.SharedCode.LagCompensation;
 
 namespace Server.GameEngine
 {
-    public class GameStateHistory : IGameStateHistory
+    public class ServerSnapshotHistory : IServerSnapshotHistory
     {
-        private readonly Dictionary<int, FullSnapshot> history =
-            new Dictionary<int, FullSnapshot>();
+        private readonly Dictionary<int, SnapshotWithTime> history =
+            new Dictionary<int, SnapshotWithTime>();
         
-        public FullSnapshot Get(int tickNumber)
+        public SnapshotWithTime Get(int tickNumber)
         {
             return history[tickNumber];
         }
@@ -24,19 +24,19 @@ namespace Server.GameEngine
             return history.Keys.Max();
         }
 
-        public void Add(FullSnapshot gameState)
+        public void Add(SnapshotWithTime snapshotWithTime)
         {
-            history.Add(gameState.tickNumber, gameState);
+            history.Add(snapshotWithTime.tickNumber, snapshotWithTime);
         }
 
-        public FullSnapshot GetActualGameState()
+        public SnapshotWithTime GetActualGameState()
         {
             return history[GetLastTickNumber()];
         }
 
         public float GetLastTickTime()
         {
-            return history[GetLastTickNumber()].tickMatchTimeSec;
+            return history[GetLastTickNumber()].tickTime;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetworkLibrary.NetworkLibrary.Http;
 using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.LagCompensation;
@@ -31,7 +32,7 @@ namespace Server.GameEngine
         public readonly int matchId;
         private readonly Entitas.Systems systems;
         private readonly InputReceiver inputReceiver;
-        private readonly IGameStateHistory gameStateHistory = new GameStateHistory();
+        private readonly IServerSnapshotHistory serverSnapshotHistory = new ServerSnapshotHistory();
 
         public ServerMatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
@@ -46,6 +47,7 @@ namespace Server.GameEngine
             PhysicsSpawner physicsSpawner = new PhysicsSpawner(matchScene);
             PhysicsRaycaster physicsRaycaster = new PhysicsRaycaster(matchScene);
             PhysicsDestroyer physicsDestroyer = new PhysicsDestroyer();
+            var physicsVelocity = new PhysicsVelocityManager();;
                 
             //Создание разных штук
             this.matchId = matchId;
@@ -54,8 +56,9 @@ namespace Server.GameEngine
 
             List<ushort> playerTmpIds = matchModelArg.GetPlayerTmpIds();
             int maxInputLength = 60;
-            InputMessagesMetaHistory history = new InputMessagesMetaHistory(maxInputLength, playerTmpIds);
-            inputReceiver = new InputReceiver(contexts, history);
+            InputMessagesMetaHistory inputMessagesMetaHistory = new InputMessagesMetaHistory(maxInputLength, playerTmpIds);
+            ILastProcessedInputIdStorage lastProcessedInputIdStorage = inputMessagesMetaHistory;
+            inputReceiver = new InputReceiver(contexts, inputMessagesMetaHistory);
             
             //Автоматическое добавление id при создании сущности
             contexts.SubscribeId();
@@ -65,7 +68,7 @@ namespace Server.GameEngine
             {
                 new WithHpArrangeTransformSystem(contexts)
             };
-            ITimeMachine timeMachine = new TimeMachine(gameStateHistory, arrangeCollidersSystems);
+            ITimeMachine timeMachine = new TimeMachine(serverSnapshotHistory, arrangeCollidersSystems);
             LagCompensationSystem[] lagCompensationSystems = 
             {
                 new HitDetectionSystem(contexts, physicsRaycaster, tickDeltaTimeStorage), 
@@ -81,7 +84,7 @@ namespace Server.GameEngine
                     
                     //Ввод игрока    
                     .Add(new StopWarshipsSystem(contexts))
-                    .Add(new MoveSystem(contexts))
+                    .Add(new MoveSystem(contexts, physicsVelocity))
                     .Add(new RotationSystem(contexts))
                     .Add(new ShootingSystem(contexts))
 
@@ -105,9 +108,9 @@ namespace Server.GameEngine
                     
                     
                     //Создаёт снимок текущего состояния после симуляции физики
-                    .Add(new ServerGameStateHistoryUpdaterSystem(contexts, gameStateHistory, tickStartTimeStorage))
+                    .Add(new ServerSnapshotHistoryUpdaterSystem(contexts, serverSnapshotHistory, tickStartTimeStorage))
                     //по истории игровых состояний обнаруживает попадания
-                    .Add(new LagCompensationSystemGroup(contexts, timeMachine, lagCompensationSystems, gameStateHistory))
+                    .Add(new LagCompensationSystemGroup(contexts, timeMachine, lagCompensationSystems, serverSnapshotHistory))
 
 
                     //Система необходима для правильного отката противников отновительно снарядов
@@ -123,7 +126,8 @@ namespace Server.GameEngine
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
-                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils, gameStateHistory))
+                    .Add(new TransformSenderSystem(matchId, contexts, udpSendUtils, serverSnapshotHistory, 
+                        lastProcessedInputIdStorage))
                     .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
                     .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
                     
