@@ -35,21 +35,10 @@ namespace Server.GameEngine.MessageSorters
                     foreach (var pair in inputMessagesPack.History)
                     {
                         uint inputMessageId = pair.Key;
-                        InputMessageModel inputModel = pair.Value;
+                        InputMessageModel inputMessageModel = pair.Value;
 
-                        if (!inputReceiver.NeedHandle(playerTmpId, inputMessageId, inputModel.TickNumber))
-                        {
-                            //Сообщение старое или уже обработано
-                            continue;
-                        }
-
-                        inputReceiver.AddMovement(playerTmpId, inputModel.GetVector2(), inputModel.TickNumber);
-                        inputReceiver.AddAttack(playerTmpId, inputModel.Angle, inputModel.TickNumber);
-                        if (inputModel.UseAbility)
-                        {
-                            inputReceiver.AddAbility(playerTmpId, inputModel.TickNumber);
-                        }
-                    }
+                        inputReceiver.AddMessage(playerTmpId, inputMessageId, inputMessageModel);
+                     }
                 }
             }
             

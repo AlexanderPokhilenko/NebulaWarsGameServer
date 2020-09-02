@@ -39,58 +39,72 @@ namespace Server.GameEngine.Systems.Sending
 
         public void Execute()
         {
-            Dictionary<ushort, ViewTransformCompressed> allGos = new Dictionary<ushort, ViewTransformCompressed>();
-            if (allWithView.count == 0)
+            try
             {
-                log.Error("Нет объектов с моделями");
-                return;
-            }
-            
-            foreach (var entity in allWithView)
-            {
-                if (entity.transform.value == null)
+                var allGos = new Dictionary<ushort, ViewTransformCompressed>();
+                if (allWithView.count == 0)
                 {
-                    throw new Exception("transform пуст id = "+entity.id.value);
+                    log.Error("Нет объектов с моделями");
+                    return;
                 }
                 
-                Vector3 position = entity.transform.value.position;
-                float x = position.x;
-                float z = position.z;
-                float angle = entity.transform.value.rotation.eulerAngles.y;
-                ViewTypeEnum viewTypeEnum = entity.viewType.value;
-                
-                // log.Debug($"тут x={x} z={z} angle={angle} viewTypeEnum={viewTypeEnum}");
-                ViewTransformCompressed viewTransform = new ViewTransformCompressed(x, z, angle, viewTypeEnum);
-
-                if (!vectorValidator.TryValidate(viewTransform.GetPosition()))
+                foreach (var entity in allWithView)
                 {
-                    log.Error("Позиция содержит мусор.");
-                    continue;
-                }
-                
-                allGos.Add(entity.id.value, viewTransform);
-            }
+                    if (entity.transform.value == null)
+                    {
+                        throw new Exception("transform пуст id = "+entity.id.value);
+                    }
+                    
+                    Vector3 position = entity.transform.value.position;
+                    float x = position.x;
+                    float z = position.z;
+                    float angle = entity.transform.value.rotation.eulerAngles.y;
+                    ViewTypeEnum viewTypeEnum = entity.viewType.value;
+                    
+                    // log.Debug($"тут x={x} z={z} angle={angle} viewTypeEnum={viewTypeEnum}");
+                    ViewTransformCompressed viewTransform = new ViewTransformCompressed(x, z, angle, viewTypeEnum);
 
-            if (allGos.Count == 0)
-            {
-                log.Error("Пустые координаты");
-                return;
-            }
-            
-            //отправить всем игрокам позиции всех объектов
-            foreach (var entity in alivePlayers)
-            {
-                int tickNumber = serverSnapshotHistory.GetLastTickNumber();
-                float tickTime = serverSnapshotHistory.GetLastTickTime();
-                if (tickNumber!=0 && Math.Abs(tickTime) < 0.01)
-                {
-                    log.Debug($"Пустое время tickNumber = {tickNumber} tickTime = {tickTime}");
+                    if (!vectorValidator.TryValidate(viewTransform.GetPosition()))
+                    {
+                        log.Error("Позиция содержит мусор.");
+                        continue;
+                    }
+                    
+                    allGos.Add(entity.id.value, viewTransform);
                 }
 
-                ushort playerId = entity.player.tmpPlayerId;
-                uint lastProcessedInputId = lastProcessedInputIdStorage.Get(playerId);
-                udpSendUtils.SendPositions(matchId, entity.player.tmpPlayerId, allGos, tickNumber, tickTime,
-                    lastProcessedInputId);
+                if (allGos.Count == 0)
+                {
+                    log.Error("Пустые координаты");
+                    return;
+                }
+                
+                //отправить всем игрокам позиции всех объектов
+                foreach (var entity in alivePlayers)
+                {
+                    int tickNumber = serverSnapshotHistory.GetLastTickNumber();
+                    float tickTime = serverSnapshotHistory.GetLastTickTime();
+                    if (tickNumber!=0 && Math.Abs(tickTime) < 0.01)
+                    {
+                        log.Debug($"Пустое время tickNumber = {tickNumber} tickTime = {tickTime}");
+                    }
+
+                    ushort playerId = entity.player.tmpPlayerId;
+                    uint? lastProcessedInputId = lastProcessedInputIdStorage.Get(playerId);
+                    //todo уменьшить это число
+                    if (tickNumber > 35 && lastProcessedInputId == null)
+                    {
+                        log.Debug($"Пустой lastProcessedInputId. playerId = {playerId} tickNumber = {tickNumber}");
+                    }
+
+                    uint lastProcessedInputIdValue = lastProcessedInputId ?? 0;
+                    udpSendUtils.SendPositions(matchId, entity.player.tmpPlayerId, allGos, tickNumber, tickTime,
+                        lastProcessedInputIdValue);
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e.FullMessage());   
             }
         }
     }

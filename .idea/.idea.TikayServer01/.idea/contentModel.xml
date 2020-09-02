@@ -443,6 +443,7 @@
                   <e p="HitDetectionSystem.cs" t="Include" />
                   <e p="HitHandlingSystem.cs" t="Include" />
                 </e>
+                <e p="ILastProcessedInputIdStorage.cs" t="Include" />
                 <e p="InputHandling" t="Include">
                   <e p="MoveSystem.cs" t="Include" />
                   <e p="PhysicsRotationManager.cs" t="Include" />
