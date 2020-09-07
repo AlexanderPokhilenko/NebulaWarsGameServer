@@ -1,4 +1,7 @@
-﻿using System;
+﻿// #define JITTER
+
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Plugins.submodules.SharedCode;
@@ -15,6 +18,7 @@ using Server.Udp.Sending;
 using Server.Udp.Storage;
 using Object = UnityEngine.Object;
 
+
 namespace Server
 {
     /// <summary>
@@ -24,9 +28,9 @@ namespace Server
     public class Startup
     {
         private MatchRemover matchRemover;
-        private MatchesStorage matchesStorage;
         private const int UdpPort = 48956;
         private const int HttpPort = 14065;
+        private MatchesStorage matchesStorage;
         private CancellationTokenSource matchmakerNotifierCts;
         private CancellationTokenSource matchmakerListenerCts;
         private UdpClientWrapper udpClientWrapper;
@@ -38,7 +42,7 @@ namespace Server
                 throw new Exception("Сервер уже запущен");
             }
 
-            PrefabsStorage prefabsStorage = new PrefabsStorage();
+            IPrefabStorage prefabsStorage = new ClientPrefabsStorage();
             Chronometer chronometer = Object.FindObjectOfType<Chronometer>();
             
 
@@ -62,7 +66,7 @@ namespace Server
             
             udpClientWrapper = new UdpClientWrapper();
             IUdpSender udpSender = udpClientWrapper;
-#if UNITY_EDITOR
+#if UNITY_EDITOR && JITTER
             //искусственная задержка отправки сообщений
             udpSender = new UdpSenderJitterSimulation(udpSender, Globals.JitterDelayMs,
                 Globals.JitterDelayMs);
@@ -82,7 +86,7 @@ namespace Server
             
             IByteArrayHandler byteArrayHandler = new ByteArrayHandler(messageWrapperHandler);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && JITTER
             //искусственная задержка чтения сообщений
             byteArrayHandler = new UdpReadingSimulation(byteArrayHandler, Globals.JitterDelayMs,
                 Globals.JitterDelayMs); 

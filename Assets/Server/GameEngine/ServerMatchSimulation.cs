@@ -37,7 +37,7 @@ namespace Server.GameEngine
         public ServerMatchSimulation(int matchId, BattleRoyaleMatchModel matchModelArg, UdpSendUtils udpSendUtils, 
             IpAddressesStorage ipAddressesStorage, MatchRemover matchRemover,
             MatchmakerNotifier  matchmakerNotifier, ITickDeltaTimeStorage tickDeltaTimeStorage,
-            ITickStartTimeStorage tickStartTimeStorage, PrefabsStorage prefabsStorage,
+            ITickStartTimeStorage tickStartTimeStorage, IPrefabStorage prefabsStorage,
             WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
         {
             //Создание физической сцены для комнаты
@@ -75,31 +75,23 @@ namespace Server.GameEngine
             };
             
             
-            
+            SpawnManager spawnManager = new SpawnManager(prefabsStorage, physicsSpawner);
+
             systems = new Entitas.Systems()
                     
                     //Создаёт команду спавна игроков
                     .Add(new MapInitializeSystem(contexts, matchModelArg, warshipsCharacteristicsStorage))
-                    
-                    
+
                     //Ввод игрока    
                     .Add(new StopWarshipsSystem(contexts))
                     .Add(new MoveSystem(contexts, physicsVelocity))
-                    .Add(new RotationSystem(contexts))
+                    .Add(new RotationSystem(contexts, tickDeltaTimeStorage))
                     .Add(new ShootingSystem(contexts))
-
-
+                    
                     //Куда это сдвинуть?
                     .Add(new CannonCooldownDecreasingSystem(contexts, tickDeltaTimeStorage))
+                    .Add(new PrefabSpawnerSystem(contexts, spawnManager))
 
-
-                    //Создаёт GameObj для кораблей
-                    .Add(new WarshipsSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
-                    //Создаёт GameObj для снарядов
-                    .Add(new ProjectileSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
-                    //Создаёт GameObj для астероидов
-                    .Add(new AsteroidsSpawnerSystem(contexts, physicsSpawner, prefabsStorage))
-                    
                     //До этого места должно быть создание GameObject-ов
                     .Add(new SpawnForceSystem(contexts))
 

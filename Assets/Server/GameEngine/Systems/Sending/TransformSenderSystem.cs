@@ -94,7 +94,7 @@ namespace Server.GameEngine.Systems.Sending
                     //todo уменьшить это число
                     if (tickNumber > 35 && lastProcessedInputId == null)
                     {
-                        log.Debug($"Пустой lastProcessedInputId. playerId = {playerId} tickNumber = {tickNumber}");
+                        log.Info($"Пустой lastProcessedInputId. playerId = {playerId} tickNumber = {tickNumber}");
                     }
 
                     uint lastProcessedInputIdValue = lastProcessedInputId ?? 0;

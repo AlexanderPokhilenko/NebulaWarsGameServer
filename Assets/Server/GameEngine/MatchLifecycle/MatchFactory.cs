@@ -15,7 +15,7 @@ namespace Server.GameEngine.MatchLifecycle
     {
         private readonly MatchRemover matchRemover;
         private readonly UdpSendUtils udpSendUtils;
-        private readonly PrefabsStorage prefabsStorage;
+        private readonly IPrefabStorage prefabsStorage;
         private readonly MessageIdFactory messageIdFactory;
         private readonly MatchmakerNotifier matchmakerNotifier;
         private readonly IpAddressesStorage ipAddressesStorage;
@@ -28,7 +28,7 @@ namespace Server.GameEngine.MatchLifecycle
             MatchmakerNotifier matchmakerNotifier, IpAddressesStorage ipAddressesStorage,
             MessageIdFactory messageIdFactory, MessagesPackIdFactory messagesPackIdFactory,
             ITickDeltaTimeStorage tickDeltaTimeStorage, ITickStartTimeStorage tickStartTimeStorage,
-            PrefabsStorage prefabsStorage, WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
+            IPrefabStorage prefabsStorage, WarshipsCharacteristicsStorage warshipsCharacteristicsStorage )
         {
             this.matchRemover = matchRemover;
             this.udpSendUtils = udpSendUtils;

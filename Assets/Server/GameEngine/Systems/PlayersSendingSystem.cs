@@ -16,7 +16,7 @@ namespace Server.GameEngine.Systems
         private readonly IGroup<ServerGameEntity> alivePlayers;
         private readonly IGroup<ServerGameEntity> allPlayersGroup;
 
-        public     PlayersSendingSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils) 
+        public PlayersSendingSystem(int matchId, Contexts contexts, UdpSendUtils udpSendUtils) 
             : base(contexts.serverGame)
         {
             this.matchId = matchId;

@@ -209,11 +209,8 @@
                       <e p="ServerGameRigidbodyComponent.cs" t="Include" />
                       <e p="ServerGameShootingPointsComponent.cs" t="Include" />
                       <e p="ServerGameSingleTargetingComponent.cs" t="Include" />
-                      <e p="ServerGameSpawnAsteroidComponent.cs" t="Include" />
                       <e p="ServerGameSpawnForceComponent.cs" t="Include" />
-                      <e p="ServerGameSpawnProjectileComponent.cs" t="Include" />
                       <e p="ServerGameSpawnTransformComponent.cs" t="Include" />
-                      <e p="ServerGameSpawnWarshipComponent.cs" t="Include" />
                       <e p="ServerGameTargetChangingComponent.cs" t="Include" />
                       <e p="ServerGameTargetComponent.cs" t="Include" />
                       <e p="ServerGameTargetingParametersComponent.cs" t="Include" />
@@ -390,6 +387,7 @@
               </e>
             </e>
             <e p="SharedCode" t="Include">
+              <e p="AsteroidsSpawnerSystem.cs" t="Include" />
               <e p="ExceptionExtension.cs" t="Include" />
               <e p="ITickStartTimeStorage.cs" t="Include" />
               <e p="ITransformStorage.cs" t="Include" />
@@ -456,19 +454,24 @@
                 </e>
                 <e p="InputMessagesMetaHistory.cs" t="Include" />
                 <e p="InputReceiver.cs" t="Include" />
+                <e p="ISpawner.cs" t="Include" />
                 <e p="MapInitialization" t="Include">
                   <e p="MapInitializeSystem.cs" t="Include" />
                 </e>
+                <e p="PrefabSpawnerSystem.cs" t="Include" />
                 <e p="ShootingAdvancedSystem.cs" t="Include" />
                 <e p="Spawn" t="Include">
-                  <e p="PrefabsStorage.cs" t="Include" />
+                  <e p="ClientPrefabsStorage.cs" t="Include" />
+                  <e p="IConcreteSpawner.cs" t="Include" />
+                  <e p="IPrefabStorage.cs" t="Include" />
                   <e p="ProjectileSpawnerSystem.cs" t="Include" />
                   <e p="ProjectileViewTypePathStorage.cs" t="Include" />
                   <e p="ShootingPointsHelper.cs" t="Include" />
                   <e p="SpawnForceSystem.cs" t="Include" />
                   <e p="ViewTypePathStorage.cs" t="Include" />
-                  <e p="WarshipsSpawnerSystem.cs" t="Include" />
+                  <e p="WarshipSpawnerSystem.cs" t="Include" />
                 </e>
+                <e p="SpawnManager.cs" t="Include" />
                 <e p="Statistics" t="Include">
                   <e p="ChronomenterDeltaTimeDebugSystem.cs" t="Include" />
                 </e>
@@ -589,7 +592,6 @@
         </e>
         <e p="Server" t="Include">
           <e p="GameEngine" t="Include">
-            <e p="AsteroidsSpawnerSystem.cs" t="Include" />
             <e p="Chronometers" t="Include">
               <e p="Chronometer.cs" t="Include" />
               <e p="ChronometerFactory.cs" t="Include" />
@@ -734,7 +736,7 @@
         <e p="UdpSenderJitterSimulation.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
-      <e p="Packages" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
       <e p="Server.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
       <e p="Tests.csproj" t="IncludeRecursive" />
