@@ -12,6 +12,7 @@ using Plugins.submodules.SharedCode.Systems.Hits;
 using Plugins.submodules.SharedCode.Systems.InputHandling;
 using Plugins.submodules.SharedCode.Systems.MapInitialization;
 using Plugins.submodules.SharedCode.Systems.Spawn;
+using Server.GameEngine.Experimental.Systems;
 using Server.GameEngine.MatchLifecycle;
 using Server.GameEngine.Systems;
 using Server.GameEngine.Systems.Sending;
@@ -77,6 +78,7 @@ namespace Server.GameEngine
             
             SpawnManager spawnManager = new SpawnManager(prefabsStorage, physicsSpawner);
 
+            Killers killers = new Killers(contexts);
             systems = new Entitas.Systems()
                     
                     //Создаёт команду спавна игроков
@@ -108,13 +110,16 @@ namespace Server.GameEngine
                     //Система необходима для правильного отката противников отновительно снарядов
                     .Add(new ProjectileTickNumberUpdaterSystem(contexts))
                     
-                    //Обнаруживает попадания снарядов
+                    //Отнимает здоровье у цели и уничтожает снаряд.
                     .Add(new HitHandlingSystem(contexts))
                     
-                    
-                    .Add(new HealthCheckerSystem(contexts))
                     .Add(new MapBoundsCheckSystem(contexts))
-                    //todo добавить системы для уведомления о смерти игрока
+                    
+                    .Add(new NetworkKillsSenderSystem(contexts, matchId, playerDeathHandler, udpSendUtils, killers))
+                    .Add(new PlayerExitSystem(contexts, matchId, playerDeathHandler, matchRemover))
+                    
+                    
+                    .Add(new LowHpCheckSystem(contexts))
                     
                     //Отправка текущего состояния мира
                     .Add(new PlayersSendingSystem(matchId, contexts, udpSendUtils))
@@ -122,7 +127,8 @@ namespace Server.GameEngine
                         lastProcessedInputIdStorage))
                     .Add(new HealthSenderSystem(contexts, matchId, udpSendUtils))
                     .Add(new MaxHealthSenderSystem(contexts, matchId, udpSendUtils))
-                    
+
+
                     //Очистка
                     .Add(new InputClearSystem(contexts))
                     .Add(new DestroyEntitySystem(contexts, physicsDestroyer))

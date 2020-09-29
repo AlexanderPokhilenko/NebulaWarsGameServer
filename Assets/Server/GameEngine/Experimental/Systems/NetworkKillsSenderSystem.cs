@@ -12,29 +12,29 @@ namespace Server.GameEngine.Experimental.Systems
     /// </summary>
     public class NetworkKillsSenderSystem : ReactiveSystem<ServerGameEntity>
     {
-        private readonly ILog log = LogManager.CreateLogger(typeof(NetworkKillsSenderSystem));
-        
         private readonly int matchId;
-        private readonly PlayerDeathHandler playerDeathHandler;
-
         private readonly UdpSendUtils udpSendUtils;
-        
-        readonly IGroup<ServerGameEntity> alivePlayersAndBots;
+        private readonly PlayerDeathHandler playerDeathHandler;
+        private readonly IGroup<ServerGameEntity> aliveAvatars;
         private readonly IGroup<ServerGameEntity> alivePlayers;
-        private readonly Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfo;
-    
-        public NetworkKillsSenderSystem(Contexts contexts, 
-            Dictionary<int, (int playerId, ViewTypeEnum type)> killersInfos, int matchId, 
-            PlayerDeathHandler playerDeathHandler,  UdpSendUtils udpSendUtils)
+        private readonly KillMessagesFactory killMessagesFactory;
+        private readonly ILog log = LogManager.CreateLogger(typeof(NetworkKillsSenderSystem));
+
+        public NetworkKillsSenderSystem(Contexts contexts, int matchId, 
+            PlayerDeathHandler playerDeathHandler,  UdpSendUtils udpSendUtils, Killers killers)
             : base(contexts.serverGame)
         {
-            killersInfo = killersInfos;
             this.matchId = matchId;
             this.playerDeathHandler = playerDeathHandler;
             this.udpSendUtils = udpSendUtils;
-            var gameContext = contexts.serverGame;
-            alivePlayers = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Account, ServerGameMatcher.Player).NoneOf(ServerGameMatcher.Bot));
-            alivePlayersAndBots = gameContext.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Account, ServerGameMatcher.Player).NoneOf(ServerGameMatcher.KilledBy));
+
+            killMessagesFactory = new KillMessagesFactory(killers);
+            aliveAvatars = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player)
+                .NoneOf(ServerGameMatcher.KilledBy));
+            
+            alivePlayers = contexts.serverGame.GetGroup(ServerGameMatcher.AllOf(ServerGameMatcher.Player)
+                .NoneOf(ServerGameMatcher.KilledBy, ServerGameMatcher.Bot));
+            
         }
 
         protected override ICollector<ServerGameEntity> GetTrigger(IContext<ServerGameEntity> context)
@@ -44,61 +44,48 @@ namespace Server.GameEngine.Experimental.Systems
 
         protected override bool Filter(ServerGameEntity entity)
         {
-            return entity.hasAccount && entity.hasViewType && entity.hasKilledBy;
+            return entity.hasKilledBy;
         }
 
         protected override void Execute(List<ServerGameEntity> killedEntities)
         {
-            int countOfAlivePlayersAndBots = alivePlayersAndBots.count;
-            int countOfKilledEntities = killedEntities.Count;
-            
+            SendDeathNoticeToPlayers(killedEntities);
+            SendDeathNoticeToMatchmaker(killedEntities);
+        }
+
+        private void SendDeathNoticeToPlayers(List<ServerGameEntity> killedEntities)
+        {
+            List<KillModel> list = killMessagesFactory.Create(killedEntities);
             foreach (var alivePlayer in alivePlayers)
             {
-                for (var killedEntityIndex = 0; killedEntityIndex < killedEntities.Count; killedEntityIndex++)
+                foreach (var model in list)
                 {
-                    ServerGameEntity killedEntity = killedEntities[killedEntityIndex];
-                    if (!killersInfo.TryGetValue(killedEntity.killedBy.id, out var killerInfo))
-                    {
-                        killerInfo = (0, 0);
-                    }
-
-                    KillData killData = new KillData
-                    {
-                        TargetPlayerTmpId = alivePlayer.player.tmpPlayerId,
-                        KillerId = killerInfo.playerId,
-                        KillerType = killerInfo.type,
-                        VictimType = killedEntity.viewType.value,
-                        VictimId = killedEntity.account.AccountId
-                    };
-                
-                    udpSendUtils.SendKill(matchId, killData);
-
-                    if (!killedEntity.isBot)
-                    {
-                        var temporaryId = killedEntity.player.tmpPlayerId;
-                        var accountId = killedEntity.account.AccountId;
-                        var placeInBattle = GetPlaceInBattle(countOfAlivePlayersAndBots, countOfKilledEntities,
-                            killedEntityIndex);
-                        
-                        PlayerDeathData playerDeathData = new PlayerDeathData
-                        {
-                            PlayerAccountId = accountId,
-                            PlaceInBattle = placeInBattle,
-                            MatchId = matchId 
-                        };
-                        
-                        playerDeathHandler.PlayerDeath(playerDeathData, temporaryId, true);
-                    }
+                    udpSendUtils.SendKill(matchId, alivePlayer.player.tmpPlayerId, model);
                 }
             }
         }
-
-        /// <summary>
-        /// Если за один кадр умерло больше одного игрока, то им выдадутся разные места в бою.
-        /// </summary>
-        private int GetPlaceInBattle(int countOfAlivePlayersAndBots, int countOfKilledEntities, int killedEntityIndex)
+        
+        private void SendDeathNoticeToMatchmaker(List<ServerGameEntity> killedEntities)
         {
-            return countOfAlivePlayersAndBots + 1 + (countOfKilledEntities - 1 - killedEntityIndex);
+            int aliveAvatarsCount = aliveAvatars.count;
+            for (int index = 0; index < killedEntities.Count; index++)
+            {
+                ServerGameEntity killedEntity = killedEntities[index];
+                if (!killedEntity.isBot)
+                {
+                    ushort temporaryId = killedEntity.player.tmpPlayerId;
+                    int accountId = killedEntity.account.accountId;
+                    int placeInBattle = aliveAvatarsCount + index + 1;
+                    PlayerDeathData playerDeathData = new PlayerDeathData
+                    {
+                        PlayerAccountId = accountId,
+                        PlaceInBattle = placeInBattle,
+                        MatchId = matchId
+                    };
+
+                    playerDeathHandler.PlayerDeath(playerDeathData, temporaryId, true);
+                }
+            }
         }
     }
 }

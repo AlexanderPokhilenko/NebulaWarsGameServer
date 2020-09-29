@@ -30,7 +30,6 @@ namespace Server.GameEngine
                 return;
             }
 
-
             Tuple<int, ushort> id = new Tuple<int, ushort>(matchId, playerId);
             if (messages.TryGetValue(id, out List<byte[]> playerMessages))
             {

@@ -631,10 +631,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 023ee242-62f8-4b7e-a3e3-a004e0996d77
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: TikayServer01
+  organizationId: unity_zxbd9bqtysqehg
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

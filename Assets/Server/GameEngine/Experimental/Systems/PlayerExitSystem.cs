@@ -58,8 +58,9 @@ namespace Server.GameEngine.Experimental.Systems
                 if (playerEntity == null || !playerEntity.hasAccount)
                 {
                     log.Warn($"Попытка удалить несуществующего (удалённого?) игрока из матча {nameof(temporaryId)} {temporaryId}");
+                    continue;
                 }
-                var accountId = playerEntity.account.AccountId;
+                int accountId = playerEntity.account.accountId;
                 log.Warn($"преждевременное удаление игрока из матча {nameof(temporaryId)} {temporaryId} {nameof(accountId)} {accountId}");
                 TurnIntoBot(temporaryId);
                 SendDeathMessage(accountId, temporaryId);

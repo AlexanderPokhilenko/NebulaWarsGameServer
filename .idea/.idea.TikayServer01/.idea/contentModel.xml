@@ -438,8 +438,10 @@
                   <e p="CannonCooldownDecreasingSystem.cs" t="Include" />
                 </e>
                 <e p="Hits" t="Include">
+                  <e p="AsteroidHitHandler.cs" t="Include" />
                   <e p="HitDetectionSystem.cs" t="Include" />
                   <e p="HitHandlingSystem.cs" t="Include" />
+                  <e p="WarshipHitHandler.cs" t="Include" />
                 </e>
                 <e p="ILastProcessedInputIdStorage.cs" t="Include" />
                 <e p="InputHandling" t="Include">
@@ -456,7 +458,13 @@
                 <e p="InputReceiver.cs" t="Include" />
                 <e p="ISpawner.cs" t="Include" />
                 <e p="MapInitialization" t="Include">
+                  <e p="AsteroidSpawnerHelper.cs" t="Include" />
+                  <e p="AsteroidsSpawnerBuilder.cs" t="Include" />
                   <e p="MapInitializeSystem.cs" t="Include" />
+                  <e p="WarshipEntityFactory.cs" t="Include" />
+                  <e p="WarshipSoValidator.cs" t="Include" />
+                  <e p="WarshipSpawnerHelper.cs" t="Include" />
+                  <e p="WarshipsSpawnerBuilder.cs" t="Include" />
                 </e>
                 <e p="PrefabSpawnerSystem.cs" t="Include" />
                 <e p="ShootingAdvancedSystem.cs" t="Include" />
@@ -469,7 +477,7 @@
                   <e p="ShootingPointsHelper.cs" t="Include" />
                   <e p="SpawnForceSystem.cs" t="Include" />
                   <e p="ViewTypePathStorage.cs" t="Include" />
-                  <e p="WarshipSpawnerSystem.cs" t="Include" />
+                  <e p="WarshipSpawner.cs" t="Include" />
                 </e>
                 <e p="SpawnManager.cs" t="Include" />
                 <e p="Statistics" t="Include">
@@ -487,48 +495,6 @@
         <e p="readme.txt" t="Include" />
         <e p="Resources" t="Include">
           <e p="log4net.xml" t="Include" />
-          <e p="Shared" t="Include">
-            <e p="Archanor" t="Include">
-              <e p="Sci-Fi Arsenal" t="Include">
-                <e p="InteractiveDemo" t="Include">
-                  <e p="Demo Scripts" t="Include">
-                    <e p="MySciFiProjectileScript.cs" t="Include" />
-                    <e p="SciFiBeamScript.cs" t="Include" />
-                    <e p="SciFiButtonScript.cs" t="Include" />
-                    <e p="SciFiDragMouseOrbit.cs" t="Include" />
-                    <e p="SciFiFireProjectile.cs" t="Include" />
-                    <e p="SciFiLoadSceneOnClick.cs" t="Include" />
-                    <e p="SciFiLoopScript.cs" t="Include" />
-                    <e p="SciFiProjectileScript.cs" t="Include" />
-                  </e>
-                </e>
-                <e p="Sci-Fi Effects" t="Include">
-                  <e p="Scripts" t="Include">
-                    <e p="SciFiBeamStatic.cs" t="Include" />
-                    <e p="SciFiLightFade.cs" t="Include" />
-                    <e p="SciFiLightFlicker.cs" t="Include" />
-                    <e p="SciFiPitchRandomizer.cs" t="Include" />
-                    <e p="SciFiRotation.cs" t="Include" />
-                  </e>
-                </e>
-              </e>
-            </e>
-            <e p="PM_VoyagerTurretPack" t="Include">
-              <e p="READ ME!.txt" t="Include" />
-            </e>
-            <e p="StarSparrow" t="Include">
-              <e p="Readme" t="Include">
-                <e p="Readme Files" t="Include">
-                  <e p="Scripts" t="Include">
-                    <e p="Editor" t="Include">
-                      <e p="ReadmeStarSparrowEditor.cs" t="Include" />
-                    </e>
-                    <e p="ReadmeStarSparrow.cs" t="Include" />
-                  </e>
-                </e>
-              </e>
-            </e>
-          </e>
         </e>
         <e p="Scripts" t="Include">
           <e p="CollidersDrawer.cs" t="Include" />
@@ -617,6 +583,9 @@
                 <e p="HidesSenderSystem.cs" t="Include" />
                 <e p="InputDeletingSystem.cs" t="Include" />
                 <e p="IRudpMessagesStorage.cs" t="Include" />
+                <e p="KillerInfo.cs" t="Include" />
+                <e p="Killers.cs" t="Include" />
+                <e p="KillMessagesFactory.cs" t="Include" />
                 <e p="MaxHpUpdaterSystem.cs" t="Include" />
                 <e p="NetworkKillsSenderSystem.cs" t="Include" />
                 <e p="NetworkSenderSystems.cs" t="Include" />
@@ -634,6 +603,7 @@
             </e>
             <e p="GameEngineTicker.cs" t="Include" />
             <e p="HealthCheckerSystem.cs" t="Include" />
+            <e p="LowHpCheckSystem.cs" t="Include" />
             <e p="MapBoundsCheckSystem.cs" t="Include" />
             <e p="MatchLifecycle" t="Include">
               <e p="Match.cs" t="Include" />
@@ -703,7 +673,7 @@
             <e p="Sending" t="Include">
               <e p="IHealthPointsPackSender.cs" t="Include" />
               <e p="IUdpSender.cs" t="Include" />
-              <e p="KillData.cs" t="Include" />
+              <e p="KillModel.cs" t="Include" />
               <e p="MessageFactory.cs" t="Include" />
               <e p="MessageIdFactory.cs" t="Include" />
               <e p="MessagesPackIdFactory.cs" t="Include" />

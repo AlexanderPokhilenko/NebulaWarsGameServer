@@ -1,4 +1,4 @@
-﻿// #define JITTER
+﻿#define JITTER
 
 
 using System;
@@ -31,9 +31,9 @@ namespace Server
         private const int UdpPort = 48956;
         private const int HttpPort = 14065;
         private MatchesStorage matchesStorage;
+        private UdpClientWrapper udpClientWrapper;
         private CancellationTokenSource matchmakerNotifierCts;
         private CancellationTokenSource matchmakerListenerCts;
-        private UdpClientWrapper udpClientWrapper;
 
         public void Run(WarshipsCharacteristicsStorage warshipsCharacteristicsStorage)
         {

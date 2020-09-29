@@ -55,7 +55,6 @@
 //             var playersViewAreas = new PlayersViewAreas(matchModelArg.GameUnits.Players.Count);
 //
 //             systems = new Entitas.Systems()
-//                     .Add(new MapInitSystem(contexts, matchModelArg, udpSendUtils, out var chunks))
 //                     .Add(new ViewAreasInitSystem(contexts, playersViewAreas))
 //                     // .Add(new TestEndMatchSystem(contexts))
 //                     .Add(new PlayerMovementHandlerSystem(contexts))

@@ -45,7 +45,7 @@ namespace Server.GameEngine.Systems
             }
             
             Dictionary<int, ushort> dictionary = allPlayers
-                .ToDictionary(item => item.account.AccountId,
+                .ToDictionary(item => item.account.accountId,
                             item => item.id.value);
             
             

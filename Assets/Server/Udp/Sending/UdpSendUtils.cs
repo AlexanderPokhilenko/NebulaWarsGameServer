@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Plugins.submodules.SharedCode;
 using Plugins.submodules.SharedCode.Logger;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.Common;
 using Plugins.submodules.SharedCode.NetworkLibrary.Udp.ServerToPlayer.BattleStatus;
@@ -124,11 +126,14 @@ namespace Server.Udp.Sending
             }
         }
 
-        public void SendKill(int matchId, KillData killData)
+        public void SendKill(int matchId, ushort playerId, KillModel killModel)
         {
-            var playerId = killData.TargetPlayerTmpId;
-            var message = new KillMessage(killData.KillerId, killData.KillerType, killData.VictimId, killData.VictimType);
-            SendUdp(matchId, playerId, message, true);
+            // log.Debug($"Отправка сообщения об убийстве. {matchId} {playerId} {killModel.killerId}" +
+                      // $" {killModel.killerType} {killModel.victimId} {killModel.victimType}");
+            
+            KillMessage message = new KillMessage(killModel.killerId, killModel.killerType, killModel.victimId, 
+                killModel.victimType);
+            SendUdp(matchId, playerId, message);
         }
         
         // public void SendHealthPoints(int matchId, ushort targetPlayerId, float healthPoints)

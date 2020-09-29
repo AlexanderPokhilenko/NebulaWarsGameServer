@@ -82,8 +82,8 @@ namespace Server.GameEngine.Chronometers
                 }
                 else
                 {
-                    log.Error($"Опаздываем. Логика = {tickExecutionTime.TotalSeconds} " +
-                              $"Логика + update = {tickAndUnityUpdateExecutionTime.TotalSeconds}");
+                    log.Error($"Опоздание. Тик матчей = {tickExecutionTime.TotalSeconds} " +
+                              $"Тик матчей + unity update = {tickAndUnityUpdateExecutionTime.TotalSeconds}");
                 }
                 
                 prevTickStartTime = currentTickStartTime;

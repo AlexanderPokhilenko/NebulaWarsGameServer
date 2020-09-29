@@ -12,8 +12,8 @@ namespace Server.GameEngine.Rudp
     /// </summary>
     public class RudpMessagesSender
     {
-        private readonly MatchesStorage matchesStorage;
         private readonly UdpSendUtils udpSendUtils;
+        private readonly MatchesStorage matchesStorage;
         private readonly IpAddressesStorage ipAddressesStorage;
         private readonly ByteArrayRudpStorage byteArrayRudpStorage;
         private readonly ILog log = LogManager.CreateLogger(typeof(RudpMessagesSender));
