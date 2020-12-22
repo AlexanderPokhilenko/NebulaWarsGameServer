@@ -48,7 +48,7 @@ namespace Server.Http
             {
                 HttpListenerContext context = await listener.GetContextAsync();
                 HttpListenerRequest request = context.Request;
-                
+                if(request.Url.AbsolutePath != "/") return;
                 Stream inputStream = request.InputStream;
                 byte[] data;
 

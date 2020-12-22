@@ -1,12 +1,10 @@
-﻿using System;
-using Code.Common;
+﻿using Code.Common;
 using NetworkLibrary.NetworkLibrary.Http;
-using Server.GameEngine;
 using Server.GameEngine.MatchLifecycle;
+using System;
 
 namespace Server.Http
 {
-    //TODO говно
     public class MatchModelMessageHandler
     {
         private readonly MatchCreator matchCreator;

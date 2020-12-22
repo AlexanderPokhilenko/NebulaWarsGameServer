@@ -27,6 +27,7 @@ namespace Server
         private ShittyUdpMediator shittyUdpMediator;
         private CancellationTokenSource matchmakerNotifierCts;
         private CancellationTokenSource matchmakerListenerCts;
+        private CancellationTokenSource monitorListenerCts;
 
         public void Run()
         {
@@ -74,8 +75,11 @@ namespace Server
             //Старт прослушки матчмейкера
             MatchModelMessageHandler matchModelMessageHandler = new MatchModelMessageHandler(matchCreator, matchStorage);
             MatchmakerListener matchmakerListener = new MatchmakerListener(matchModelMessageHandler, HttpPort);
+            MonitorListener monitorListener = new MonitorListener(HttpPort);
+            monitorListenerCts = monitorListener.StartThread();
             matchmakerListenerCts = matchmakerListener.StartThread();
-            
+
+
             //Старт прослушки игроков
             shittyUdpMediator
                 .SetupConnection(UdpPort)
@@ -110,6 +114,7 @@ namespace Server
             shittyUdpMediator.Stop();
             matchmakerNotifierCts.Cancel();
             matchmakerListenerCts.Cancel();
+            monitorListenerCts.Cancel();
         }
     }
 }
